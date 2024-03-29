@@ -6,6 +6,8 @@
 
 canvas {
     pointer-events: none;
+    width: 100%;
+    height: 100%;
 }
 
 .main {
@@ -28,16 +30,78 @@ body {
     height: 100vh;
     margin:0;
     padding:0;
+    overflow: hidden;
 }
 
 #bac {
-    height: 100%;
-    
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
 }
 
 #bacImg {
-    height: 100%;
+    height: 100vh;
     width: auto;
+}
+
+#sidebar {
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    min-width: 600px;
+    width: calc(100vw - 100vh);
+    z-index: 2;
+    background-color: rgba(25, 25, 25, 1); 
+}
+
+#nav {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 50px;
+}
+
+.focusedButton {
+    width: 25%;
+    height: 100%;
+    color: rgba(200, 200, 200, 1);
+    text-align: top;
+    background-color: rgba(25, 25, 25, 1);
+    white-space: pre-line;
+    float: left;
+    border: 1px solid rgba(25, 25, 25, 1);
+    padding: 0;
+    margin: 0;
+}
+
+.unFocusedButton {
+    width: 25%;
+    height: 100%;
+    color: rgba(200, 200, 200, 1);
+    text-align: top;
+    background-color: rgba(75, 75, 75, 1);
+    white-space: pre-line;
+    float: left;
+    border: 1px solid rgba(25, 25, 25, 1);
+    padding: 0;
+    margin: 0;
+}
+
+#money {
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    height: 50px;
+    color: rgba(200, 200, 100, 1);
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 45px;
+    text-align: top;
+    white-space: pre-line;
+    left: 10px;
 }
 
 #data {
@@ -96,14 +160,54 @@ body {
     overflow: auto;
 }
 
-.button {
+#buttonGridPull {
+    position: absolute;
+    top: 100px;
+    height: calc(100vh - 100px);
     width: 100%;
+    overflow-y: auto;
+}
+
+.pullButton {
+    width: calc(100% - 20px);
     height: 150px;
+    margin: 5px;
+    margin-left: 10px;
     padding: 10px;
-    color: white;
     text-align: top;
-    background-color: rgba(0, 0, 0, 0.5);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+}
+
+#greyButton {
+    color: rgba(150, 150, 150, 1);
+    background-color: rgba(75, 75, 75, 1);
+}
+
+#redButton {
+    color: rgba(225, 50, 50, 1);
+    background-color: rgba(150, 25, 25, 1);
+}
+
+#bronzeButton {
+    color: rgba(220, 160, 90, 1);
+    background-color: rgba(170, 110, 60, 1);
+}
+
+#silverButton {
+    color: rgba(225, 225, 225, 1);
+    background-color: rgba(175, 175, 175, 1);
+}
+
+#goldButton {
+    color: rgba(250, 200, 100, 1);
+    background-color: rgba(200, 150, 0, 1);
+}
+
+#blackButton {
+    color: rgba(75, 75, 75, 1);
+    background-color: rgba(10, 10, 10, 1);
 }

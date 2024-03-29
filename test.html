@@ -9,13 +9,23 @@
 </head>
 <body>
     <div id="game" class="main">
-        <div id="bac">
-            <img scr="GoblinDen.png" id="bacImg">
-        </div>
+        <span id="bac">
+            <img src="DungeonOuter1.jpeg" id="bacImg">
+        </span>
+        <span id="sidebar">
+            <div id="nav">
+                <button onclick="pull()" class="focusedButton"><h3>Pull</h3></button>
+                <button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button>
+                <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button>
+                <button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>
+            </div>
+            <div id="money"></div>
+            <div id="buttonGridPull"></div>
+        </span>
     </div>
     <div id="data">
         
     </div>
 </body>
-
+<script src="game.js"></script>
 

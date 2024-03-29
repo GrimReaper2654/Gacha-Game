@@ -34,6 +34,13 @@ const normal = 'normal';
 const male = 'male';
 const female = 'female';
 
+const grey = 'grey';
+const red = 'red';
+const bronze = 'bronze';
+const silver = 'silver';
+const gold = 'gold';
+const black = 'black';
+
 // The support functions that might not be necessary
 function isin(a, b) { // check is a in b
     for (var i = 0; i < b.length; i += 1) {
@@ -74,8 +81,8 @@ function randint(min, max, notequalto=false) {
     return gen;
 }
 
-function replacehtml(text) {
-    document.getElementById("game").innerHTML = text;
+function replacehtml(element, text) {
+    document.getElementById(element).innerHTML = text;
 };
 
 function addImage(img, x, y, cx, cy, scale, r, absolute, opacity=1) {
@@ -464,6 +471,8 @@ const data = {
                 exp: 10,
                 stock: 1,
                 duration: Infinity,
+                colour: red,
+                id: 0,
             },
             {
                 name: `Starter Card Pack`,
@@ -483,6 +492,8 @@ const data = {
                 exp: 800,
                 stock: 5,
                 duration: Infinity,
+                colour: grey,
+                id: 1,
             },
             {
                 name: `Default Card Pack`,
@@ -502,6 +513,154 @@ const data = {
                 exp: 1000,
                 stock: Infinity,
                 duration: Infinity,
+                colour: grey,
+                id: 2,
+            },
+            {
+                name: `Bronze Card Pack`,
+                cost: 500,
+                attempts: 5,
+                rates: {
+                    itemCharacterBias: 0.9,
+                    normal: 0.35,
+                    uncommon: 0.25,
+                    rare: 0.15,
+                    superRare: 0.12,
+                    epic: 0.07,
+                    legendary: 0.01,
+                    godly: 0,
+                    ex: 0,
+                },
+                exp: 5000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: bronze,
+                id: 3,
+            },
+            {
+                name: `Silver Card Pack`,
+                cost: 2500,
+                attempts: 5,
+                rates: {
+                    itemCharacterBias: 0.75,
+                    normal: 0.1,
+                    uncommon: 0.2,
+                    rare: 0.4,
+                    superRare: 0.15,
+                    epic: 0.1,
+                    legendary: 0.05,
+                    godly: 0,
+                    ex: 0,
+                },
+                exp: 25000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: silver,
+                id: 4,
+            },
+            {
+                name: `Golden Card Pack`,
+                cost: 10000,
+                attempts: 1,
+                rates: {
+                    itemCharacterBias: 0.2,
+                    normal: 0,
+                    uncommon: 0,
+                    rare: 0,
+                    superRare: 0.05,
+                    epic: 0.25,
+                    legendary: 0.5,
+                    godly: 0.1,
+                    ex: 0,
+                },
+                exp: 100000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: gold,
+                id: 5,
+            },
+            {
+                name: `Mega Golden Card Pack`,
+                cost: 100000,
+                attempts: 10,
+                rates: {
+                    itemCharacterBias: 0.2,
+                    normal: 0,
+                    uncommon: 0,
+                    rare: 0,
+                    superRare: 0,
+                    epic: 0.3,
+                    legendary: 0.45,
+                    godly: 0.14,
+                    ex: 0.01,
+                },
+                exp: 1000000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: gold,
+                id: 6,
+            },
+            {
+                name: `Item Card Pack`,
+                cost: 1000,
+                attempts: 10,
+                rates: {
+                    itemCharacterBias: 1,
+                    normal: 0.1,
+                    uncommon: 0.2,
+                    rare: 0.4,
+                    superRare: 0.15,
+                    epic: 0.1,
+                    legendary: 0.04,
+                    godly: 0.01,
+                    ex: 0,
+                },
+                stock: Infinity,
+                duration: Infinity,
+                colour: red,
+                id: 7,
+            },
+            {
+                name: `Hero Card Pack`,
+                cost: 5000,
+                attempts: 5,
+                rates: {
+                    itemCharacterBias: 0,
+                    normal: 0.1,
+                    uncommon: 0.2,
+                    rare: 0.4,
+                    superRare: 0.15,
+                    epic: 0.1,
+                    legendary: 0.05,
+                    godly: 0,
+                    ex: 0,
+                },
+                exp: 50000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: red,
+                id: 8,
+            },
+            {
+                name: `Whale Card Pack`,
+                cost: 10000000,
+                attempts: 1,
+                rates: {
+                    itemCharacterBias: 0,
+                    normal: 0,
+                    uncommon: 0,
+                    rare: 0,
+                    superRare: 0,
+                    epic: 0,
+                    legendary: 0.,
+                    godly: 0,
+                    ex: 1,
+                },
+                exp: 1000000000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: black,
+                id: 9,
             },
         ],
         progression: 1,
@@ -647,11 +806,11 @@ const data = {
             effects: [],
             cost: {hp: 0, mp: 15},
             accuracy: 60,
-            exec: ```
+            exec: `
             if (enemy.gender == female) {
                 attack.dmg = 99999,
             }
-            ```,
+            `,
             attacks: 1,
         },
         brag: {
@@ -679,11 +838,11 @@ const data = {
             effects: [],
             cost: {hp: 0, mp: 60},
             accuracy: 500,
-            exec: ```
+            exec: `
             for (let i = 0; i < game.gamestate.player.team.length; i++) {
                 game.gamestate.player.team[i].hp += 10;
             }
-            ```,
+            `,
             attacks: 1,
         },
         mediumHeal: {
@@ -706,138 +865,7 @@ const data = {
         },
     },
     pulls: {
-        bronze: {
-            name: `Bronze Card Pack`,
-            cost: 500,
-            attempts: 5,
-            rates: {
-                itemCharacterBias: 0.9,
-                normal: 0.35,
-                uncommon: 0.25,
-                rare: 0.15,
-                superRare: 0.12,
-                epic: 0.07,
-                legendary: 0.01,
-                godly: 0,
-                ex: 0,
-            },
-            exp: 5000,
-            stock: Infinity,
-            duration: Infinity,
-        },
-        silver: {
-            name: `Silver Card Pack`,
-            cost: 2500,
-            attempts: 5,
-            rates: {
-                itemCharacterBias: 0.8,
-                normal: 0.1,
-                uncommon: 0.2,
-                rare: 0.4,
-                superRare: 0.15,
-                epic: 0.1,
-                legendary: 0.05,
-                godly: 0,
-                ex: 0,
-            },
-            exp: 25000,
-            stock: Infinity,
-            duration: Infinity,
-        },
-        gold: {
-            name: `Gold Card Pack`,
-            cost: 10000,
-            attempts: 1,
-            rates: {
-                itemCharacterBias: 0.2,
-                normal: 0,
-                uncommon: 0,
-                rare: 0,
-                superRare: 0.05,
-                epic: 0.25,
-                legendary: 0.5,
-                godly: 0.1,
-                ex: 0,
-            },
-            exp: 100000,
-            stock: Infinity,
-            duration: Infinity,
-        },
-        bigGold: {
-            name: `Mega Gold Card Pack`,
-            cost: 100000,
-            attempts: 10,
-            rates: {
-                itemCharacterBias: 0.2,
-                normal: 0,
-                uncommon: 0,
-                rare: 0,
-                superRare: 0,
-                epic: 0.3,
-                legendary: 0.45,
-                godly: 0.14,
-                ex: 0.01,
-            },
-            exp: 1000000,
-            stock: Infinity,
-            duration: Infinity,
-        },
-        item: {
-            name: `Item Card Pack`,
-            cost: 1000,
-            attempts: 10,
-            rates: {
-                itemCharacterBias: 1,
-                normal: 0.1,
-                uncommon: 0.2,
-                rare: 0.4,
-                superRare: 0.15,
-                epic: 0.1,
-                legendary: 0.05,
-                godly: 0,
-                ex: 0,
-            },
-            stock: Infinity,
-            duration: Infinity,
-        },
-        hero: {
-            name: `Hero Card Pack`,
-            cost: 5000,
-            attempts: 5,
-            rates: {
-                itemCharacterBias: 0,
-                normal: 0.1,
-                uncommon: 0.2,
-                rare: 0.4,
-                superRare: 0.15,
-                epic: 0.1,
-                legendary: 0.05,
-                godly: 0,
-                ex: 0,
-            },
-            exp: 50000,
-            stock: Infinity,
-            duration: Infinity,
-        },
-        whale: {
-            name: `Whale Card Pack`,
-            cost: 10000000,
-            attempts: 1,
-            rates: {
-                itemCharacterBias: 0,
-                normal: 0,
-                uncommon: 0,
-                rare: 0,
-                superRare: 0,
-                epic: 0,
-                legendary: 0.,
-                godly: 0,
-                ex: 1,
-            },
-            exp: 1000000000,
-            stock: Infinity,
-            duration: Infinity,
-        },
+        
     }
 }
 
@@ -845,6 +873,8 @@ const data = {
 var game = {
     interface: `home`,
     gamestate: undefined,
+    keypresses: [],
+    mousepos: {x: 0, y: 0},
 };
 //localStorage.removeItem('player');
 
@@ -854,54 +884,50 @@ var display = {x:window.innerWidth, y:window.innerHeight};
 //console.log(display);
 //console.log(entities);
 window.onkeyup = function(e) {
-    for (var i = 0; i < entities.length; i++) {
-        if (entities[i].directControl) {
-            entities[i].keyboard[e.key.toLowerCase()] = false; 
-        }
-    }
+    game.keypresses[e.key.toLowerCase()] = false; 
 };
 window.onkeydown = function(e) {
-    for (var i = 0; i < entities.length; i++) {
-        if (entities[i].directControl) {
-            entities[i].keyboard[e.key.toLowerCase()] = true; 
-            if (!paused) {
-                e.preventDefault();
-            }
-        }
-    }
+    game.keypresses[e.key.toLowerCase()] = true; 
 };
 document.addEventListener('mousedown', function(event) {
     if (event.button === 0) { // Check if left mouse button was clicked
-        for (var i = 0; i < entities.length; i++) {
-            if (entities[i].directControl) {
-                entities[i].keyboard.click = true;
-            }
-        }
+        game.keypresses.click = true;
     }
 });
 document.addEventListener('mouseup', function(event) {
     if (event.button === 0) { // Check if left mouse button was released
-        for (var i = 0; i < entities.length; i++) {
-            if (entities[i].directControl) {
-                entities[i].keyboard.click = false;
-            }
-        }
+        game.keypresses.click = false;
     }
 });
+/*
 window.addEventListener("resize", function () {
     if (t > 0) {
         display = {x:window.innerWidth,y:window.innerHeight};
         replacehtml(`<canvas id="main" width="${display.x}" height="${display.y}" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas><canvas id="canvasOverlay" width="${display.x}" height="${display.y}" style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>`);
     }
-});
+});*/
 function tellPos(p){
-    mousepos = {x: p.pageX, y:p.pageY};
+    game.mousepos = {x: p.pageX, y:p.pageY};
 };
 window.addEventListener('mousemove', tellPos, false);
 
 function clearData() {
     localStorage.removeItem('GatchaGameData');
     console.log('cleared previous data');
+}
+
+function pull() {
+    replacehtml(`nav`, `<button onclick="pull()" class="focusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
+    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    let buttonGridHtml = ``;
+    for (let i = 0; i < game.gamestate.pulls.length; i++) {
+        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
+        let desc = `$${game.gamestate.pulls[i].cost}`;
+        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
+        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`buttonGridPull`, buttonGridHtml);
 }
 
 function startGame() {
@@ -913,17 +939,29 @@ function startGame() {
     } else {
         // No saved data found
         console.log('no save found, creating new player');
-        player = JSON.parse(JSON.stringify(data.startingGamestate));
-        entities.push(player);
+        game.gamestate = JSON.parse(JSON.stringify(data.startingGamestate));
     };
     home();
 }
 
 function home() {
-    homePage = ```
-    
-    ```;
-    replacehtml(homePage);
+    homePage = `
+    <span id="bac">
+        <img src="DungeonOuter1.jpeg" id="bacImg">
+    </span>
+    <span id="sidebar">
+        <div id="nav">
+            <button onclick="pull()" class="focusedButton"><h3>Pull</h3></button>
+            <button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button>
+            <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button>
+            <button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>
+        </div>
+        <div id="money"></div>
+        <div id="buttonGridPull"></div>
+    </span>
+    `;
+    replacehtml(`game`, homePage);
+    pull();
 }
 
 function main() {
@@ -941,7 +979,7 @@ function main() {
     return gameState;
 };
 
-
+console.log('loaded');
 
 
 
