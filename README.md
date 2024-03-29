@@ -1,5 +1,5 @@
 # Gacha-Game
-My friend (Eric) was angry since he couldn't get the good character in Honkai Star Rail (idk what character it was). So I decided to code my own gacha game for him so he could feel the satisfaction of pulling op characters. This is also a good opportunity for me to try making a multiplayer game and not rely on js canvas too heavily. <br>
+My friend (Eric) was angry since he couldn't get the good character in Honkai Star Rail (idk what character it was). So I decided to code my own gacha game for him so he could feel the satisfaction of pulling op characters. This is also a good opportunity for me to try making a multiplayer game and not rely on js canvas too heavily. Ignore the anime girl theme, Eric is into that kind of stuff.<br>
 <br>
 <br>
 <br>
