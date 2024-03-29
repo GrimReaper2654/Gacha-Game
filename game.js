@@ -927,7 +927,55 @@ function pull() {
         buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
     }
     console.log(buttonGridHtml);
-    replacehtml(`buttonGridPull`, buttonGridHtml);
+    replacehtml(`grid`, `<div id="buttonGridPull">${buttonGridHtml}</div>`);
+}
+
+function inventory() {
+    replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
+    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    /*
+    let buttonGridHtml = ``;
+    for (let i = 0; i < game.gamestate.pulls.length; i++) {
+        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
+        let desc = `$${game.gamestate.pulls[i].cost}`;
+        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
+        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`buttonGridPull`, buttonGridHtml);*/
+    replacehtml(`grid`, ``);
+}
+
+function characters() {
+    replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="focusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
+    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    /*
+    let buttonGridHtml = ``;
+    for (let i = 0; i < game.gamestate.pulls.length; i++) {
+        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
+        let desc = `$${game.gamestate.pulls[i].cost}`;
+        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
+        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`buttonGridPull`, buttonGridHtml);*/
+    replacehtml(`grid`, ``);
+}
+
+function shop() {
+    replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="focusedButton"><h3>Shop</h3></button>`);
+    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    /*
+    let buttonGridHtml = ``;
+    for (let i = 0; i < game.gamestate.pulls.length; i++) {
+        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
+        let desc = `$${game.gamestate.pulls[i].cost}`;
+        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
+        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`buttonGridPull`, buttonGridHtml);*/
+    replacehtml(`grid`, ``);
 }
 
 function startGame() {
@@ -957,7 +1005,9 @@ function home() {
             <button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>
         </div>
         <div id="money"></div>
-        <div id="buttonGridPull"></div>
+        <div id="grid">
+            <div id="buttonGridPull"></div>
+        </div>
     </span>
     `;
     replacehtml(`game`, homePage);
