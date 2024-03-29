@@ -567,7 +567,7 @@ const data = {
                     normal: 0,
                     uncommon: 0,
                     rare: 0,
-                    superRare: 0.05,
+                    superRare: 0.15,
                     epic: 0.25,
                     legendary: 0.5,
                     godly: 0.1,
@@ -588,11 +588,11 @@ const data = {
                     normal: 0,
                     uncommon: 0,
                     rare: 0,
-                    superRare: 0,
+                    superRare: 0.05,
                     epic: 0.3,
-                    legendary: 0.45,
-                    godly: 0.14,
-                    ex: 0.01,
+                    legendary: 0.5,
+                    godly: 0.15,
+                    ex: 0,
                 },
                 exp: 1000000,
                 stock: Infinity,
@@ -653,8 +653,8 @@ const data = {
                     superRare: 0,
                     epic: 0,
                     legendary: 0.,
-                    godly: 0,
-                    ex: 1,
+                    godly: 1,
+                    ex: 0,
                 },
                 exp: 1000000000,
                 stock: Infinity,
@@ -947,7 +947,7 @@ function startGame() {
 function home() {
     homePage = `
     <span id="bac">
-        <img src="DungeonOuter1.jpeg" id="bacImg">
+        <img src="assets/DungeonOuter1.jpeg" id="bacImg">
     </span>
     <span id="sidebar">
         <div id="nav">
