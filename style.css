@@ -71,7 +71,6 @@ body {
     color: rgba(200, 200, 200, 1);
     text-align: top;
     background-color: rgba(30, 30, 30, 1);
-    white-space: pre-line;
     float: left;
     border: 1px solid rgba(25, 25, 25, 1);
     padding: 0;
@@ -84,7 +83,6 @@ body {
     color: rgba(200, 200, 200, 1);
     text-align: top;
     background-color: rgba(75, 75, 75, 1);
-    white-space: pre-line;
     float: left;
     border: 1px solid rgba(25, 25, 25, 1);
     padding: 0;
@@ -101,7 +99,6 @@ body {
     font-family: "Lucida Console", "Courier New", monospace;
     font-size: 45px;
     text-align: top;
-    white-space: pre-line;
     left: 10px;
 }
 
@@ -198,7 +195,6 @@ body {
     text-align: top;
     border: none;
     border-radius: 8px;
-    white-space: pre-line;
     font-family: 'Courier New', monospace;
     font-size: 20px;
 }
@@ -219,7 +215,6 @@ body {
     text-align: top;
     border: none;
     border-radius: 8px;
-    white-space: pre-line;
     font-family: 'Courier New', monospace;
     font-size: 15px;
     white-space: pre-wrap;
@@ -237,6 +232,21 @@ body {
 .smallIcon {
     width: 12px;
     height: 12px;
+}
+
+.mediumIcon {
+    width: 30px;
+    height: 30px;
+}
+
+.focusIcon {
+    width: 100%;
+    height: auto;
+}
+
+.mediumIconDown {
+    width: 20px;
+    height: 20px;
 }
 
 .statsText {
@@ -263,7 +273,7 @@ body {
     text-align: top;
     border: none;
     border-radius: 8px;
-    white-space: pre-line;
+    white-space: pre-wrap;
     font-family: 'Courier New', monospace;
     font-size: 15px;
     color: rgba(200, 200, 200, 1);
@@ -282,7 +292,7 @@ body {
     text-align: top;
     border: none;
     border-radius: 8px;
-    white-space: pre-line;
+    white-space: pre-wrap;
     font-family: 'Courier New', monospace;
     font-size: 15px;
     color: rgba(200, 200, 200, 1);
@@ -331,7 +341,6 @@ body {
 #readyPlayButton {
     height: 75px;
     width: 200px;
-    white-space: pre-line;
     font-family: 'Courier New', monospace;
     font-size: 25px;
     color: rgba(250, 250, 250, 1);
@@ -344,7 +353,6 @@ body {
 #notReadyPlayButton {
     height: 75px;
     width: 200px;
-    white-space: pre-line;
     font-family: 'Courier New', monospace;
     font-size: 25px;
     color: rgba(250, 250, 250, 1);
@@ -352,6 +360,117 @@ body {
     border-radius: 15px;
     border-width: 5px;
     border-color: rgba(25, 100, 25, 1);
+}
+
+#focus {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    height: calc(100vh - 10px);
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    overflow-y: auto;
+}
+
+#focusTopRow {
+    height: 70px;
+    width: 100%;
+    padding-bottom: 25px;
+}
+
+#focusTitle {
+    display: inline-block;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 40px;
+    color: rgba(250, 250, 250, 1);
+    width: 100%;
+    margin-bottom: 0px;
+    padding-top: 15px;
+}
+
+#focusBody {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    color: rgba(250, 250, 250, 1);
+    width: calc(100% - 30px);
+    margin: 0 auto;
+    padding: 15px;
+    padding-top: 0px;
+    vertical-align: text-top;
+}
+
+#focusImageContainer {
+    width: 50%;
+    height: auto;
+    margin: 0px;
+    float:left;
+    margin: 0px;
+    margin-right: 15px;
+    vertical-align: text-top;
+}
+
+#focusDescription {
+    margin: 0px;
+    padding: 0px;
+    vertical-align: text-top;
+    font-size: 20px;
+}
+
+#focusStats {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 20px;
+    width: 100%;
+    clear: both;
+    font-size: 35px;
+}
+
+#veryBig {
+    font-size: 35px;
+}
+
+#bigger {
+    font-size: 25px;
+}
+
+#smaller {
+    font-size: 15px;
+}
+
+#focusSkills {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 20px;
+    width: 100%;
+    clear: both;
+    font-size: 20px;
+}
+
+#exitFocus {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+    z-index: 3;
+
+}
+
+.closeButton {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    border-width: 0px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0px;
+    justify-content: center;
+    padding-top: 3px;
 }
 
 #noPadding {
@@ -424,6 +543,62 @@ body {
 
 #rank7Button {
     border-color: rgba(0, 0, 0, 1);
+}
+
+#rank0Text {
+    color: rgba(200, 200, 200, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank1Text {
+    color: rgba(75, 200, 75, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank2Text {
+    color: rgba(75, 150, 200, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank3Text {
+    color: rgba(150, 0, 200, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank4Text {
+    color: rgba(200, 75, 75, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank5Text {
+    color: rgba(255, 200, 50, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank6Text {
+    color: rgba(150, 255, 255, 1);
+    border-radius: 10px;
+    background-color: rgba(200, 200, 200, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank7Text {
+    color: rgba(0, 0, 0, 1);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    white-space: pre-wrap;
 }
 
 .p {

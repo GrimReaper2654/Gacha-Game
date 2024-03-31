@@ -41,6 +41,10 @@ const silver = 'silver';
 const gold = 'gold';
 const black = 'black';
 
+const single = 'single target';
+const multi = 'multi target';
+const aoe = 'area of effect';
+
 // The support functions that might not be necessary
 function isin(a, b) { // check is a in b
     for (var i = 0; i < b.length; i += 1) {
@@ -460,7 +464,7 @@ const data = {
                     purchacePrice: 0,
                     sellable: true,
                     sellPrice: 10,
-                    quantity: 1,
+                    quantity: 10,
                     stackSize: Infinity,
                 },
                 {
@@ -479,7 +483,7 @@ const data = {
                     purchacePrice: 100,
                     sellable: true,
                     sellPrice: 25,
-                    quantity: 1,
+                    quantity: 2,
                     stackSize: Infinity,
                 },
                 {
@@ -600,7 +604,8 @@ const data = {
             characters: [
                 { // useless trash
                     name: `Eco`,
-                    description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
+                    title: `Hero`,
+                    description: `Former high school student, Eco was isekaied into the other world by the godess and is on a quest to defeat the terrorist (demon) lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. In his quest to kill the terrorist lord, Eco and his party needs to clear dungeons and recruit more members along the way. Luckily, Eco has the mysterious 'Gacha System' to help him out. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
                     personality: 'chunni',
                     stats: {atk: 'low', def: 'none'},
                     rarity: EX,
@@ -609,13 +614,14 @@ const data = {
                     hp: 60,
                     mp: 25,
                     str: 0.9,
-                    int: 5,
+                    int: 0,
                     mpRegen: 5,
-                    skils: ['punch', 'bodyslam', 'stare', 'brag'],
+                    skills: ['punch', 'bodyslam', 'stare', 'brag'],
                     armour: {physical: [0, 0], magic: [0, 0]},
                 },
                 { // healer
                     name: `Abby`,
+                    title: `Healer`,
                     description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so hes suitabel for the support role.`,
                     personality: 'timid',
                     stats: {atk: 'low', def: 'none'},
@@ -627,12 +633,13 @@ const data = {
                     str: 0.8,
                     int: 20,
                     mpRegen: 20,
-                    skils: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
+                    skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
                     armour: {physical: [0, 0], magic: [0, 0]},
                 },
                 { // melee dps
                     name: `Yuki`,
-                    description: `Yuki recently graduated from the kingdom's swordsmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks.`,
+                    title: `Knight`,
+                    description: `Yuki recently graduated from the kingdom's knight academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`,
                     personality: 'calm',
                     stats: {atk: 'high', def: 'low'},
                     rarity: N,
@@ -640,30 +647,15 @@ const data = {
                     pfp: `assets/animeGirl42.jpeg`,
                     hp: 100,
                     mp: 50,
-                    str: 1,
+                    str: 1.1,
                     int: 15,
                     mpRegen: 5,
-                    skils: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
-                    armour: {physical: [10, 10], magic: [0, 0]},
-                },
-                { // mage
-                    name: `Kohana`,
-                    description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
-                    personality: 'confident',
-                    stats: {atk: 'high', def: 'low'},
-                    rarity: L,
-                    gender: female,
-                    pfp: `assets/animeGirl27.jpeg`,
-                    hp: 250,
-                    mp: 650,
-                    str: 1,
-                    int: 90,
-                    mpRegen: 75,
-                    skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
-                    armour: {physical: [0, 0], magic: [25, 0]},
+                    skills: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
+                    armour: {physical: [0, 10], magic: [0, 0]},
                 },
                 { // tank dps hybrid
                     name: `Akane`,
+                    title: `Knight`,
                     description: `Akane is one of the kindoms many trainee knights. She's good at both attacking and can absorb quite a bit of damage, but she's not the most intelligent.`,
                     personality: 'arrogant',
                     stats: {atk: 'medium', def: 'medium'},
@@ -673,13 +665,14 @@ const data = {
                     hp: 125,
                     mp: 25,
                     str: 1,
-                    int: 10,
+                    int: 5,
                     mpRegen: 5,
-                    skils: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
-                    armour: {physical: [30, 15], magic: [0, 0]},
+                    skills: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
+                    armour: {physical: [8, 15], magic: [0, 0]},
                 },
                 { // tanker
                     name: `Rei`,
+                    title: `Warrior`,
                     description: `Rei is a dropout from the swordsman academy. She is clumsy and often misses her attacks, but has a suit of heavy armour that alows her to tank damage quite well.`,
                     personality: 'confident',
                     stats: {atk: 'low', def: 'high'},
@@ -691,11 +684,12 @@ const data = {
                     str: 0.9,
                     int: 5,
                     mpRegen: 2,
-                    skils: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
+                    skills: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
                     armour: {physical: [15, 15], magic: [0, 0]},
                 },
                 { // ranged dps
                     name: `Emi`,
+                    title: `Mage`,
                     description: `Emi is an apprentice mage from the red mage tower. She specialises in fire elemental attacks at long ranges but is inexperienced in close combat.`,
                     personality: 'angry',
                     stats: {atk: 'high', def: 'none'},
@@ -707,24 +701,76 @@ const data = {
                     str: 0.9,
                     int: 25,
                     mpRegen: 20,
-                    skils: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
+                    skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
                     armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // whale
+                    name: `Lucy`,
+                    title: `The Coward`,
+                    description: `Lucy is a nobleman's daughter who enjoys adventuring. She has no talent so she relies heavily on her items to fight. However, she is easily frightened by scary monsters despite her expensive equipment.`,
+                    personality: 'timid',
+                    stats: {atk: 'high', def: 'high'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl14.jpeg`,
+                    hp: 100,
+                    mp: 100,
+                    str: 1.5,
+                    int: 30,
+                    mpRegen: 10,
+                    skills: ['wildSwing', 'cower', 'wildCharge', 'sparkleSlash'],
+                    armour: {physical: [60, 15], magic: [10, 15]},
+                },
+                { // battle mage
+                    name: `Kohana`,
+                    title: `Archmage`,
+                    description: `Kohana is a veteran archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
+                    personality: 'confident',
+                    stats: {atk: 'high', def: 'low'},
+                    rarity: L,
+                    gender: female,
+                    pfp: `assets/animeGirl27.jpeg`,
+                    hp: 225,
+                    mp: 650,
+                    str: 1,
+                    int: 80,
+                    mpRegen: 75,
+                    skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                    armour: {physical: [0, 0], magic: [25, 0]},
                 },
                 { // glass cannon
                     name: `Natsuki`,
-                    description: `Natsuki is a swordmaster from an ancient kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
-                    personality: 'calm',
+                    title: `Sword Godess`,
+                    description: `Natsuki is legendary figure among the continent's swordmasters. Rumored to have slain countless gods and deities, her skill with the blade is unrivaled despite being quite fragile`,
+                    personality: 'aloof',
                     stats: {atk: 'extreme', def: 'none'},
                     rarity: G,
                     gender: female,
                     pfp: `assets/animeGirl10.jpeg`,
                     hp: 100,
-                    mp: 600,
+                    mp: 875,
                     str: 3,
                     int: 60,
-                    mpRegen: 90,
-                    skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                    mpRegen: 125,
+                    skills: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash', 'godslayerSlash', 'focusAura'],
                     armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // warrior
+                    name: `Yui`,
+                    title: `War Godess`,
+                    description: `Yui is the greatest warrior on the continent, her presence able to change the tide of even the targest wars. Her mythical armor makes her near invulnerable while she mows down entire armies with her longsword.`,
+                    personality: 'arrogant',
+                    stats: {atk: 'high', def: 'high'},
+                    rarity: G,
+                    gender: female,
+                    pfp: `assets/animeGirl38.jpeg`,
+                    hp: 750,
+                    mp: 375,
+                    str: 1.75,
+                    int: 60,
+                    mpRegen: 50,
+                    skills: ['millionSlashes', 'superiorOverheadStrike', 'auraSlash', 'superchargeArmour', 'rallyingCall', 'superiorCounterAttack'],
+                    armour: {physical: [200, 50], magic: [200, 40]},
                 },
             ],
             team: [
@@ -741,7 +787,7 @@ const data = {
                     str: 0.9,
                     int: 5,
                     mpRegen: 5,
-                    skils: ['punch', 'bodyslam', 'stare', 'brag'],
+                    skills: ['punch', 'bodyslam', 'stare', 'brag'],
                     armour: {physical: [0, 0], magic: [0, 0]},
                 },
                 { // glass cannon
@@ -757,7 +803,7 @@ const data = {
                     str: 3,
                     int: 60,
                     mpRegen: 90,
-                    skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                    skills: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
                     armour: {physical: [0, 0], magic: [0, 0]},
                 },
                 { // mage
@@ -773,7 +819,7 @@ const data = {
                     str: 1,
                     int: 90,
                     mpRegen: 75,
-                    skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                    skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
                     armour: {physical: [0, 0], magic: [25, 0]},
                 },
                 undefined
@@ -1004,7 +1050,8 @@ const data = {
         { // N
             Abby: { // healer
                 name: `Abby`,
-                description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so hes suitabel for the support role.`,
+                title: `Healer`,
+                description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so she's suitable for the support role.`,
                 personality: 'timid',
                 stats: {atk: 'low', def: 'none'},
                 rarity: N,
@@ -1015,12 +1062,13 @@ const data = {
                 str: 0.8,
                 int: 20,
                 mpRegen: 20,
-                skils: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
+                skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
             Yuki: { // melee dps
                 name: `Yuki`,
-                description: `Yuki recently graduated from the kingdom's swordsmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks.`,
+                title: `Knight`,
+                description: `Yuki recently graduated from the kingdom's knight academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`,
                 personality: 'calm',
                 stats: {atk: 'high', def: 'low'},
                 rarity: N,
@@ -1031,11 +1079,12 @@ const data = {
                 str: 1.1,
                 int: 15,
                 mpRegen: 5,
-                skils: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
+                skills: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
                 armour: {physical: [0, 10], magic: [0, 0]},
             },
             Akane: { // tank dps hybrid
                 name: `Akane`,
+                title: `Knight`,
                 description: `Akane is one of the kindoms many trainee knights. She's good at both attacking and can absorb quite a bit of damage, but she's not the most intelligent.`,
                 personality: 'arrogant',
                 stats: {atk: 'medium', def: 'medium'},
@@ -1045,13 +1094,14 @@ const data = {
                 hp: 125,
                 mp: 25,
                 str: 1,
-                int: 10,
+                int: 5,
                 mpRegen: 5,
-                skils: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
+                skills: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
                 armour: {physical: [8, 15], magic: [0, 0]},
             },
             Rei: { // tanker
                 name: `Rei`,
+                title: `Warrior`,
                 description: `Rei is a dropout from the swordsman academy. She is clumsy and often misses her attacks, but has a suit of heavy armour that alows her to tank damage quite well.`,
                 personality: 'confident',
                 stats: {atk: 'low', def: 'high'},
@@ -1063,11 +1113,12 @@ const data = {
                 str: 0.9,
                 int: 5,
                 mpRegen: 2,
-                skils: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
+                skills: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
                 armour: {physical: [15, 15], magic: [0, 0]},
             },
             Emi: { // ranged dps
                 name: `Emi`,
+                title: `Mage`,
                 description: `Emi is an apprentice mage from the red mage tower. She specialises in fire elemental attacks at long ranges but is inexperienced in close combat.`,
                 personality: 'angry',
                 stats: {atk: 'high', def: 'none'},
@@ -1079,12 +1130,29 @@ const data = {
                 str: 0.9,
                 int: 25,
                 mpRegen: 20,
-                skils: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
+                skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
+                armour: {physical: [0, 0], magic: [0, 0]},
+            },
+            Lucy: { // whale
+                name: `Lucy`,
+                title: `The Coward`,
+                description: `Lucy is a nobleman's daughter who enjoys adventuring. However, she is easily frightened by scary monsters despite her expensive equipment.`,
+                personality: 'timid',
+                stats: {atk: 'high', def: 'high'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/animeGirl14.jpeg`,
+                hp: 100,
+                mp: 100,
+                str: 1.5,
+                int: 30,
+                mpRegen: 10,
+                skills: ['wildSwing', 'cower', 'wildCharge', 'sparkleSlash'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
         },
         { // UC
-
+    
         },
         { // R
 
@@ -1098,6 +1166,7 @@ const data = {
         { // L
             Kohana: { // battle mage
                 name: `Kohana`,
+                title: `Archmage`,
                 description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
                 personality: 'confident',
                 stats: {atk: 'high', def: 'low'},
@@ -1109,31 +1178,50 @@ const data = {
                 str: 1,
                 int: 80,
                 mpRegen: 75,
-                skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
                 armour: {physical: [0, 0], magic: [25, 0]},
             },
         },
         { // G
             Natsuki: { // glass cannon
                 name: `Natsuki`,
-                description: `Natsuki is a swordmaster from a long forgotten kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
-                personality: 'calm',
+                title: `Sword Godess`,
+                description: `Natsuki is mystical figure among the continent's swordmasters. Rumored to have slain countless gods and deities, her skill with the blade is unrivaled despite being quite fragile`,
+                personality: 'aloof',
                 stats: {atk: 'extreme', def: 'none'},
                 rarity: G,
                 gender: female,
                 pfp: `assets/animeGirl10.jpeg`,
                 hp: 100,
-                mp: 600,
+                mp: 875,
                 str: 3,
                 int: 60,
-                mpRegen: 90,
-                skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                mpRegen: 125,
+                skills: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash', 'godslayerSlash', 'focusAura'],
                 armour: {physical: [0, 0], magic: [0, 0]},
+            },
+            Yui: { // warrior
+                name: `Yui`,
+                title: `War Godess`,
+                description: `Yui is the greatest warrior on the continent, her presence able to change the tide of even the targest wars. Her mythical armor makes her near invulnerable while she mows down entire armies with her longsword.`,
+                personality: 'arrogant',
+                stats: {atk: 'high', def: 'high'},
+                rarity: G,
+                gender: female,
+                pfp: `assets/animeGirl38.jpeg`,
+                hp: 750,
+                mp: 375,
+                str: 1.75,
+                int: 60,
+                mpRegen: 50,
+                skills: ['millionSlashes', 'superiorOverheadStrike', 'auraSlash', 'superchargeArmour', 'rallyingCall', 'superiorCounterAttack'],
+                armour: {physical: [200, 50], magic: [200, 40]},
             },
         },
         { // EX
             Eco: { // useless trash
                 name: `Eco`,
+                title: `Hero`,
                 description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
                 personality: 'chunni',
                 stats: {atk: 'low', def: 'none'},
@@ -1145,7 +1233,7 @@ const data = {
                 str: 0.9,
                 int: 5,
                 mpRegen: 5,
-                skils: ['punch', 'bodyslam', 'stare', 'brag'],
+                skills: ['punch', 'bodyslam', 'stare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
         },
@@ -1156,6 +1244,7 @@ const data = {
             desc: `[attacker] shashes at the targeted enemy with [pronoun] sword.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 12,
             multiplier: str,
             effects: [],
@@ -1163,11 +1252,25 @@ const data = {
             accuracy: 90,
             attacks: 3,
         },
+        millionSlashes: {
+            name: `Million Slashes`,
+            desc: `[attacker] swings [pronoun] blade at extreme speeds hitting the targeted enemy countless times.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: multi,
+            dmg: 16,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 100,
+            attacks: 10,
+        },
         sevenfoldSlashOfLight: {
             name: `Sevenfold Slash of Light`,
             desc: `[attacker] channels mana into [pronoun] sword and unleashes 7 consecutive slashes at the targeted enemy.`,
             attackType: `physical`,
             type: normal,
+            targeting: multi,
             dmg: 22,
             multiplier: str,
             effects: [],
@@ -1180,6 +1283,7 @@ const data = {
             desc: `[attacker] launches [pronoun] sword aura at the targeted enemy.`,
             attackType: `magic`,
             type: normal,
+            targeting: single,
             dmg: 225,
             multiplier: str,
             effects: [],
@@ -1192,6 +1296,7 @@ const data = {
             desc: `[attacker] impales the targeted enemy with [pronoun] sword.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 60,
             multiplier: str,
             effects: [],
@@ -1204,6 +1309,7 @@ const data = {
             desc: `[attacker] enhances [pronoun] sword with aura and impales the targeted enemy.`,
             attackType: `physical`,
             type: normal,
+            targeting: single,
             dmg: 90,
             multiplier: str,
             effects: [],
@@ -1211,11 +1317,25 @@ const data = {
             accuracy: 100,
             attacks: 1,
         },
+        godslayerSlash: {
+            name: `God Slaying Slash`,
+            desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a slash that cuts through even reality itself.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: single,
+            dmg: 1250,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 800},
+            accuracy: Infinity,
+            attacks: 1,
+        },
         overheadStrike: {
             name: `Overhead Strike`,
             desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 75,
             multiplier: str,
             effects: [],
@@ -1223,11 +1343,38 @@ const data = {
             accuracy: 50,
             attacks: 1,
         },
+        superiorOverheadStrike: {
+            name: `Overhead Strike`,
+            desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: single,
+            dmg: 150,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 200,
+            attacks: 1,
+        },
+        sparkleSlash: {
+            name: `Sparkle Slash`,
+            desc: `[attacker]'s special attack that [pronoun] spent years developing. It is rather flashy and powerful...`,
+            attackType: `physical`,
+            type: normal,
+            targeting: single,
+            dmg: 40,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 40, mp: 100},
+            accuracy: 70,
+            attacks: 5,
+        },
         wildSwing: {
             name: `Wild Swings`,
             desc: `[attacker] wildly swings [pronoun] sword at the targeted enemy.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 36,
             multiplier: str,
             effects: [],
@@ -1240,6 +1387,7 @@ const data = {
             desc: `[attacker] infises mana into [pronoun] sword and unleashes a powerful slash at the targeted enemy.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 80,
             multiplier: str,
             effects: [],
@@ -1260,6 +1408,45 @@ const data = {
             attacks: 1,
             selfOnly: true,
         },
+        focusAura: {
+            name: `Focus Aura`,
+            desc: `[attacker] gathers the aura within [pronoun], drasticly increasing all stats for 3 rounds.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [100, 75], duration: 3}, {id: 'mdef', lvl: [0, 75], duration: 3}, {id: 'atk', lvl: 1, duration: 5}, {id: 'mreg', lvl: 50, duration: 5}],
+            cost: {hp: 0, mp: 375},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
+        cower: {
+            name: `Cower in Fear`,
+            desc: `[attacker] cowers in fear, channeling mana into [pronoun] armour to reist more damage.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [15, 10], duration: 1}],
+            cost: {hp: 0, mp: 25},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
+        superchargeArmour: {
+            name: `Strengthen Armour`,
+            desc: `[attacker] channeling mana into [pronoun] armour to reist more damage for 5 rounds.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [50, 10], duration: 5}],
+            cost: {hp: 0, mp: 25},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
         counterAttack: {
             name: `Perpare Counter Attack`,
             desc: `[attacker] reduces all damage taken in the next round, and counteratacks with 150% power against the next enemy to attack [pronoun] at melee range.`,
@@ -1273,28 +1460,56 @@ const data = {
             attacks: 1,
             selfOnly: true,
         },
+        superiorCounterAttack: {
+            name: `Perpare Counter Attack`,
+            desc: `[attacker] reduces all damage taken in the next 3 rounds, and counteratacks with 150% power against the next 3 enemy to attack [pronoun] at melee range.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [50, 10], duration: 3}, {id: 'counter', lvl: 1.5, duration: 3}],
+            cost: {hp: 0, mp: 0},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
         swordCharge: {
             name: `Sword Charge`,
             desc: `[attacker] channels mana into [pronoun] sword and charges the targeted enemy inflicting great damage, but taking some damage as well.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 125,
             multiplier: str,
             effects: [],
-            cost: {hp: -10, mp: 15},
+            cost: {hp: 10, mp: 15},
             accuracy: 90,
             attacks: 1,
+        },
+        wildCharge: {
+            name: `Wild Charge`,
+            desc: `[attacker] charges the targeted enemy while flailing [pronoun] sword wildly inflicting significant damage to all parties.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: single,
+            dmg: 18,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 30, mp: 15},
+            accuracy: 50,
+            attacks: 6,
         },
         swordDance: {
             name: `Sword Dance`,
             desc: `[attacker] sends a flury of rapid slashes and stabs at the targeted enemy.`,
             attackType: `physical`,
             type: physical,
-            dmg: [10, 16],
+            targeting: multi,
+            dmg: 28,
             multiplier: str,
             effects: [],
-            cost: {hp: 0, mp: 225},
-            accuracy: 90,
+            cost: {hp: 0, mp: 425},
+            accuracy: 150,
             attacks: 25,
         },
         punch: {
@@ -1302,6 +1517,7 @@ const data = {
             desc: `[attacker] punches the targeted enemy.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 15,
             multiplier: str,
             effects: [],
@@ -1314,10 +1530,11 @@ const data = {
             desc: `[attacker] bodyslams the targeted enemy, dealing damage to both of them.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 50,
             multiplier: str,
             effects: [],
-            cost: {hp: -10, mp: 0},
+            cost: {hp: 10, mp: 0},
             accuracy: 90,
             attacks: 1,
         },
@@ -1326,6 +1543,7 @@ const data = {
             desc: `[attacker] slaps the targeted enemy inflicting a little damage.`,
             attackType: `physical`,
             type: physical,
+            targeting: single,
             dmg: 10,
             multiplier: str,
             effects: [],
@@ -1338,6 +1556,7 @@ const data = {
             desc: `[attacker] stares at the targeted enemy like a pervert. Its super effective against females.`,
             attackType: `scan`,
             type: normal,
+            targeting: single,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -1349,12 +1568,55 @@ const data = {
             }
             `,
             attacks: 1,
+            extraStats: [
+                {
+                    icon: `question.png`,
+                    desc: `effects unknown`,
+                },
+            ],
+        },
+        rallyingCall: {
+            name: `Rallying Call`,
+            desc: `[attacker] motivates all allies, increasing their defense and attack power for 3 rounds.`,
+            attackType: `buff`,
+            type: normal,
+            targeting: aoe,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 225},
+            accuracy: Infinity,
+            exec: `
+            for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                game.gamestate.player.team[i].effects.push({id: 'def', lvl: [10, 10], duration: 3}, {id: 'atk', lvl: 0.25, duration: 3});
+            }
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `clock.png`,
+                    desc: `lasts 3 rounds`,
+                },
+                {
+                    icon: `shield.png`,
+                    desc: `10 physical negation to all allies`,
+                },
+                {
+                    icon: `shield.png`,
+                    desc: `10% physical resist to all allies`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `25% extra attack damage to all allies`,
+                },
+            ],
         },
         brag: {
             name: `Brag`,
             desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
             attackType: `sound`,
             type: piercing,
+            targeting: single,
             dmg: 0,
             multiplier: int,
             effects: [{id: 'dot', lvl: 10, duration: 3}],
@@ -1367,6 +1629,7 @@ const data = {
             desc: `[attacker] heals the targeted ally.`,
             attackType: `heal`,
             type: magic,
+            targeting: single,
             dmg: -20,
             multiplier: int,
             effects: [],
@@ -1375,10 +1638,11 @@ const data = {
             attacks: 1,
         },
         lesserAreaHeal: {
-            name: `Lesser Healing`,
+            name: `Lesser Area Healing`,
             desc: `[attacker] heals all allies, focusing on the targeted ally.`,
             attackType: `areaHeal`,
             type: magic,
+            targeting: aoe,
             dmg: -10,
             multiplier: int,
             effects: [],
@@ -1389,6 +1653,10 @@ const data = {
                 game.gamestate.player.team[i].hp += 10;
             }
             `,
+            extraStats: {
+                icon: `greenCross.png`,
+                desc: `10 heal to all allies`,
+            },
             attacks: 1,
         },
         mediumHeal: {
@@ -1396,6 +1664,7 @@ const data = {
             desc: `[attacker] heals the targeted ally.`,
             attackType: `heal`,
             type: magic,
+            targeting: single,
             dmg: -35,
             multiplier: int,
             effects: [],
@@ -1408,6 +1677,7 @@ const data = {
             desc: `[attacker] heals the targeted ally.`,
             attackType: `heal`,
             type: magic,
+            targeting: single,
             dmg: -80,
             multiplier: int,
             effects: [{id: 'hot', lvl: 5, duration: 2}],
@@ -1420,6 +1690,7 @@ const data = {
             desc: `[attacker] launches a shadow lance constructed from mana at the targeted enemy. It can penetrate through barriers and armour.`,
             attackType: `darkMagic`,
             type: piercing,
+            targeting: single,
             dmg: 40,
             multiplier: int,
             effects: [],
@@ -1432,6 +1703,7 @@ const data = {
             desc: `[attacker] fires a concentrated blast of mana at the targeted enemy.`,
             attackType: `magic`,
             type: magic,
+            targeting: single,
             dmg: 175,
             multiplier: int,
             effects: [],
@@ -1444,6 +1716,7 @@ const data = {
             desc: `[attacker] fires a concentrated blast of dark elemental mana at the targeted enemy.`,
             attackType: `darkMagic`,
             type: magic,
+            targeting: single,
             dmg: 90,
             multiplier: int,
             effects: [],
@@ -1456,6 +1729,7 @@ const data = {
             desc: `[attacker] surrounds the targeted ally in an anti magic barrier.`,
             attackType: `darkBarrier`,
             type: magic,
+            targeting: single,
             dmg: 0,
             multiplier: int,
             effects: [{id: 'barrier', lvl: 750, duration: 25, type: magic}],
@@ -1468,6 +1742,7 @@ const data = {
             desc: `[attacker] launches a fireball at the targeted enemy.`,
             attackType: `fireMagic`,
             type: magic,
+            targeting: single,
             dmg: 25,
             multiplier: int,
             effects: [],
@@ -1480,6 +1755,7 @@ const data = {
             desc: `[attacker] unleashes a storm of fire at the targeted enemy, dealing splash damage to all enemies.`,
             attackType: `fireAOE`,
             type: magic,
+            targeting: aoe,
             dmg: 10,
             multiplier: int,
             effects: [],
@@ -1491,12 +1767,17 @@ const data = {
             }
             `,
             attacks: 1,
+            extraStats: [{
+                icon: `lightning.png`,
+                desc: `20 damage to all enemies`,
+            }],
         },
         fireLance: {
             name: `Fire Lance`,
             desc: `[attacker] fires a clance of fire at the targeted enemy.`,
             attackType: `fireMagic`,
             type: magic,
+            targeting: single,
             dmg: 40,
             multiplier: int,
             effects: [],
@@ -1509,6 +1790,7 @@ const data = {
             desc: `[attacker] summons and fires arrows of fire at the targeted enemy.`,
             attackType: `fireMagic`,
             type: magic,
+            targeting: multi,
             dmg: 10,
             multiplier: int,
             effects: [],
@@ -1521,7 +1803,6 @@ const data = {
         {
             name: `Crude Health Potion`,
             description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
-            stats: `Recovers:\n15 hp over 3 rounds`,
             rarity: N,
             pfp: `assets/pot2.jpeg`,
             hp: 5,
@@ -1540,7 +1821,6 @@ const data = {
         {
             name: `Lesser Health Potion`,
             description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
-            stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
             rarity: UC,
             pfp: `assets/pot7.jpeg`,
             hp: 30,
@@ -1578,7 +1858,6 @@ const data = {
         {
             name: `Potion of Regeneration`,
             description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
-            stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
             rarity: SR,
             pfp: `assets/pot5.jpeg`,
             hp: 20,
@@ -1597,7 +1876,6 @@ const data = {
         {
             name: `Greater Health Potion`,
             description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
-            stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
             rarity: E,
             pfp: `assets/pot1.jpeg`,
             hp: 100,
@@ -1615,8 +1893,7 @@ const data = {
         },
         {
             name: `Superior Health Potion`,
-            description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
-            stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
+            description: `A great alchemist dedicated their entire life to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
             rarity: L,
             pfp: `assets/pot4.jpeg`,
             hp: 500,
@@ -1635,7 +1912,6 @@ const data = {
         {
             name: `Ascended Health Potion`,
             description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
-            stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
             rarity: G,
             pfp: `assets/pot10.jpeg`,
             hp: 2500,
@@ -1654,7 +1930,6 @@ const data = {
         {
             name: `Elixir of Life\n `,
             description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
-            stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
             rarity: EX,
             pfp: `assets/pot11.jpeg`,
             hp: 1000000,
@@ -1715,6 +1990,29 @@ function tellPos(p){
 };
 window.addEventListener('mousemove', tellPos, false);
 
+function rank(n) {
+    switch (n) {
+        case 0:
+            return ' [N]';
+        case 1:
+            return '[UC]';
+        case 2:
+            return ' [R]';
+        case 3:
+            return '[SR]';
+        case 4:
+            return ' [E]';
+        case 5:
+            return ' [L]';
+        case 6:
+            return ' [G]';
+        case 7:
+            return '[EX]';
+        default:
+            return '[unknown]';
+    }
+}
+
 function resize() {
     console.log('resized');
     let sidebarWidth = Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
@@ -1723,6 +2021,8 @@ function resize() {
     document.getElementById('teamSelection').style.left = `${teamPosition}px`;
     let playButtonPosition = ((display.x - sidebarWidth) - 200) / 2;
     document.getElementById('playButton').style.left = `${playButtonPosition}px`;
+    let focusWindowSize = display.x - sidebarWidth;
+    document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
 }
 
 function clearData() {
@@ -1730,8 +2030,97 @@ function clearData() {
     console.log('cleared previous data');
 }
 
-function focusCharacter(characterData) {
+function focusItem(itemId) {
+    let item = game.gamestate.player.inventory[itemId];
+    let stats = `<br><span id="veryBig"><strong>Stats:</strong></span><br>`;
+    if (item.hp) stats += `<img src="assets/greenCross.png" class="mediumIconDown"> replenishes ${item.hp} health instantly<br>`;
+    if (item.mp) stats += `<img src="assets/blueStar.png" class="mediumIconDown"> replenishes ${item.mp} mana instantly<br>`;
+    if (item.str) stats += `<img src="assets/lightning.png" class="mediumIconDown"> increases strength by ${item.str*100}%<br>`;
+    if (item.int) stats += `<img src="assets/blueStar.png" class="mediumIconDown"> increases inteligence by ${item.int}<br>`;
+    if (item.effects[0]) stats += `<img src="assets/greenCross.png" class="mediumIconDown"> ${item.effects[0].id == 'hot' ? `heals ${item.effects[0].lvl} hp per round for ${item.effects[0].duration} rounds` : `removes all status effects`}<br>`;
+    stats += `<img src="assets/lightnings.png" class="mediumIconDown"> ${item.uses} use${item.uses > 1 ? 's' : ''}<br>`;
+    stats += `<img src="assets/box.png" class="mediumIconDown"> ${item.quantity} in stock<br>`;
 
+    document.getElementById('focus').style.display = `block`;
+    replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.name} </strong></span>`);
+    replacehtml(`focusImageContainer`, `<img src="${item.pfp}" class="focusIcon">`);
+    replacehtml(`focusDescription`, item.description);
+    replacehtml(`focusStats`, stats);
+    replacehtml(`focusSkills`, '');
+}
+
+function focusCharacter(characterId) {
+    let character = game.gamestate.player.characters[characterId];
+    let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
+    let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
+    for (let i = 0; i < character.skills.length; i++) {
+        let skill = `<span id="bigger">${data.skills[character.skills[i]].name}</span><br>`;
+        skill += `<span id="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
+        let dmg = data.skills[character.skills[i]].dmg;
+        switch (data.skills[character.skills[i]].multiplier) {
+            case str:
+                dmg *= character.str;
+                break;
+            case int:
+                dmg *= 1+(character.int/100);
+                break;
+        }
+        dmg = Math.floor(dmg);
+        if (data.skills[character.skills[i]].dmg > 0) skill += `<img src="assets/lightning.png" class="smallIcon"> ${dmg} damage<br>`;
+        else if (data.skills[character.skills[i]].dmg < 0) skill += `<img src="assets/greenCross.png" class="smallIcon"> ${-dmg} heal<br>`;
+        if (data.skills[character.skills[i]].extraStats) {
+            for (let j = 0; j < data.skills[character.skills[i]].extraStats.length; j++) {
+                skill += `<img src="assets/${data.skills[character.skills[i]].extraStats[j].icon}" class="smallIcon"> ${data.skills[character.skills[i]].extraStats[j].desc}<br>`;
+            }
+        }
+        if (data.skills[character.skills[i]].effects) {
+            for (let j = 0; j < data.skills[character.skills[i]].effects.length; j++) {
+                switch (data.skills[character.skills[i]].effects[j].id) {
+                    case 'dot':
+                        skill += `<img src="assets/redDrop.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} damage over time for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'hot':
+                        skill += `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} heal over time for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'def':
+                        skill += `<img src="assets/shield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[0]} physical negation<br><img src="assets/shield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[1]}% physical resistance for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'mdef':
+                        skill += `<img src="assets/blueShield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[0]} magical negation<br><img src="assets/blueShield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[1]}% magical resistance for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'atk':
+                        skill += `<img src="assets/lightning.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl*100}% extra attack damage for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'barrier':
+                        skill += `<img src="assets/${data.skills[character.skills[i]].effects[j].type == magic ? 'blueShield' : 'shield'}.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} hp ${data.skills[character.skills[i]].effects[j].type} barrier for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    case 'mreg':
+                        skill += `<img src="assets/blueStar.png" class="smallIcon"> regenerate ${data.skills[character.skills[i]].effects[j].lvl} extra mp per round for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
+                        break;
+                    default:
+                        console.log(`unknown effect ${data.skills[character.skills[i]].effects[j].id}`);
+                        break;
+                }
+            }
+        }
+        if (data.skills[character.skills[i]].cost.hp) skill += `<img src="assets/redDrop.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.hp} hp<br>`;
+        if (data.skills[character.skills[i]].cost.mp) skill += `<img src="assets/blueStar.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.mp} mp<br>`;
+        if (data.skills[character.skills[i]].attacks > 1) skill += `<img src="assets/lightnings.png" class="smallIcon"> ${data.skills[character.skills[i]].attacks} attacks<br>`;
+        skill += `<img src="assets/explosion.png" class="smallIcon"> ${data.skills[character.skills[i]].selfOnly? 'self only' : data.skills[character.skills[i]].targeting}<br>`;
+        skill += `<br>`;
+        skills += skill;
+    }
+
+    document.getElementById('focus').style.display = `block`;
+    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.title} ${character.name} </strong></span>`);
+    replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon">`);
+    replacehtml(`focusDescription`, character.description);
+    replacehtml(`focusStats`, stats.replace('none', 'no'));
+    replacehtml(`focusSkills`, skills);
+}
+
+function exitFocus() {
+    document.getElementById('focus').style.display = `none`;
 }
 
 function updateTeam() {
@@ -1777,7 +2166,7 @@ function inventory() {
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
         let title = `<strong>${game.gamestate.player.inventory[i].name} ${game.gamestate.player.inventory[i].quantity > 1? `(${game.gamestate.player.inventory[i].quantity})` : ``}</strong>`;
-        let buttonData = `onclick="focusItem(${game.gamestate.player.inventory[i]})" class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
+        let buttonData = `onclick="focusItem(${i})" class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
         buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p></button></span>`;
     }
     console.log(buttonGridHtml);
@@ -1791,7 +2180,7 @@ function characters() {
     for (let i = 0; i < game.gamestate.player.characters.length; i++) {
         let title = `<strong>${game.gamestate.player.characters[i].name}</strong>`;
         let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
-        let buttonData = `onclick="focusCharacter(${game.gamestate.player.characters[i]})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
+        let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
         buttonGridHtml += `<span><button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon"><p id="noPadding" class="statsText">${desc}</p></button></span>`;
     }
     console.log(buttonGridHtml);
@@ -1834,7 +2223,26 @@ function home() {
         <img src="assets/DungeonOuter1.jpeg" id="bacImg">
         <div id="playButton"></div>
         <div id="teamSelection"></div>
-        <div id="focus"></div>
+        <div id="focus">
+            <div id="focusTopRow">
+                <span id="focusTitle"><strong>Eco the Eco</strong></span>
+                <span id="exitFocus">
+                    <button onclick="exitFocus()" class="closeButton"><img src="assets/blackX.png" class="mediumIcon"></button>
+                </span>
+            </div>
+            <div id="focusBody">
+                <div id="focusImageContainer">
+                    <img src="assets/animeGirl23.jpeg" class="focusIcon">
+                </div>
+                <span id="focusDescription"></span>
+                <div id="focusStats">
+                    <p></p>
+                </div>
+                <div id="focusSkills">
+                    <p></p>
+                </div>
+            </div>
+        </div>
     </span>
     <span id="sidebar">
         <div id="nav">
