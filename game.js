@@ -3,8 +3,8 @@
 Rarities:
 normal --> uncommon --> rare --> super rare --> epic --> legendary --> godly --> EX
 grey        green       blue      purple         red       gold       diamond   black
-
-
+ 0            1          2          3             4          5           6        7
+ x1         x1.3       x1.7       x2.2           x3        x3.8         x5      x6.5
 
 ---------------------------------------------------------------------------------------------------------------------
 */
@@ -443,9 +443,341 @@ function toPol(i, j) {
 const data = {
     startingGamestate: {
         player: {
-            inventory: [],
-            characters: [`Eco`],
-            team: [undefined, undefined, undefined, undefined],
+            inventory: [
+                {
+                    name: `Crude Health Potion`,
+                    description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
+                    stats: `Recovers:\n15 hp over 3 rounds`,
+                    rarity: N,
+                    pfp: `assets/pot2.jpeg`,
+                    hp: 5,
+                    mp: 0,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 5, duration: 2}],
+                    purchaceable: false,
+                    purchacePrice: 0,
+                    sellable: true,
+                    sellPrice: 10,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Lesser Health Potion`,
+                    description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
+                    stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
+                    rarity: UC,
+                    pfp: `assets/pot7.jpeg`,
+                    hp: 30,
+                    mp: 5,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [],
+                    purchaceable: true,
+                    purchacePrice: 100,
+                    sellable: true,
+                    sellPrice: 25,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Mediocre Health Potion`,
+                    description: `The standard health potion sold in most high end stores. Comes with a slight heal over time effect.`,
+                    stats: `Recovers:\n50 hp instantly\n20 hp over the next 2 rounds\n5 mp instantly`,
+                    rarity: R,
+                    pfp: `assets/pot8.jpeg`,
+                    hp: 50,
+                    mp: 5,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 10, duration: 2}],
+                    purchaceable: true,
+                    purchacePrice: 400,
+                    sellable: true,
+                    sellPrice: 150,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Potion of Regeneration`,
+                    description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
+                    stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
+                    rarity: SR,
+                    pfp: `assets/pot5.jpeg`,
+                    hp: 20,
+                    mp: 10,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 20, duration: 5}],
+                    purchaceable: false,
+                    purchacePrice: 0,
+                    sellable: true,
+                    sellPrice: 500,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Greater Health Potion`,
+                    description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
+                    stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
+                    rarity: E,
+                    pfp: `assets/pot1.jpeg`,
+                    hp: 100,
+                    mp: 25,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 15, duration: 2}],
+                    purchaceable: true,
+                    purchacePrice: 2500,
+                    sellable: true,
+                    sellPrice: 1000,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Superior Health Potion`,
+                    description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
+                    stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
+                    rarity: L,
+                    pfp: `assets/pot4.jpeg`,
+                    hp: 500,
+                    mp: 100,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 50, duration: 2}],
+                    purchaceable: false,
+                    purchacePrice: 0,
+                    sellable: true,
+                    sellPrice: 10000,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Ascended Health Potion`,
+                    description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
+                    stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
+                    rarity: G,
+                    pfp: `assets/pot10.jpeg`,
+                    hp: 2500,
+                    mp: 1000,
+                    str: 0.1,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'hot', lvl: 250, duration: 4}],
+                    purchaceable: false,
+                    purchacePrice: 0,
+                    sellable: true,
+                    sellPrice: 1500000,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+                {
+                    name: `Elixir of Life\n `,
+                    description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
+                    stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
+                    rarity: EX,
+                    pfp: `assets/pot11.jpeg`,
+                    hp: 1000000,
+                    mp: 0,
+                    str: 0,
+                    int: 0,
+                    uses: 1,
+                    effects: [{id: 'clense', lvl: 1, duration: 0}],
+                    purchaceable: false,
+                    purchacePrice: 0,
+                    sellable: true,
+                    sellPrice: 20000000,
+                    quantity: 1,
+                    stackSize: Infinity,
+                },
+            ],
+            characters: [
+                { // useless trash
+                    name: `Eco`,
+                    description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
+                    personality: 'chunni',
+                    stats: {atk: 'low', def: 'none'},
+                    rarity: EX,
+                    gender: male,
+                    pfp: `assets/FatEdgyGuy.jpeg`,
+                    hp: 60,
+                    mp: 25,
+                    str: 0.9,
+                    int: 5,
+                    mpRegen: 5,
+                    skils: ['punch', 'bodyslam', 'stare', 'brag'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // healer
+                    name: `Abby`,
+                    description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so hes suitabel for the support role.`,
+                    personality: 'timid',
+                    stats: {atk: 'low', def: 'none'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl2.jpeg`,
+                    hp: 80,
+                    mp: 100,
+                    str: 0.8,
+                    int: 20,
+                    mpRegen: 20,
+                    skils: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // melee dps
+                    name: `Yuki`,
+                    description: `Yuki recently graduated from the kingdom's swordsmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks.`,
+                    personality: 'calm',
+                    stats: {atk: 'high', def: 'low'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl42.jpeg`,
+                    hp: 100,
+                    mp: 50,
+                    str: 1,
+                    int: 15,
+                    mpRegen: 5,
+                    skils: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
+                    armour: {physical: [10, 10], magic: [0, 0]},
+                },
+                { // mage
+                    name: `Kohana`,
+                    description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
+                    personality: 'confident',
+                    stats: {atk: 'high', def: 'low'},
+                    rarity: L,
+                    gender: female,
+                    pfp: `assets/animeGirl27.jpeg`,
+                    hp: 250,
+                    mp: 650,
+                    str: 1,
+                    int: 90,
+                    mpRegen: 75,
+                    skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                    armour: {physical: [0, 0], magic: [25, 0]},
+                },
+                { // tank dps hybrid
+                    name: `Akane`,
+                    description: `Akane is one of the kindoms many trainee knights. She's good at both attacking and can absorb quite a bit of damage, but she's not the most intelligent.`,
+                    personality: 'arrogant',
+                    stats: {atk: 'medium', def: 'medium'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl40.jpeg`,
+                    hp: 125,
+                    mp: 25,
+                    str: 1,
+                    int: 10,
+                    mpRegen: 5,
+                    skils: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
+                    armour: {physical: [30, 15], magic: [0, 0]},
+                },
+                { // tanker
+                    name: `Rei`,
+                    description: `Rei is a dropout from the swordsman academy. She is clumsy and often misses her attacks, but has a suit of heavy armour that alows her to tank damage quite well.`,
+                    personality: 'confident',
+                    stats: {atk: 'low', def: 'high'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl9.jpeg`,
+                    hp: 125,
+                    mp: 15,
+                    str: 0.9,
+                    int: 5,
+                    mpRegen: 2,
+                    skils: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
+                    armour: {physical: [15, 15], magic: [0, 0]},
+                },
+                { // ranged dps
+                    name: `Emi`,
+                    description: `Emi is an apprentice mage from the red mage tower. She specialises in fire elemental attacks at long ranges but is inexperienced in close combat.`,
+                    personality: 'angry',
+                    stats: {atk: 'high', def: 'none'},
+                    rarity: N,
+                    gender: female,
+                    pfp: `assets/animeGirl48.jpeg`,
+                    hp: 60,
+                    mp: 150,
+                    str: 0.9,
+                    int: 25,
+                    mpRegen: 20,
+                    skils: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // glass cannon
+                    name: `Natsuki`,
+                    description: `Natsuki is a swordmaster from an ancient kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
+                    personality: 'calm',
+                    stats: {atk: 'extreme', def: 'none'},
+                    rarity: G,
+                    gender: female,
+                    pfp: `assets/animeGirl10.jpeg`,
+                    hp: 100,
+                    mp: 600,
+                    str: 3,
+                    int: 60,
+                    mpRegen: 90,
+                    skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+            ],
+            team: [
+                { // useless trash
+                    name: `Eco`,
+                    description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
+                    personality: 'chunni',
+                    stats: {atk: 'low', def: 'none'},
+                    rarity: EX,
+                    gender: male,
+                    pfp: `assets/FatEdgyGuy.jpeg`,
+                    hp: 60,
+                    mp: 25,
+                    str: 0.9,
+                    int: 5,
+                    mpRegen: 5,
+                    skils: ['punch', 'bodyslam', 'stare', 'brag'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // glass cannon
+                    name: `Natsuki`,
+                    description: `Natsuki is a swordmaster from a long forgotten kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
+                    personality: 'calm',
+                    stats: {atk: 'extreme', def: 'none'},
+                    rarity: G,
+                    gender: female,
+                    pfp: `assets/animeGirl10.jpeg`,
+                    hp: 100,
+                    mp: 600,
+                    str: 3,
+                    int: 60,
+                    mpRegen: 90,
+                    skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                    armour: {physical: [0, 0], magic: [0, 0]},
+                },
+                { // mage
+                    name: `Kohana`,
+                    description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
+                    personality: 'confident',
+                    stats: {atk: 'high', def: 'low'},
+                    rarity: L,
+                    gender: female,
+                    pfp: `assets/animeGirl27.jpeg`,
+                    hp: 250,
+                    mp: 650,
+                    str: 1,
+                    int: 90,
+                    mpRegen: 75,
+                    skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                    armour: {physical: [0, 0], magic: [25, 0]},
+                },
+                undefined
+            ],
             discoveredHeroes: [],
             discoveredEmemies: [],
             money: 250,
@@ -476,7 +808,7 @@ const data = {
             },
             {
                 name: `Starter Card Pack`,
-                cost: 80,
+                cost: 100,
                 attempts: 10,
                 rates: {
                     itemCharacterBias: 0.8,
@@ -497,12 +829,12 @@ const data = {
             },
             {
                 name: `Default Card Pack`,
-                cost: 100,
+                cost: 500,
                 attempts: 10,
                 rates: {
                     itemCharacterBias: 0.9,
-                    normal: 0.8,
-                    uncommon: 0.13,
+                    normal: 0.75,
+                    uncommon: 0.18,
                     rare: 0.06,
                     superRare: 0.01,
                     epic: 0,
@@ -518,16 +850,16 @@ const data = {
             },
             {
                 name: `Bronze Card Pack`,
-                cost: 500,
-                attempts: 5,
+                cost: 5000,
+                attempts: 10,
                 rates: {
                     itemCharacterBias: 0.9,
                     normal: 0.35,
                     uncommon: 0.25,
                     rare: 0.15,
-                    superRare: 0.12,
-                    epic: 0.07,
-                    legendary: 0.01,
+                    superRare: 0.15,
+                    epic: 0.05,
+                    legendary: 0,
                     godly: 0,
                     ex: 0,
                 },
@@ -539,7 +871,7 @@ const data = {
             },
             {
                 name: `Silver Card Pack`,
-                cost: 2500,
+                cost: 10000,
                 attempts: 5,
                 rates: {
                     itemCharacterBias: 0.75,
@@ -560,7 +892,7 @@ const data = {
             },
             {
                 name: `Golden Card Pack`,
-                cost: 10000,
+                cost: 100000,
                 attempts: 1,
                 rates: {
                     itemCharacterBias: 0.2,
@@ -573,7 +905,7 @@ const data = {
                     godly: 0.1,
                     ex: 0,
                 },
-                exp: 100000,
+                exp: 500000,
                 stock: Infinity,
                 duration: Infinity,
                 colour: gold,
@@ -581,7 +913,7 @@ const data = {
             },
             {
                 name: `Mega Golden Card Pack`,
-                cost: 100000,
+                cost: 1000000,
                 attempts: 10,
                 rates: {
                     itemCharacterBias: 0.2,
@@ -602,7 +934,7 @@ const data = {
             },
             {
                 name: `Item Card Pack`,
-                cost: 1000,
+                cost: 10000,
                 attempts: 10,
                 rates: {
                     itemCharacterBias: 1,
@@ -622,7 +954,7 @@ const data = {
             },
             {
                 name: `Hero Card Pack`,
-                cost: 5000,
+                cost: 25000,
                 attempts: 5,
                 rates: {
                     itemCharacterBias: 0,
@@ -673,31 +1005,83 @@ const data = {
             Abby: { // healer
                 name: `Abby`,
                 description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so hes suitabel for the support role.`,
+                personality: 'timid',
+                stats: {atk: 'low', def: 'none'},
                 rarity: N,
                 gender: female,
-                pfp: undefined,
-                hp: [80,0,0,0,0,0,0,0],
-                mp: [100,0,0,0,0,0,0,0],
-                str: [0.8,0,0,0,0,0,0,0],
-                int: [20,0,0,0,0,0,0,0],
-                mpRegen: [20,0,0,0,0,0,0,0],
+                pfp: `assets/animeGirl2.jpeg`,
+                hp: 80,
+                mp: 100,
+                str: 0.8,
+                int: 20,
+                mpRegen: 20,
                 skils: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
             Yuki: { // melee dps
                 name: `Yuki`,
                 description: `Yuki recently graduated from the kingdom's swordsmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks.`,
+                personality: 'calm',
+                stats: {atk: 'high', def: 'low'},
                 rarity: N,
                 gender: female,
-                pfp: undefined,
-                hp: [100,0,0,0,0,0,0,0],
-                mp: [50,0,0,0,0,0,0,0],
-                str: [1,0,0,0,0,0,0,0],
-                int: [15,0,0,0,0,0,0,0],
-                mpRegen: [5,0,0,0,0,0,0,0],
+                pfp: `assets/animeGirl42.jpeg`,
+                hp: 100,
+                mp: 50,
+                str: 1.1,
+                int: 15,
+                mpRegen: 5,
                 skils: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
-                armour: {physical: [10, 10], magic: [0, 0]},
-            }
+                armour: {physical: [0, 10], magic: [0, 0]},
+            },
+            Akane: { // tank dps hybrid
+                name: `Akane`,
+                description: `Akane is one of the kindoms many trainee knights. She's good at both attacking and can absorb quite a bit of damage, but she's not the most intelligent.`,
+                personality: 'arrogant',
+                stats: {atk: 'medium', def: 'medium'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/animeGirl40.jpeg`,
+                hp: 125,
+                mp: 25,
+                str: 1,
+                int: 10,
+                mpRegen: 5,
+                skils: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
+                armour: {physical: [8, 15], magic: [0, 0]},
+            },
+            Rei: { // tanker
+                name: `Rei`,
+                description: `Rei is a dropout from the swordsman academy. She is clumsy and often misses her attacks, but has a suit of heavy armour that alows her to tank damage quite well.`,
+                personality: 'confident',
+                stats: {atk: 'low', def: 'high'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/animeGirl9.jpeg`,
+                hp: 125,
+                mp: 15,
+                str: 0.9,
+                int: 5,
+                mpRegen: 2,
+                skils: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
+                armour: {physical: [15, 15], magic: [0, 0]},
+            },
+            Emi: { // ranged dps
+                name: `Emi`,
+                description: `Emi is an apprentice mage from the red mage tower. She specialises in fire elemental attacks at long ranges but is inexperienced in close combat.`,
+                personality: 'angry',
+                stats: {atk: 'high', def: 'none'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/animeGirl48.jpeg`,
+                hp: 60,
+                mp: 150,
+                str: 0.9,
+                int: 25,
+                mpRegen: 20,
+                skils: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
+                armour: {physical: [0, 0], magic: [0, 0]},
+            },
         },
         { // UC
 
@@ -712,23 +1096,55 @@ const data = {
 
         },
         { // L
-
+            Kohana: { // battle mage
+                name: `Kohana`,
+                description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
+                personality: 'confident',
+                stats: {atk: 'high', def: 'low'},
+                rarity: L,
+                gender: female,
+                pfp: `assets/animeGirl27.jpeg`,
+                hp: 225,
+                mp: 650,
+                str: 1,
+                int: 80,
+                mpRegen: 75,
+                skils: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                armour: {physical: [0, 0], magic: [25, 0]},
+            },
         },
         { // G
-
+            Natsuki: { // glass cannon
+                name: `Natsuki`,
+                description: `Natsuki is a swordmaster from a long forgotten kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
+                personality: 'calm',
+                stats: {atk: 'extreme', def: 'none'},
+                rarity: G,
+                gender: female,
+                pfp: `assets/animeGirl10.jpeg`,
+                hp: 100,
+                mp: 600,
+                str: 3,
+                int: 60,
+                mpRegen: 90,
+                skils: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
+                armour: {physical: [0, 0], magic: [0, 0]},
+            },
         },
         { // EX
             Eco: { // useless trash
                 name: `Eco`,
-                description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the demon lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
+                description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
+                personality: 'chunni',
+                stats: {atk: 'low', def: 'none'},
                 rarity: EX,
                 gender: male,
-                pfp: undefined,
-                hp: [0,0,0,0,0,0,0,60],
-                mp: [0,0,0,0,0,0,0,25],
-                str: [0,0,0,0,0,0,0,0.9],
-                int: [0,0,0,0,0,0,0,5],
-                mpRegen: [0,0,0,0,0,0,0,5],
+                pfp: `assets/FatEdgyGuy.jpeg`,
+                hp: 60,
+                mp: 25,
+                str: 0.9,
+                int: 5,
+                mpRegen: 5,
                 skils: ['punch', 'bodyslam', 'stare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
@@ -736,43 +1152,155 @@ const data = {
     ],
     skills: {
         slash: {
+            name: `Sword Slash`,
+            desc: `[attacker] shashes at the targeted enemy with [pronoun] sword.`,
+            attackType: `physical`,
             type: physical,
             dmg: 12,
             multiplier: str,
             effects: [],
             cost: {hp: 0, mp: 0},
-            accuracy: 80,
+            accuracy: 90,
             attacks: 3,
         },
-        heavyStrike: {
+        sevenfoldSlashOfLight: {
+            name: `Sevenfold Slash of Light`,
+            desc: `[attacker] channels mana into [pronoun] sword and unleashes 7 consecutive slashes at the targeted enemy.`,
+            attackType: `physical`,
+            type: normal,
+            dmg: 22,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 90},
+            accuracy: 200,
+            attacks: 7,
+        },
+        auraSlash: {
+            name: `Aura Slash`,
+            desc: `[attacker] launches [pronoun] sword aura at the targeted enemy.`,
+            attackType: `magic`,
+            type: normal,
+            dmg: 225,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 300},
+            accuracy: 100,
+            attacks: 1,
+        },
+        thrust: {
+            name: `Sword Thrust`,
+            desc: `[attacker] impales the targeted enemy with [pronoun] sword.`,
+            attackType: `physical`,
             type: physical,
-            dmg: 80,
+            dmg: 60,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 75,
+            attacks: 1,
+        },
+        superiorThrust: {
+            name: `Sword Thrust`,
+            desc: `[attacker] enhances [pronoun] sword with aura and impales the targeted enemy.`,
+            attackType: `physical`,
+            type: normal,
+            dmg: 90,
             multiplier: str,
             effects: [],
             cost: {hp: 0, mp: 20},
             accuracy: 100,
             attacks: 1,
         },
+        overheadStrike: {
+            name: `Overhead Strike`,
+            desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
+            attackType: `physical`,
+            type: physical,
+            dmg: 75,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 50,
+            attacks: 1,
+        },
+        wildSwing: {
+            name: `Wild Swings`,
+            desc: `[attacker] wildly swings [pronoun] sword at the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            dmg: 36,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 60,
+            attacks: 2,
+        },
+        heavyStrike: {
+            name: `Heavy Strike`,
+            desc: `[attacker] infises mana into [pronoun] sword and unleashes a powerful slash at the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            dmg: 80,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 10},
+            accuracy: 100,
+            attacks: 1,
+        },
         raiseGuard: {
+            name: `Raise Guard`,
+            desc: `[attacker] raises [pronoun] guard, reducing damage from all attacks in the next round.`,
+            attackType: `buffDefence`,
             type: normal,
             dmg: 0,
             multiplier: none,
-            effects: [{id: 'def', lvl: [15, 5]}],
+            effects: [{id: 'def', lvl: [15, 5], duration: 1}],
             cost: {hp: 0, mp: 5},
             accuracy: Infinity,
             attacks: 1,
             selfOnly: true,
         },
+        counterAttack: {
+            name: `Perpare Counter Attack`,
+            desc: `[attacker] reduces all damage taken in the next round, and counteratacks with 150% power against the next enemy to attack [pronoun] at melee range.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [0, 5], duration: 1}, {id: 'counter', lvl: 1.5, duration: 1}],
+            cost: {hp: 0, mp: 0},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
         swordCharge: {
+            name: `Sword Charge`,
+            desc: `[attacker] channels mana into [pronoun] sword and charges the targeted enemy inflicting great damage, but taking some damage as well.`,
+            attackType: `physical`,
             type: physical,
             dmg: 125,
             multiplier: str,
             effects: [],
-            cost: {hp: -5, mp: 15},
+            cost: {hp: -10, mp: 15},
             accuracy: 90,
             attacks: 1,
         },
+        swordDance: {
+            name: `Sword Dance`,
+            desc: `[attacker] sends a flury of rapid slashes and stabs at the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            dmg: [10, 16],
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 225},
+            accuracy: 90,
+            attacks: 25,
+        },
         punch: {
+            name: `Punch`,
+            desc: `[attacker] punches the targeted enemy.`,
+            attackType: `physical`,
             type: physical,
             dmg: 15,
             multiplier: str,
@@ -782,6 +1310,9 @@ const data = {
             attacks: 1,
         },
         bodyslam: {
+            name: `Bodyslam`,
+            desc: `[attacker] bodyslams the targeted enemy, dealing damage to both of them.`,
+            attackType: `physical`,
             type: physical,
             dmg: 50,
             multiplier: str,
@@ -791,6 +1322,9 @@ const data = {
             attacks: 1,
         },
         slap: {
+            name: `Slap`,
+            desc: `[attacker] slaps the targeted enemy inflicting a little damage.`,
+            attackType: `physical`,
             type: physical,
             dmg: 10,
             multiplier: str,
@@ -800,6 +1334,9 @@ const data = {
             attacks: 1,
         },
         stare: {
+            name: `Prevy Stare`,
+            desc: `[attacker] stares at the targeted enemy like a pervert. Its super effective against females.`,
+            attackType: `scan`,
             type: normal,
             dmg: 0,
             multiplier: none,
@@ -814,15 +1351,21 @@ const data = {
             attacks: 1,
         },
         brag: {
+            name: `Brag`,
+            desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
+            attackType: `sound`,
             type: piercing,
             dmg: 0,
             multiplier: int,
-            effects: [{id: 'dot', lvl: 10}],
+            effects: [{id: 'dot', lvl: 10, duration: 3}],
             cost: {hp: 0, mp: 5},
             accuracy: 100,
             attacks: 1,
         },
         lesserHeal: {
+            name: `Lesser Healing`,
+            desc: `[attacker] heals the targeted ally.`,
+            attackType: `heal`,
             type: magic,
             dmg: -20,
             multiplier: int,
@@ -832,6 +1375,9 @@ const data = {
             attacks: 1,
         },
         lesserAreaHeal: {
+            name: `Lesser Healing`,
+            desc: `[attacker] heals all allies, focusing on the targeted ally.`,
+            attackType: `areaHeal`,
             type: magic,
             dmg: -10,
             multiplier: int,
@@ -846,24 +1392,285 @@ const data = {
             attacks: 1,
         },
         mediumHeal: {
+            name: `Medium Healing`,
+            desc: `[attacker] heals the targeted ally.`,
+            attackType: `heal`,
             type: magic,
-            dmg: -50,
+            dmg: -35,
             multiplier: int,
             effects: [],
-            cost: {hp: 0, mp: 50},
+            cost: {hp: 0, mp: 40},
             accuracy: 500,
             attacks: 1,
         },
         greaterHeal: {
+            name: `Greater Healing`,
+            desc: `[attacker] heals the targeted ally.`,
+            attackType: `heal`,
             type: magic,
-            dmg: -100,
+            dmg: -80,
             multiplier: int,
-            effects: [],
-            cost: {hp: 0, mp: 80},
+            effects: [{id: 'hot', lvl: 5, duration: 2}],
+            cost: {hp: 0, mp: 90},
             accuracy: 500,
             attacks: 1,
         },
+        shadowLance: {
+            name: `Shadow Lance`,
+            desc: `[attacker] launches a shadow lance constructed from mana at the targeted enemy. It can penetrate through barriers and armour.`,
+            attackType: `darkMagic`,
+            type: piercing,
+            dmg: 40,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 45},
+            accuracy: 100,
+            attacks: 1,
+        },
+        arcaneBlast: {
+            name: `Arcane Blast`,
+            desc: `[attacker] fires a concentrated blast of mana at the targeted enemy.`,
+            attackType: `magic`,
+            type: magic,
+            dmg: 175,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 200},
+            accuracy: 100,
+            attacks: 1,
+        },
+        darkBlast: {
+            name: `Dark Blast`,
+            desc: `[attacker] fires a concentrated blast of dark elemental mana at the targeted enemy.`,
+            attackType: `darkMagic`,
+            type: magic,
+            dmg: 90,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 90},
+            accuracy: 100,
+            attacks: 1,
+        },
+        shadowVeil: {
+            name: `Shadow Veil`,
+            desc: `[attacker] surrounds the targeted ally in an anti magic barrier.`,
+            attackType: `darkBarrier`,
+            type: magic,
+            dmg: 0,
+            multiplier: int,
+            effects: [{id: 'barrier', lvl: 750, duration: 25, type: magic}],
+            cost: {hp: 0, mp: 300},
+            accuracy: 1000,
+            attacks: 1,
+        },
+        fireball: {
+            name: `Fireball`,
+            desc: `[attacker] launches a fireball at the targeted enemy.`,
+            attackType: `fireMagic`,
+            type: magic,
+            dmg: 25,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 20},
+            accuracy: 100,
+            attacks: 1,
+        },
+        firestorm: {
+            name: `Firestorm`,
+            desc: `[attacker] unleashes a storm of fire at the targeted enemy, dealing splash damage to all enemies.`,
+            attackType: `fireAOE`,
+            type: magic,
+            dmg: 10,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 100},
+            accuracy: 100,
+            exec: `
+            for (let i = 0; i < game.gamestate.enemies.length; i++) {
+                game.gamestate.enemies.hp -= 20;
+            }
+            `,
+            attacks: 1,
+        },
+        fireLance: {
+            name: `Fire Lance`,
+            desc: `[attacker] fires a clance of fire at the targeted enemy.`,
+            attackType: `fireMagic`,
+            type: magic,
+            dmg: 40,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 45},
+            accuracy: 140,
+            attacks: 1,
+        },
+        fireArrows: {
+            name: `Fire Arrows`,
+            desc: `[attacker] summons and fires arrows of fire at the targeted enemy.`,
+            attackType: `fireMagic`,
+            type: magic,
+            dmg: 10,
+            multiplier: int,
+            effects: [],
+            cost: {hp: 0, mp: 50},
+            accuracy: 75,
+            attacks: 5,
+        },
     },
+    items: [
+        {
+            name: `Crude Health Potion`,
+            description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
+            stats: `Recovers:\n15 hp over 3 rounds`,
+            rarity: N,
+            pfp: `assets/pot2.jpeg`,
+            hp: 5,
+            mp: 0,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 5, duration: 2}],
+            purchaceable: false,
+            purchacePrice: 0,
+            sellable: true,
+            sellPrice: 10,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Lesser Health Potion`,
+            description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
+            stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
+            rarity: UC,
+            pfp: `assets/pot7.jpeg`,
+            hp: 30,
+            mp: 5,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [],
+            purchaceable: true,
+            purchacePrice: 100,
+            sellable: true,
+            sellPrice: 25,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Mediocre Health Potion`,
+            description: `The standard health potion sold in most high end stores. Comes with a slight heal over time effect.`,
+            stats: `Recovers:\n50 hp instantly\n20 hp over the next 2 rounds\n5 mp instantly`,
+            rarity: R,
+            pfp: `assets/pot8.jpeg`,
+            hp: 50,
+            mp: 5,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 10, duration: 2}],
+            purchaceable: true,
+            purchacePrice: 400,
+            sellable: true,
+            sellPrice: 150,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Potion of Regeneration`,
+            description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
+            stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
+            rarity: SR,
+            pfp: `assets/pot5.jpeg`,
+            hp: 20,
+            mp: 10,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 20, duration: 5}],
+            purchaceable: false,
+            purchacePrice: 0,
+            sellable: true,
+            sellPrice: 500,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Greater Health Potion`,
+            description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
+            stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
+            rarity: E,
+            pfp: `assets/pot1.jpeg`,
+            hp: 100,
+            mp: 25,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 15, duration: 2}],
+            purchaceable: true,
+            purchacePrice: 2500,
+            sellable: true,
+            sellPrice: 1000,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Superior Health Potion`,
+            description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
+            stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
+            rarity: L,
+            pfp: `assets/pot4.jpeg`,
+            hp: 500,
+            mp: 100,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 50, duration: 2}],
+            purchaceable: false,
+            purchacePrice: 0,
+            sellable: true,
+            sellPrice: 10000,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Ascended Health Potion`,
+            description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
+            stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
+            rarity: G,
+            pfp: `assets/pot10.jpeg`,
+            hp: 2500,
+            mp: 1000,
+            str: 0.1,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'hot', lvl: 250, duration: 4}],
+            purchaceable: false,
+            purchacePrice: 0,
+            sellable: true,
+            sellPrice: 1500000,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+        {
+            name: `Elixir of Life\n `,
+            description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
+            stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
+            rarity: EX,
+            pfp: `assets/pot11.jpeg`,
+            hp: 1000000,
+            mp: 0,
+            str: 0,
+            int: 0,
+            uses: 1,
+            effects: [{id: 'clense', lvl: 1, duration: 0}],
+            purchaceable: false,
+            purchacePrice: 0,
+            sellable: true,
+            sellPrice: 20000000,
+            quantity: 1,
+            stackSize: Infinity,
+        },
+    ],
     pulls: {
         
     }
@@ -899,21 +1706,54 @@ document.addEventListener('mouseup', function(event) {
         game.keypresses.click = false;
     }
 });
-/*
 window.addEventListener("resize", function () {
-    if (t > 0) {
-        display = {x:window.innerWidth,y:window.innerHeight};
-        replacehtml(`<canvas id="main" width="${display.x}" height="${display.y}" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas><canvas id="canvasOverlay" width="${display.x}" height="${display.y}" style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>`);
-    }
-});*/
+    display = {x:window.innerWidth,y:window.innerHeight};
+    resize();
+});
 function tellPos(p){
     game.mousepos = {x: p.pageX, y:p.pageY};
 };
 window.addEventListener('mousemove', tellPos, false);
 
+function resize() {
+    console.log('resized');
+    let sidebarWidth = Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
+    document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
+    let teamPosition = ((display.x - sidebarWidth) - 685) / 2;
+    document.getElementById('teamSelection').style.left = `${teamPosition}px`;
+    let playButtonPosition = ((display.x - sidebarWidth) - 200) / 2;
+    document.getElementById('playButton').style.left = `${playButtonPosition}px`;
+}
+
 function clearData() {
     localStorage.removeItem('GatchaGameData');
     console.log('cleared previous data');
+}
+
+function focusCharacter(characterData) {
+
+}
+
+function updateTeam() {
+    let canBattle = false;
+    let buttonGridHtml = ``;
+    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        if (game.gamestate.player.team[i] != undefined) {
+            let title = `<strong>${game.gamestate.player.team[i].name}</strong>`;
+            let buttonData = `onclick="selectTeamCharacter(${i})" class="smallCharacterButton" id="rank${game.gamestate.player.team[i].rarity}Button"`;
+            buttonGridHtml += `<button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.team[i].pfp}" class="characterIcon"></button>`;
+            canBattle = true;
+        } else {
+            buttonGridHtml += `<button onclick="selectTeamCharacter(${i})" class="itemButton"></button>`;
+        }
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`teamSelection`, `<div id="teamContainer">${buttonGridHtml}</div>`);
+    if (canBattle) {
+        replacehtml(`playButton`, `<button onclick="startDungeon()" id="readyPlayButton">Enter Dungeon</button>`);
+    } else {
+        replacehtml(`playButton`, `<button id="notReadyPlayButton">Enter Dungeon</button>`);
+    }
 }
 
 function pull() {
@@ -931,35 +1771,31 @@ function pull() {
 }
 
 function inventory() {
+    console.log('inventory');
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
     replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
-    /*
     let buttonGridHtml = ``;
-    for (let i = 0; i < game.gamestate.pulls.length; i++) {
-        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
-        let desc = `$${game.gamestate.pulls[i].cost}`;
-        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
-        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+        let title = `<strong>${game.gamestate.player.inventory[i].name} ${game.gamestate.player.inventory[i].quantity > 1? `(${game.gamestate.player.inventory[i].quantity})` : ``}</strong>`;
+        let buttonData = `onclick="focusItem(${game.gamestate.player.inventory[i]})" class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
+        buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p></button></span>`;
     }
     console.log(buttonGridHtml);
-    replacehtml(`buttonGridPull`, buttonGridHtml);*/
-    replacehtml(`grid`, ``);
+    replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
 }
 
 function characters() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="focusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
     replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
-    /*
     let buttonGridHtml = ``;
-    for (let i = 0; i < game.gamestate.pulls.length; i++) {
-        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
-        let desc = `$${game.gamestate.pulls[i].cost}`;
-        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
-        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    for (let i = 0; i < game.gamestate.player.characters.length; i++) {
+        let title = `<strong>${game.gamestate.player.characters[i].name}</strong>`;
+        let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
+        let buttonData = `onclick="focusCharacter(${game.gamestate.player.characters[i]})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
+        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon"><p id="noPadding" class="statsText">${desc}</p></button></span>`;
     }
     console.log(buttonGridHtml);
-    replacehtml(`buttonGridPull`, buttonGridHtml);*/
-    replacehtml(`grid`, ``);
+    replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
 }
 
 function shop() {
@@ -996,10 +1832,13 @@ function home() {
     homePage = `
     <span id="bac">
         <img src="assets/DungeonOuter1.jpeg" id="bacImg">
+        <div id="playButton"></div>
+        <div id="teamSelection"></div>
+        <div id="focus"></div>
     </span>
     <span id="sidebar">
         <div id="nav">
-            <button onclick="pull()" class="focusedButton"><h3>Pull</h3></button>
+            <button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button>
             <button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button>
             <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button>
             <button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>
@@ -1011,7 +1850,8 @@ function home() {
     </span>
     `;
     replacehtml(`game`, homePage);
-    pull();
+    resize();
+    updateTeam();
 }
 
 function main() {

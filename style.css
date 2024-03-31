@@ -50,10 +50,11 @@ body {
     position: absolute;
     top: 0px;
     right: 0px;
-    min-width: 600px;
-    width: calc(100vw - 100vh);
+    /*min-width: 710px;
+    width: calc(100vw - 100vh);*/
+    /*width: 540px;*/
     z-index: 2;
-    background-color: rgba(25, 25, 25, 1); 
+    background-color: rgba(30, 30, 30, 1); 
 }
 
 #nav {
@@ -69,7 +70,7 @@ body {
     height: 100%;
     color: rgba(200, 200, 200, 1);
     text-align: top;
-    background-color: rgba(25, 25, 25, 1);
+    background-color: rgba(30, 30, 30, 1);
     white-space: pre-line;
     float: left;
     border: 1px solid rgba(25, 25, 25, 1);
@@ -127,6 +128,15 @@ body {
     zoom: 200%;
 }
 
+.grid {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+
 #buttonGrid {
     position: relative;
     display: grid;
@@ -168,6 +178,17 @@ body {
     overflow-y: auto;
 }
 
+#buttonGridInventory {
+    position: relative;
+    padding: auto;
+    zoom: 100%;
+    top: 100px;
+    left: 15px;
+    height: calc(100vh - 100px);
+    max-width: calc(100% - 30px);
+    overflow-y: auto;
+}
+
 .pullButton {
     width: calc(100% - 20px);
     height: 150px;
@@ -182,6 +203,162 @@ body {
     font-size: 20px;
 }
 
+.itemIcon {
+    width: 120px;
+    height: 120px;
+    padding-top: 10px;
+}
+
+.itemButton {
+    position: relative;
+    top: 0px;
+    display: inline-block;
+    width: 150px;
+    height: 180px;
+    margin: 10px;
+    text-align: top;
+    border: none;
+    border-radius: 8px;
+    white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    white-space: pre-wrap;
+    color: rgba(200, 200, 200, 1);
+    background-color: rgba(50, 50, 50, 1);
+    border-width: 5px;
+    border-style: solid;
+}
+
+.characterIcon {
+    width: 120px;
+    height: 120px;
+}
+
+.smallIcon {
+    width: 12px;
+    height: 12px;
+}
+
+.statsText {
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    white-space: pre-wrap;
+    color: rgba(200, 200, 200, 1);
+    vertical-align: top;
+}
+
+.characterTitle {
+    font-family: 'Courier New', monospace;
+    font-size: 25px;
+    white-space: pre-wrap;
+    color: rgba(200, 200, 200, 1);
+    vertical-align: top;
+}
+
+.characterButton {
+    width: 150px;
+    height: 250px;
+    margin: 10px;
+    text-align: top;
+    border: none;
+    border-radius: 8px;
+    white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    color: rgba(200, 200, 200, 1);
+    background-color: rgba(50, 50, 50, 1);
+    border-width: 5px;
+    border-style: solid;
+}
+
+.smallCharacterButton {
+    position: relative;
+    top: -140px;
+    display: inline-block;
+    width: 150px;
+    height: 180px;
+    margin: 10px;
+    text-align: top;
+    border: none;
+    border-radius: 8px;
+    white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    color: rgba(200, 200, 200, 1);
+    background-color: rgba(50, 50, 50, 1);
+    border-width: 5px;
+    border-style: solid;
+}
+
+#teamSelection {
+    position: absolute;
+    /*left: calc((100vh - 700px) / 2);*/
+    top: calc(100vh - 215px);
+    background-color: rgba(0, 0, 0, 0.7);
+    margin: 0px;
+    padding: 0px;
+    height: 200px;
+    width: 685px;
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 685px;
+    max-width: 685px;
+    border-radius: 15px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align:top;
+}
+
+#teamContainer {
+    margin: 0px;
+    padding: 0px;
+    height: 200px;
+    width: 700px;
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 700px;
+    max-width: 700px;
+}
+
+#playButton {
+    position: absolute;
+    top: calc(100vh - 300px);
+    margin: 0px;
+    padding: 0px;
+}
+
+#readyPlayButton {
+    height: 75px;
+    width: 200px;
+    white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 25px;
+    color: rgba(250, 250, 250, 1);
+    background-color: rgba(75, 200, 75, 1);
+    border-radius: 15px;
+    border-width: 5px;
+    border-color: rgba(50, 150, 50, 1);
+}
+
+#notReadyPlayButton {
+    height: 75px;
+    width: 200px;
+    white-space: pre-line;
+    font-family: 'Courier New', monospace;
+    font-size: 25px;
+    color: rgba(250, 250, 250, 1);
+    background-color: rgba(100, 150, 100, 1);
+    border-radius: 15px;
+    border-width: 5px;
+    border-color: rgba(25, 100, 25, 1);
+}
+
+#noPadding {
+    padding: 0px;
+    margin: 0px;
+}
+
 #greyButton {
     color: rgba(150, 150, 150, 1);
     background-color: rgba(75, 75, 75, 1);
@@ -190,24 +367,65 @@ body {
 #redButton {
     color: rgba(225, 50, 50, 1);
     background-color: rgba(150, 25, 25, 1);
+    /*background-image: url(assets/ruby.png);*/
 }
 
 #bronzeButton {
     color: rgba(220, 160, 90, 1);
     background-color: rgba(170, 110, 60, 1);
+    /*background-image: url(assets/bronze.png);*/
 }
 
 #silverButton {
     color: rgba(225, 225, 225, 1);
     background-color: rgba(175, 175, 175, 1);
+    /*background-image: url(assets/silver.png);*/
 }
 
 #goldButton {
     color: rgba(250, 200, 100, 1);
     background-color: rgba(200, 150, 0, 1);
+    /*background-image: url(assets/gold.png);*/
 }
 
 #blackButton {
     color: rgba(75, 75, 75, 1);
     background-color: rgba(10, 10, 10, 1);
+    /*background-image: url(assets/black.png);*/
+}
+
+#rank0Button {
+    border-color: rgba(100, 100, 100, 1);
+}
+
+#rank1Button {
+    border-color: rgba(75, 200, 75, 1);
+}
+
+#rank2Button {
+    border-color: rgba(75, 150, 200, 1);
+}
+
+#rank3Button {
+    border-color: rgba(150, 0, 200, 1);
+}
+
+#rank4Button {
+    border-color: rgba(200, 75, 75, 1);
+}
+
+#rank5Button {
+    border-color: rgba(255, 200, 50, 1);
+}
+
+#rank6Button {
+    border-color: rgba(150, 255, 255, 1);
+}
+
+#rank7Button {
+    border-color: rgba(0, 0, 0, 1);
+}
+
+.p {
+    margin: 0px;
 }
