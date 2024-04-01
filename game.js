@@ -257,6 +257,19 @@ function roman(number) {
     return romanNumeral;
 };
 
+function bigNumber(number) {
+    const bacs = [`K`, `M`, `B`, `T`, `Q`];
+    let bac = ``;
+    let i = 0;
+    while (number >= 1000) {
+        number /= 1000;
+        bac = bacs[i];
+        i++
+    }
+    
+    return `${number.toPrecision(3)}${bac}`;
+};
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
@@ -450,6 +463,7 @@ const data = {
             inventory: [
                 {
                     name: `Crude Health Potion`,
+                    displayName: `Health Potion`,
                     description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
                     stats: `Recovers:\n15 hp over 3 rounds`,
                     rarity: N,
@@ -469,6 +483,7 @@ const data = {
                 },
                 {
                     name: `Lesser Health Potion`,
+                    displayName: `Health Potion`,
                     description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
                     stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
                     rarity: UC,
@@ -488,6 +503,7 @@ const data = {
                 },
                 {
                     name: `Mediocre Health Potion`,
+                    displayName: `Health Potion`,
                     description: `The standard health potion sold in most high end stores. Comes with a slight heal over time effect.`,
                     stats: `Recovers:\n50 hp instantly\n20 hp over the next 2 rounds\n5 mp instantly`,
                     rarity: R,
@@ -507,6 +523,7 @@ const data = {
                 },
                 {
                     name: `Potion of Regeneration`,
+                    displayName: `Regen Potion`,
                     description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
                     stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
                     rarity: SR,
@@ -526,6 +543,7 @@ const data = {
                 },
                 {
                     name: `Greater Health Potion`,
+                    displayName: `Health Potion`,
                     description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
                     stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
                     rarity: E,
@@ -545,6 +563,7 @@ const data = {
                 },
                 {
                     name: `Superior Health Potion`,
+                    displayName: `Health Potion`,
                     description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
                     stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
                     rarity: L,
@@ -564,6 +583,7 @@ const data = {
                 },
                 {
                     name: `Ascended Health Potion`,
+                    displayName: `Health Potion`,
                     description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
                     stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
                     rarity: G,
@@ -582,7 +602,7 @@ const data = {
                     stackSize: Infinity,
                 },
                 {
-                    name: `Elixir of Life\n `,
+                    name: `Elixir of Life`,
                     description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
                     stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
                     rarity: EX,
@@ -596,7 +616,7 @@ const data = {
                     purchaceable: false,
                     purchacePrice: 0,
                     sellable: true,
-                    sellPrice: 20000000,
+                    sellPrice: 2000000000,
                     quantity: 1,
                     stackSize: Infinity,
                 },
@@ -710,7 +730,7 @@ const data = {
                     description: `Lucy is a nobleman's daughter who enjoys adventuring. She has no talent so she relies heavily on her items to fight. However, she is easily frightened by scary monsters despite her expensive equipment.`,
                     personality: 'timid',
                     stats: {atk: 'high', def: 'high'},
-                    rarity: N,
+                    rarity: UC,
                     gender: female,
                     pfp: `assets/animeGirl14.jpeg`,
                     hp: 100,
@@ -773,60 +793,10 @@ const data = {
                     armour: {physical: [200, 50], magic: [200, 40]},
                 },
             ],
-            team: [
-                { // useless trash
-                    name: `Eco`,
-                    description: `Former high school student, Eco was isekaied into the other world and is on a quest to defeat the terrorist lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
-                    personality: 'chunni',
-                    stats: {atk: 'low', def: 'none'},
-                    rarity: EX,
-                    gender: male,
-                    pfp: `assets/FatEdgyGuy.jpeg`,
-                    hp: 60,
-                    mp: 25,
-                    str: 0.9,
-                    int: 5,
-                    mpRegen: 5,
-                    skills: ['punch', 'bodyslam', 'stare', 'brag'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // glass cannon
-                    name: `Natsuki`,
-                    description: `Natsuki is a swordmaster from a long forgotten kingdom. Her skill with the blade is unrivaled although she is quite fragile`,
-                    personality: 'calm',
-                    stats: {atk: 'extreme', def: 'none'},
-                    rarity: G,
-                    gender: female,
-                    pfp: `assets/animeGirl10.jpeg`,
-                    hp: 100,
-                    mp: 600,
-                    str: 3,
-                    int: 60,
-                    mpRegen: 90,
-                    skills: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // mage
-                    name: `Kohana`,
-                    description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
-                    personality: 'confident',
-                    stats: {atk: 'high', def: 'low'},
-                    rarity: L,
-                    gender: female,
-                    pfp: `assets/animeGirl27.jpeg`,
-                    hp: 250,
-                    mp: 650,
-                    str: 1,
-                    int: 90,
-                    mpRegen: 75,
-                    skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
-                    armour: {physical: [0, 0], magic: [25, 0]},
-                },
-                undefined
-            ],
+            team: [],
             discoveredHeroes: [],
             discoveredEmemies: [],
-            money: 250,
+            money: 25000,
             exp: 0,
             level: 1,
         },
@@ -1133,13 +1103,15 @@ const data = {
                 skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
+        },
+        { // UC
             Lucy: { // whale
                 name: `Lucy`,
                 title: `The Coward`,
                 description: `Lucy is a nobleman's daughter who enjoys adventuring. However, she is easily frightened by scary monsters despite her expensive equipment.`,
                 personality: 'timid',
                 stats: {atk: 'high', def: 'high'},
-                rarity: N,
+                rarity: UC,
                 gender: female,
                 pfp: `assets/animeGirl14.jpeg`,
                 hp: 100,
@@ -1150,9 +1122,6 @@ const data = {
                 skills: ['wildSwing', 'cower', 'wildCharge', 'sparkleSlash'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
-        },
-        { // UC
-    
         },
         { // R
 
@@ -1802,7 +1771,9 @@ const data = {
     items: [
         {
             name: `Crude Health Potion`,
+            displayName: `Health Potion`,
             description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
+            stats: `Recovers:\n15 hp over 3 rounds`,
             rarity: N,
             pfp: `assets/pot2.jpeg`,
             hp: 5,
@@ -1815,12 +1786,14 @@ const data = {
             purchacePrice: 0,
             sellable: true,
             sellPrice: 10,
-            quantity: 1,
+            quantity: 10,
             stackSize: Infinity,
         },
         {
             name: `Lesser Health Potion`,
+            displayName: `Health Potion`,
             description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
+            stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
             rarity: UC,
             pfp: `assets/pot7.jpeg`,
             hp: 30,
@@ -1833,11 +1806,12 @@ const data = {
             purchacePrice: 100,
             sellable: true,
             sellPrice: 25,
-            quantity: 1,
+            quantity: 2,
             stackSize: Infinity,
         },
         {
             name: `Mediocre Health Potion`,
+            displayName: `Health Potion`,
             description: `The standard health potion sold in most high end stores. Comes with a slight heal over time effect.`,
             stats: `Recovers:\n50 hp instantly\n20 hp over the next 2 rounds\n5 mp instantly`,
             rarity: R,
@@ -1857,7 +1831,9 @@ const data = {
         },
         {
             name: `Potion of Regeneration`,
+            displayName: `Regen Potion`,
             description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
+            stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
             rarity: SR,
             pfp: `assets/pot5.jpeg`,
             hp: 20,
@@ -1875,7 +1851,9 @@ const data = {
         },
         {
             name: `Greater Health Potion`,
+            displayName: `Health Potion`,
             description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
+            stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
             rarity: E,
             pfp: `assets/pot1.jpeg`,
             hp: 100,
@@ -1893,7 +1871,9 @@ const data = {
         },
         {
             name: `Superior Health Potion`,
-            description: `A great alchemist dedicated their entire life to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
+            displayName: `Health Potion`,
+            description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
+            stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
             rarity: L,
             pfp: `assets/pot4.jpeg`,
             hp: 500,
@@ -1911,7 +1891,9 @@ const data = {
         },
         {
             name: `Ascended Health Potion`,
+            displayName: `Health Potion`,
             description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
+            stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
             rarity: G,
             pfp: `assets/pot10.jpeg`,
             hp: 2500,
@@ -1928,8 +1910,9 @@ const data = {
             stackSize: Infinity,
         },
         {
-            name: `Elixir of Life\n `,
+            name: `Elixir of Life`,
             description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
+            stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
             rarity: EX,
             pfp: `assets/pot11.jpeg`,
             hp: 1000000,
@@ -1941,7 +1924,7 @@ const data = {
             purchaceable: false,
             purchacePrice: 0,
             sellable: true,
-            sellPrice: 20000000,
+            sellPrice: 2000000000,
             quantity: 1,
             stackSize: Infinity,
         },
@@ -2030,6 +2013,51 @@ function clearData() {
     console.log('cleared previous data');
 }
 
+function inTeam(characterId) {
+    let playerTeam = game.gamestate.player.team;
+    for (let i = 0; i < playerTeam.length; i++) {
+        if (playerTeam[i] && playerTeam[i].name == game.gamestate.player.characters[characterId].name) return true;
+    }
+    return false;
+}
+
+function addToTeam(characterId) {
+    let character = game.gamestate.player.characters[characterId];
+    game.gamestate.player.team.push(character);
+    updateTeam();
+    focusCharacter(characterId);
+}
+
+function removeFromTeam(characterId) {
+    let character = game.gamestate.player.characters[characterId];
+    let playerTeam = game.gamestate.player.team;
+    let nTeam = []
+    for (let i = 0; i < playerTeam.length; i++) {
+        if (playerTeam[i] && playerTeam[i].name != character.name) {
+            nTeam.push(playerTeam[i]);
+        }
+    }
+    game.gamestate.player.team = nTeam;
+    updateTeam();
+    focusCharacter(characterId);
+}
+
+function inventorySellItem(itemId) {
+    let item = game.gamestate.player.inventory[itemId];
+    item.quantity -= 1;
+    game.gamestate.player.money += item.sellPrice;
+    focusItem(itemId);
+    inventory();
+}
+
+function inventoryBuyItem(itemId) {
+    let item = game.gamestate.player.inventory[itemId];
+    item.quantity += 1;
+    game.gamestate.player.money -= item.purchacePrice;
+    focusItem(itemId);
+    inventory();
+}
+
 function focusItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
     let stats = `<br><span id="veryBig"><strong>Stats:</strong></span><br>`;
@@ -2040,13 +2068,17 @@ function focusItem(itemId) {
     if (item.effects[0]) stats += `<img src="assets/greenCross.png" class="mediumIconDown"> ${item.effects[0].id == 'hot' ? `heals ${item.effects[0].lvl} hp per round for ${item.effects[0].duration} rounds` : `removes all status effects`}<br>`;
     stats += `<img src="assets/lightnings.png" class="mediumIconDown"> ${item.uses} use${item.uses > 1 ? 's' : ''}<br>`;
     stats += `<img src="assets/box.png" class="mediumIconDown"> ${item.quantity} in stock<br>`;
-
+    let shop = `<div id="inventoryShop">`;
+    if (item.purchaceable) shop += (game.gamestate.player.money >= item.purchacePrice ?  `<button onclick="inventoryBuyItem(${itemId})" id="buyButton">` : `<button id="cantBuyButton">`) + `Buy 1 ($${bigNumber(item.purchacePrice)})</button>`;
+    if (item.purchaceable && item.sellable)  shop += `<span id="wasteOfSpace"></span>`;
+    if (item.sellable) shop += `<button onclick="inventorySellItem(${itemId})" id="sellButton">Sell 1 ($${bigNumber(item.sellPrice)})</button>`;
+    shop += `</div>`;
     document.getElementById('focus').style.display = `block`;
-    replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.name} </strong></span>`);
+    replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.displayName ? item.displayName : item.name} </strong></span>`);
     replacehtml(`focusImageContainer`, `<img src="${item.pfp}" class="focusIcon">`);
     replacehtml(`focusDescription`, item.description);
     replacehtml(`focusStats`, stats);
-    replacehtml(`focusSkills`, '');
+    replacehtml(`focusSkills`, shop);
 }
 
 function focusCharacter(characterId) {
@@ -2110,13 +2142,17 @@ function focusCharacter(characterId) {
         skill += `<br>`;
         skills += skill;
     }
-
+    let shop = `<div id="inventoryShop">`;
+    if (inTeam(characterId)) shop += `<button onclick="removeFromTeam(${characterId})" id="sellButton">Remove from Team</button>`;
+    else if (game.gamestate.player.team.length < 4) shop += `<button onclick="addToTeam(${characterId})" id="buyButton">Add to Team</button>`;
+    else shop += `<button id="cantBuyButton">Add to Team</button>`;
+    shop += `</div>`;
     document.getElementById('focus').style.display = `block`;
     replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.title} ${character.name} </strong></span>`);
     replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon">`);
     replacehtml(`focusDescription`, character.description);
     replacehtml(`focusStats`, stats.replace('none', 'no'));
-    replacehtml(`focusSkills`, skills);
+    replacehtml(`focusSkills`, shop + skills);
 }
 
 function exitFocus() {
@@ -2126,14 +2162,14 @@ function exitFocus() {
 function updateTeam() {
     let canBattle = false;
     let buttonGridHtml = ``;
-    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+    for (let i = 0; i < 4; i++) {
         if (game.gamestate.player.team[i] != undefined) {
             let title = `<strong>${game.gamestate.player.team[i].name}</strong>`;
-            let buttonData = `onclick="selectTeamCharacter(${i})" class="smallCharacterButton" id="rank${game.gamestate.player.team[i].rarity}Button"`;
+            let buttonData = `class="smallCharacterButton" id="rank${game.gamestate.player.team[i].rarity}Button"`;
             buttonGridHtml += `<button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.team[i].pfp}" class="characterIcon"></button>`;
             canBattle = true;
         } else {
-            buttonGridHtml += `<button onclick="selectTeamCharacter(${i})" class="itemButton"></button>`;
+            buttonGridHtml += `<button class="smallCharacterButton"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"></button>`;
         }
     }
     console.log(buttonGridHtml);
@@ -2147,7 +2183,7 @@ function updateTeam() {
 
 function pull() {
     replacehtml(`nav`, `<button onclick="pull()" class="focusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
-    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.pulls.length; i++) {
         let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
@@ -2162,7 +2198,7 @@ function pull() {
 function inventory() {
     console.log('inventory');
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
-    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
         let title = `<strong>${game.gamestate.player.inventory[i].name} ${game.gamestate.player.inventory[i].quantity > 1? `(${game.gamestate.player.inventory[i].quantity})` : ``}</strong>`;
@@ -2175,7 +2211,7 @@ function inventory() {
 
 function characters() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="focusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
-    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.characters.length; i++) {
         let title = `<strong>${game.gamestate.player.characters[i].name}</strong>`;
@@ -2189,7 +2225,7 @@ function characters() {
 
 function shop() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="focusedButton"><h3>Shop</h3></button>`);
-    replacehtml(`money`, `<span><strong>Money: $${game.gamestate.player.money}</strong></span>`);
+    replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     /*
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.pulls.length; i++) {
@@ -2225,7 +2261,7 @@ function home() {
         <div id="teamSelection"></div>
         <div id="focus">
             <div id="focusTopRow">
-                <span id="focusTitle"><strong>Eco the Eco</strong></span>
+                <span id="focusTitle"><strong></strong></span>
                 <span id="exitFocus">
                     <button onclick="exitFocus()" class="closeButton"><img src="assets/blackX.png" class="mediumIcon"></button>
                 </span>
