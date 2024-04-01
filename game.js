@@ -792,6 +792,23 @@ const data = {
                     skills: ['millionSlashes', 'superiorOverheadStrike', 'auraSlash', 'superchargeArmour', 'rallyingCall', 'superiorCounterAttack'],
                     armour: {physical: [200, 50], magic: [200, 40]},
                 },
+                { // terrorist
+                    name: `T*j`,
+                    title: `The Terrorist`,
+                    description: `Former high school student, T*j was isekaied into the other world as the demon lord. However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
+                    personality: 'chunni',
+                    stats: {atk: 'extreme', def: 'extreme'},
+                    rarity: EX,
+                    gender: female,
+                    pfp: `assets/animeGirl51.jpeg`,
+                    hp: 975,
+                    mp: 1625,
+                    str: 3,
+                    int: 100,
+                    mpRegen: 200,
+                    skills: ['savageTornado', 'machinegun', 'fragGrenade',  'extremeOverheadStrike', 'soulHarvest', 'extremeRaiseGuard'],
+                    armour: {physical: [100, 80], magic: [250, 25]},
+                },
             ],
             team: [],
             discoveredHeroes: [],
@@ -1011,7 +1028,8 @@ const data = {
                 id: 9,
             },
         ],
-        progression: 1,
+        progression: 0,
+        inBattle: false,
     },
     characters: [
         /*
@@ -1205,9 +1223,39 @@ const data = {
                 skills: ['punch', 'bodyslam', 'stare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
+            T_j: { // terrorist
+                name: `T*j`,
+                title: `The Terrorist`,
+                description: `Former high school student, T*j was isekaied into the other world as the demon lord. However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
+                personality: 'chunni',
+                stats: {atk: 'extreme', def: 'extreme'},
+                rarity: EX,
+                gender: female,
+                pfp: `assets/animeGirl51.jpeg`,
+                hp: 975,
+                mp: 1625,
+                str: 3,
+                int: 100,
+                mpRegen: 200,
+                skills: ['savageTornado', 'machinegun', 'fragGrenade',  'extremeOverheadStrike', 'soulHarvest', 'extremeRaiseGuard'],
+                armour: {physical: [100, 80], magic: [250, 25]},
+            },
         },
     ],
     skills: {
+        soulHarvest: {
+            name: `Soul Harvest`,
+            desc: `[attacker] reaps the tageted enemy's soul with [pronoun] sythe.`,
+            attackType: `physical`,
+            type: piercing,
+            targeting: single,
+            dmg: 1000,
+            multiplier: str,
+            effects: [{id: 'hot', lvl: 975, duration: 1}],
+            cost: {hp: 0, mp: 1400},
+            accuracy: 500,
+            attacks: 1,
+        },
         slash: {
             name: `Sword Slash`,
             desc: `[attacker] shashes at the targeted enemy with [pronoun] sword.`,
@@ -1220,6 +1268,19 @@ const data = {
             cost: {hp: 0, mp: 0},
             accuracy: 90,
             attacks: 3,
+        },
+        machinegun: {
+            name: `Assault Rifle`,
+            desc: `[attacker] unloads a full magazine into the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: multi,
+            dmg: 75,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 100,
+            attacks: 30,
         },
         millionSlashes: {
             name: `Million Slashes`,
@@ -1325,6 +1386,19 @@ const data = {
             accuracy: 200,
             attacks: 1,
         },
+        extremeOverheadStrike: {
+            name: `Overhead Strike`,
+            desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: single,
+            dmg: 400,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 250},
+            accuracy: 200,
+            attacks: 1,
+        },
         sparkleSlash: {
             name: `Sparkle Slash`,
             desc: `[attacker]'s special attack that [pronoun] spent years developing. It is rather flashy and powerful...`,
@@ -1373,6 +1447,19 @@ const data = {
             multiplier: none,
             effects: [{id: 'def', lvl: [15, 5], duration: 1}],
             cost: {hp: 0, mp: 5},
+            accuracy: Infinity,
+            attacks: 1,
+            selfOnly: true,
+        },
+        extremeRaiseGuard: {
+            name: `Raise Guard`,
+            desc: `[attacker] raises [pronoun] guard, greatly reducing damage in the next 2 rounds.`,
+            attackType: `buffDefence`,
+            type: normal,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [100, 10], duration: 2}, {id: 'mdef', lvl: [100, 25], duration: 2}],
+            cost: {hp: 0, mp: 300},
             accuracy: Infinity,
             attacks: 1,
             selfOnly: true,
@@ -1480,6 +1567,19 @@ const data = {
             cost: {hp: 0, mp: 425},
             accuracy: 150,
             attacks: 25,
+        },
+        savageTornado: {
+            name: `Savage Tornado`,
+            desc: `[attacker] spins in a circle slashing at the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: multi,
+            dmg: 85,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 200},
+            accuracy: 200,
+            attacks: 5,
         },
         punch: {
             name: `Punch`,
@@ -1729,7 +1829,7 @@ const data = {
             multiplier: int,
             effects: [],
             cost: {hp: 0, mp: 100},
-            accuracy: 100,
+            accuracy: Infinity,
             exec: `
             for (let i = 0; i < game.gamestate.enemies.length; i++) {
                 game.gamestate.enemies.hp -= 20;
@@ -1766,6 +1866,28 @@ const data = {
             cost: {hp: 0, mp: 50},
             accuracy: 75,
             attacks: 5,
+        },
+        fragGrenade: {
+            name: `Frag Grenade`,
+            desc: `[attacker] throws a frag grenade at the targeted enemy.`,
+            attackType: `fireAOE`,
+            type: physical,
+            targeting: aoe,
+            dmg: 300,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: Infinity,
+            exec: `
+            for (let i = 0; i < game.gamestate.enemies.length; i++) {
+                game.gamestate.enemies.hp -= 250;
+            }
+            `,
+            attacks: 1,
+            extraStats: [{
+                icon: `lightning.png`,
+                desc: `250 damage to all enemies`,
+            }],
         },
     },
     items: [
@@ -1931,7 +2053,14 @@ const data = {
     ],
     pulls: {
         
-    }
+    },
+    dungeons: [
+        {
+            name: `Goblin Den`,
+            outerBac: `assets/DungeonOuter1.jpeg`,
+            innerBac: `assets/bronze.png`,
+        }
+    ],
 }
 
 // Loading savegames
@@ -1973,6 +2102,16 @@ function tellPos(p){
 };
 window.addEventListener('mousemove', tellPos, false);
 
+function startDungeon() {
+    let dungeon = data.dungeons[game.gamestate.progression];
+    exitFocus();
+    replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`);
+    game.gamestate.inBattle = true;
+    inventory();
+    resize();
+    console.log('aaa');
+}
+
 function rank(n) {
     switch (n) {
         case 0:
@@ -1999,13 +2138,14 @@ function rank(n) {
 function resize() {
     console.log('resized');
     let sidebarWidth = Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
+    if (game.gamestate.inBattle) sidebarWidth = 370;
     document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
     let teamPosition = ((display.x - sidebarWidth) - 685) / 2;
-    document.getElementById('teamSelection').style.left = `${teamPosition}px`;
+    if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${teamPosition}px`;
     let playButtonPosition = ((display.x - sidebarWidth) - 200) / 2;
-    document.getElementById('playButton').style.left = `${playButtonPosition}px`;
+    if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${playButtonPosition}px`;
     let focusWindowSize = display.x - sidebarWidth;
-    document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
+    if (document.getElementById('focus')) document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
 }
 
 function clearData() {
@@ -2046,7 +2186,16 @@ function inventorySellItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
     item.quantity -= 1;
     game.gamestate.player.money += item.sellPrice;
-    focusItem(itemId);
+    if (item.quantity <= 0) {
+        let newItem = [];
+        for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+            if (game.gamestate.player.inventory[i].quantity > 0) newItem.push(game.gamestate.player.inventory[i]);
+        }
+        game.gamestate.player.inventory = newItem;
+        exitFocus();
+    } else {
+        focusItem(itemId);
+    }
     inventory();
 }
 
@@ -2166,10 +2315,11 @@ function updateTeam() {
         if (game.gamestate.player.team[i] != undefined) {
             let title = `<strong>${game.gamestate.player.team[i].name}</strong>`;
             let buttonData = `class="smallCharacterButton" id="rank${game.gamestate.player.team[i].rarity}Button"`;
-            buttonGridHtml += `<button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.team[i].pfp}" class="characterIcon"></button>`;
+            let desc = `<span id="left"><img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.team[i].hp}</span><span id="right"><img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.team[i].mp}</span>`;
+            buttonGridHtml += `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.team[i].pfp}" class="characterIcon"></span>${desc}</button>`;
             canBattle = true;
         } else {
-            buttonGridHtml += `<button class="smallCharacterButton"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"></button>`;
+            buttonGridHtml += `<button class="smallCharacterButton"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></button>`;
         }
     }
     console.log(buttonGridHtml);
@@ -2189,7 +2339,7 @@ function pull() {
         let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
         let desc = `$${game.gamestate.pulls[i].cost}`;
         let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
-        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+        buttonGridHtml += `<button ${buttonData}><p>${title}<br>${desc}</p></button>`;
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridPull">${buttonGridHtml}</div>`);
@@ -2197,13 +2347,16 @@ function pull() {
 
 function inventory() {
     console.log('inventory');
-    replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
-    replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
+    if (game.gamestate.inBattle) replacehtml(`nav`, `<button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="unFocusedButton"><h3>Skills</h3></button>`);
+    else replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
+    if (!game.gamestate.inBattle) replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
+    else replacehtml(`money`, ``);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
-        let title = `<strong>${game.gamestate.player.inventory[i].name} ${game.gamestate.player.inventory[i].quantity > 1? `(${game.gamestate.player.inventory[i].quantity})` : ``}</strong>`;
-        let buttonData = `onclick="focusItem(${i})" class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
-        buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p></button></span>`;
+        let title = `<strong>${game.gamestate.player.inventory[i].name}</strong>`;
+
+        let buttonData = `${game.gamestate.inBattle ? `onclick="useItem(${i})"` : `onclick="focusItem(${i})"`} class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
+        buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p>${game.gamestate.player.inventory[i].quantity > 1 ? `<div id="cornerIcon"><span id="down">${game.gamestate.player.inventory[i].quantity > 99 ? `99+`: game.gamestate.player.inventory[i].quantity}</span></div></button>` : ``}</span>`;
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -2256,7 +2409,7 @@ function startGame() {
 function home() {
     homePage = `
     <span id="bac">
-        <img src="assets/DungeonOuter1.jpeg" id="bacImg">
+        <img src="${data.dungeons[game.gamestate.progression].outerBac}" id="bacImg">
         <div id="playButton"></div>
         <div id="teamSelection"></div>
         <div id="focus">
@@ -2310,7 +2463,7 @@ function main() {
     t++;
     const end = performance.now();
     //console.log(`Processing Time: ${end-start}ms, max: ${1000/FPS}ms for ${FPS}fps. Max Possible FPS: ${1000/(end-start)}`);
-    return gameState;
+    return gamestate;
 };
 
 console.log('loaded');

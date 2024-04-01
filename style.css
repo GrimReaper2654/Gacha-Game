@@ -45,6 +45,11 @@ body {
     width: auto;
 }
 
+#bigBacImg {
+    height: 100vh;
+    width: 100vw;
+}
+
 #sidebar {
     height: 100vh;
     position: absolute;
@@ -288,9 +293,9 @@ body {
     bottom: 0px;
     display: inline-block;
     width: 150px;
-    height: 180px;
+    height: 190px;
     max-width: 150px;
-    max-height: 180px;
+    max-height: 190px;
     margin: 10px;
     text-align: top;
     border: none;
@@ -307,14 +312,14 @@ body {
 #teamSelection {
     position: absolute;
     /*left: calc((100vh - 700px) / 2);*/
-    top: calc(100vh - 215px);
+    top: calc(100vh - 235px);
     background-color: rgba(0, 0, 0, 0.7);
     margin: 0px;
     padding: 0px;
-    height: 200px;
+    height: 210px;
     width: 680px;
-    min-height: 200px;
-    max-height: 200px;
+    min-height: 210px;
+    max-height: 210px;
     min-width: 680px;
     max-width: 680px;
     border-radius: 15px;
@@ -326,10 +331,10 @@ body {
 #teamContainer {
     margin: 0px;
     padding: 0px;
-    height: 200px;
+    height: 210px;
     width: 680px;
-    min-height: 200px;
-    max-height: 200px;
+    min-height: 210px;
+    max-height: 210px;
     min-width: 680px;
     max-width: 680px;
     position: relative;
@@ -337,7 +342,7 @@ body {
 
 #playButton {
     position: absolute;
-    top: calc(100vh - 300px);
+    top: calc(100vh - 320px);
     margin: 0px;
     padding: 0px;
 }
@@ -531,6 +536,43 @@ body {
 #noPadding {
     padding: 0px;
     margin: 0px;
+}
+
+#cornerIcon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 2px;
+    height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    border-radius: 20px;
+    background-color: rgba(200, 25, 25, 1);
+    text-align: center;
+}
+
+#down {
+    position: relative;
+    top: 6.5px;
+}
+
+#up {
+    position: relative;
+    top: -10px;
+}
+
+#left {
+    position: absolute;
+    left: 10px;
+    bottom: 3px;
+}
+
+#right {
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
 }
 
 #greyButton {
