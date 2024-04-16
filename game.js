@@ -725,11 +725,11 @@ const data = {
         inBattle: false,
         battleState: {
             turn: `player`,
-            wave: 1,
-            enemies: {
-                backline: [],
-                frontline: [],
-            }
+            wave: 0,
+            eb: [],
+            ef: [],
+            pf: [],
+            pb: [],
         },
     },
     characters: [
@@ -819,6 +819,23 @@ const data = {
                 skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
+            Henrietta: { // summoner
+                name: `Henrietta`,
+                title: `Mage`,
+                description: `Henrietta le Bird is very tall. Way too tall. Also she is a spedlord.`,
+                personality: 'timid',
+                stats: {atk: 'low', def: 'none'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/animeGirl53.jpeg`,
+                hp: 80,
+                mp: 100,
+                str: 0.75,
+                int: 25,
+                mpRegen: 25,
+                skills: [`slash`, `summonPotato`, `summonChicken`],
+                armour: {physical: [0, 0], magic: [0, 0]},
+            },
         },
         { // UC
             Lucy: { // whale
@@ -846,7 +863,23 @@ const data = {
 
         },
         { // E
-
+            pi_thagoreas: { // whale
+                name: `π-thagoreas`,
+                title: `Chicken Farmer`,
+                description: `Born and raised on on a rural farm, π-thagoreas grew up as a talented chicken farmer, ruling over several chicken pens and over 300 chickens. When the demon lord attacked, π-thagoreas was driven out of her hometown, her chicken pens destroyed. Swaering revenge against the evil demons, π-thagoreas is willing to do anything to kill the demon lord.`,
+                personality: 'calm',
+                stats: {atk: 'low', def: 'low'},
+                rarity: E,
+                gender: female,
+                pfp: `assets/animeGirl52.jpeg`,
+                hp: 240,
+                mp: 450,
+                str: 2,
+                int: 30,
+                mpRegen: 50,
+                skills: [`slash`, `summonChicken`, `summonChickenFlock`, `summonPheonix`],
+                armour: {physical: [10, 10], magic: [5, 10]},
+            },
         },
         { // L
             Kohana: { // battle mage
@@ -858,13 +891,13 @@ const data = {
                 rarity: L,
                 gender: female,
                 pfp: `assets/animeGirl27.jpeg`,
-                hp: 225,
+                hp: 300,
                 mp: 650,
                 str: 1,
                 int: 80,
                 mpRegen: 75,
                 skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
-                armour: {physical: [0, 0], magic: [25, 0]},
+                armour: {physical: [0, 0], magic: [50, 25]},
             },
         },
         { // G
@@ -981,8 +1014,101 @@ const data = {
             armour: {physical: [5, 10], magic: [0, 0]},
             ai: `rng`,
         },
+        sir: {
+            name: `Sir`, // a certain computer science teacher
+            rarity: L,
+            pfp: `assets/empty.jpeg`,
+            hp: 10000,
+            mp: 0,
+            str: 1,
+            int: 100,
+            mpRegen: 0,
+            skills: [], // give time freeze and health increase
+            armour: {physical: [50, 0], magic: [50, 0]},
+            ai: `rng`,
+        },
+    },
+    summons: {
+        potato: { // meat shield
+            name: `Potato`,
+            title: `Summoned`,
+            rarity: N,
+            pfp: `assets/summon4.jpeg`,
+            hp: 10,
+            mp: 0,
+            str: 0,
+            int: 0,
+            mpRegen: 0,
+            skills: [],
+            armour: {physical: [0, 10], magic: [0, 0]},
+        },
+        chicken: { // meat shield
+            name: `Chicken`,
+            title: `Summoned`,
+            rarity: UC,
+            pfp: `assets/summon2.jpeg`,
+            hp: 40,
+            mp: 0,
+            str: 1,
+            int: 10,
+            mpRegen: 0,
+            skills: ['peck', 'scratch'],
+            armour: {physical: [0, 0], magic: [0, 0]},
+        },
+        rooster: { // support
+            name: `Rooster`,
+            title: `Summoned`,
+            rarity: R,
+            pfp: `assets/summon2.jpeg`,
+            hp: 60,
+            mp: 0,
+            str: 1.5,
+            int: 10,
+            mpRegen: 0,
+            skills: ['peck', 'roosterRallyingCall'],
+            armour: {physical: [0, 0], magic: [0, 0]},
+        },
+        pheonix: { // tanker
+            name: `Chicken`,
+            title: `Summoned`,
+            rarity: SR,
+            pfp: `assets/summon3.jpeg`,
+            hp: 500,
+            mp: 0,
+            str: 5,
+            int: 10,
+            mpRegen: 0,
+            skills: ['peck', 'scratch'],
+            armour: {physical: [25, 10], magic: [25, 10]},
+        },
     },
     skills: {
+        peck: {
+            name: `Peck`,
+            desc: `[attacker] pecks the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: single,
+            dmg: 20,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 90,
+            attacks: 1,
+        },
+        scratch: {
+            name: `Scratch`,
+            desc: `[attacker] scratches the targeted enemy.`,
+            attackType: `physical`,
+            type: physical,
+            targeting: multi,
+            dmg: 5,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 90,
+            attacks: 4,
+        },
         soulHarvest: {
             name: `Soul Harvest`,
             desc: `[attacker] reaps the tageted enemy's soul with [pronoun] sythe.`,
@@ -998,7 +1124,7 @@ const data = {
         },
         slash: {
             name: `Sword Slash`,
-            desc: `[attacker] shashes at the targeted enemy with [pronoun] sword.`,
+            desc: `[attacker] shashes at the targeted enemy, inflicing damage (hopefully).`,
             attackType: `physical`,
             type: physical,
             targeting: single,
@@ -1384,6 +1510,26 @@ const data = {
                 },
             ],
         },
+        roosterRallyingCall: {
+            name: `Rallying Call`,
+            desc: `[attacker] motivates all allied chickens, increasing their defense and attack power for 3 rounds. Gives +25% attack damage, 10 physical negation and 10% physical damage resistance.`,
+            attackType: `buff`,
+            type: normal,
+            targeting: aoe,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: Infinity,
+            exec: `
+            for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                if (game.gamestate.player.team[i].name == 'Chicken') {
+                    game.gamestate.player.team[i].effects.push({id: 'def', lvl: [10, 10], duration: 3}, {id: 'atk', lvl: 0.25, duration: 3});
+                }
+            }
+            `,
+            attacks: 1,
+        },
         rallyingCall: {
             name: `Rallying Call`,
             desc: `[attacker] motivates all allies, increasing their defense and attack power for 3 rounds.`,
@@ -1628,6 +1774,157 @@ const data = {
                 icon: `lightning.png`,
                 desc: `250 damage to all enemies`,
             }],
+        },
+        summonPotato: {
+            name: `Summon Potato`,
+            desc: `[attacker] summons a potato. IDK what it does.`,
+            attackType: `summon`,
+            type: physical,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 50},
+            accuracy: Infinity,
+            exec: `
+            // summon potato here
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `box.png`,
+                    desc: `summon 1 potato`,
+                },
+                {
+                    icon: `redCross.png`,
+                    desc: `10 chicken hp`,
+                },
+            ],
+            preventDefault: true,
+        },
+        summonChicken: {
+            name: `Summon Chicken`,
+            desc: `[attacker] summons a chicken to help fight.`,
+            attackType: `summon`,
+            type: physical,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 60},
+            accuracy: Infinity,
+            exec: `
+            // summon chickens here
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `box.png`,
+                    desc: `summon 1 chicken`,
+                },
+                {
+                    icon: `redCross.png`,
+                    desc: `40 chicken hp`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `20 chicken attack damage`,
+                },
+            ],
+            preventDefault: true,
+        },
+        summonChickenFlock: {
+            name: `Summon Flock`,
+            desc: `[attacker] summons a flock of chickens to help fight.`,
+            attackType: `summon`,
+            type: physical,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 400},
+            accuracy: Infinity,
+            exec: `
+            // summon chickens here
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `box.png`,
+                    desc: `summon 5 chicken`,
+                },
+                {
+                    icon: `redCross.png`,
+                    desc: `40 chicken hp`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `20 chicken attack damage`,
+                },
+            ],
+            preventDefault: true,
+        },
+        summonRooster: {
+            name: `Summon Rooster`,
+            desc: `[attacker] summons a rooster to help fight.`,
+            attackType: `summon`,
+            type: physical,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 100},
+            accuracy: Infinity,
+            exec: `
+            // summon chickens here
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `box.png`,
+                    desc: `summon 1 chicken`,
+                },
+                {
+                    icon: `redCross.png`,
+                    desc: `60 chicken hp`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `30 chicken attack damage`,
+                },
+            ],
+            preventDefault: true,
+        },
+        summonPheonix: {
+            name: `Summon Pheonix`,
+            desc: `[attacker] summons a Pheonix, the penultimate form of the chicken, to help fight.`,
+            attackType: `summon`,
+            type: physical,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 450},
+            accuracy: Infinity,
+            exec: `
+            // summon pheonix here
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `box.png`,
+                    desc: `summon 1 pheonix`,
+                },
+                {
+                    icon: `redCross.png`,
+                    desc: `500 pheonix hp`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `100 pheonix attack damage`,
+                },
+            ],
+            preventDefault: true,
         },
     },
     enemySkills: {
@@ -2265,6 +2562,21 @@ function createCharacterCard(character, id=undefined, onClick=undefined) {
     return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
 }
 
+function cardLine(cards, id) {
+    html = ``;
+    for (let i = 0; i < cards.length; i++) {
+        html += createCharacterCard(cards[i], `${id}+${i}`);
+    }
+    return html;
+}
+
+function fillBattle(enemyBack, enemyFront, playerFront, playerBack) {
+    replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB'));
+    replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF'));
+    replacehtml(`playerFrontline`, cardLine(playerFront, 'PF'));
+    replacehtml(`playerBackline`, cardLine(playerBack, 'PB'));
+}
+
 function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
     exitFocus();
@@ -2273,10 +2585,32 @@ function startDungeon() {
     inventory();
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
     resize();
-    replacehtml(`playerFrontline`, createCharacterCard(game.gamestate.player.team[0], 'player1'));
-    replacehtml(`playerBackline`, ``);
-    replacehtml(`enemyFrontline`, ``);
-    replacehtml(`enemyBackline`, createCharacterCard(data.enemies.goblinArcher, 'enemy1'));
+    let eb = game.gamestate.battleState.eb;
+    let ef = game.gamestate.battleState.ef;
+    let pf = game.gamestate.battleState.pf;
+    let pb = game.gamestate.battleState.pb;
+    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        pb.push(game.gamestate.player.team[i]);
+    }
+    game.gamestate.battleState.wave = 0;
+    for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
+        let enemyData = dungeon.waves[game.gamestate.battleState.wave].enemies[i];
+        let enemy = JSON.parse(JSON.stringify(data.enemies[enemyData.enemy]));
+        if (enemy.hp.constructor === Array) enemy.hp = enemy.hp[enemyData.lvl];
+        if (enemy.mp.constructor === Array) enemy.mp = enemy.mp[enemyData.lvl];
+        if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
+        if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
+        if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
+        enemy.drops = enemyData.drops;
+        enemy.itemDrops = enemyData.itemDrops;
+        if (enemyData.location = `frontline`) {
+            for (let i = 0; i < enemyData.quantity; i++) ef.push(enemy);
+        } else {
+            for (let i = 0; i < enemyData.quantity; i++) eb.push(enemy);
+        }
+    }
+    fillBattle(eb, ef, pf, pb);
+    console.log('dungeon started');
 }
 
 function rank(n) {
