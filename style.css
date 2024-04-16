@@ -265,7 +265,7 @@ body {
 
 .characterTitle {
     font-family: 'Courier New', monospace;
-    font-size: 25px;
+    font-size: 20px;
     white-space: pre-wrap;
     color: rgba(200, 200, 200, 1);
     vertical-align: top;
@@ -426,6 +426,7 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     overflow-y: auto;
+    z-index: 99;
 }
 
 #focusTopRow {
@@ -553,6 +554,47 @@ body {
     text-align: center;
 }
 
+#battleScreen {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#enemyBackline {
+    top: 10px;
+}
+
+#enemyFrontline {
+    top: 220px;
+}
+
+#playerFrontline {
+    top: calc(100vh - 430px);
+}
+
+#playerBackline {
+    top: calc(100vh - 220px);
+}
+
+.battleCardContainer {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0px;
+    padding: 0px;
+    height: 210px;
+    width: 1020px;
+    min-height: 210px;
+    max-height: 210px;
+    min-width: 1020px;
+    max-width: 1020px;
+    border-radius: 15px;
+    overflow: hidden;
+    vertical-align: top;
+    text-align: center;
+}
+
 #down {
     position: relative;
     top: 6.5px;
@@ -567,12 +609,14 @@ body {
     position: absolute;
     left: 10px;
     bottom: 3px;
+    z-index: 2;
 }
 
 #right {
     position: absolute;
     right: 10px;
     bottom: 3px;
+    z-index: 2;
 }
 
 #greyButton {
@@ -700,4 +744,59 @@ body {
 
 .p {
     margin: 0px;
+}
+
+#hpBar {
+    position: absolute;
+    min-width: 64px;
+    max-width: 64px;
+    min-height: 24px;
+    max-height: 24px;
+    top: -6px;
+    left: -5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+
+.hpBarInner {
+    position: absolute;
+    min-width: 60px;
+    max-width: 60px;
+    min-height: 20px;
+    max-height: 20px;
+    margin-top: 2px;
+    left: 2px;
+    background-color: rgba(255, 0, 0, 0.5);
+    z-index: -1;
+}
+
+#mpBar {
+    position: absolute;
+    min-width: 64px;
+    max-width: 64px;
+    min-height: 24px;
+    max-height: 24px;
+    top: -6px;
+    right: -5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+
+.mpBarInner {
+    position: absolute;
+    min-width: 60px;
+    max-width: 60px;
+    min-height: 20px;
+    max-height: 20px;
+    margin-top: 2px;
+    right: 2px;
+    background-color: rgba(0, 0, 255, 0.5);
+    z-index: -1;
+}
+
+#barDisplay {
+    position: relative;
+    top: -1.5px;
+    margin-left: 2px;
+    margin-right: 2px;
 }

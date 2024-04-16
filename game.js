@@ -266,7 +266,7 @@ function bigNumber(number) {
         bac = bacs[i];
         i++
     }
-    
+
     return `${number.toPrecision(3)}${bac}`;
 };
 
@@ -460,356 +460,8 @@ function toPol(i, j) {
 const data = {
     startingGamestate: {
         player: {
-            inventory: [
-                {
-                    name: `Crude Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
-                    stats: `Recovers:\n15 hp over 3 rounds`,
-                    rarity: N,
-                    pfp: `assets/pot2.jpeg`,
-                    hp: 5,
-                    mp: 0,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 5, duration: 2}],
-                    purchaceable: false,
-                    purchacePrice: 0,
-                    sellable: true,
-                    sellPrice: 10,
-                    quantity: 10,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Lesser Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your heroes to withstand an extra hit or two.`,
-                    stats: `Recovers:\n30 hp instantly\n5 mp instantly`,
-                    rarity: UC,
-                    pfp: `assets/pot7.jpeg`,
-                    hp: 30,
-                    mp: 5,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [],
-                    purchaceable: true,
-                    purchacePrice: 100,
-                    sellable: true,
-                    sellPrice: 25,
-                    quantity: 2,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Mediocre Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `The standard health potion sold in most high end stores. Comes with a slight heal over time effect.`,
-                    stats: `Recovers:\n50 hp instantly\n20 hp over the next 2 rounds\n5 mp instantly`,
-                    rarity: R,
-                    pfp: `assets/pot8.jpeg`,
-                    hp: 50,
-                    mp: 5,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 10, duration: 2}],
-                    purchaceable: true,
-                    purchacePrice: 400,
-                    sellable: true,
-                    sellPrice: 150,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Potion of Regeneration`,
-                    displayName: `Regen Potion`,
-                    description: `An experimental healing potion designed by a master alchemist. The healing effect is spread out over a longer period of time alowing it to be cheaper but less useful in battle.`,
-                    stats: `Recovers:\n120 hp over 6 rounds\n10 mp instantly`,
-                    rarity: SR,
-                    pfp: `assets/pot5.jpeg`,
-                    hp: 20,
-                    mp: 10,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 20, duration: 5}],
-                    purchaceable: false,
-                    purchacePrice: 0,
-                    sellable: true,
-                    sellPrice: 500,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Greater Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
-                    stats: `Recovers:\n100 hp instantly\n30 hp over the next 2 rounds\n25 mp instantly`,
-                    rarity: E,
-                    pfp: `assets/pot1.jpeg`,
-                    hp: 100,
-                    mp: 25,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 15, duration: 2}],
-                    purchaceable: true,
-                    purchacePrice: 2500,
-                    sellable: true,
-                    sellPrice: 1000,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Superior Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
-                    stats: `Recovers:\n500 hp instantly\n100 hp over the next 2 rounds\n100 mp instantly`,
-                    rarity: L,
-                    pfp: `assets/pot4.jpeg`,
-                    hp: 500,
-                    mp: 100,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 50, duration: 2}],
-                    purchaceable: false,
-                    purchacePrice: 0,
-                    sellable: true,
-                    sellPrice: 10000,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Ascended Health Potion`,
-                    displayName: `Health Potion`,
-                    description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
-                    stats: `Recovers:\n2500 hp instantly\n1000 hp over the next 4 rounds\n1000 mp instantly\n +10% permanent strength`,
-                    rarity: G,
-                    pfp: `assets/pot10.jpeg`,
-                    hp: 2500,
-                    mp: 1000,
-                    str: 0.1,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'hot', lvl: 250, duration: 4}],
-                    purchaceable: false,
-                    purchacePrice: 0,
-                    sellable: true,
-                    sellPrice: 1500000,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-                {
-                    name: `Elixir of Life`,
-                    description: `A priceless relic from the age of the gods, this potion can bring back even gods from the brink of death. It would surely be worth billions of gold.`,
-                    stats: `Recovers:\n1000000 hp instantly\nremoves all effects (including buffs)`,
-                    rarity: EX,
-                    pfp: `assets/pot11.jpeg`,
-                    hp: 1000000,
-                    mp: 0,
-                    str: 0,
-                    int: 0,
-                    uses: 1,
-                    effects: [{id: 'clense', lvl: 1, duration: 0}],
-                    purchaceable: false,
-                    purchacePrice: 0,
-                    sellable: true,
-                    sellPrice: 2000000000,
-                    quantity: 1,
-                    stackSize: Infinity,
-                },
-            ],
-            characters: [
-                { // useless trash
-                    name: `Eco`,
-                    title: `Hero`,
-                    description: `Former high school student, Eco was isekaied into the other world by the godess and is on a quest to defeat the terrorist (demon) lord. However, he is clumsy and unfit, so Eco plans on forming a party of beautiful girls to fight for him. In his quest to kill the terrorist lord, Eco and his party needs to clear dungeons and recruit more members along the way. Luckily, Eco has the mysterious 'Gacha System' to help him out. Eco also has a mysterious power sealed within his right eye that he doesn't fully understand.`,
-                    personality: 'chunni',
-                    stats: {atk: 'low', def: 'none'},
-                    rarity: EX,
-                    gender: male,
-                    pfp: `assets/FatEdgyGuy.jpeg`,
-                    hp: 60,
-                    mp: 25,
-                    str: 0.9,
-                    int: 0,
-                    mpRegen: 5,
-                    skills: ['punch', 'bodyslam', 'stare', 'brag'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // healer
-                    name: `Abby`,
-                    title: `Healer`,
-                    description: `Abby is a novice healer who recently joined the Adventurers Guild. She knows a few healing spells but can't fight very well, so hes suitabel for the support role.`,
-                    personality: 'timid',
-                    stats: {atk: 'low', def: 'none'},
-                    rarity: N,
-                    gender: female,
-                    pfp: `assets/animeGirl2.jpeg`,
-                    hp: 80,
-                    mp: 100,
-                    str: 0.8,
-                    int: 20,
-                    mpRegen: 20,
-                    skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // melee dps
-                    name: `Yuki`,
-                    title: `Knight`,
-                    description: `Yuki recently graduated from the kingdom's knight academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`,
-                    personality: 'calm',
-                    stats: {atk: 'high', def: 'low'},
-                    rarity: N,
-                    gender: female,
-                    pfp: `assets/animeGirl42.jpeg`,
-                    hp: 100,
-                    mp: 50,
-                    str: 1.1,
-                    int: 15,
-                    mpRegen: 5,
-                    skills: ['slash', 'heavyStrike', 'raiseGuard', 'swordCharge'],
-                    armour: {physical: [0, 10], magic: [0, 0]},
-                },
-                { // tank dps hybrid
-                    name: `Akane`,
-                    title: `Knight`,
-                    description: `Akane is one of the kindoms many trainee knights. She's good at both attacking and can absorb quite a bit of damage, but she's not the most intelligent.`,
-                    personality: 'arrogant',
-                    stats: {atk: 'medium', def: 'medium'},
-                    rarity: N,
-                    gender: female,
-                    pfp: `assets/animeGirl40.jpeg`,
-                    hp: 125,
-                    mp: 25,
-                    str: 1,
-                    int: 5,
-                    mpRegen: 5,
-                    skills: ['slash', 'thrust', 'swordCharge', 'counterAttack'],
-                    armour: {physical: [8, 15], magic: [0, 0]},
-                },
-                { // tanker
-                    name: `Rei`,
-                    title: `Warrior`,
-                    description: `Rei is a dropout from the swordsman academy. She is clumsy and often misses her attacks, but has a suit of heavy armour that alows her to tank damage quite well.`,
-                    personality: 'confident',
-                    stats: {atk: 'low', def: 'high'},
-                    rarity: N,
-                    gender: female,
-                    pfp: `assets/animeGirl9.jpeg`,
-                    hp: 125,
-                    mp: 15,
-                    str: 0.9,
-                    int: 5,
-                    mpRegen: 2,
-                    skills: ['wildSwing', 'overheadStrike', 'raiseGuard', 'counterAttack'],
-                    armour: {physical: [15, 15], magic: [0, 0]},
-                },
-                { // ranged dps
-                    name: `Emi`,
-                    title: `Mage`,
-                    description: `Emi is an apprentice mage from the red mage tower. She specialises in fire elemental attacks at long ranges but is inexperienced in close combat.`,
-                    personality: 'angry',
-                    stats: {atk: 'high', def: 'none'},
-                    rarity: N,
-                    gender: female,
-                    pfp: `assets/animeGirl48.jpeg`,
-                    hp: 60,
-                    mp: 150,
-                    str: 0.9,
-                    int: 25,
-                    mpRegen: 20,
-                    skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // whale
-                    name: `Lucy`,
-                    title: `The Coward`,
-                    description: `Lucy is a nobleman's daughter who enjoys adventuring. She has no talent so she relies heavily on her items to fight. However, she is easily frightened by scary monsters despite her expensive equipment.`,
-                    personality: 'timid',
-                    stats: {atk: 'high', def: 'high'},
-                    rarity: UC,
-                    gender: female,
-                    pfp: `assets/animeGirl14.jpeg`,
-                    hp: 100,
-                    mp: 100,
-                    str: 1.5,
-                    int: 30,
-                    mpRegen: 10,
-                    skills: ['wildSwing', 'cower', 'wildCharge', 'sparkleSlash'],
-                    armour: {physical: [60, 15], magic: [10, 15]},
-                },
-                { // battle mage
-                    name: `Kohana`,
-                    title: `Archmage`,
-                    description: `Kohana is a veteran archmage who has seen countless battles over the centuries. She weilds high teir attack magic but can also support.`,
-                    personality: 'confident',
-                    stats: {atk: 'high', def: 'low'},
-                    rarity: L,
-                    gender: female,
-                    pfp: `assets/animeGirl27.jpeg`,
-                    hp: 225,
-                    mp: 650,
-                    str: 1,
-                    int: 80,
-                    mpRegen: 75,
-                    skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
-                    armour: {physical: [0, 0], magic: [25, 0]},
-                },
-                { // glass cannon
-                    name: `Natsuki`,
-                    title: `Sword Godess`,
-                    description: `Natsuki is legendary figure among the continent's swordmasters. Rumored to have slain countless gods and deities, her skill with the blade is unrivaled despite being quite fragile`,
-                    personality: 'aloof',
-                    stats: {atk: 'extreme', def: 'none'},
-                    rarity: G,
-                    gender: female,
-                    pfp: `assets/animeGirl10.jpeg`,
-                    hp: 100,
-                    mp: 875,
-                    str: 3,
-                    int: 60,
-                    mpRegen: 125,
-                    skills: ['superiorThrust', 'sevenfoldSlashOfLight', 'swordDance', 'auraSlash', 'godslayerSlash', 'focusAura'],
-                    armour: {physical: [0, 0], magic: [0, 0]},
-                },
-                { // warrior
-                    name: `Yui`,
-                    title: `War Godess`,
-                    description: `Yui is the greatest warrior on the continent, her presence able to change the tide of even the targest wars. Her mythical armor makes her near invulnerable while she mows down entire armies with her longsword.`,
-                    personality: 'arrogant',
-                    stats: {atk: 'high', def: 'high'},
-                    rarity: G,
-                    gender: female,
-                    pfp: `assets/animeGirl38.jpeg`,
-                    hp: 750,
-                    mp: 375,
-                    str: 1.75,
-                    int: 60,
-                    mpRegen: 50,
-                    skills: ['millionSlashes', 'superiorOverheadStrike', 'auraSlash', 'superchargeArmour', 'rallyingCall', 'superiorCounterAttack'],
-                    armour: {physical: [200, 50], magic: [200, 40]},
-                },
-                { // terrorist
-                    name: `T*j`,
-                    title: `The Terrorist`,
-                    description: `Former high school student, T*j was isekaied into the other world as the demon lord. However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
-                    personality: 'chunni',
-                    stats: {atk: 'extreme', def: 'extreme'},
-                    rarity: EX,
-                    gender: female,
-                    pfp: `assets/animeGirl51.jpeg`,
-                    hp: 975,
-                    mp: 1625,
-                    str: 3,
-                    int: 100,
-                    mpRegen: 200,
-                    skills: ['savageTornado', 'machinegun', 'fragGrenade',  'extremeOverheadStrike', 'soulHarvest', 'extremeRaiseGuard'],
-                    armour: {physical: [100, 80], magic: [250, 25]},
-                },
-            ],
+            inventory: [],
+            characters: [],
             team: [],
             discoveredHeroes: [],
             discoveredEmemies: [],
@@ -844,11 +496,11 @@ const data = {
                 cost: 100,
                 attempts: 10,
                 rates: {
-                    itemCharacterBias: 0.8,
+                    itemCharacterBias: 0.75,
                     normal: 0.70,
-                    uncommon: 0.15,
-                    rare: 0.10,
-                    superRare: 0.05,
+                    uncommon: 0.17,
+                    rare: 0.12,
+                    superRare: 0.01,
                     epic: 0,
                     legendary: 0,
                     godly: 0,
@@ -889,8 +541,8 @@ const data = {
                     itemCharacterBias: 0.9,
                     normal: 0.35,
                     uncommon: 0.25,
-                    rare: 0.15,
-                    superRare: 0.15,
+                    rare: 0.20,
+                    superRare: 0.1,
                     epic: 0.05,
                     legendary: 0,
                     godly: 0,
@@ -1007,6 +659,47 @@ const data = {
                 id: 8,
             },
             {
+                name: `Superior Item Card Pack`,
+                cost: 30000,
+                attempts: 10,
+                rates: {
+                    itemCharacterBias: 1,
+                    normal: 0.1,
+                    uncommon: 0.2,
+                    rare: 0.4,
+                    superRare: 0.15,
+                    epic: 0.1,
+                    legendary: 0.04,
+                    godly: 0.01,
+                    ex: 0,
+                },
+                stock: Infinity,
+                duration: Infinity,
+                colour: red,
+                id: 7,
+            },
+            {
+                name: `Superior Hero Card Pack`,
+                cost: 75000,
+                attempts: 5,
+                rates: {
+                    itemCharacterBias: 0,
+                    normal: 0.1,
+                    uncommon: 0.2,
+                    rare: 0.4,
+                    superRare: 0.15,
+                    epic: 0.1,
+                    legendary: 0.05,
+                    godly: 0,
+                    ex: 0,
+                },
+                exp: 50000,
+                stock: Infinity,
+                duration: Infinity,
+                colour: red,
+                id: 8,
+            },
+            {
                 name: `Whale Card Pack`,
                 cost: 10000000,
                 attempts: 1,
@@ -1030,11 +723,16 @@ const data = {
         ],
         progression: 0,
         inBattle: false,
+        battleState: {
+            turn: `player`,
+            wave: 1,
+            enemies: {
+                backline: [],
+                frontline: [],
+            }
+        },
     },
     characters: [
-        /*
-        armour [ignore under, resist percent]
-        */
         { // N
             Abby: { // healer
                 name: `Abby`,
@@ -1055,8 +753,8 @@ const data = {
             },
             Yuki: { // melee dps
                 name: `Yuki`,
-                title: `Knight`,
-                description: `Yuki recently graduated from the kingdom's knight academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`,
+                title: `Warrior`,
+                description: `Yuki recently graduated from the kingdom's swordmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`,
                 personality: 'calm',
                 stats: {atk: 'high', def: 'low'},
                 rarity: N,
@@ -1174,7 +872,7 @@ const data = {
                 name: `Natsuki`,
                 title: `Sword Godess`,
                 description: `Natsuki is mystical figure among the continent's swordmasters. Rumored to have slain countless gods and deities, her skill with the blade is unrivaled despite being quite fragile`,
-                personality: 'aloof',
+                personality: 'calm',
                 stats: {atk: 'extreme', def: 'none'},
                 rarity: G,
                 gender: female,
@@ -1223,10 +921,11 @@ const data = {
                 skills: ['punch', 'bodyslam', 'stare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
-            T_j: { // terrorist
-                name: `T*j`,
-                title: `The Terrorist`,
-                description: `Former high school student, T*j was isekaied into the other world as the demon lord. However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
+            Redacted: { // terrorist
+                name: `[Redacted]`,
+                title: `Terrorist`,
+                description: `Former high school student, [redacted] was isekaied into the other world as the demon lord. 
+                However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
                 personality: 'chunni',
                 stats: {atk: 'extreme', def: 'extreme'},
                 rarity: EX,
@@ -1242,6 +941,47 @@ const data = {
             },
         },
     ],
+    enemies: {
+        goblin: {
+            name: `Goblin`,
+            rarity: N,
+            pfp: `assets/goblin1.jpeg`,
+            hp: [40, 45, 50],
+            mp: [0, 0, 0],
+            str: [0.8, 0.8, 0.85],
+            int: [0, 0, 0],
+            mpRegen: [0, 0, 0],
+            skills: ['hit', 'rapidHit', 'smash'],
+            armour: {physical: [0, 0], magic: [0, 0]},
+            ai: `rng`,
+        },
+        goblinArcher: {
+            name: `Goblin`,
+            rarity: N,
+            pfp: `assets/goblin2.jpeg`,
+            hp: [25],
+            mp: [0],
+            str: [1],
+            int: [0],
+            mpRegen: [0],
+            skills: ['crossbow'],
+            armour: {physical: [0, 0], magic: [0, 0]},
+            ai: `rng`,
+        },
+        goblinWarrior: {
+            name: `Goblin`,
+            rarity: N,
+            pfp: `assets/goblin3.jpeg`,
+            hp: [60, 75],
+            mp: [0, 0],
+            str: [1, 1.1],
+            int: [0, 0],
+            mpRegen: [0, 0],
+            skills: ['hit', 'rapidHit'],
+            armour: {physical: [5, 10], magic: [0, 0]},
+            ai: `rng`,
+        },
+    },
     skills: {
         soulHarvest: {
             name: `Soul Harvest`,
@@ -1890,6 +1630,48 @@ const data = {
             }],
         },
     },
+    enemySkills: {
+        hit: {
+            attackType: `physical`,
+            type: physical,
+            dmg: 20,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 90,
+            attacks: 1,
+        },
+        rapidHit: {
+            attackType: `physical`,
+            type: physical,
+            dmg: 12,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 80,
+            attacks: 3,
+        },
+        smash: {
+            attackType: `physical`,
+            type: physical,
+            dmg: 35,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 10, mp: 0},
+            accuracy: 70,
+            attacks: 1,
+        },
+        crossbow: {
+            attackType: `arrow`,
+            type: physical,
+            dmg: 25,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 0},
+            accuracy: 90,
+            attacks: 1,
+        },
+    },
     items: [
         {
             name: `Crude Health Potion`,
@@ -1908,7 +1690,7 @@ const data = {
             purchacePrice: 0,
             sellable: true,
             sellPrice: 10,
-            quantity: 10,
+            quantity: 1,
             stackSize: Infinity,
         },
         {
@@ -1928,7 +1710,7 @@ const data = {
             purchacePrice: 100,
             sellable: true,
             sellPrice: 25,
-            quantity: 2,
+            quantity: 1,
             stackSize: Infinity,
         },
         {
@@ -2059,8 +1841,383 @@ const data = {
             name: `Goblin Den`,
             outerBac: `assets/DungeonOuter1.jpeg`,
             innerBac: `assets/bronze.png`,
+            waves: [
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 3,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 4,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `goblinArcher`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `big`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 5,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 4,
+                            location: `backline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 2500, chance: 1}, {type: `gold`, quantity: 250, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `frontline`,
+                            drops: {exp: 125, gold: 20},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblinArcher`,
+                            lvl: 0,
+                            quantity: 2,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 0,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 125, gold: 20},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblin`,
+                            lvl: 0,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 100, gold: 10},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 1,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 110, gold: 12},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `goblinArcher`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 20},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblinArcher`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `big`,
+                    enemies: [
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 0,
+                            quantity: 6,
+                            location: `frontline`,
+                            drops: {exp: 125, gold: 20},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblinArcher`,
+                            lvl: 0,
+                            quantity: 4,
+                            location: `backline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 2500, chance: 1}, {type: `gold`, quantity: 250, chance: 1}],
+                },
+                {
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 1,
+                            quantity: 1,
+                            location: `frontline`,
+                            drops: {exp: 150, gold: 25},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.2},
+                        },
+                        {
+                            enemy: `goblin`,
+                            lvl: 1,
+                            quantity: 2,
+                            location: `frontline`,
+                            drops: {exp: 110, gold: 12},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 1,
+                            quantity: 1,
+                            location: `frontline`,
+                            drops: {exp: 150, gold: 25},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.2},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                {
+                    type: `boss`,
+                    enemies: [
+                        {
+                            enemy: `goblin`,
+                            lvl: 2,
+                            quantity: 4,
+                            location: `frontline`,
+                            drops: {exp: 125, gold: 15},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.15},
+                        },
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 1,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 150, gold: 25},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.2},
+                        },
+                        {
+                            enemy: `goblinLord`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 1000, gold: 500},
+                            itemDrops: {item: `midGradeMagicStone`, chance: 0.75},
+                        },
+                        {
+                            enemy: `goblinWarrior`,
+                            lvl: 1,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 150, gold: 25},
+                            itemDrops: {item: `lowGradeMagicStone`, chance: 0.2},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 10000, chance: 1}, {type: `gold`, quantity: 1000, chance: 1}],
+                },
+            ],
+            firstClearReward: [{type: `exp`, quantity: 25000, chance: 1}, {type: `gold`, quantity: 5000, chance: 1}, {type: `item`, quantity: 1, chance: 1, item: `goblinWarHorn`}],
         }
     ],
+    voiceLines: {
+        enemyAppears: {
+            timid: [
+                `The scary [enemy] are attacking!`,
+                `These [enemy] look strong, can we really beat them?`,
+            ],
+            calm: [
+                `The [enemy] are here. Prepare for battle.`,
+                `The [enemy] approach.`,
+            ],
+            confident: [
+                `The [enemy] are here. We can take them!`,
+                `We can beat these [enemy]!`,
+                `These [enemy] don't stand a chance against us!`,
+                `Our victory is assured!`
+            ],
+            arrogant: [
+                `Ah, more fools seeking to challenge me? How predictable.`,
+                `You dare stand before me [enemy]? Prepare to be die!`,
+                `I've faced greater foes in my sleep. This will be over before you know it!`,
+                `[enemy], I hope you're ready to taste defeat!`,
+                `These [enemy] are nothing to me! I can take them!`
+            ],
+            angry: [
+                `Kill the [enemy]! Make them suffer!`,
+            ],
+            chunni: [
+                `[enemy], prepare to be amazed by my power!`,
+                `I walk the line between shadows and chaos. Who dares to stand in my way?`,
+                `In the shadows, I find my strength. Face me, [enemy], and witness true darkness.`,
+            ],
+        },
+        dungeonCleared: {
+            timid: [
+
+            ],
+            calm: [
+
+            ],
+            confident: [
+
+            ],
+            arrogant: [
+
+            ],
+            angry: [
+                
+            ],
+            chunni: [
+
+            ]
+        },
+        bossAppears: {
+            timid: [
+
+            ],
+            calm: [
+
+            ],
+            confident: [
+
+            ],
+            arrogant: [
+
+            ],
+            angry: [
+                
+            ],
+            chunni: [
+                
+            ]
+        },
+        bossDefeated: {
+            timid: [
+
+            ],
+            calm: [
+
+            ],
+            confident: [
+
+            ],
+            arrogant: [
+
+            ],
+            angry: [
+                
+            ],
+            chunni: [
+                
+            ]
+        },
+        bigWaveAppears: {
+            timid: [
+
+            ],
+            calm: [
+
+            ],
+            confident: [
+
+            ],
+            arrogant: [
+
+            ],
+            angry: [
+                
+            ],
+            chunni: [
+                
+            ]
+        },
+    },
+    characterData: {
+        effects: [],
+        exp: 0,
+        level: 1,
+    }
 }
 
 // Loading savegames
@@ -2070,7 +2227,6 @@ var game = {
     keypresses: [],
     mousepos: {x: 0, y: 0},
 };
-//localStorage.removeItem('player');
 
 // Steal Data (get inputs)
 var mousepos = {x:0,y:0};
@@ -2102,14 +2258,25 @@ function tellPos(p){
 };
 window.addEventListener('mousemove', tellPos, false);
 
+function createCharacterCard(character, id=undefined, onClick=undefined) {
+    let title = `<strong>${character.name}</strong>`;
+    let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton" id="rank${character.rarity}Button"`;
+    let desc = `<span id="left"><div id='hpBar'><div id="${id}Hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="barDisplay">${character.hp}</span></span><span id="right"><div id='mpBar'><div id="${id}Mp" class="mpBarInner"></div></div><span id="barDisplay">${character.mp}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
+    return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
+}
+
 function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
     exitFocus();
     replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`);
     game.gamestate.inBattle = true;
     inventory();
+    replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
     resize();
-    console.log('aaa');
+    replacehtml(`playerFrontline`, createCharacterCard(game.gamestate.player.team[0], 'player1'));
+    replacehtml(`playerBackline`, ``);
+    replacehtml(`enemyFrontline`, ``);
+    replacehtml(`enemyBackline`, createCharacterCard(data.enemies.goblinArcher, 'enemy1'));
 }
 
 function rank(n) {
@@ -2146,6 +2313,16 @@ function resize() {
     if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${playButtonPosition}px`;
     let focusWindowSize = display.x - sidebarWidth;
     if (document.getElementById('focus')) document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
+    let battleCardsPosition = ((display.x - sidebarWidth) - 1020) / 2;
+    if (document.getElementById('enemyBackline')) document.getElementById('enemyBackline').style.left = `${battleCardsPosition}px`;
+    if (document.getElementById('enemyFrontline')) document.getElementById('enemyFrontline').style.left = `${battleCardsPosition}px`;
+    if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.left = `${battleCardsPosition}px`;
+    if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.left = `${battleCardsPosition}px`;
+}
+
+function updateBar(id, percent) {
+    if (document.getElementById(id)) document.getElementById(id).style.minWidth = `${percent*60}px`;
+    else console.error(`can not find card id: ${id}`);
 }
 
 function clearData() {
@@ -2313,10 +2490,7 @@ function updateTeam() {
     let buttonGridHtml = ``;
     for (let i = 0; i < 4; i++) {
         if (game.gamestate.player.team[i] != undefined) {
-            let title = `<strong>${game.gamestate.player.team[i].name}</strong>`;
-            let buttonData = `class="smallCharacterButton" id="rank${game.gamestate.player.team[i].rarity}Button"`;
-            let desc = `<span id="left"><img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.team[i].hp}</span><span id="right"><img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.team[i].mp}</span>`;
-            buttonGridHtml += `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.team[i].pfp}" class="characterIcon"></span>${desc}</button>`;
+            buttonGridHtml += createCharacterCard(game.gamestate.player.team[i]);
             canBattle = true;
         } else {
             buttonGridHtml += `<button class="smallCharacterButton"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></button>`;
@@ -2403,6 +2577,21 @@ function startGame() {
         console.log('no save found, creating new player');
         game.gamestate = JSON.parse(JSON.stringify(data.startingGamestate));
     };
+
+    // Give Testing items
+    if (true) {
+        console.log(`Giving Player Debug Items`);
+        for (let i = 0; i < data.items.length; i++) {
+            game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
+            game.gamestate.player.inventory[i].quantity = randint(1,100);
+        }
+        for (let i = 0; i < data.characters.length; i++) {
+            Object.keys(data.characters[i]).forEach(function(key) {
+                game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
+            });
+        }
+    }
+
     home();
 }
 
@@ -2421,7 +2610,6 @@ function home() {
             </div>
             <div id="focusBody">
                 <div id="focusImageContainer">
-                    <img src="assets/animeGirl23.jpeg" class="focusIcon">
                 </div>
                 <span id="focusDescription"></span>
                 <div id="focusStats">
@@ -2467,33 +2655,3 @@ function main() {
 };
 
 console.log('loaded');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-<div id="overlay">
-    <div id="upgradesOverlay">
-    </div>
-    <div id="buttonGrid">
-    </div>
-</div>
-*/
