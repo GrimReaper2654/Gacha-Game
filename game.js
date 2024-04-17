@@ -2570,11 +2570,59 @@ function cardLine(cards, id) {
     return html;
 }
 
-function fillBattle(enemyBack, enemyFront, playerFront, playerBack) {
+function renderCards(enemyBack=game.gamestate.battleState.eb, enemyFront=game.gamestate.battleState.ef, playerFront=game.gamestate.battleState.pf, playerBack=game.gamestate.battleState.pb) {
     replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB'));
     replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF'));
     replacehtml(`playerFrontline`, cardLine(playerFront, 'PF'));
     replacehtml(`playerBackline`, cardLine(playerBack, 'PB'));
+}
+
+function startWave() {
+    let dungeon = data.dungeons[game.gamestate.progression];
+    let eb = game.gamestate.battleState.eb;
+    let ef = game.gamestate.battleState.ef;
+    for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
+        let enemyData = dungeon.waves[game.gamestate.battleState.wave].enemies[i];
+        let enemy = JSON.parse(JSON.stringify(data.enemies[enemyData.enemy]));
+        if (enemy.hp.constructor === Array) enemy.hp = enemy.hp[enemyData.lvl];
+        if (enemy.mp.constructor === Array) enemy.mp = enemy.mp[enemyData.lvl];
+        if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
+        if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
+        if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
+        enemy.rarity = enemyData.lvl;
+        enemy.drops = enemyData.drops;
+        enemy.itemDrops = enemyData.itemDrops;
+        if (enemyData.location == `frontline`) {
+            for (let i = 0; i < enemyData.quantity; i++) ef.push(enemy);
+        } else {
+            for (let i = 0; i < enemyData.quantity; i++) eb.push(enemy);
+        }
+    }
+}
+
+function battle() {
+    console.log(game.gamestate.battleState);
+}
+
+async function runDungeon() {
+    let dungeon = data.dungeons[game.gamestate.progression];
+    let battleState = game.gamestate.battleState;
+    for (battleState.wave; battleState.wave < dungeon.waves.length; battleState.wave++) {
+        startWave();
+        renderCards();
+        battle();
+        while (battleState.ef.length + battleState.eb.length > 0) {
+            /* Kill all enemies
+            game.gamestate.battleState.ef = [];
+            game.gamestate.battleState.eb = [];
+            */
+            await new Promise(resolve => setTimeout(resolve, 250));
+            console.log(`Waiting`);
+        }
+        console.log(`Wave Cleared`);
+        renderCards();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
 }
 
 function startDungeon() {
@@ -2585,32 +2633,13 @@ function startDungeon() {
     inventory();
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
     resize();
-    let eb = game.gamestate.battleState.eb;
-    let ef = game.gamestate.battleState.ef;
-    let pf = game.gamestate.battleState.pf;
-    let pb = game.gamestate.battleState.pb;
+    let battleState = game.gamestate.battleState;
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
-        pb.push(game.gamestate.player.team[i]);
+        battleState.pb.push(game.gamestate.player.team[i]);
     }
     game.gamestate.battleState.wave = 0;
-    for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
-        let enemyData = dungeon.waves[game.gamestate.battleState.wave].enemies[i];
-        let enemy = JSON.parse(JSON.stringify(data.enemies[enemyData.enemy]));
-        if (enemy.hp.constructor === Array) enemy.hp = enemy.hp[enemyData.lvl];
-        if (enemy.mp.constructor === Array) enemy.mp = enemy.mp[enemyData.lvl];
-        if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
-        if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
-        if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
-        enemy.drops = enemyData.drops;
-        enemy.itemDrops = enemyData.itemDrops;
-        if (enemyData.location = `frontline`) {
-            for (let i = 0; i < enemyData.quantity; i++) ef.push(enemy);
-        } else {
-            for (let i = 0; i < enemyData.quantity; i++) eb.push(enemy);
-        }
-    }
-    fillBattle(eb, ef, pf, pb);
     console.log('dungeon started');
+    runDungeon();
 }
 
 function rank(n) {
