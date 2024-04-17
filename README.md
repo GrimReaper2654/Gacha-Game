@@ -4,6 +4,7 @@ My friend (E\*\*\*) was angry since he couldn't get the good character in Honkai
 The protagonist, Eco, eats too much food and falls through spacetime due to his insane density, the godess saves him by sending him ot another world. Eco must defeat the demon lord in order to return to his origional word. Along the way, he will need to gain companions and beat dungeons. (maximum cringe plotline requested by E\*\*\*)
 <br><br>
 Update 1: I despise css.<br>
+Update 2: I despise css more than I thought possible.<br>
 <br>
 <br>
 <br>
