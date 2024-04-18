@@ -745,6 +745,38 @@ body {
     white-space: pre-wrap;
 }
 
+.rank0Button {
+    border-color: rgba(100, 100, 100, 1);
+}
+
+.rank1Button {
+    border-color: rgba(75, 200, 75, 1);
+}
+
+.rank2Button {
+    border-color: rgba(75, 150, 200, 1);
+}
+
+.rank3Button {
+    border-color: rgba(150, 0, 200, 1);
+}
+
+.rank4Button {
+    border-color: rgba(200, 75, 75, 1);
+}
+
+.rank5Button {
+    border-color: rgba(255, 200, 50, 1);
+}
+
+.rank6Button {
+    border-color: rgba(150, 255, 255, 1);
+}
+
+.rank7Button {
+    border-color: rgba(0, 0, 0, 1);
+}
+
 .p {
     margin: 0px;
 }
@@ -802,4 +834,9 @@ body {
     top: -1.5px;
     margin-left: 2px;
     margin-right: 2px;
+}
+
+.selected {
+    box-shadow: 0px 0px 5px 7px rgba(255, 255, 255, 0.8);
+
 }

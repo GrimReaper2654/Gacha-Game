@@ -46,6 +46,10 @@ const multi = 'multi target';
 const aoe = 'area of effect';
 
 // The support functions that might not be necessary
+function print(a) { // GRRRRR snek
+    console.log(a);
+}
+
 function isin(a, b) { // check is a in b
     for (var i = 0; i < b.length; i += 1) {
         if (a == b[i]) {
@@ -821,7 +825,7 @@ const data = {
             },
             Henrietta: { // summoner
                 name: `Henrietta`,
-                title: `Mage`,
+                title: `Spedlord`,
                 description: `Henrietta le Bird is very tall. Way too tall. Also she is a spedlord.`,
                 personality: 'timid',
                 stats: {atk: 'low', def: 'none'},
@@ -833,7 +837,7 @@ const data = {
                 str: 0.75,
                 int: 25,
                 mpRegen: 25,
-                skills: [`slash`, `summonPotato`, `summonChicken`],
+                skills: [`slash`, `summonPotato`, `summonChicken`, `insult`],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
         },
@@ -843,7 +847,7 @@ const data = {
                 title: `The Coward`,
                 description: `Lucy is a nobleman's daughter who enjoys adventuring. However, she is easily frightened by scary monsters despite her expensive equipment.`,
                 personality: 'timid',
-                stats: {atk: 'high', def: 'high'},
+                stats: {atk: 'high', def: 'extreme'},
                 rarity: UC,
                 gender: female,
                 pfp: `assets/animeGirl14.jpeg`,
@@ -853,17 +857,66 @@ const data = {
                 int: 30,
                 mpRegen: 10,
                 skills: ['wildSwing', 'cower', 'wildCharge', 'sparkleSlash'],
-                armour: {physical: [0, 0], magic: [0, 0]},
+                armour: {physical: [20, 50], magic: [20, 50]},
             },
         },
         { // R
-
+            Anonymous: { // debuffer
+                name: `Anonymous`,
+                title: `Positron Lord`,
+                description: `Former high school student, Anonymous135 quantum tunneled her way into the other world usilising her extensive knowledge of the standard model. She hates the demon lord with a burning passion as the demons don't obey the laws of physics`,
+                personality: 'calm',
+                stats: {atk: 'high', def: 'medium'},
+                rarity: R,
+                gender: female,
+                pfp: `assets/animeGirl54.jpeg`,
+                hp: 150,
+                mp: 200,
+                str: 1.25,
+                int: 90,
+                mpRegen: 40,
+                skills: [`positronRay`,`analysis`,`gravityBind`,`lecture`],
+                armour: {physical: [10, 25], magic: [25, 35]},
+            },
         },
         { // SR
-
+            Borude: { // summoner
+                name: `Borude`,
+                title: `Monke Trainer`,
+                description: `Borude has become one with nature, gaining the power to command monkeys. She wishes to defeat the demon lord, as the demons are destroying the habitats of her monkeys.`,
+                personality: 'confident',
+                stats: {atk: 'low', def: 'none'},
+                rarity: SR,
+                gender: female,
+                pfp: `assets/animeGirl55.jpeg`,
+                hp: 220,
+                mp: 200,
+                str: 1.5,
+                int: 30,
+                mpRegen: 0,
+                skills: [],
+                armour: {physical: [0, 0], magic: [0, 0]},
+            },
+            Ed: { // support
+                name: `Ed`,
+                title: `Drug Dealer`,
+                description: `Former chemist and part time drug dealer, Ed broke through reality to reach the other world by synthesising a compound with negative molar mass. Now he synthesises his drugs with alchemy and deals meth in the other world, where there are no pesky poice to ruin his business. However, the return of the demon king has negatively affected his profits, so the demon lord must die.`,
+                personality: 'angry',
+                stats: {atk: 'low', def: 'low'},
+                rarity: SR,
+                gender: female,
+                pfp: `assets/animeGirl56.jpeg`,
+                hp: 220,
+                mp: 220,
+                str: 1,
+                int: 75,
+                mpRegen: 50,
+                skills: [],
+                armour: {physical: [5, 10], magic: [5, 10]},
+            },
         },
         { // E
-            pi_thagoreas: { // whale
+            Pi_thagoreas: { // summoner
                 name: `π-thagoreas`,
                 title: `Chicken Farmer`,
                 description: `Born and raised on on a rural farm, π-thagoreas grew up as a talented chicken farmer, ruling over several chicken pens and over 300 chickens. When the demon lord attacked, π-thagoreas was driven out of her hometown, her chicken pens destroyed. Swaering revenge against the evil demons, π-thagoreas is willing to do anything to kill the demon lord.`,
@@ -957,8 +1010,7 @@ const data = {
             Redacted: { // terrorist
                 name: `[Redacted]`,
                 title: `Terrorist`,
-                description: `Former high school student, [redacted] was isekaied into the other world as the demon lord. 
-                However, she is obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
+                description: `Former high school student, [redacted] was isekaied into the other world as the demon lord. Despite being gender bent, she is still obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
                 personality: 'chunni',
                 stats: {atk: 'extreme', def: 'extreme'},
                 rarity: EX,
@@ -1083,6 +1135,19 @@ const data = {
         },
     },
     skills: {
+        positronRay: {
+            name: `Positron Ray`,
+            desc: `[attacker] launches a concentrated ray of positrons at the targeted enemy.`,
+            attackType: `beam`,
+            type: piercing,
+            targeting: single,
+            dmg: 1,
+            multiplier: str,
+            effects: [],
+            cost: {hp: 0, mp: 10},
+            accuracy: 90,
+            attacks: 10,
+        },
         peck: {
             name: `Peck`,
             desc: `[attacker] pecks the targeted enemy.`,
@@ -1123,7 +1188,7 @@ const data = {
             attacks: 1,
         },
         slash: {
-            name: `Sword Slash`,
+            name: `Slash`,
             desc: `[attacker] shashes at the targeted enemy, inflicing damage (hopefully).`,
             attackType: `physical`,
             type: physical,
@@ -1566,6 +1631,82 @@ const data = {
                 },
             ],
         },
+        lecture: {
+            name: `Lecture`,
+            desc: `[attacker] enlightens all allies on the weaknesses of their enemies, increasing their attack power for 3 rounds.`,
+            attackType: `buff`,
+            type: normal,
+            targeting: aoe,
+            dmg: 0,
+            multiplier: none,
+            effects: [],
+            cost: {hp: 0, mp: 100},
+            accuracy: Infinity,
+            exec: `
+            for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                game.gamestate.player.team[i].effects.push({id: 'atk', lvl: 0.25, duration: 3});
+            }
+            `,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `clock.png`,
+                    desc: `lasts 3 rounds`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `25% extra attack damage to all allies`,
+                },
+            ],
+        },
+        analysis: {
+            name: `Analyse Enemy`,
+            desc: `[attacker] analyses the targeted enemy, revealing their weaknesses.`,
+            attackType: `buff`,
+            type: normal,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'def', lvl: [0, -25], duration: 5}, {id: 'mdef', lvl: [0, -25], duration: 5}],
+            cost: {hp: 0, mp: 50},
+            accuracy: Infinity,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `clock.png`,
+                    desc: `lasts 5 rounds`,
+                },
+                {
+                    icon: `explode.png`,
+                    desc: `take 25% more damage from all attacks`,
+                },
+            ],
+            preventDefault: true,
+        },
+        gravityBind: {
+            name: `Gravity Bind`,
+            desc: `[attacker] slows the targeted enemy by increasing the gravitational field strength around them, making them deal less damage.`,
+            attackType: `buff`,
+            type: normal,
+            targeting: single,
+            dmg: 0,
+            multiplier: none,
+            effects: [{id: 'atk', lvl: -0.5, duration: 1}],
+            cost: {hp: 0, mp: 125},
+            accuracy: Infinity,
+            attacks: 1,
+            extraStats: [
+                {
+                    icon: `clock.png`,
+                    desc: `lasts 1 rounds`,
+                },
+                {
+                    icon: `lightning.png`,
+                    desc: `deal 50% less damage`,
+                },
+            ],
+            preventDefault: true,
+        },
         brag: {
             name: `Brag`,
             desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
@@ -1575,6 +1716,19 @@ const data = {
             dmg: 0,
             multiplier: int,
             effects: [{id: 'dot', lvl: 10, duration: 3}],
+            cost: {hp: 0, mp: 5},
+            accuracy: 100,
+            attacks: 1,
+        },
+        insult: {
+            name: `Insult`,
+            desc: `[attacker] insults the targeted enemy, calling them a spedlord. The targeted enemy will take more damage but hit harder`,
+            attackType: `sound`,
+            type: piercing,
+            targeting: single,
+            dmg: 10,
+            multiplier: int,
+            effects: [{id: 'def', lvl: [-10, -25], duration: 5}, {id: 'atk', lvl: 0.5, duration: 5}],
             cost: {hp: 0, mp: 5},
             accuracy: 100,
             attacks: 1,
@@ -2514,6 +2668,7 @@ const data = {
         effects: [],
         exp: 0,
         level: 1,
+        ap: 1,
     }
 }
 
@@ -2557,24 +2712,24 @@ window.addEventListener('mousemove', tellPos, false);
 
 function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
-    let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton" id="rank${character.rarity}Button"`;
+    let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}Hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="barDisplay">${character.hp}</span></span><span id="right"><div id='mpBar'><div id="${id}Mp" class="mpBarInner"></div></div><span id="barDisplay">${character.mp}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
     return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
 }
 
-function cardLine(cards, id) {
+function cardLine(cards, pos, onClick) {
     html = ``;
     for (let i = 0; i < cards.length; i++) {
-        html += createCharacterCard(cards[i], `${id}+${i}`);
+        html += createCharacterCard(cards[i], `${pos}${i}ID`, `${onClick}('${pos}${i}ID')`);
     }
     return html;
 }
 
-function renderCards(enemyBack=game.gamestate.battleState.eb, enemyFront=game.gamestate.battleState.ef, playerFront=game.gamestate.battleState.pf, playerBack=game.gamestate.battleState.pb) {
-    replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB'));
-    replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF'));
-    replacehtml(`playerFrontline`, cardLine(playerFront, 'PF'));
-    replacehtml(`playerBackline`, cardLine(playerBack, 'PB'));
+function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.gamestate.battleState.eb, enemyFront=game.gamestate.battleState.ef, playerFront=game.gamestate.battleState.pf, playerBack=game.gamestate.battleState.pb) {
+    replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB', eOnClick));
+    replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF', eOnClick));
+    replacehtml(`playerFrontline`, cardLine(playerFront, 'PF', pOnClick));
+    replacehtml(`playerBackline`, cardLine(playerBack, 'PB', pOnClick));
 }
 
 function startWave() {
@@ -2600,14 +2755,58 @@ function startWave() {
     }
 }
 
-function battle() {
+function selectCard(id) {
+    let row = id.slice(0, 2);
+    let pos = id.slice(2, -2);
+    return game.gamestate.battleState[row.toLowerCase()][pos];
+}
+
+function selectAction(id) {
+    let card = selectCard(id);
+    console.log(card);
+    let cardHtml = document.getElementById(id);
+    print(id);
+    print(cardHtml.className);
+    for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
+        print(`${id.slice(0, 2)}${i}ID`);
+        document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
+    }
+    for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
+        document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
+    }
+    cardHtml.className += ` selected`;
+    //.slice(0, 2)
+
+}
+
+async function battle() {
+    let battleState = game.gamestate.battleState;
     console.log(game.gamestate.battleState);
+    let prev = battleState.turn;
+    while (game.gamestate.inBattle) {
+        switch(battleState.turn) {
+            case `player`:
+                renderCards(`selectAction`);
+                break;
+            case `enemy`:
+                renderCards();
+                break;
+            case `effects`:
+                renderCards();
+                break;
+        }
+        while (battleState.turn == prev) {
+            await new Promise(resolve => setTimeout(resolve, 250));
+            console.log(`Battle: Waiting`);
+        }
+    }
 }
 
 async function runDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
     let battleState = game.gamestate.battleState;
     for (battleState.wave; battleState.wave < dungeon.waves.length; battleState.wave++) {
+        battleState.turn = `player`; // player always gets first move
         startWave();
         renderCards();
         battle();
@@ -2616,12 +2815,13 @@ async function runDungeon() {
             game.gamestate.battleState.ef = [];
             game.gamestate.battleState.eb = [];
             */
-            await new Promise(resolve => setTimeout(resolve, 250));
-            console.log(`Waiting`);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            console.log(`Dungeon: Waiting`);
         }
         console.log(`Wave Cleared`);
         renderCards();
         await new Promise(resolve => setTimeout(resolve, 1000));
+        // Do a wave cleared animation or something
     }
 }
 
@@ -2629,15 +2829,16 @@ function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
     exitFocus();
     replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`);
-    game.gamestate.inBattle = true;
     inventory();
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
-    resize();
     let battleState = game.gamestate.battleState;
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         battleState.pb.push(game.gamestate.player.team[i]);
     }
+    game.gamestate.inBattle = true;
     game.gamestate.battleState.wave = 0;
+    resize();
+    inventory();
     console.log('dungeon started');
     runDungeon();
 }
