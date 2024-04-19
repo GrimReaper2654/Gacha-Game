@@ -204,6 +204,10 @@ body {
     font-size: 20px;
 }
 
+.smallerFont {
+    font-size: 15px;
+}
+
 .itemIcon {
     width: 120px;
     height: 120px;
@@ -622,37 +626,37 @@ body {
     z-index: 2;
 }
 
-#greyButton {
-    color: rgba(150, 150, 150, 1);
+.greyButton {
+    color: rgba(200, 200, 200, 1);
     background-color: rgba(75, 75, 75, 1);
 }
 
-#redButton {
+.redButton {
     color: rgba(225, 50, 50, 1);
     background-color: rgba(150, 25, 25, 1);
     /*background-image: url(assets/ruby.png);*/
 }
 
-#bronzeButton {
+.bronzeButton {
     color: rgba(220, 160, 90, 1);
     background-color: rgba(170, 110, 60, 1);
     /*background-image: url(assets/bronze.png);*/
 }
 
-#silverButton {
+.silverButton {
     color: rgba(225, 225, 225, 1);
     background-color: rgba(175, 175, 175, 1);
     /*background-image: url(assets/silver.png);*/
 }
 
-#goldButton {
+.goldButton {
     color: rgba(250, 200, 100, 1);
     background-color: rgba(200, 150, 0, 1);
     /*background-image: url(assets/gold.png);*/
 }
 
-#blackButton {
-    color: rgba(75, 75, 75, 1);
+.blackButton {
+    color: rgba(125, 125, 125, 1);
     background-color: rgba(10, 10, 10, 1);
     /*background-image: url(assets/black.png);*/
 }

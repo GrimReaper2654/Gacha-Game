@@ -1685,7 +1685,7 @@ const data = {
         },
         gravityBind: {
             name: `Gravity Bind`,
-            desc: `[attacker] slows the targeted enemy by increasing the gravitational field strength around them, making them deal less damage.`,
+            desc: `[attacker] weakens the targeted enemy by increasing the gravitational field strength around them.`,
             attackType: `buff`,
             type: normal,
             targeting: single,
@@ -2775,8 +2775,16 @@ function selectAction(id) {
         document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
     }
     cardHtml.className += ` selected`;
-    //.slice(0, 2)
+    skills(card);
+}
 
+function useSkill(skillId) {
+    let skill = data.skills[skillId];
+    print(`skill selected`);
+    print(skill);
+    document.getElementById(`buttonGridInventory`).innerHTML = document.getElementById(`buttonGridInventory`).innerHTML.replace(` selected`, ``);
+    document.getElementById(skill.name).className += ` selected`;
+    
 }
 
 async function battle() {
@@ -3076,7 +3084,7 @@ function pull() {
     for (let i = 0; i < game.gamestate.pulls.length; i++) {
         let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
         let desc = `$${game.gamestate.pulls[i].cost}`;
-        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
+        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton ${game.gamestate.pulls[i].colour}Button"`;
         buttonGridHtml += `<button ${buttonData}><p>${title}<br>${desc}</p></button>`;
     }
     console.log(buttonGridHtml);
@@ -3095,6 +3103,21 @@ function inventory() {
 
         let buttonData = `${game.gamestate.inBattle ? `onclick="useItem(${i})"` : `onclick="focusItem(${i})"`} class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
         buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p>${game.gamestate.player.inventory[i].quantity > 1 ? `<div id="cornerIcon"><span id="down">${game.gamestate.player.inventory[i].quantity > 99 ? `99+`: game.gamestate.player.inventory[i].quantity}</span></div></button>` : ``}</span>`;
+    }
+    console.log(buttonGridHtml);
+    replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
+}
+
+function skills(card) {
+    console.log('skills');
+    replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
+    replacehtml(`money`, `<span><strong>${card.name}</strong></span>`);
+    let buttonGridHtml = ``;
+    for (let i = 0; i < card.skills.length; i++) {
+        let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
+        let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female ? `her` : `his`)}<br><img src="assets/lightning.png" class="smallIcon"> ${data.skills[card.skills[i]].dmg} × ${data.skills[card.skills[i]].attacks}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${data.skills[card.skills[i]].cost.hp ? `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
+        let buttonData = `onclick="useSkill('${card.skills[i]}')" id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
+        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
