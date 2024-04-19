@@ -6,6 +6,7 @@ The protagonist, Eco, eats too much food and falls through spacetime due to his 
 Update 1: I despise css.<br>
 Update 2: I despise css more than I thought possible.<br>
 Update 3: Grim4Reaper has joined the project.<br>
+Update 4: Combat is still not done. Also, I hate css.<br>
 <br>
 <br>
 <br>
