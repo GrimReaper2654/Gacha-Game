@@ -38,6 +38,15 @@ body {
     top: 0px;
     left: 0px;
     z-index: 1;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+#main {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
 }
 
 #bacImg {
@@ -333,6 +342,7 @@ body {
     overflow: hidden;
     display: inline-block;
     vertical-align:top;
+    z-index: 1;
 }
 
 #teamContainer {
@@ -352,6 +362,7 @@ body {
     top: calc(100vh - 320px);
     margin: 0px;
     padding: 0px;
+    z-index: 1;
 }
 
 #buyButton {
@@ -433,7 +444,7 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     overflow-y: auto;
-    z-index: 99;
+    z-index: 9999;
 }
 
 #focusTopRow {

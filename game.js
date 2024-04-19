@@ -44,6 +44,8 @@ const black = 'black';
 const single = 'single target';
 const multi = 'multi target';
 const aoe = 'area of effect';
+const selfOnly = 'affects self only';
+const summon = 'summon';
 
 // The support functions that might not be necessary
 function print(a) { // GRRRRR snek
@@ -734,6 +736,7 @@ const data = {
             ef: [],
             pf: [],
             pb: [],
+            tempStorage: {},
         },
     },
     characters: [
@@ -837,7 +840,7 @@ const data = {
                 str: 0.75,
                 int: 25,
                 mpRegen: 25,
-                skills: [`slash`, `summonPotato`, `summonChicken`, `insult`],
+                skills: [`punch`, `summonPotato`, `summonChicken`, `insult`],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
         },
@@ -897,10 +900,10 @@ const data = {
                 skills: [],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
-            Ed: { // support
-                name: `Ed`,
+            Edwarda: { // support
+                name: `Edwarda`,
                 title: `Drug Dealer`,
-                description: `Former chemist and part time drug dealer, Ed broke through reality to reach the other world by synthesising a compound with negative molar mass. Now he synthesises his drugs with alchemy and deals meth in the other world, where there are no pesky poice to ruin his business. However, the return of the demon king has negatively affected his profits, so the demon lord must die.`,
+                description: `Former chemist and part time drug dealer, Edwarda broke through reality to reach the other world by synthesising a compound with negative molar mass. Now she synthesises her drugs with alchemy and deals meth in the other world, where there are no pesky poice to ruin her business. However, the return of the demon king has negatively affected her profits, so the demon lord must die.`,
                 personality: 'angry',
                 stats: {atk: 'low', def: 'low'},
                 rarity: SR,
@@ -1193,7 +1196,7 @@ const data = {
             attackType: `physical`,
             type: physical,
             targeting: single,
-            dmg: 12,
+            dmg: 15,
             multiplier: str,
             effects: [],
             cost: {hp: 0, mp: 0},
@@ -1374,6 +1377,7 @@ const data = {
             desc: `[attacker] raises [pronoun] guard, reducing damage from all attacks in the next round.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [15, 5], duration: 1}],
@@ -1387,6 +1391,7 @@ const data = {
             desc: `[attacker] raises [pronoun] guard, greatly reducing damage in the next 2 rounds.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [100, 10], duration: 2}, {id: 'mdef', lvl: [100, 25], duration: 2}],
@@ -1400,6 +1405,7 @@ const data = {
             desc: `[attacker] gathers the aura within [pronoun], drasticly increasing all stats for 3 rounds.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [100, 75], duration: 3}, {id: 'mdef', lvl: [0, 75], duration: 3}, {id: 'atk', lvl: 1, duration: 5}, {id: 'mreg', lvl: 50, duration: 5}],
@@ -1413,19 +1419,20 @@ const data = {
             desc: `[attacker] cowers in fear, channeling mana into [pronoun] armour to reist more damage.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [15, 10], duration: 1}],
             cost: {hp: 0, mp: 25},
             accuracy: Infinity,
             attacks: 1,
-            selfOnly: true,
         },
         superchargeArmour: {
             name: `Strengthen Armour`,
             desc: `[attacker] channeling mana into [pronoun] armour to reist more damage for 5 rounds.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [50, 10], duration: 5}],
@@ -1439,6 +1446,7 @@ const data = {
             desc: `[attacker] reduces all damage taken in the next round, and counteratacks with 150% power against the next enemy to attack [pronoun] at melee range.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [0, 5], duration: 1}, {id: 'counter', lvl: 1.5, duration: 1}],
@@ -1452,6 +1460,7 @@ const data = {
             desc: `[attacker] reduces all damage taken in the next 3 rounds, and counteratacks with 150% power against the next 3 enemy to attack [pronoun] at melee range.`,
             attackType: `buffDefence`,
             type: normal,
+            targeting: selfOnly,
             dmg: 0,
             multiplier: none,
             effects: [{id: 'def', lvl: [50, 10], duration: 3}, {id: 'counter', lvl: 1.5, duration: 3}],
@@ -1934,7 +1943,7 @@ const data = {
             desc: `[attacker] summons a potato. IDK what it does.`,
             attackType: `summon`,
             type: physical,
-            targeting: single,
+            targeting: summon,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -1961,7 +1970,7 @@ const data = {
             desc: `[attacker] summons a chicken to help fight.`,
             attackType: `summon`,
             type: physical,
-            targeting: single,
+            targeting: summon,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -1992,7 +2001,7 @@ const data = {
             desc: `[attacker] summons a flock of chickens to help fight.`,
             attackType: `summon`,
             type: physical,
-            targeting: single,
+            targeting: summon,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -2023,7 +2032,7 @@ const data = {
             desc: `[attacker] summons a rooster to help fight.`,
             attackType: `summon`,
             type: physical,
-            targeting: single,
+            targeting: summon,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -2054,7 +2063,7 @@ const data = {
             desc: `[attacker] summons a Pheonix, the penultimate form of the chicken, to help fight.`,
             attackType: `summon`,
             type: physical,
-            targeting: single,
+            targeting: summon,
             dmg: 0,
             multiplier: none,
             effects: [],
@@ -2668,7 +2677,7 @@ const data = {
         effects: [],
         exp: 0,
         level: 1,
-        ap: 1,
+        ap: 0,
     }
 }
 
@@ -2761,12 +2770,14 @@ function selectCard(id) {
     return game.gamestate.battleState[row.toLowerCase()][pos];
 }
 
+function simulateSkill(user, skill, target=undefined) {
+
+}
+
 function selectAction(id) {
     let card = selectCard(id);
-    console.log(card);
+    if (!card.ap) return;
     let cardHtml = document.getElementById(id);
-    print(id);
-    print(cardHtml.className);
     for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
         print(`${id.slice(0, 2)}${i}ID`);
         document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
@@ -2775,17 +2786,35 @@ function selectAction(id) {
         document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
     }
     cardHtml.className += ` selected`;
+    game.gamestate.battleState.tempStorage.activeCardId = id;
     skills(card);
 }
 
-function useSkill(skillId) {
+function selectTarget(id) {
+    let targetedCard = selectCard(id);
+    let activeCard = selectCard(game.gamestate.battleState.tempStorage.activeCardId);
+    let skillUsed = data.skills[game.gamestate.battleState.tempStorage.skillId];
+    print(targetedCard);
+    print(activeCard);
+    print(skillUsed);
+    
+    game.gamestate.battleState.tempStorage = {};
+    renderCards(`selectAction`);
+}
+
+function useSkill(skillId=undefined) {
     let skill = data.skills[skillId];
     print(`skill selected`);
     print(skill);
     document.getElementById(`buttonGridInventory`).innerHTML = document.getElementById(`buttonGridInventory`).innerHTML.replace(` selected`, ``);
     document.getElementById(skill.name).className += ` selected`;
-    
-}
+    if (skill.targeting == selfOnly || skill.targeting == summon) {
+        simulateSkill(selectCard(game.gamestate.battleState.tempStorage.activeCardId), skill);
+    } else {
+        game.gamestate.battleState.tempStorage.skillId = skillId;
+        renderCards(`selectTarget`, `selectTarget`);
+    }
+}   
 
 async function battle() {
     let battleState = game.gamestate.battleState;
@@ -2795,6 +2824,9 @@ async function battle() {
         switch(battleState.turn) {
             case `player`:
                 renderCards(`selectAction`);
+                for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                    game.gamestate.player.team[i].ap = 1;
+                }
                 break;
             case `enemy`:
                 renderCards();
@@ -2836,7 +2868,10 @@ async function runDungeon() {
 function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
     exitFocus();
-    replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`);
+    replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`); // battle screen is in background as it can be scrolled
+    replacehtml(`main`, ``);
+    // scroll the page to centre the battle
+    document.getElementById(`bac`).scrollLeft = 185;
     inventory();
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
     let battleState = game.gamestate.battleState;
@@ -2879,13 +2914,14 @@ function resize() {
     let sidebarWidth = Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
     if (game.gamestate.inBattle) sidebarWidth = 370;
     document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
+    document.getElementById('bac').style['max-width'] = `${display.x - sidebarWidth}px`;
     let teamPosition = ((display.x - sidebarWidth) - 685) / 2;
     if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${teamPosition}px`;
     let playButtonPosition = ((display.x - sidebarWidth) - 200) / 2;
     if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${playButtonPosition}px`;
     let focusWindowSize = display.x - sidebarWidth;
     if (document.getElementById('focus')) document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
-    let battleCardsPosition = ((display.x - sidebarWidth) - 1020) / 2;
+    let battleCardsPosition = (display.x - 1020) / 2;
     if (document.getElementById('enemyBackline')) document.getElementById('enemyBackline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('enemyFrontline')) document.getElementById('enemyFrontline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.left = `${battleCardsPosition}px`;
@@ -3108,19 +3144,25 @@ function inventory() {
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
 }
 
-function skills(card) {
-    console.log('skills');
-    replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
-    replacehtml(`money`, `<span><strong>${card.name}</strong></span>`);
-    let buttonGridHtml = ``;
-    for (let i = 0; i < card.skills.length; i++) {
-        let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
-        let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female ? `her` : `his`)}<br><img src="assets/lightning.png" class="smallIcon"> ${data.skills[card.skills[i]].dmg} × ${data.skills[card.skills[i]].attacks}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${data.skills[card.skills[i]].cost.hp ? `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
-        let buttonData = `onclick="useSkill('${card.skills[i]}')" id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
-        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
+function skills(card=undefined) {
+    if (card) {
+        console.log('skills');
+        replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
+        replacehtml(`money`, `<span><strong>${card.name}</strong></span>`);
+        let buttonGridHtml = ``;
+        for (let i = 0; i < card.skills.length; i++) {
+            let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
+            let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female ? `her` : `his`)}<br><img src="assets/lightning.png" class="smallIcon"> ${data.skills[card.skills[i]].dmg} × ${data.skills[card.skills[i]].attacks}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${data.skills[card.skills[i]].cost.hp ? `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
+            let buttonData = `onclick="useSkill('${card.skills[i]}')" id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
+            buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
+        }
+        console.log(buttonGridHtml);
+        replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
+    } else {
+        replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
+        replacehtml(`money`, `<span>Select Card</span>`);
+        replacehtml(`grid`, `<div id="buttonGridInventory"></div>`);
     }
-    console.log(buttonGridHtml);
-    replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
 }
 
 function characters() {
@@ -3185,7 +3227,9 @@ function startGame() {
 function home() {
     homePage = `
     <span id="bac">
-        <img src="${data.dungeons[game.gamestate.progression].outerBac}" id="bacImg">
+            <img src="${data.dungeons[game.gamestate.progression].outerBac}" id="bacImg"> 
+    </span>
+    <span id="main">
         <div id="playButton"></div>
         <div id="teamSelection"></div>
         <div id="focus">
