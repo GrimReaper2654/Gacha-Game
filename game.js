@@ -2771,7 +2771,8 @@ function selectCard(id) {
 }
 
 function simulateSkill(user, skill, target=undefined) {
-
+    console.log('skill used');
+    
 }
 
 function selectAction(id) {
@@ -2799,6 +2800,7 @@ function selectTarget(id) {
     print(skillUsed);
     
     game.gamestate.battleState.tempStorage = {};
+    simulateSkill(activeCard, skillUsed, targetedCard);
     renderCards(`selectAction`);
 }
 
