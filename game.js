@@ -24,7 +24,7 @@ const int = 'int';
 const hp = 'hp';
 const mp = 'mp';
 
-const none = 'none';
+const none = false;
 
 const physical = 'physical';
 const magic = 'magic';
@@ -50,7 +50,7 @@ const summon = 'summon';
 // The support functions that might not be necessary
 function print(a) { // GRRRRR snek
     console.log(a);
-}
+};
 
 function isin(a, b) { // check is a in b
     for (var i = 0; i < b.length; i += 1) {
@@ -89,7 +89,7 @@ function randint(min, max, notequalto=false) {
     } while (notequalto && (gen === min || gen === max));
     
     return gen;
-}
+};
 
 function replacehtml(element, text) {
     document.getElementById(element).innerHTML = text;
@@ -393,7 +393,7 @@ function rect(coords, size, style, absolute=false, canvas='main') {
     ctx.lineWidth = style.stroke.width*data.constants.zoom;
     ctx.strokeStyle = style.stroke.colour;
     ctx.stroke();
-}
+};
 
 function renderBar(centre, shift, size, value, increments, padding, spacing, bgStyle, fillStyle) {
     let vPadding = {x: padding, y: padding};
@@ -1021,7 +1021,7 @@ const data = {
                 pfp: `assets/animeGirl51.jpeg`,
                 hp: 975,
                 mp: 1625,
-                str: 3,
+                str: 2,
                 int: 100,
                 mpRegen: 200,
                 skills: ['savageTornado', 'machinegun', 'fragGrenade',  'extremeOverheadStrike', 'soulHarvest', 'extremeRaiseGuard'],
@@ -2679,7 +2679,7 @@ const data = {
         level: 1,
         ap: 0,
     }
-}
+};
 
 // Loading savegames
 var game = {
@@ -2722,58 +2722,124 @@ window.addEventListener('mousemove', tellPos, false);
 function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
-    let desc = `<span id="left"><div id='hpBar'><div id="${id}Hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="barDisplay">${character.hp}</span></span><span id="right"><div id='mpBar'><div id="${id}Mp" class="mpBarInner"></div></div><span id="barDisplay">${character.mp}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
+    let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${character.hp}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${character.mp}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
     return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
-}
+};
 
 function cardLine(cards, pos, onClick) {
     html = ``;
     for (let i = 0; i < cards.length; i++) {
-        html += createCharacterCard(cards[i], `${pos}${i}ID`, `${onClick}('${pos}${i}ID')`);
+        cards[i].id = `${pos}${i}ID`;
+        html += createCharacterCard(cards[i], `${pos}${i}ID`, onClick? `${onClick}('${pos}${i}ID')`: ``);
     }
     return html;
-}
+};
 
 function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.gamestate.battleState.eb, enemyFront=game.gamestate.battleState.ef, playerFront=game.gamestate.battleState.pf, playerBack=game.gamestate.battleState.pb) {
     replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB', eOnClick));
     replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF', eOnClick));
     replacehtml(`playerFrontline`, cardLine(playerFront, 'PF', pOnClick));
     replacehtml(`playerBackline`, cardLine(playerBack, 'PB', pOnClick));
-}
-
-function startWave() {
-    let dungeon = data.dungeons[game.gamestate.progression];
-    let eb = game.gamestate.battleState.eb;
-    let ef = game.gamestate.battleState.ef;
-    for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
-        let enemyData = dungeon.waves[game.gamestate.battleState.wave].enemies[i];
-        let enemy = JSON.parse(JSON.stringify(data.enemies[enemyData.enemy]));
-        if (enemy.hp.constructor === Array) enemy.hp = enemy.hp[enemyData.lvl];
-        if (enemy.mp.constructor === Array) enemy.mp = enemy.mp[enemyData.lvl];
-        if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
-        if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
-        if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
-        enemy.rarity = enemyData.lvl;
-        enemy.drops = enemyData.drops;
-        enemy.itemDrops = enemyData.itemDrops;
-        if (enemyData.location == `frontline`) {
-            for (let i = 0; i < enemyData.quantity; i++) ef.push(enemy);
-        } else {
-            for (let i = 0; i < enemyData.quantity; i++) eb.push(enemy);
+    // updateBar(id, percent)
+    /*
+    let toUpdate = ['eb', 'ef', 'pb', 'pf'];
+    for (let i = 0; i < toUpdate.length; i++) {
+        for (let j = 0; j < game.gamestate.battleState[toUpdate[i]].length; j++) {
+            game.gamestate.battleState[toUpdate[i]][j]
         }
+    }*/
+};
+
+async function changeStat(target, effect) {
+    let final = Math.floor(target[effect.stat] + effect.change);
+    print(`final ${final}`);                                                                                                                                                                            
+    let time = 1000;
+    let steps = 20;
+    console.log(target);
+    for (let i = 0; i < steps; i++) {
+        target[effect.stat] += effect.change/steps;
+        updateBar(target.id+effect.stat, target[effect.stat]/target[effect.stat+'Max'], Math.floor(target[effect.stat]));
+        console.log(target[effect.stat]/target[effect.stat+'Max']);
+        await new Promise(resolve => setTimeout(resolve, time/steps));
     }
-}
+    let position = readID(target.id);
+    console.log(position);
+    console.log(game.gamestate.battleState[position.row][position.pos]);
+    game.gamestate.battleState[position.row][position.pos][effect.stat] = final // remove any possible floating point errors (should not be necessary)
+    console.log(game.gamestate.battleState[position.row][position.pos][effect.stat]);
+};
+
+function readID(id) {
+    return {
+        row: id.slice(0, 2).toLowerCase(),
+        pos: parseInt(id.slice(2, 3))
+    };
+};
 
 function selectCard(id) {
     let row = id.slice(0, 2);
     let pos = id.slice(2, -2);
     return game.gamestate.battleState[row.toLowerCase()][pos];
+};
+
+function calcResistance(dmgType, dmg, target) {
+    switch (dmgType) {
+        case magic:
+            return (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100;
+        case physical:
+            return (dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100;
+        case piercing:
+            return dmg;
+        case normal:
+            return Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100);
+    }
 }
+
+function simulateSingleTargetAttack(user, skill, target) {
+    let dmg = skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg;
+    changeStat(target, {stat: 'hp', change: -dmg});
+    print(`damage ${dmg}`);
+    return dmg;
+};
 
 function simulateSkill(user, skill, target=undefined) {
     console.log('skill used');
-    
-}
+    changeStat(user, {stat: 'hp', change: -skill.cost.hp});
+    changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
+    switch (skill.targeting) {
+        case aoe:
+            if (target.id[0] == 'e') { // target is enemy team
+                for (let i = 0; i < game.gamestate.battleState.ef; i++) {
+                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.ef[i]);
+                }
+                for (let i = 0; i < game.gamestate.battleState.eb; i++) {
+                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.eb[i]);
+                }
+            } else { // target is player team
+                for (let i = 0; i < game.gamestate.battleState.pf; i++) {
+                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.pf[i]);
+                }
+                for (let i = 0; i < game.gamestate.battleState.pb; i++) {
+                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.pb[i]);
+                }
+            }
+            break;
+        case multi:
+            let attempts = skill.attacks;
+            skill.attacks = 1;
+            for (let i = 0; i < attempts; i++) {
+                simulateSingleTargetAttack(user, skill, target);
+            }
+            break;
+        case single:
+            simulateSingleTargetAttack(user, skill, target);
+            break;
+        case summon:
+            break;
+        default:
+            console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
+    }
+};
 
 function selectAction(id) {
     let card = selectCard(id);
@@ -2789,7 +2855,7 @@ function selectAction(id) {
     cardHtml.className += ` selected`;
     game.gamestate.battleState.tempStorage.activeCardId = id;
     skills(card);
-}
+};
 
 function selectTarget(id) {
     let targetedCard = selectCard(id);
@@ -2802,7 +2868,7 @@ function selectTarget(id) {
     game.gamestate.battleState.tempStorage = {};
     simulateSkill(activeCard, skillUsed, targetedCard);
     renderCards(`selectAction`);
-}
+};
 
 function useSkill(skillId=undefined) {
     let skill = data.skills[skillId];
@@ -2816,7 +2882,7 @@ function useSkill(skillId=undefined) {
         game.gamestate.battleState.tempStorage.skillId = skillId;
         renderCards(`selectTarget`, `selectTarget`);
     }
-}   
+};
 
 async function battle() {
     let battleState = game.gamestate.battleState;
@@ -2839,10 +2905,41 @@ async function battle() {
         }
         while (battleState.turn == prev) {
             await new Promise(resolve => setTimeout(resolve, 250));
-            console.log(`Battle: Waiting`);
+            //console.log(`Battle: Waiting`);
         }
     }
-}
+};
+
+function startWave() {
+    let dungeon = data.dungeons[game.gamestate.progression];
+    let eb = game.gamestate.battleState.eb;
+    let ef = game.gamestate.battleState.ef;
+    for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
+        let enemyData = dungeon.waves[game.gamestate.battleState.wave].enemies[i];
+        let enemy = JSON.parse(JSON.stringify(data.enemies[enemyData.enemy]));
+        if (enemy.hp.constructor === Array) enemy.hp = enemy.hp[enemyData.lvl];
+        if (enemy.mp.constructor === Array) enemy.mp = enemy.mp[enemyData.lvl];
+        if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
+        if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
+        if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
+        enemy.hpMax =  enemy.hp;
+        enemy.mpMax =  enemy.mp;
+        enemy.rarity = enemyData.lvl;
+        enemy.drops = enemyData.drops;
+        enemy.itemDrops = enemyData.itemDrops;
+        if (enemyData.location == `frontline`) {
+            for (let i = 0; i < enemyData.quantity; i++) {
+                enemy.id = `EF${i}ID`;
+                ef.push(JSON.parse(JSON.stringify(enemy)));
+            } 
+        } else {
+            for (let i = 0; i < enemyData.quantity; i++) {
+                enemy.id = `EB${i}ID`;
+                eb.push(JSON.parse(JSON.stringify(enemy)));
+            } 
+        }
+    }
+};
 
 async function runDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
@@ -2858,14 +2955,14 @@ async function runDungeon() {
             game.gamestate.battleState.eb = [];
             */
             await new Promise(resolve => setTimeout(resolve, 500));
-            console.log(`Dungeon: Waiting`);
+            //console.log(`Dungeon: Waiting`);
         }
         console.log(`Wave Cleared`);
         renderCards();
         await new Promise(resolve => setTimeout(resolve, 1000));
         // Do a wave cleared animation or something
     }
-}
+};
 
 function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.progression];
@@ -2878,6 +2975,9 @@ function startDungeon() {
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
     let battleState = game.gamestate.battleState;
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        game.gamestate.player.team[i].hpMax = game.gamestate.player.team[i].hp;
+        game.gamestate.player.team[i].mpMax = game.gamestate.player.team[i].mp;
+        game.gamestate.player.team[i].ap = 1;
         battleState.pb.push(game.gamestate.player.team[i]);
     }
     game.gamestate.inBattle = true;
@@ -2886,7 +2986,7 @@ function startDungeon() {
     inventory();
     console.log('dungeon started');
     runDungeon();
-}
+};
 
 function rank(n) {
     switch (n) {
@@ -2909,7 +3009,7 @@ function rank(n) {
         default:
             return '[unknown]';
     }
-}
+};
 
 function resize() {
     console.log('resized');
@@ -2928,17 +3028,26 @@ function resize() {
     if (document.getElementById('enemyFrontline')) document.getElementById('enemyFrontline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.left = `${battleCardsPosition}px`;
-}
+};
 
-function updateBar(id, percent) {
-    if (document.getElementById(id)) document.getElementById(id).style.minWidth = `${percent*60}px`;
+function fetchBar(id) {
+    print(getComputedStyle(document.getElementById(id)).minWidth);
+    if (document.getElementById(id)) return parseFloat(getComputedStyle(document.getElementById(id)).minWidth.slice(0, -2))/60;
     else console.error(`can not find card id: ${id}`);
-}
+};
+
+function updateBar(id, percent, value=-1000000000) {
+    if (document.getElementById(id)) {
+        document.getElementById(id).style.minWidth = `${Math.max(0, percent)*60}px`;
+        if (value > -1000000000) document.getElementById(id+`Display`).innerHTML = Math.floor(value); // scuffed but necessary
+    }
+    else console.error(`can not find card id: ${id}`);
+};
 
 function clearData() {
     localStorage.removeItem('GatchaGameData');
     console.log('cleared previous data');
-}
+};
 
 function inTeam(characterId) {
     let playerTeam = game.gamestate.player.team;
@@ -2946,14 +3055,14 @@ function inTeam(characterId) {
         if (playerTeam[i] && playerTeam[i].name == game.gamestate.player.characters[characterId].name) return true;
     }
     return false;
-}
+};
 
 function addToTeam(characterId) {
     let character = game.gamestate.player.characters[characterId];
     game.gamestate.player.team.push(character);
     updateTeam();
     focusCharacter(characterId);
-}
+};
 
 function removeFromTeam(characterId) {
     let character = game.gamestate.player.characters[characterId];
@@ -2967,7 +3076,7 @@ function removeFromTeam(characterId) {
     game.gamestate.player.team = nTeam;
     updateTeam();
     focusCharacter(characterId);
-}
+};
 
 function inventorySellItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
@@ -2984,7 +3093,7 @@ function inventorySellItem(itemId) {
         focusItem(itemId);
     }
     inventory();
-}
+};
 
 function inventoryBuyItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
@@ -2992,7 +3101,7 @@ function inventoryBuyItem(itemId) {
     game.gamestate.player.money -= item.purchacePrice;
     focusItem(itemId);
     inventory();
-}
+};
 
 function focusItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
@@ -3015,7 +3124,7 @@ function focusItem(itemId) {
     replacehtml(`focusDescription`, item.description);
     replacehtml(`focusStats`, stats);
     replacehtml(`focusSkills`, shop);
-}
+};
 
 function focusCharacter(characterId) {
     let character = game.gamestate.player.characters[characterId];
@@ -3089,11 +3198,11 @@ function focusCharacter(characterId) {
     replacehtml(`focusDescription`, character.description);
     replacehtml(`focusStats`, stats.replace('none', 'no'));
     replacehtml(`focusSkills`, shop + skills);
-}
+};
 
 function exitFocus() {
     document.getElementById('focus').style.display = `none`;
-}
+};
 
 function updateTeam() {
     let canBattle = false;
@@ -3113,7 +3222,7 @@ function updateTeam() {
     } else {
         replacehtml(`playButton`, `<button id="notReadyPlayButton">Enter Dungeon</button>`);
     }
-}
+};
 
 function pull() {
     replacehtml(`nav`, `<button onclick="pull()" class="focusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
@@ -3127,7 +3236,7 @@ function pull() {
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridPull">${buttonGridHtml}</div>`);
-}
+};
 
 function inventory() {
     console.log('inventory');
@@ -3144,7 +3253,7 @@ function inventory() {
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
-}
+};
 
 function skills(card=undefined) {
     if (card) {
@@ -3165,7 +3274,7 @@ function skills(card=undefined) {
         replacehtml(`money`, `<span>Select Card</span>`);
         replacehtml(`grid`, `<div id="buttonGridInventory"></div>`);
     }
-}
+};
 
 function characters() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="focusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
@@ -3179,7 +3288,7 @@ function characters() {
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
-}
+};
 
 function shop() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="focusedButton"><h3>Shop</h3></button>`);
@@ -3195,7 +3304,7 @@ function shop() {
     console.log(buttonGridHtml);
     replacehtml(`buttonGridPull`, buttonGridHtml);*/
     replacehtml(`grid`, ``);
-}
+};
 
 function startGame() {
     var savedPlayer = localStorage.getItem('GatchaGameData');
@@ -3224,7 +3333,7 @@ function startGame() {
     }
 
     home();
-}
+};
 
 function home() {
     homePage = `
@@ -3270,7 +3379,7 @@ function home() {
     replacehtml(`game`, homePage);
     resize();
     updateTeam();
-}
+};
 
 function main() {
     const start = performance.now();
