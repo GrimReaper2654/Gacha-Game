@@ -865,12 +865,13 @@ body {
 
 .dmgNum {
     position: absolute;
-    min-width: 60px;
-    width: 60px;
-    max-width: 60px;
-    background-color: rgba(0, 0, 0, 0.3);
+    min-width: 120px;
+    width: 120px;
+    max-width: 120px;
     margin: 0;
     padding: 0;
     text-align: center;
     color: rgba(255, 0, 0, 1);
+    font-size: xx-large;
+    font-weight: 1000;
 }

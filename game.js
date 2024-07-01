@@ -2780,22 +2780,69 @@ function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.game
     }*/
 };
 
+function modifyPx(str, operation) { // Chat GPT code (idk how this works)
+    return str.replace(/^(\d+)([a-zA-Z]+)$/, (_, num, letters) => {
+        let modifiedNumber = operation(parseInt(num, 10));
+        return modifiedNumber + letters;
+    });
+}
+
+const countValidProperties = (obj) => {
+    return Object.keys(obj).filter(key => {
+        const value = obj[key];
+        return value !== undefined && value !== null && value !== false && value !== 0 && value !== "" && !Number.isNaN(value);
+    }).length;
+};
+  
+const handleParticles = (obj) => {
+    Object.keys(obj).forEach(key => {
+        const value = obj[key];
+        if (!value || Number.isNaN(value)) {
+            delete obj[key];
+        } else {
+            value.life--;
+            switch (value.type) {
+                case 'dmgnum':
+                    document.getElementById(value.id).style.top = modifyPx(document.getElementById(value.id).style.top, num => num - 1);
+                    console.log(document.getElementById(value.id).style.top);
+                    if (document.getElementById(value.id).style.opacity == 0) document.getElementById(value.id).style.opacity = 1; // somehow it defaults to 0 ig
+                    if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
+                    console.log(document.getElementById(value.id).style.opacity);
+                    break;
+            }
+            if (value.life < 0) {
+                document.getElementById(value.id).remove();
+                delete obj[key];
+            }
+        }
+
+    });
+    return obj;
+};
+
+async function handleEffects() {
+    if (countValidProperties(game.gamestate.particles) == 0) return
+    for (let i = 0; i < 9; i++) {
+        handleParticles(game.gamestate.particles);
+        await new Promise(resolve => setTimeout(resolve, 25));
+    }
+}
+
 async function changeStat(target, effect) {
-    let final = Math.floor(target[effect.stat] + effect.change);
     //print(`final ${final}`);                                                                                                                                                                            
     let time = 1000;
     let steps = 20;
     //console.log(target);
+    let position = readID(target.id);
     for (let i = 0; i < steps; i++) {
         target[effect.stat] += effect.change/steps;
+        game.gamestate.battleState[position.row][position.pos][effect.stat] += effect.change/steps; // should handle multiple changeStat functions running for the same bar, however, floating point errors
         updateBar(target.id+effect.stat, target[effect.stat]/target[effect.stat+'Max'], Math.floor(target[effect.stat]));
         //console.log(target[effect.stat]/target[effect.stat+'Max']);
         await new Promise(resolve => setTimeout(resolve, time/steps));
     }
-    let position = readID(target.id);
     //console.log(position);
     //console.log(game.gamestate.battleState[position.row][position.pos]);
-    game.gamestate.battleState[position.row][position.pos][effect.stat] = final // remove any possible floating point errors (should not be necessary)
     //console.log(game.gamestate.battleState[position.row][position.pos][effect.stat]);
 };
 
@@ -2828,21 +2875,21 @@ function calcResistance(dmgType, dmg, target) {
 function dmgNumber(card, dmg) {
     let particle = {
         id: generateId(),
-        life: 300,
+        life: 90,
         type: 'dmgnum',
     };
     console.log(particle);
     let html = `<div id="${particle.id}" class="dmgNum">${dmg}</div>`;
     addhtml('effects', html);
     let coords = getCoords(card.id);
-    document.getElementById(particle.id).style.top = `${coords.y}px`;
-    document.getElementById(particle.id).style.left = `${coords.x-30}px`;
+    document.getElementById(particle.id).style.top = `${coords.y+randint(-60, 60)}px`;
+    document.getElementById(particle.id).style.left = `${coords.x-60+randint(-50, 50)}px`;
     game.gamestate.particles[particle.id] = particle;
     console.log(document.getElementById(particle.id));
     console.log(document.getElementById('game'));
 };
 
-function simulateSingleTargetAttack(user, skill, target) {
+function simulateSingleAttack(user, skill, target) {
     let dmg = skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg;
     changeStat(target, {stat: 'hp', change: -dmg});
     print(`damage ${dmg}`);
@@ -2850,44 +2897,45 @@ function simulateSingleTargetAttack(user, skill, target) {
     return dmg;
 };
 
-function simulateSkill(user, skill, target=undefined) {
+async function simulateSkill(user, skill, target=undefined) {
     console.log('skill used');
     changeStat(user, {stat: 'hp', change: -skill.cost.hp});
     changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     switch (skill.targeting) {
         case aoe:
-            if (target.id[0] == 'E') { // target is enemy team
-                for (let i = 0; i < game.gamestate.battleState.ef; i++) {
-                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.ef[i]);
+            for (let i = 0; i < skill.attacks; i++) {
+                if (target.id[0] == 'E') { // target is enemy team
+                    for (let i = 0; i < game.gamestate.battleState.ef; i++) {
+                        simulateSingleAttack(user, skill, game.gamestate.battleState.ef[i]);
+                    }
+                    for (let i = 0; i < game.gamestate.battleState.eb; i++) {
+                        simulateSingleAttack(user, skill, game.gamestate.battleState.eb[i]);
+                    }
+                } else { // target is player team
+                    for (let i = 0; i < game.gamestate.battleState.pf; i++) {
+                        simulateSingleAttack(user, skill, game.gamestate.battleState.pf[i]);
+                    }
+                    for (let i = 0; i < game.gamestate.battleState.pb; i++) {
+                        simulateSingleAttack(user, skill, game.gamestate.battleState.pb[i]);
+                    }
                 }
-                for (let i = 0; i < game.gamestate.battleState.eb; i++) {
-                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.eb[i]);
-                }
-            } else { // target is player team
-                for (let i = 0; i < game.gamestate.battleState.pf; i++) {
-                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.pf[i]);
-                }
-                for (let i = 0; i < game.gamestate.battleState.pb; i++) {
-                    simulateSingleTargetAttack(user, skill, game.gamestate.battleState.pb[i]);
-                }
+                await sleep(200);
             }
             break;
         case multi:
-            let attempts = skill.attacks;
-            skill.attacks = 1;
-            print('right here');
-            console.log(target);
             let targets = target.id[0] == 'E' ? [].concat(game.gamestate.battleState.ef, game.gamestate.battleState.eb) : [].concat(game.gamestate.battleState.pf, game.gamestate.battleState.pb);
-            console.log(targets);
-            for (let i = 0; i < attempts; i++) {
+            for (let i = 0; i < skill.attacks; i++) {
                 let chosen = randchoice([0,1]) ? target : randchoice(targets);
                 print(chosen.id);
-                simulateSingleTargetAttack(user, skill, chosen);
-
+                simulateSingleAttack(user, skill, chosen);
+                await sleep(100);
             }
             break;
         case single:
-            simulateSingleTargetAttack(user, skill, target);
+            for (let i = 0; i < skill.attacks; i++) {
+                simulateSingleAttack(user, skill, target);
+                await sleep(100);
+            }
             break;
         case summon:
             break;
@@ -2960,6 +3008,7 @@ async function battle() {
         }
         while (battleState.turn == prev) {
             await new Promise(resolve => setTimeout(resolve, 250));
+            handleEffects();
             //console.log(`Battle: Waiting`);
         }
     }
