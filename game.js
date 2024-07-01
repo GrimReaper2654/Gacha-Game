@@ -71,7 +71,12 @@ function randchoice(list, remove = false) { // chose 1 from a list and update li
     return list[choice];
 };
 
-// Randint returns random interger between min and max (both included)
+function generateId() {
+    const timestamp = Date.now().toString(36); 
+    const randomNum = Math.random().toString(36).slice(2, 11);
+    return `${timestamp}-${randomNum}`; 
+}
+
 function randint(min, max, notequalto=false) {
     if (max - min < 1) {
         return min;
@@ -93,6 +98,10 @@ function randint(min, max, notequalto=false) {
 
 function replacehtml(element, text) {
     document.getElementById(element).innerHTML = text;
+};
+
+function addhtml(element, text) {
+    document.getElementById(element).innerHTML = document.getElementById(element).innerHTML + text;
 };
 
 function addImage(img, x, y, cx, cy, scale, r, absolute, opacity=1) {
@@ -463,6 +472,26 @@ function toPol(i, j) {
     return {m: Math.sqrt(i**2+j**2), r: aim({x: 0, y: 0}, {x: i, y: j})};
 };
 
+function getCoords(id) {
+    const element = document.getElementById(id);
+    let rect = element.getBoundingClientRect();
+    
+    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    let offsetParent = element;
+    while (offsetParent) {
+        scrollLeft += offsetParent.scrollLeft || 0;
+        scrollTop += offsetParent.scrollTop || 0;
+        offsetParent = offsetParent.offsetParent;
+    }
+
+    return { 
+        x: rect.left + rect.width / 2 + scrollLeft, 
+        y: rect.top + rect.height / 2 + scrollTop 
+    };
+}
+
 const data = {
     startingGamestate: {
         player: {
@@ -738,6 +767,7 @@ const data = {
             pb: [],
             tempStorage: {},
         },
+        particles: {},
     },
     characters: [
         { // N
@@ -977,7 +1007,7 @@ const data = {
             Yui: { // warrior
                 name: `Yui`,
                 title: `War Godess`,
-                description: `Yui is the greatest warrior on the continent, her presence able to change the tide of even the targest wars. Her mythical armor makes her near invulnerable while she mows down entire armies with her longsword.`,
+                description: `Yui is the greatest warrior on the continent, her presence able to change the tide of even the largest wars. Her mythical armor makes her near invulnerable while she mows down entire armies with her longsword.`,
                 personality: 'arrogant',
                 stats: {atk: 'high', def: 'high'},
                 rarity: G,
@@ -1209,7 +1239,7 @@ const data = {
             attackType: `physical`,
             type: physical,
             targeting: multi,
-            dmg: 75,
+            dmg: 25,
             multiplier: none,
             effects: [],
             cost: {hp: 0, mp: 0},
@@ -1501,12 +1531,12 @@ const data = {
             attackType: `physical`,
             type: physical,
             targeting: multi,
-            dmg: 28,
+            dmg: 35,
             multiplier: str,
             effects: [],
             cost: {hp: 0, mp: 425},
             accuracy: 150,
-            attacks: 25,
+            attacks: 45,
         },
         savageTornado: {
             name: `Savage Tornado`,
@@ -2752,21 +2782,21 @@ function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.game
 
 async function changeStat(target, effect) {
     let final = Math.floor(target[effect.stat] + effect.change);
-    print(`final ${final}`);                                                                                                                                                                            
+    //print(`final ${final}`);                                                                                                                                                                            
     let time = 1000;
     let steps = 20;
-    console.log(target);
+    //console.log(target);
     for (let i = 0; i < steps; i++) {
         target[effect.stat] += effect.change/steps;
         updateBar(target.id+effect.stat, target[effect.stat]/target[effect.stat+'Max'], Math.floor(target[effect.stat]));
-        console.log(target[effect.stat]/target[effect.stat+'Max']);
+        //console.log(target[effect.stat]/target[effect.stat+'Max']);
         await new Promise(resolve => setTimeout(resolve, time/steps));
     }
     let position = readID(target.id);
-    console.log(position);
-    console.log(game.gamestate.battleState[position.row][position.pos]);
+    //console.log(position);
+    //console.log(game.gamestate.battleState[position.row][position.pos]);
     game.gamestate.battleState[position.row][position.pos][effect.stat] = final // remove any possible floating point errors (should not be necessary)
-    console.log(game.gamestate.battleState[position.row][position.pos][effect.stat]);
+    //console.log(game.gamestate.battleState[position.row][position.pos][effect.stat]);
 };
 
 function readID(id) {
@@ -2793,12 +2823,30 @@ function calcResistance(dmgType, dmg, target) {
         case normal:
             return Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100);
     }
-}
+};
+
+function dmgNumber(card, dmg) {
+    let particle = {
+        id: generateId(),
+        life: 300,
+        type: 'dmgnum',
+    };
+    console.log(particle);
+    let html = `<div id="${particle.id}" class="dmgNum">${dmg}</div>`;
+    addhtml('effects', html);
+    let coords = getCoords(card.id);
+    document.getElementById(particle.id).style.top = `${coords.y}px`;
+    document.getElementById(particle.id).style.left = `${coords.x-30}px`;
+    game.gamestate.particles[particle.id] = particle;
+    console.log(document.getElementById(particle.id));
+    console.log(document.getElementById('game'));
+};
 
 function simulateSingleTargetAttack(user, skill, target) {
     let dmg = skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg;
     changeStat(target, {stat: 'hp', change: -dmg});
     print(`damage ${dmg}`);
+    dmgNumber(target, dmg)
     return dmg;
 };
 
@@ -2808,7 +2856,7 @@ function simulateSkill(user, skill, target=undefined) {
     changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     switch (skill.targeting) {
         case aoe:
-            if (target.id[0] == 'e') { // target is enemy team
+            if (target.id[0] == 'E') { // target is enemy team
                 for (let i = 0; i < game.gamestate.battleState.ef; i++) {
                     simulateSingleTargetAttack(user, skill, game.gamestate.battleState.ef[i]);
                 }
@@ -2827,8 +2875,15 @@ function simulateSkill(user, skill, target=undefined) {
         case multi:
             let attempts = skill.attacks;
             skill.attacks = 1;
+            print('right here');
+            console.log(target);
+            let targets = target.id[0] == 'E' ? [].concat(game.gamestate.battleState.ef, game.gamestate.battleState.eb) : [].concat(game.gamestate.battleState.pf, game.gamestate.battleState.pb);
+            console.log(targets);
             for (let i = 0; i < attempts; i++) {
-                simulateSingleTargetAttack(user, skill, target);
+                let chosen = randchoice([0,1]) ? target : randchoice(targets);
+                print(chosen.id);
+                simulateSingleTargetAttack(user, skill, chosen);
+
             }
             break;
         case single:
@@ -2972,7 +3027,7 @@ function startDungeon() {
     // scroll the page to centre the battle
     document.getElementById(`bac`).scrollLeft = 185;
     inventory();
-    replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="dialogueBox"></div>`);
+    replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
     let battleState = game.gamestate.battleState;
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         game.gamestate.player.team[i].hpMax = game.gamestate.player.team[i].hp;
