@@ -464,10 +464,14 @@ function vMath(v1, v2, mode) {
 };
 
 function toComponent(m, r) {
-    return {x: m * Math.sin(r), y: -m * Math.cos(r)};
+    return {x: m * Math.sin(r), y: -m * Math.cos(r), i: m * Math.sin(r), j: -m * Math.cos(r)};
 };
 
 function toPol(i, j) {
+    if (i instanceof Object) {
+        if (typeof i.i === 'number') return {m: Math.sqrt(i.i**2+i.j**2), r: aim({x: 0, y: 0}, {x: i.i, y: i.j})};
+        return {m: Math.sqrt(i.x**2+i.y**2), r: aim({x: 0, y: 0}, {x: i.x, y: i.y})};
+    } 
     return {m: Math.sqrt(i**2+j**2), r: aim({x: 0, y: 0}, {x: i, y: j})};
 };
 
@@ -530,7 +534,7 @@ function getCoords(id) {
     return { x: offsetX, y: offsetY };
 }*/
 
-function getCoordsManual(card) { // calculate coordinates manually
+function getCardCoords(card) { // calculate coordinates manually
     let pos = readID(card.id);
     let coords = {x: 175, y: 0}; // idk why
     console.log(pos);
@@ -3181,6 +3185,11 @@ const basicSwordAttacks = { // sword attacks
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical, 
         targeting: single,
@@ -3196,8 +3205,13 @@ const basicSwordAttacks = { // sword attacks
         desc: `[attacker] thrusts at the targeted enemy.`,
         animation: { 
             range: 'melee',
-            projectile: 'swordSwing',
+            projectile: 'swordThrust',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 30,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single,
@@ -3213,8 +3227,13 @@ const basicSwordAttacks = { // sword attacks
         desc: `[attacker] charges at the enemy with a powerful sword strike.`, 
         animation: { 
             range: 'melee',
-            projectile: 'swordSwing',
+            projectile: 'swordThrust',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 30,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical, 
         targeting: single,
@@ -3230,8 +3249,13 @@ const basicSwordAttacks = { // sword attacks
         desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
         animation: { 
             range: 'melee',
-            projectile: 'swordSwing',
+            projectile: 'swordThrust',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single,
@@ -3249,6 +3273,11 @@ const basicSwordAttacks = { // sword attacks
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 30,
         },
         type: physical,
         targeting: single,
@@ -3266,6 +3295,11 @@ const basicSwordAttacks = { // sword attacks
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
+            moveSpeed: 30,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 25,
         },
         type: physical,
         targeting: multi,
@@ -3279,7 +3313,16 @@ const basicSwordAttacks = { // sword attacks
     sparkleSlash: {
         name: `Sparkle Slash`,
         desc: `[attacker]'s special attack that [pronoun] spent years developing. It is rather flashy and powerful...`,
-        attackType: `physical`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 40,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 25,
+        },
         type: normal,
         targeting: single,
         dmg: 20,
@@ -3593,17 +3636,19 @@ const godlySkills = { // very op skills
             projectile: 'swordSwing',
             hitEffect: 'physicalHit',
             moveSpeed: 20,
-            projectileSpeed: 10,
-            smooth: false,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 25,
         },
         type: physical, 
         targeting: multi, 
         dmg: 10, 
         multiplier: str, 
         effects: [], 
-        cost: {hp: 0, mp: 0}, 
+        cost: {hp: 10, mp: 10}, 
         accuracy: 100, 
-        attacks: 30, 
+        attacks: 20, 
     },
     ascendedSlash: {
         name: `Slash`,
@@ -3612,6 +3657,11 @@ const godlySkills = { // very op skills
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: piercing,
         targeting: single,
@@ -3629,6 +3679,11 @@ const godlySkills = { // very op skills
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 10,
         },
         type: normal,
         targeting: single,
@@ -3647,7 +3702,10 @@ const godlySkills = { // very op skills
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 5,
-            projectileSpeed: 10,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 0,
         },
         type: normal,
         targeting: multi,
@@ -3663,8 +3721,13 @@ const godlySkills = { // very op skills
         desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a slash that cuts through reality itself.`,
         animation: { 
             range: 'melee',
-            projectile: 'swordSwing',
+            projectile: 'swordThrust',
             hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: piercing,
         targeting: single,
@@ -3913,9 +3976,35 @@ async function handleEffects() {
     }
 };
 
-async function fakeMoveElement(card, targetCard, steps, reset=false) {
-    let startingPos = getCoordsManual(card);
-    let pos = getCoordsManual(targetCard);
+async function projectileAnimation(projectile, start, end, steps, fade) {
+    let id = generateId();
+    end = vMath(end, {x: randint(-50, 50), y: randint(-50, 50)}, '+');
+    let toMove = vMath(end, start, '-');
+    //console.log(toPol(toMove));
+    let r = toPol(toMove).r * 180 / Math.PI;
+    //console.log(r);
+    let html = `<img src="assets/${projectile}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
+    addhtml('effects', html);
+    let velocity = vMath(toMove, steps, '/');
+    // unfortunately I can't define a variable to be the element otherwise async stuff breaks
+    document.getElementById(id).style.opacity = 1;
+    document.getElementById(id).style.position = `absolute`;
+    document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
+    document.getElementById(id).style.left = `${start.x+75-document.getElementById(id).offsetWidth/2}px`;
+    for (let i = 0; i < steps; i++) {
+        //console.log(i);
+        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top)+velocity.y}px`;
+        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left)+velocity.x}px`;
+        if (steps - i < 30 && fade) document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+        //console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
+        await sleep(10);
+    }
+    document.getElementById(id).remove();
+};
+
+async function fakeMoveCard(card, targetCard, steps, reset=false) {
+    let startingPos = getCardCoords(card);
+    let pos = getCardCoords(targetCard);
     if (!reset) pos = vMath(pos, {x: 0, y: 210}, '+');
     //console.log(getCoordsScuffed(id));
     let element = undefined;
@@ -3943,8 +4032,8 @@ async function fakeMoveElement(card, targetCard, steps, reset=false) {
     element.style.left = `${startingPos.x}px`;
     for (let i = 0; i < steps; i++) {
         //console.log('moving');
-        element.style.top = `${parseFloat(element.style.top.slice(0, -2))+velocity.y}px`;
-        element.style.left = `${parseFloat(element.style.left.slice(0, -2))+velocity.x}px`;
+        element.style.top = `${unPixel(element.style.top)+velocity.y}px`;
+        element.style.left = `${unPixel(element.style.left)+velocity.x}px`;
         //console.log(element.style.top, element.style.left);
         await sleep(10);
     }
@@ -3960,21 +4049,21 @@ async function fakeMoveElement(card, targetCard, steps, reset=false) {
 };
 
 async function attackAnimation(user, skill, target) {
-    switch (skill.animation.range) {
-        case 'melee': // move the user to the target
-            await fakeMoveElement(user, target, skill.animation.moveSpeed);
-            break;
-        case 'ranged': // move a projectile to target
-            break;
-        case 'self':
-            break;
-        case 'allUnits':
-            break;
-        case 'fullScreen':
-            break;
-        default:
-            console.error(`Unknown range: ${skill.animation.range}`);
+    if (skill.animation.range === 'melee') {
+        await fakeMoveCard(user, target, skill.animation.moveSpeed);
     };
+    if (skill.animation.projectile != 'none') {
+        let startPos = getCardCoords(user);
+        if (document.getElementById(user.id+'animation')) {
+            startPos = {x: unPixel(document.getElementById(user.id+'animation').style.left), y: unPixel(document.getElementById(user.id+'animation').style.top)};
+        }
+        let endPos = getCardCoords(target);
+        if (skill.animation.smooth) {
+            projectileAnimation(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
+            await sleep(skill.animation.projectileDelay);
+        } 
+        else await projectileAnimation(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
+    }
 };
 
 async function changeStat(target, effect) {
@@ -4039,9 +4128,9 @@ function dmgNumber(card, dmg) {
     console.log(particle);
     let html = `<div id="${particle.id}" class="dmgNum">${dmg}</div>`;
     addhtml('effects', html);
-    let coords = getCoords(card.id);
-    document.getElementById(particle.id).style.top = `${coords.y+randint(-60, 60)}px`;
-    document.getElementById(particle.id).style.left = `${coords.x-60+randint(-50, 50)}px`;
+    let coords = getCardCoords(card);
+    document.getElementById(particle.id).style.top = `${coords.y+randint(60, 150)}px`;
+    document.getElementById(particle.id).style.left = `${coords.x+randint(-50, 50)+20}px`;
     game.gamestate.particles[particle.id] = particle;
     console.log(document.getElementById(particle.id));
     console.log(document.getElementById('game'));
@@ -4066,7 +4155,7 @@ async function simulateSkill(user, skill, target=undefined) {
         await changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     }
     await sleep(10);
-    await fakeMoveElement(user, target, 100);
+    await fakeMoveCard(user, target, 100);
     switch (skill.targeting) {
         case aoe:
             for (let i = 0; i < skill.attacks; i++) {
@@ -4109,7 +4198,7 @@ async function simulateSkill(user, skill, target=undefined) {
         default:
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
     }
-    await fakeMoveElement(user, user, 100, true);
+    await fakeMoveCard(user, user, 100, true);
 };
 
 function selectAction(id) {
