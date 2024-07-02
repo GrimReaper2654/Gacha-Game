@@ -9,6 +9,7 @@ Update 3: Grim4Reaper has joined the project.<br>
 Update 4: Combat is still not done. Also, I hate css.<br>
 Update 5: I decided to deploy the still unplayable version of the game [here](https://grimreaper2654.github.io/Gacha-Game/main.html)<br>
 Update 6: Its so jover...<br>
+Update 7: I hate css (part 4).<br>
 <br>
 <br>
 <br>
