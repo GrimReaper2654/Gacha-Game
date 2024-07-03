@@ -1250,6 +1250,7 @@ var data = {
         },
     },
     skills: {},
+    effects: {},
     skillsOld: {
         positronRay: {
             name: `Positron Ray`,
@@ -3067,7 +3068,7 @@ const basicPhysicalAttacks = { // martial arts attacks
         },
         type: physical, 
         targeting: single, 
-        dmg: 10, 
+        dmg: 7, 
         multiplier: str, 
         effects: [], 
         cost: {hp: 0, mp: 0}, 
@@ -3084,7 +3085,7 @@ const basicPhysicalAttacks = { // martial arts attacks
         },
         type: physical, 
         targeting: single,
-        dmg: 25, 
+        dmg: 16, 
         multiplier: str, 
         effects: [], 
         cost: {hp: 0, mp: 0}, 
@@ -3101,62 +3102,11 @@ const basicPhysicalAttacks = { // martial arts attacks
         },
         type: physical, 
         targeting: single,
-        dmg: 15, 
-        multiplier: str, 
-        effects: [], 
-        cost: {hp: 0, mp: 0}, 
-        accuracy: 100,
-        attacks: 1, 
-    },
-    elbowStrike: {
-        name: `Elbow Strike`, 
-        desc: `[attacker] strikes the targeted enemy with their elbow, potentially causing a minor bleed effect.`, 
-        animation: { 
-            range: 'melee',
-            projectile: 'none',
-            hitEffect: 'physicalHit',
-        },
-        type: physical, 
-        targeting: single,
-        dmg: 18, 
-        multiplier: str, 
-        effects: [{effect: 'lesserBleed', chance: 90}], 
-        cost: {hp: 0, mp: 0}, 
-        accuracy: 85,
-        attacks: 1, 
-    },
-    kneeStrike: {
-        name: `Knee Strike`, 
-        desc: `[attacker] delivers a powerful knee strike, potentially weakening the enemy.`, 
-        animation: { 
-            range: 'melee',
-            projectile: 'none',
-            hitEffect: 'physicalHit',
-        },
-        type: physical, 
-        targeting: single,
-        dmg: 18, 
-        multiplier: str, 
-        effects: [{effect: 'lesserWeaken', chance: 80}],
-        cost: {hp: 0, mp: 0}, 
-        accuracy: 85,
-        attacks: 1, 
-    },
-    palmStrike: {
-        name: `Palm Strike`, 
-        desc: `[attacker] delivers a precise palm strike, hitting through the opponent's armour.`, 
-        animation: { 
-            range: 'melee',
-            projectile: 'none',
-            hitEffect: 'physicalHit',
-        },
-        type: piercing, 
-        targeting: single,
         dmg: 10, 
         multiplier: str, 
         effects: [], 
         cost: {hp: 0, mp: 0}, 
-        accuracy: 95,
+        accuracy: 100,
         attacks: 1, 
     },
     bodySlam: {
@@ -3841,7 +3791,8 @@ const miscSkills = {
         attacks: 1,
     },
 };
-data.skills = {...debuffEffects, ...buffEffects, ...basicPhysicalAttacks, ...basicSwordAttacks, ...healingSkills, ...selfBuffs, ...magicAttacks, ...godlySkills, ...miscSkills };
+data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...healingSkills, ...selfBuffs, ...magicAttacks, ...godlySkills, ...miscSkills };
+data.effects = {...debuffEffects, ...buffEffects};
 deepFreeze(data);
 console.log(data);
 // Loading savegames
@@ -4487,7 +4438,7 @@ function focusItem(itemId) {
     replacehtml(`focusSkills`, shop);
 };
 
-function focusCharacter(characterId) { //TODO: fix attack effects
+function focusCharacter(characterId) { 
     let character = game.gamestate.player.characters[characterId];
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
@@ -4513,31 +4464,10 @@ function focusCharacter(characterId) { //TODO: fix attack effects
         }
         if (data.skills[character.skills[i]].effects) {
             for (let j = 0; j < data.skills[character.skills[i]].effects.length; j++) {
-                switch (data.skills[character.skills[i]].effects[j].id) { // right here gotta fix this somehow
-                    case 'dot':
-                        skill += `<img src="assets/redDrop.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} damage over time for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'hot':
-                        skill += `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} heal over time for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'def':
-                        skill += `<img src="assets/shield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[0]} physical negation<br><img src="assets/shield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[1]}% physical resistance for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'mdef':
-                        skill += `<img src="assets/blueShield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[0]} magical negation<br><img src="assets/blueShield.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl[1]}% magical resistance for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'atk':
-                        skill += `<img src="assets/lightning.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl*100}% extra attack damage for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'barrier':
-                        skill += `<img src="assets/${data.skills[character.skills[i]].effects[j].type == magic ? 'blueShield' : 'shield'}.png" class="smallIcon"> ${data.skills[character.skills[i]].effects[j].lvl} hp ${data.skills[character.skills[i]].effects[j].type} barrier for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    case 'mreg':
-                        skill += `<img src="assets/blueStar.png" class="smallIcon"> regenerate ${data.skills[character.skills[i]].effects[j].lvl} extra mp per round for ${data.skills[character.skills[i]].effects[j].duration} rounds<br>`;
-                        break;
-                    default:
-                        console.log(`unknown effect ${data.skills[character.skills[i]].effects[j].id}`);
-                        break;
+                let effect = data.effects[data.skills[character.skills[i]].effects[j].effect];
+                console.log(effect);
+                for (let k = 0; k < effect.stats.length; k++) {
+                    skill += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
                 }
             }
         }
