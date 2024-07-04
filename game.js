@@ -2795,6 +2795,19 @@ var data = {
     }
 };
 
+/* A guide to animation stuff
+animation: { 
+    range: '', // whether attacking card moves to defending card to attack
+    projectile: '', // image that moves from attacker to defender
+    hitEffect: '', // image to is rendered on defender upon hitting
+    moveSpeed: 0, // how many frames the attacker takes to move between targets (melee range only) (for skills that hit multiple times)
+    projectileSpeed: 30, // how many frames taken for projectile to hit target (only relavent if there is a projectile)
+    projectileFade: false, // whether the projectile fades over time (only relavent if there is a projectile)
+    smooth: false, // does the attacker wait for the previous attack to land before firing another (for skills that hit multiple times)
+    projectileDelay: 0, // how many ms to wait between attacks (only applies for smooth=true)
+},
+*/
+
 const debuffEffects = { // effects (debuffs)
     lesserBleed: {
         desc: `a minor bleed effect`, 
@@ -3447,6 +3460,11 @@ const magicAttacks = { // spells
             range: 'ranged',
             projectile: 'fireball',
             hitEffect: 'smallExplosion',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: magic,
         targeting: single,
@@ -3462,8 +3480,13 @@ const magicAttacks = { // spells
         desc: `[attacker] fires a lance of fire at the targeted enemy.`,
         animation: { 
             range: 'ranged',
-            projectile: 'fireSpear',
+            projectile: 'fireArrow',
             hitEffect: 'smallExplosion',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: magic,
         targeting: single,
@@ -3479,8 +3502,13 @@ const magicAttacks = { // spells
         desc: `[attacker] summons and fires arrows of fire at the targeted enemy.`,
         animation: { 
             range: 'ranged',
-            projectile: 'smallFireball',
+            projectile: 'fireArrow',
             hitEffect: 'smallExplosion',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 150,
         },
         type: magic,
         targeting: multi,
@@ -3582,12 +3610,12 @@ const godlySkills = { // very op skills
         name: `Debug Fist`, 
         desc: `[attacker] punches the targeted enemy several times to debug the code.`, 
         animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
+            range: 'ranged',
+            projectile: 'fireball',
             hitEffect: 'physicalHit',
             moveSpeed: 20,
-            projectileSpeed: 50,
-            projectileFade: true,
+            projectileSpeed: 100,
+            projectileFade: false,
             smooth: true,
             projectileDelay: 25,
         },
@@ -3598,7 +3626,7 @@ const godlySkills = { // very op skills
         effects: [], 
         cost: {hp: 10, mp: 10}, 
         accuracy: 100, 
-        attacks: 20, 
+        attacks: 50, 
     },
     ascendedSlash: {
         name: `Slash`,
@@ -3927,9 +3955,40 @@ async function handleEffects() {
     }
 };
 
-async function projectileAnimation(projectile, start, end, steps, fade) {
+async function hitEffect(effect, pos, offset, noRotate) {
     let id = generateId();
-    end = vMath(end, {x: randint(-50, 50), y: randint(-50, 50)}, '+');
+    let r = noRotate ? 0 : randint(0,360);
+    let html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
+    addhtml('effects', html);
+    console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
+    document.getElementById(id).style.opacity = 1;
+    document.getElementById(id).style.position = `absolute`;
+    document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
+    document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+    if (offset) {
+        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + offset.y}px`;
+        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + offset.x}px`;
+    } else {
+        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + randint(-50, 50)}px`;
+        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + randint(-50, 50)}px`;
+    }
+    console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
+    await sleep(250);
+    for (let i = 0; i < 50; i++) {
+        document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+        await sleep(5);
+    }
+    document.getElementById(id).remove();
+};
+
+async function simulateSmoothProjectileAttack(animation, start, target, dmg) {
+    let projectile = animation.projectile;
+    let steps = animation.projectileSpeed;
+    let fade = animation.projectileFade;
+    let id = generateId();
+    let end = getCardCoords(target);
+    let randOffset = {x: randint(-50, 50), y: randint(-50, 50)};
+    end = vMath(end, randOffset, '+');
     let toMove = vMath(end, start, '-');
     //console.log(toPol(toMove));
     let r = toPol(toMove).r * 180 / Math.PI;
@@ -3951,6 +4010,40 @@ async function projectileAnimation(projectile, start, end, steps, fade) {
         await sleep(10);
     }
     document.getElementById(id).remove();
+
+    changeStat(target, {stat: 'hp', change: -dmg});
+    dmgNumber(target, dmg);
+    if (animation.hitEffect != 'none') {
+        hitEffect(animation.hitEffect, getCardCoords(target), randOffset);
+    }
+};
+
+async function simulateProjectileAttack(projectile, start, end, steps, fade) {
+    let id = generateId();
+    let randOffset = {x: randint(-50, 50), y: randint(-50, 50)};
+    end = vMath(end, randOffset, '+');
+    let toMove = vMath(end, start, '-');
+    //console.log(toPol(toMove));
+    let r = toPol(toMove).r * 180 / Math.PI;
+    //console.log(r);
+    let html = `<img src="assets/${projectile}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
+    addhtml('effects', html);
+    let velocity = vMath(toMove, steps, '/');
+    // unfortunately I can't define a variable to be the element otherwise async stuff breaks
+    document.getElementById(id).style.opacity = 1;
+    document.getElementById(id).style.position = `absolute`;
+    document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
+    document.getElementById(id).style.left = `${start.x+75-document.getElementById(id).offsetWidth/2}px`;
+    for (let i = 0; i < steps; i++) {
+        //console.log(i);
+        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top)+velocity.y}px`;
+        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left)+velocity.x}px`;
+        if (steps - i < 30 && fade) document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+        //console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
+        await sleep(10);
+    }
+    document.getElementById(id).remove();
+    return randOffset;
 };
 
 async function fakeMoveCard(card, targetCard, steps, reset=false) {
@@ -3999,23 +4092,6 @@ async function fakeMoveCard(card, targetCard, steps, reset=false) {
     
 };
 
-async function attackAnimation(user, skill, target) {
-    if (skill.animation.range === 'melee') {
-        await fakeMoveCard(user, target, skill.animation.moveSpeed);
-    };
-    if (skill.animation.projectile != 'none') {
-        let startPos = getCardCoords(user);
-        if (document.getElementById(user.id+'animation')) {
-            startPos = {x: unPixel(document.getElementById(user.id+'animation').style.left), y: unPixel(document.getElementById(user.id+'animation').style.top)};
-        }
-        let endPos = getCardCoords(target);
-        if (skill.animation.smooth) {
-            projectileAnimation(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
-            await sleep(skill.animation.projectileDelay);
-        } 
-        else await projectileAnimation(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
-    }
-};
 
 async function changeStat(target, effect) {
     if (effect.change == 0) return;
@@ -4089,11 +4165,32 @@ function dmgNumber(card, dmg) {
 
 async function simulateSingleAttack(user, skill, target) {
     let dmg = Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg);
-    await attackAnimation(user, skill, target);
-    print('done');
-    changeStat(target, {stat: 'hp', change: -dmg});
-    print(`damage ${dmg}`);
-    dmgNumber(target, dmg)
+    let done = false;
+    let offset = undefined;
+    if (skill.animation.range === 'melee') {
+        await fakeMoveCard(user, target, skill.animation.moveSpeed);
+    };
+    if (skill.animation.projectile != 'none') {
+        //console.log('launch projectile');
+        let startPos = getCardCoords(user);
+        if (document.getElementById(user.id+'animation')) {
+            startPos = {x: unPixel(document.getElementById(user.id+'animation').style.left), y: unPixel(document.getElementById(user.id+'animation').style.top)};
+        }
+        let endPos = getCardCoords(target);
+        if (skill.animation.smooth) {
+            done = true;
+            simulateSmoothProjectileAttack(skill.animation, startPos, target, dmg);
+            await sleep(skill.animation.projectileDelay);
+        } 
+        else offset = await simulateProjectileAttack(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
+    } 
+    if (!done) {
+        changeStat(target, {stat: 'hp', change: -dmg});
+        dmgNumber(target, dmg);
+        if (skill.animation.hitEffect != 'none') {
+            await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
+        }
+    }
     return dmg;
 };
 
@@ -4106,7 +4203,7 @@ async function simulateSkill(user, skill, target=undefined) {
         await changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     }
     await sleep(10);
-    await fakeMoveCard(user, target, 100);
+    if (skill.animation.range === 'melee') await fakeMoveCard(user, target, 100);
     switch (skill.targeting) {
         case aoe:
             for (let i = 0; i < skill.attacks; i++) {
@@ -4149,7 +4246,7 @@ async function simulateSkill(user, skill, target=undefined) {
         default:
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
     }
-    await fakeMoveCard(user, user, 100, true);
+    if (skill.animation.range === 'melee') await fakeMoveCard(user, user, 100, true);
 };
 
 function selectAction(id) {
