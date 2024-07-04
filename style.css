@@ -877,3 +877,29 @@ body {
     font-size: xx-large;
     font-weight: 1000;
 }
+
+.healNum {
+    position: absolute;
+    min-width: 120px;
+    width: 120px;
+    max-width: 120px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: rgba(0, 255, 0, 1);
+    font-size: xx-large;
+    font-weight: 1000;
+}
+
+.resistNum {
+    position: absolute;
+    min-width: 120px;
+    width: 120px;
+    max-width: 120px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: rgba(100, 100, 100, 1);
+    font-size: xx-large;
+    font-weight: 1000;
+}

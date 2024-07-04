@@ -3156,11 +3156,11 @@ const basicSwordAttacks = { // sword attacks
         },
         type: physical, 
         targeting: single,
-        dmg: 30, 
+        dmg: 25, 
         multiplier: str, 
         effects: [], 
         cost: {hp: 0, mp: 0}, 
-        accuracy: 85,
+        accuracy: 100,
         attacks: 1, 
     },
     thrust: {
@@ -3178,11 +3178,11 @@ const basicSwordAttacks = { // sword attacks
         },
         type: physical,
         targeting: single,
-        dmg: 25,
+        dmg: 30,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 0},
-        accuracy: 95,
+        accuracy: 90,
         attacks: 1,
     },
     swordCharge: {
@@ -3200,11 +3200,11 @@ const basicSwordAttacks = { // sword attacks
         },
         type: physical, 
         targeting: single,
-        dmg: 40, 
+        dmg: 45, 
         multiplier: str, 
         effects: [], 
         cost: {hp: 0, mp: 10}, 
-        accuracy: 80,
+        accuracy: 95,
         attacks: 1, 
     },
     overheadStrike: {
@@ -3222,11 +3222,11 @@ const basicSwordAttacks = { // sword attacks
         },
         type: physical,
         targeting: single,
-        dmg: 75,
+        dmg: 60,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 50,
+        cost: {hp: 0, mp: 10},
+        accuracy: 75,
         attacks: 1,
     },
     wildSwing: {
@@ -3288,12 +3288,124 @@ const basicSwordAttacks = { // sword attacks
         },
         type: normal,
         targeting: single,
-        dmg: 20,
+        dmg: 25,
         multiplier: str,
         effects: [],
         cost: {hp: 40, mp: 100},
         accuracy: 100,
         attacks: 5,
+    },
+};
+const basicRangedAttacks = { // ranged attacks
+    snipe: {
+        name: `Snipe`, 
+        desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'arrow',
+            hitEffect: 'arrowInGround',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical, 
+        targeting: single,
+        dmg: 35, 
+        multiplier: none, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 95,
+        attacks: 1, 
+    },
+    rapidFire: {
+        name: `Rapid Fire`, 
+        desc: `[attacker] rapidly fires a barrage of arrows at the enemies.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'arrow',
+            hitEffect: 'arrowInGround',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 100,
+        },
+        type: physical, 
+        targeting: multi,
+        dmg: 20, 
+        multiplier: none, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 75,
+        attacks: 5, 
+    },
+    trippleShot: {
+        name: `Tripple Shot`, 
+        desc: `[attacker] fires 3 arrows at once towards the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'arrow',
+            hitEffect: 'arrowInGround',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: physical, 
+        targeting: single,
+        dmg: 25, 
+        multiplier: none, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 80,
+        attacks: 3, 
+    },
+    knifeThrow: {
+        name: `Knife Throw`, 
+        desc: `[attacker] accurately throws a dagger at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'dagger',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical, 
+        targeting: single,
+        dmg: 35, 
+        multiplier: str, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 100,
+        attacks: 1, 
+    },
+    manyKnifeThrow: {
+        name: `Knife Throw`, 
+        desc: `[attacker] throws a handful of daggers at the enemies.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'dagger',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: physical, 
+        targeting: single,
+        dmg: 10, 
+        multiplier: str, 
+        effects: [], 
+        cost: {hp: 0, mp: 10}, 
+        accuracy: 70,
+        attacks: 7, 
     },
 };
 const healingSkills = { // heals
@@ -3303,7 +3415,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'ranged',
             projectile: 'healingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: single,
@@ -3320,7 +3432,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'fullScreen',
             projectile: 'areaHealingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: aoe,
@@ -3337,7 +3449,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'ranged',
             projectile: 'healingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: single,
@@ -3354,7 +3466,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'fullScreen',
             projectile: 'areaHealingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: aoe,
@@ -3371,7 +3483,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'ranged',
             projectile: 'healingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: single,
@@ -3388,7 +3500,7 @@ const healingSkills = { // heals
         animation: { 
             range: 'fullScreen',
             projectile: 'areaHealingLight',
-            hitEffect: 'none',
+            hitEffect: 'hpUp',
         },
         type: heal,
         targeting: aoe,
@@ -3525,7 +3637,12 @@ const magicAttacks = { // spells
         animation: { 
             range: 'fullScreen',
             projectile: 'fireStorm',
-            hitEffect: 'smallExplosion',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: magic,
         targeting: aoe,
@@ -3541,8 +3658,13 @@ const magicAttacks = { // spells
         desc: `[attacker] launches a shadow lance constructed from mana at the targeted enemy. It can penetrate through barriers and armour.`,
         animation: { 
             range: 'ranged',
-            projectile: 'shadowLance',
-            hitEffect: 'smallDarkExplosion',
+            projectile: 'darkArrow',
+            hitEffect: 'blackHole',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: piercing,
         targeting: single,
@@ -3559,7 +3681,12 @@ const magicAttacks = { // spells
         animation: { 
             range: 'ranged',
             projectile: 'magicBall',
-            hitEffect: 'mediumExplosion',
+            hitEffect: 'magicExplosion',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: magic,
         targeting: single,
@@ -3572,20 +3699,25 @@ const magicAttacks = { // spells
     },
     darkBlast: {
         name: `Dark Blast`,
-        desc: `[attacker] releases a burst of dark energy at the enemies.`,
+        desc: `[attacker] releases a torrent of dark energy at the enemies.`,
         animation: { 
             range: 'ranged',
-            projectile: 'shadowball',
-            hitEffect: 'smallDarkExplosion',
+            projectile: 'darkBlast',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 50,
         },
         type: magic,
-        targeting: aoe,
-        dmg: 40,
+        targeting: multi,
+        dmg: 12,
         multiplier: int,
         effects: [],
         cost: {hp: 0, mp: 150},
         accuracy: 100,
-        attacks: 1,
+        attacks: 20,
     },
     shadowVeil: {
         name: `Shadow Veil`,
@@ -3594,6 +3726,11 @@ const magicAttacks = { // spells
             range: 'ranged',
             projectile: 'shadowball',
             hitEffect: 'defenceUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: magic,
         targeting: single,
@@ -3605,7 +3742,7 @@ const magicAttacks = { // spells
         attacks: 1,
     },
 };
-const godlySkills = { // very op skills
+const advancedSkills = { // very op skills
     debugFist: {
         name: `Debug Fist`, 
         desc: `[attacker] punches the targeted enemy several times to debug the code.`, 
@@ -3819,7 +3956,7 @@ const miscSkills = {
         attacks: 1,
     },
 };
-data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...healingSkills, ...selfBuffs, ...magicAttacks, ...godlySkills, ...miscSkills };
+data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...healingSkills, ...selfBuffs, ...magicAttacks, ...advancedSkills, ...miscSkills };
 data.effects = {...debuffEffects, ...buffEffects};
 deepFreeze(data);
 console.log(data);
@@ -3955,16 +4092,16 @@ async function handleEffects() {
     }
 };
 
-async function hitEffect(effect, pos, offset, noRotate) {
-    let id = generateId();
-    let r = noRotate ? 0 : randint(0,360);
-    let html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
+async function aoeEffect(effect, team) {
+    let id = `aoeEffect${effect}`;
+    if (document.getElementById(id)) return;
+    let html = `<img src="assets/${effect}.png" id="${id}"></img>`;
     addhtml('effects', html);
-    console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
+
     document.getElementById(id).style.opacity = 1;
     document.getElementById(id).style.position = `absolute`;
-    document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
-    document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+    document.getElementById(id).style.top = `${team == E? 0 : document.getElementById('battleScreen').getBoundingClientRect().height-430}px`;
+    document.getElementById(id).style.left = `0px`;
     if (offset) {
         document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + offset.y}px`;
         document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + offset.x}px`;
@@ -3979,6 +4116,38 @@ async function hitEffect(effect, pos, offset, noRotate) {
         await sleep(5);
     }
     document.getElementById(id).remove();
+};
+
+async function hitEffect(effect, pos, offset, noRotate) {
+    let id = generateId();
+    let r = noRotate ? 0 : randint(0,360);
+    let html = ``;
+    if (isin('Up', effect)) { // special animaged hit effect
+        console.warn(`WARNING: this effect is currently not supported`);
+    }
+    else { // normal hit effect
+        html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
+        addhtml('effects', html);
+        console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
+        document.getElementById(id).style.opacity = 1;
+        document.getElementById(id).style.position = `absolute`;
+        document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
+        document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+        if (offset) {
+            document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + offset.y}px`;
+            document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + offset.x}px`;
+        } else {
+            document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + randint(-50, 50)}px`;
+            document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + randint(-50, 50)}px`;
+        }
+        console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
+        await sleep(250);
+        for (let i = 0; i < 50; i++) {
+            document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+            await sleep(5);
+        }
+        document.getElementById(id).remove();
+    }
 };
 
 async function simulateSmoothProjectileAttack(animation, start, target, dmg) {
@@ -4049,7 +4218,7 @@ async function simulateProjectileAttack(projectile, start, end, steps, fade) {
 async function fakeMoveCard(card, targetCard, steps, reset=false) {
     let startingPos = getCardCoords(card);
     let pos = getCardCoords(targetCard);
-    if (!reset) pos = vMath(pos, {x: 0, y: 210}, '+');
+    if (!reset) pos = vMath(pos, {x: 0, y: target.id[0] == 'E' ? 210 : -210}, '+');
     //console.log(getCoordsScuffed(id));
     let element = undefined;
     //startingPos = getCoords(id);
@@ -4091,7 +4260,6 @@ async function fakeMoveCard(card, targetCard, steps, reset=false) {
     //console.log(getCoordsScuffed(id+'animation'));
     
 };
-
 
 async function changeStat(target, effect) {
     if (effect.change == 0) return;
@@ -4146,14 +4314,14 @@ function calcResistance(dmgType, dmg, target) {
     }
 };
 
-function dmgNumber(card, dmg) {
+function dmgNumber(card, dmg, miss=false) { // there is better way to do this, but its already made so I won't change it
     let particle = {
         id: generateId(),
         life: 70,
         type: 'dmgnum',
     };
     console.log(particle);
-    let html = `<div id="${particle.id}" class="dmgNum">${dmg}</div>`;
+    let html = miss? `<div id="${particle.id}" class="resistNum">miss</div>` : `<div id="${particle.id}" class="${dmg > 0? `dmgNum` : (dmg == 0 ? `resistNum` : `healNum`)}">${dmg}</div>`;
     addhtml('effects', html);
     let coords = getCardCoords(card);
     document.getElementById(particle.id).style.top = `${coords.y+randint(60, 150)}px`;
@@ -4163,10 +4331,15 @@ function dmgNumber(card, dmg) {
     console.log(document.getElementById('game'));
 };
 
-async function simulateSingleAttack(user, skill, target) {
-    let dmg = Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg);
+async function simulateSingleAttack(user, skill, target) { // TODO: implement missing and accuracy stuff
+    let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg);
     let done = false;
     let offset = undefined;
+    if (skill.animation.range === 'fullScreen') {
+        aoeEffect(skill.animation.projectile, target.id[0]);
+        return;
+    };
+
     if (skill.animation.range === 'melee') {
         await fakeMoveCard(user, target, skill.animation.moveSpeed);
     };
@@ -4191,10 +4364,9 @@ async function simulateSingleAttack(user, skill, target) {
             await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
         }
     }
-    return dmg;
 };
 
-async function simulateSkill(user, skill, target=undefined) {
+async function simulateSkill(user, skill, target=undefined) { 
     console.log('skill used');
     if (skill.cost.hp) {
         changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
@@ -4242,6 +4414,7 @@ async function simulateSkill(user, skill, target=undefined) {
             }
             break;
         case summon:
+
             break;
         default:
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
