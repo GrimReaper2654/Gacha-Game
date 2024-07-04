@@ -53,15 +53,6 @@ function print(a) { // GRRRRR snek
     console.log(a);
 };
 
-function isin(a, b) { // check is a in b
-    for (var i = 0; i < b.length; i += 1) {
-        if (a == b[i]) {
-            return true;
-        }
-    }
-    return false;
-};
-
 function randchoice(list, remove = false) { // chose 1 from a list and update list
     let length = list.length;
     let choice = randint(0, length-1);
@@ -537,7 +528,7 @@ function getCoords(id) {
 function getCardCoords(card) { // calculate coordinates manually
     let pos = readID(card.id);
     let coords = {x: 175, y: 0}; // idk why
-    console.log(pos);
+    //console.log(pos);
     switch (pos.row) {
         case 'eb':
             coords.y += 10;
@@ -555,7 +546,7 @@ function getCardCoords(card) { // calculate coordinates manually
     coords.x += document.getElementById('battleScreen').getBoundingClientRect().width / 2; // centre
     coords.x -= (150 * game.gamestate.battleState[pos.row].length + 20 * (game.gamestate.battleState[pos.row].length - 1)) / 2; // find position 0
     coords.x += 150 * pos.pos + 20 * pos.pos; // move to correct pos
-    console.log(coords);
+    //console.log(coords);
     return coords;
 }
 
@@ -875,7 +866,7 @@ var data = {
                 title: `Warrior`, // title to put before name
                 description: `Yuki recently graduated from the kingdom's swordmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`, // description of character
                 personality: 'calm', // determines voice lines for character
-                stats: {atk: 'high', def: 'medium'}, // stats to show to user
+                stats: {atk: 'medium', def: 'medium'}, // stats to show to user
                 rarity: N, // how 'good' the character is. In ascending order, the rarities are N (normal), UC (uncommon), R (rare), SR (super rare), E (epic), L (legendary), and G (godly)
                 gender: female, // gender of character, used for determining voice lines
                 pfp: `assets/AnimeGirl42.jpeg`, // character icon image
@@ -883,8 +874,8 @@ var data = {
                 mp: 50, // mana
                 str: 1.2, // strength (physical attack damage = attack base damage * str)
                 int: 10, // intelligence (magic attack damage = attack base damage * int/100)
-                mpRegen: 5, // mana regeneration per round
-                skills: ['punch', 'slash', 'lesserPhysicalEnhancement', 'swordCharge'], // attacks and abilities (every character should have at least 4)
+                mpRegen: 7, // mana regeneration per round
+                skills: ['slash', 'lesserPhysicalEnhancement', 'swordCharge', 'overheadStrike'], // attacks and abilities (every character should have at least 4)
                 armour: {physical: [5, 10], magic: [0, 0]}, // resistances to damage, first number is flat damage reduction, second is a percentage reduction
             },
             Akane: { // tank dps hybrid
@@ -901,7 +892,7 @@ var data = {
                 str: 1,
                 int: 5,
                 mpRegen: 5,
-                skills: ['slash', 'thrust', 'swordCharge'],
+                skills: ['punch', 'slash', 'thrust', 'swordCharge'],
                 armour: {physical: [10, 15], magic: [2, 5]}, // Added minimal magic armor
             },
             Rei: { // tanker
@@ -918,7 +909,7 @@ var data = {
                 str: 0.9,
                 int: 5,
                 mpRegen: 3,
-                skills: ['wildSwing', 'overheadStrike', 'raiseGuard'],
+                skills: ['kick', 'wildSwing', 'wildCharge', 'raiseGuard'],
                 armour: {physical: [20, 20], magic: [5, 5]}, // Increased physical armor, added minimal magic armor
             },
             Emi: { // glass cannon ranged dps
@@ -962,7 +953,7 @@ var data = {
                 title: `The Invulnerable`,
                 description: `Lucy is a timid girl who somehow stumbled upon a legendary set of armor. She has no idea how to fight but her equipment makes her nearly invincible.`,
                 personality: 'timid',
-                stats: {atk: 'low', def: 'extreme'},
+                stats: {atk: 'medium', def: 'extreme'},
                 rarity: UC, 
                 gender: female,
                 pfp: `assets/AnimeGirl14.jpeg`,
@@ -972,7 +963,7 @@ var data = {
                 int: 10, 
                 mpRegen: 10, 
                 skills: ['wildSwing', 'wildCharge', 'cower', 'sparkleSlash'], 
-                armour: {physical: [20, 50], magic: [20, 50]}, 
+                armour: {physical: [25, 90], magic: [20, 85]}, 
             },
         },
         { // R
@@ -1065,7 +1056,7 @@ var data = {
                 int: 200,
                 mpRegen: 80,
                 skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
-                armour: {physical: [10, 15], magic: [20, 50]},
+                armour: {physical: [10, 0], magic: [25, 75]},
             },
         },
         { // G
@@ -1078,13 +1069,13 @@ var data = {
                 rarity: G,
                 gender: female,
                 pfp: `assets/AnimeGirl10.jpeg`,
-                hp: 200,
+                hp: 150,
                 mp: 875,
                 str: 4,
                 int: 120,
-                mpRegen: 125,
-                skills: ['ascendedSlash', 'rapidStrikes', 'swordDance', 'realitySlash', 'superCharge'],
-                armour: {physical: [0, 0], magic: [0, 0]},
+                mpRegen: 225,
+                skills: ['ascendedSlash', 'rapidStrikes', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
+                armour: {physical: [0, 50], magic: [0, 25]},
             },
             Yui: { // commander
                 name: `Yui`,
@@ -1099,9 +1090,9 @@ var data = {
                 mp: 375,
                 str: 1.75,
                 int: 120,
-                mpRegen: 50,
+                mpRegen: 75,
                 skills: ['ascendedSlash', 'rapidStrikes', 'warCry', 'battlefieldCommand', 'righteousSmite'],
-                armour: {physical: [200, 50], magic: [200, 40]},
+                armour: {physical: [200, 75], magic: [200, 50]},
             },
         },
         { // EX
@@ -1136,7 +1127,7 @@ var data = {
                 str: 2,
                 int: 100,
                 mpRegen: 200,
-                skills: ['savageTornado', 'machinegun', 'fragGrenade',  'extremeOverheadStrike', 'soulHarvest', 'extremeRaiseGuard'],
+                skills: ['assaultRifle', 'fragGrenade', 'greaterRaiseGuard', 'swordDance', 'soulHarvest'],
                 armour: {physical: [100, 80], magic: [250, 25]},
             },
         },
@@ -2974,7 +2965,7 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 1 rounds`,
+                desc: `lasts 3 rounds`,
             },
             {
                 icon: `shield.png`,
@@ -2994,7 +2985,7 @@ const buffEffects = { // effects (buffs)
         // buggs / debuffs
         defChange: {physical: [5, 10], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
-        duration: 1,
+        duration: 3,
     },
     lesserHealOverTime: {
         desc: `a medium healing effect`, 
@@ -3065,7 +3056,60 @@ const buffEffects = { // effects (buffs)
         statChange: {str: 1, int: 0, reg: 0},
         duration: 3,
     },
-
+    raiseGuard: {
+        desc: `a minor reinforcing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 1 round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 10 physical negation`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 25% physical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // chnage stats per round
+        change: {hp: 0, mp: 0}, 
+        // buggs / debuffs
+        defChange: {physical: [10, 25], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 1,
+    },
+    greaterRaiseGuard: {
+        desc: `a significant reinforcing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 1 round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 99% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 99% magic resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // chnage stats per round
+        change: {hp: 0, mp: 0}, 
+        // buggs / debuffs
+        defChange: {physical: [0, 99], magic: [0, 99]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 1,
+    },
 };
 const basicPhysicalAttacks = { // martial arts attacks
     punch: {
@@ -3124,7 +3168,7 @@ const basicPhysicalAttacks = { // martial arts attacks
     },
     bodySlam: {
         name: `Body Slam`, 
-        desc: `[attacker] slams [pronoun] body into the targeted enemy, dealing massive damage but costing health.`, 
+        desc: `[attacker] slams [pronoun] body into the targeted enemy, dealing high damage but costing health.`, 
         animation: { 
             range: 'melee',
             projectile: 'none',
@@ -3132,10 +3176,10 @@ const basicPhysicalAttacks = { // martial arts attacks
         },
         type: 'physical', 
         targeting: single,
-        dmg: 50, 
+        dmg: 25, 
         multiplier: 'str', 
         effects: [], 
-        cost: {hp: 20, mp: 0}, 
+        cost: {hp: 10, mp: 0}, 
         accuracy: 70,
         attacks: 1, 
     },
@@ -3225,7 +3269,7 @@ const basicSwordAttacks = { // sword attacks
         dmg: 60,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 10},
+        cost: {hp: 0, mp: 15},
         accuracy: 75,
         attacks: 1,
     },
@@ -3244,10 +3288,10 @@ const basicSwordAttacks = { // sword attacks
         },
         type: physical,
         targeting: single,
-        dmg: 36,
+        dmg: 24,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 0},
+        cost: {hp: 0, mp: 5},
         accuracy: 60,
         attacks: 2,
     },
@@ -3542,7 +3586,7 @@ const selfBuffs = { // self enhancement
         dmg: 0,
         multiplier: none,
         effects: [{effect: 'raiseGuard', chance: 100}],
-        cost: {hp: 0, mp: 5},
+        cost: {hp: 0, mp: 0},
         accuracy: none,
         attacks: 1,
     },
@@ -3787,6 +3831,28 @@ const advancedSkills = { // very op skills
         accuracy: 100,
         attacks: 1,
     },
+    auraSlash: {
+        name: `Aura Slash`,
+        desc: `[attacker] releases a wave of energy from [pronoun] sword that cuts through all enemies.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'swordSwingLarge',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: normal,
+        targeting: aoe,
+        dmg: 125,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 100},
+        accuracy: 100,
+        attacks: 1,
+    },
     rapidStrikes: {
         name: `Rapid Strikes`,
         desc: `[attacker] performs a series of rapid strikes on the targeted enemy.`,
@@ -3811,12 +3877,12 @@ const advancedSkills = { // very op skills
     },
     swordDance: {
         name: `Sword Dance`,
-        desc: `[attacker] dances through enemies, striking all of them.`,
+        desc: `[attacker] dances through enemies, rapidly striking at them.`,
         animation: { 
             range: 'melee',
             projectile: 'swordSwing',
             hitEffect: 'none',
-            moveSpeed: 5,
+            moveSpeed: 2,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
@@ -3827,7 +3893,7 @@ const advancedSkills = { // very op skills
         dmg: 35,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 425},
+        cost: {hp: 0, mp: 375},
         accuracy: 100,
         attacks: 45,
     },
@@ -3849,7 +3915,7 @@ const advancedSkills = { // very op skills
         dmg: 1250,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 600},
+        cost: {hp: 0, mp: 800},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3916,6 +3982,89 @@ const advancedSkills = { // very op skills
         multiplier: int,
         effects: [],
         cost: {hp: 0, mp: 100},
+        accuracy: 100,
+        attacks: 1,
+    },
+    greaterRaiseGuard: {
+        name: `Raise Guard`,
+        desc: `[attacker] raises [pronoun] guard, significantly reducing damage from all attacks in the next round.`,
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'defenceUp',
+        },
+        type: none, 
+        targeting: selfOnly,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'greaterRaiseGuard', chance: 100}],
+        cost: {hp: 0, mp: 0},
+        accuracy: none,
+        attacks: 1,
+    },
+    assaultRifle: {
+        name: `Assault Rifle`,
+        desc: `[attacker] unloads a full magazine towards the targeted enemy.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'bullet',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 10,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 25,
+        },
+        type: physical,
+        targeting: single,
+        dmg: 75,
+        multiplier: none,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 95,
+        attacks: 30,
+    },
+    fragGrenade: {
+        name: `Frag Grenade`,
+        desc: `[attacker] throws a frag grenade towards the enemies.`,
+        animation: { 
+            range: 'fullScreen',
+            projectile: 'explosionLarge',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: aoe,
+        dmg: 250,
+        multiplier: none,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 1,
+    },
+    soulHarvest: {
+        name: `Soul Harvest`,
+        desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 1000,
+        multiplier: str,
+        effects: [],
+        cost: {hp: -975, mp: 1400},
         accuracy: 100,
         attacks: 1,
     },
@@ -4066,13 +4215,22 @@ const handleParticles = (obj) => {
         } else {
             value.life--;
             switch (value.type) {
-                case 'dmgnum':
-                    document.getElementById(value.id).style.top = modifyPx(document.getElementById(value.id).style.top, num => num - 2);
+                case 'float':
+                    document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) - 2}px`;
                     //console.log(document.getElementById(value.id).style.top);
-                    if (document.getElementById(value.id).style.opacity == 0) document.getElementById(value.id).style.opacity = 1; // somehow it defaults to 0 ig
+                    
                     if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
                     //console.log(document.getElementById(value.id).style.opacity);
                     break;
+                case 'fall':
+                    document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) + 2}px`;
+                    //console.log(document.getElementById(value.id).style.top);
+
+                    if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
+                    //console.log(document.getElementById(value.id).style.opacity);
+                    break;
+                default:
+                    console.error(`unknown particle type: ${value.type}`)
             }
             if (value.life < 0) {
                 document.getElementById(value.id).remove();
@@ -4094,6 +4252,7 @@ async function handleEffects() {
 
 async function aoeEffect(effect, team) {
     let id = `aoeEffect${effect}`;
+    console.log('drawing effect');
     if (document.getElementById(id)) return;
     let html = `<img src="assets/${effect}.png" id="${id}"></img>`;
     addhtml('effects', html);
@@ -4118,12 +4277,69 @@ async function aoeEffect(effect, team) {
     document.getElementById(id).remove();
 };
 
-async function hitEffect(effect, pos, offset, noRotate) {
+async function hitEffect(effect, pos, offset, noRotate=false) {
     let id = generateId();
     let r = noRotate ? 0 : randint(0,360);
     let html = ``;
-    if (isin('Up', effect)) { // special animaged hit effect
-        console.warn(`WARNING: this effect is currently not supported`);
+    if (effect.includes('Up') || effect.includes('Down')) { // special animated hit effect
+        let icon = ``;
+        let bg = ``;
+        switch(effect) {
+            case `hpUp`:
+                icon = `greenCross.png`;
+                bg = `greenGlow`;
+                break;
+            case `defUp`:
+                icon = `shield.png`;
+                bg = `greyGlow`;
+                break;
+            case `attackUp`:
+                icon = `redSword.png`;
+                bg = `redGlow`;
+                break;
+            case `mpUp`:
+                icon = `blueStar.png`;
+                bg = `blueGlow`;
+                break;
+            case `statUp`:
+                icon = `yellowArrow.png`;
+                bg = `yellowGlow`;
+                break;
+            default:
+                console.warn(`WARNING: this effect is currently not supported ${effect}`);
+                return;
+        }
+        hitEffect(bg, pos, {x: 0, y: 95}, true);
+        for (let i = 0; i < 4; i++) {
+            let particle = {
+                id: generateId(),
+                life: 50,
+                type: effect.includes('Up')? 'float' : 'fall',
+            };
+            let html = `<img src="assets/${icon}" id="${particle.id}" class="mediumIcon">`;
+            addhtml('effects', html);
+            document.getElementById(particle.id).style.opacity = 1;
+            document.getElementById(particle.id).style.position = `absolute`;
+            document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
+            document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
+            console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
+            game.gamestate.particles[particle.id] = particle;
+        }
+        for (let i = 0; i < 8; i++) {
+            let particle = {
+                id: generateId(),
+                life: 50,
+                type: effect.includes('Up')? 'float' : 'fall',
+            };
+            let html = `<img src="assets/${icon}" id="${particle.id}" class="smallIcon">`;
+            addhtml('effects', html);
+            document.getElementById(particle.id).style.opacity = 1;
+            document.getElementById(particle.id).style.position = `absolute`;
+            document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
+            document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
+            console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
+            game.gamestate.particles[particle.id] = particle;
+        }
     }
     else { // normal hit effect
         html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
@@ -4218,7 +4434,7 @@ async function simulateProjectileAttack(projectile, start, end, steps, fade) {
 async function fakeMoveCard(card, targetCard, steps, reset=false) {
     let startingPos = getCardCoords(card);
     let pos = getCardCoords(targetCard);
-    if (!reset) pos = vMath(pos, {x: 0, y: target.id[0] == 'E' ? 210 : -210}, '+');
+    if (!reset) pos = vMath(pos, {x: 0, y: targetCard.id[0] == 'E' ? 210 : -210}, '+');
     //console.log(getCoordsScuffed(id));
     let element = undefined;
     //startingPos = getCoords(id);
@@ -4318,25 +4534,30 @@ function dmgNumber(card, dmg, miss=false) { // there is better way to do this, b
     let particle = {
         id: generateId(),
         life: 70,
-        type: 'dmgnum',
+        type: 'float',
     };
     console.log(particle);
-    let html = miss? `<div id="${particle.id}" class="resistNum">miss</div>` : `<div id="${particle.id}" class="${dmg > 0? `dmgNum` : (dmg == 0 ? `resistNum` : `healNum`)}">${dmg}</div>`;
+    let html = miss? `<div id="${particle.id}" class="resistNum">miss</div>` : `<div id="${particle.id}" class="${dmg > 0? `dmgNum` : (dmg == 0 ? `resistNum` : `healNum`)}">${Math.abs(dmg)}</div>`;
     addhtml('effects', html);
     let coords = getCardCoords(card);
+    document.getElementById(particle.id).style.opacity = 1;
+    document.getElementById(particle.id).style.position = `absolute`;
     document.getElementById(particle.id).style.top = `${coords.y+randint(60, 150)}px`;
-    document.getElementById(particle.id).style.left = `${coords.x+randint(-50, 50)+20}px`;
+    document.getElementById(particle.id).style.left = `${75+coords.x+randint(-50, 50)-document.getElementById(particle.id).offsetWidth/2}px`;
     game.gamestate.particles[particle.id] = particle;
-    console.log(document.getElementById(particle.id));
-    console.log(document.getElementById('game'));
 };
 
 async function simulateSingleAttack(user, skill, target) { // TODO: implement missing and accuracy stuff
-    let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.025 : 1) : 1), target)) : skill.dmg);
+    let number = true;
+    if (skill.dmg == 0) number = false; // skills that do not intend to do damage should not have damage numbers
+    let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.01 : 1) : 1), target)) : skill.dmg);
     let done = false;
     let offset = undefined;
     if (skill.animation.range === 'fullScreen') {
         aoeEffect(skill.animation.projectile, target.id[0]);
+        console.log('changing stats');
+        changeStat(target, {stat: 'hp', change: -dmg});
+        if (number) dmgNumber(target, dmg);
         return;
     };
 
@@ -4359,7 +4580,7 @@ async function simulateSingleAttack(user, skill, target) { // TODO: implement mi
     } 
     if (!done) {
         changeStat(target, {stat: 'hp', change: -dmg});
-        dmgNumber(target, dmg);
+        if (number) dmgNumber(target, dmg);
         if (skill.animation.hitEffect != 'none') {
             await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
         }
@@ -4378,19 +4599,24 @@ async function simulateSkill(user, skill, target=undefined) {
     if (skill.animation.range === 'melee') await fakeMoveCard(user, target, 100);
     switch (skill.targeting) {
         case aoe:
+            console.log('aoe skill used');
             for (let i = 0; i < skill.attacks; i++) {
                 if (target.id[0] == 'E') { // target is enemy team
-                    for (let i = 0; i < game.gamestate.battleState.ef; i++) {
+                    console.log('enemy targeted');
+                    for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
+                        console.log('attacking ef');
                         simulateSingleAttack(user, skill, game.gamestate.battleState.ef[i]);
                     }
-                    for (let i = 0; i < game.gamestate.battleState.eb; i++) {
+                    for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
+                        console.log('attacking eb');
                         simulateSingleAttack(user, skill, game.gamestate.battleState.eb[i]);
                     }
                 } else { // target is player team
-                    for (let i = 0; i < game.gamestate.battleState.pf; i++) {
+                    console.log('player targeted');
+                    for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
                         simulateSingleAttack(user, skill, game.gamestate.battleState.pf[i]);
                     }
-                    for (let i = 0; i < game.gamestate.battleState.pb; i++) {
+                    for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
                         simulateSingleAttack(user, skill, game.gamestate.battleState.pb[i]);
                     }
                 }
