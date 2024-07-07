@@ -10,7 +10,7 @@ Update 4: Combat is still not done. Also, I hate css.<br>
 Update 5: I decided to deploy the still unplayable version of the game [here](https://grimreaper2654.github.io/Gacha-Game/main.html)<br>
 Update 6: Its so jover...<br>
 Update 7: I hate css (part 4).<br>
-Update 7: Microsoft Word > Photoshop for editing images and making assets.<br>
+Update 8: Microsoft Word > Photoshop for editing images and making assets.<br>
 <img width="600" alt="Poorly Drawn Game Assets" src="https://github.com/GrimReaper2654/Gacha-Game/assets/80506189/121b86dc-3b2c-494e-8a0e-47e944487f1b">
 <br>
 <br>
