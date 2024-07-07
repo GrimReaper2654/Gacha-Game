@@ -1055,7 +1055,7 @@ var data = {
                 str: 1.2,
                 int: 200,
                 mpRegen: 80,
-                skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'shadowVeil'],
+                skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'greaterHeal'],
                 armour: {physical: [10, 0], magic: [25, 75]},
             },
         },
@@ -3460,13 +3460,18 @@ const healingSkills = { // heals
             range: 'ranged',
             projectile: 'healingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: single,
         dmg: -20,
         multiplier: int,
         effects: [],
-        cost: {hp: 0, mp: 25},
+        cost: {hp: 0, mp: 40},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3477,13 +3482,18 @@ const healingSkills = { // heals
             range: 'fullScreen',
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: aoe,
         dmg: -10,
         multiplier: int,
         effects: [],
-        cost: {hp: 0, mp: 75},
+        cost: {hp: 0, mp: 80},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3494,13 +3504,18 @@ const healingSkills = { // heals
             range: 'ranged',
             projectile: 'healingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: single,
         dmg: -50,
         multiplier: int,
         effects: [],
-        cost: {hp: 0, mp: 45},
+        cost: {hp: 0, mp: 75},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3511,13 +3526,18 @@ const healingSkills = { // heals
             range: 'fullScreen',
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: aoe,
         dmg: -25,
         multiplier: int,
         effects: [],
-        cost: {hp: 0, mp: 100},
+        cost: {hp: 0, mp: 150},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3528,13 +3548,18 @@ const healingSkills = { // heals
             range: 'ranged',
             projectile: 'healingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: single,
-        dmg: -75,
+        dmg: -125,
         multiplier: int,
         effects: [{effect: 'mediumHealOverTime', chance: 100}],
-        cost: {hp: 0, mp: 60},
+        cost: {hp: 0, mp: 150},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3545,16 +3570,65 @@ const healingSkills = { // heals
             range: 'fullScreen',
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal,
         targeting: aoe,
-        dmg: -50,
+        dmg: -75,
         multiplier: int,
         effects: [],
-        cost: {hp: 0, mp: 150},
+        cost: {hp: 0, mp: 250},
         accuracy: Infinity,
         attacks: 1,
-    }
+    },
+    superiorHeal: {
+        name: `Superior Healing`,
+        desc: `[attacker] heals the targeted ally and leaves a lingering heal over time effect.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'healingLight',
+            hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: heal,
+        targeting: single,
+        dmg: -300,
+        multiplier: int,
+        effects: [{effect: 'mediumHealOverTime', chance: 100}],
+        cost: {hp: 0, mp: 300},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    superiorAreaHeal: {
+        name: `Superior Area Healing`,
+        desc: `[attacker] heals all allies greatly.`,
+        animation: { 
+            range: 'fullScreen',
+            projectile: 'areaHealingLight',
+            hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: heal,
+        targeting: aoe,
+        dmg: -200,
+        multiplier: int,
+        effects: [],
+        cost: {hp: 0, mp: 450},
+        accuracy: Infinity,
+        attacks: 1,
+    },
 };
 const selfBuffs = { // self enhancement
     lesserPhysicalEnhancement: {
@@ -3705,7 +3779,7 @@ const magicAttacks = { // spells
             projectile: 'darkArrow',
             hitEffect: 'blackHole',
             moveSpeed: 0,
-            projectileSpeed: 90,
+            projectileSpeed: 60,
             projectileFade: false,
             smooth: false,
             projectileDelay: 0,
@@ -3724,7 +3798,7 @@ const magicAttacks = { // spells
         desc: `[attacker] fires a concentrated blast of mana at the targeted enemy.`,
         animation: { 
             range: 'ranged',
-            projectile: 'magicBall',
+            projectile: 'arcaneBlast',
             hitEffect: 'magicExplosion',
             moveSpeed: 0,
             projectileSpeed: 90,
@@ -3743,25 +3817,25 @@ const magicAttacks = { // spells
     },
     darkBlast: {
         name: `Dark Blast`,
-        desc: `[attacker] releases a torrent of dark energy at the enemies.`,
+        desc: `[attacker] releases a torrent of dark energy at the targeted enemy.`,
         animation: { 
             range: 'ranged',
             projectile: 'darkBlast',
             hitEffect: 'none',
             moveSpeed: 0,
-            projectileSpeed: 75,
+            projectileSpeed: 100,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 50,
+            projectileDelay: 6,
         },
         type: magic,
         targeting: multi,
-        dmg: 12,
+        dmg: 8,
         multiplier: int,
         effects: [],
         cost: {hp: 0, mp: 150},
         accuracy: 100,
-        attacks: 20,
+        attacks: 30,
     },
     shadowVeil: {
         name: `Shadow Veil`,
@@ -4256,28 +4330,20 @@ async function aoeEffect(effect, team) {
     if (document.getElementById(id)) return;
     let html = `<img src="assets/${effect}.png" id="${id}"></img>`;
     addhtml('effects', html);
-
     document.getElementById(id).style.opacity = 1;
     document.getElementById(id).style.position = `absolute`;
-    document.getElementById(id).style.top = `${team == E? 0 : document.getElementById('battleScreen').getBoundingClientRect().height-430}px`;
-    document.getElementById(id).style.left = `0px`;
-    if (offset) {
-        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + offset.y}px`;
-        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + offset.x}px`;
-    } else {
-        document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + randint(-50, 50)}px`;
-        document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + randint(-50, 50)}px`;
-    }
+    document.getElementById(id).style.top = `${team == 'E'? 0 : document.getElementById('battleScreen').getBoundingClientRect().height-450}px`;
+    document.getElementById(id).style.left = `${document.getElementById('battleScreen').getBoundingClientRect().width/2 - 325}px`;
     console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
-    await sleep(250);
-    for (let i = 0; i < 50; i++) {
-        document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+    await sleep(1000);
+    for (let i = 0; i < 300; i++) {
+        document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.99;
         await sleep(5);
     }
     document.getElementById(id).remove();
 };
 
-async function hitEffect(effect, pos, offset, noRotate=false) {
+async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fadeDuration=50, fadeAmount=0.95) {
     let id = generateId();
     let r = noRotate ? 0 : randint(0,360);
     let html = ``;
@@ -4309,7 +4375,9 @@ async function hitEffect(effect, pos, offset, noRotate=false) {
                 console.warn(`WARNING: this effect is currently not supported ${effect}`);
                 return;
         }
-        hitEffect(bg, pos, {x: 0, y: 95}, true);
+        //{x: -75, y: -95}
+        console.log(pos);
+        hitEffect(bg, pos, {x: 87.5-75, y: 100-95}, true, 750, 300, 0.99);
         for (let i = 0; i < 4; i++) {
             let particle = {
                 id: generateId(),
@@ -4322,7 +4390,7 @@ async function hitEffect(effect, pos, offset, noRotate=false) {
             document.getElementById(particle.id).style.position = `absolute`;
             document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
             document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
-            console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
+            //console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
             game.gamestate.particles[particle.id] = particle;
         }
         for (let i = 0; i < 8; i++) {
@@ -4337,18 +4405,22 @@ async function hitEffect(effect, pos, offset, noRotate=false) {
             document.getElementById(particle.id).style.position = `absolute`;
             document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
             document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
-            console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
+            //console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
             game.gamestate.particles[particle.id] = particle;
         }
     }
     else { // normal hit effect
         html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
         addhtml('effects', html);
-        console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
+        //console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
+        console.log(pos);
         document.getElementById(id).style.opacity = 1;
         document.getElementById(id).style.position = `absolute`;
+        await sleep(25); // let stuff load
+        console.log(document.getElementById(id).offsetHeight, document.getElementById(id).offsetWidth);
         document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
         document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+        console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
         if (offset) {
             document.getElementById(id).style.top = `${unPixel(document.getElementById(id).style.top) + offset.y}px`;
             document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + offset.x}px`;
@@ -4357,9 +4429,10 @@ async function hitEffect(effect, pos, offset, noRotate=false) {
             document.getElementById(id).style.left = `${unPixel(document.getElementById(id).style.left) + randint(-50, 50)}px`;
         }
         console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
-        await sleep(250);
-        for (let i = 0; i < 50; i++) {
-            document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * 0.95;
+        //console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
+        await sleep(duration);
+        for (let i = 0; i < fadeDuration; i++) {
+            document.getElementById(id).style.opacity = document.getElementById(id).style.opacity * fadeAmount;
             await sleep(5);
         }
         document.getElementById(id).remove();
@@ -4417,6 +4490,7 @@ async function simulateProjectileAttack(projectile, start, end, steps, fade) {
     // unfortunately I can't define a variable to be the element otherwise async stuff breaks
     document.getElementById(id).style.opacity = 1;
     document.getElementById(id).style.position = `absolute`;
+    await sleep(25); // let stuff load
     document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
     document.getElementById(id).style.left = `${start.x+75-document.getElementById(id).offsetWidth/2}px`;
     for (let i = 0; i < steps; i++) {
@@ -4628,7 +4702,7 @@ async function simulateSkill(user, skill, target=undefined) {
             for (let i = 0; i < skill.attacks; i++) {
                 let chosen = randchoice([0,1]) ? target : randchoice(targets);
                 if (i == 0) chosen = target; // first attack always hits targeted enemy
-                print(chosen.id);
+                //print(chosen.id);
                 await simulateSingleAttack(user, skill, chosen);
                 await sleep(100);
             }
@@ -4653,7 +4727,7 @@ function selectAction(id) {
     if (!card.ap) return;
     let cardHtml = document.getElementById(id);
     for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
-        print(`${id.slice(0, 2)}${i}ID`);
+        //print(`${id.slice(0, 2)}${i}ID`);
         document.getElementById(`${id.slice(0, 2)}${i}ID`).className = document.getElementById(`${id.slice(0, 2)}${i}ID`).className.replace(` selected`, ``);
     }
     for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
@@ -4668,9 +4742,9 @@ function selectTarget(id) {
     let targetedCard = selectCard(id);
     let activeCard = selectCard(game.gamestate.battleState.tempStorage.activeCardId);
     let skillUsed = data.skills[game.gamestate.battleState.tempStorage.skillId];
-    print(targetedCard);
-    print(activeCard);
-    print(skillUsed);
+    //print(targetedCard);
+    //print(activeCard);
+    //print(skillUsed);
     
     game.gamestate.battleState.tempStorage = {};
     simulateSkill(activeCard, skillUsed, targetedCard);
@@ -4839,7 +4913,7 @@ function resize() {
 };
 
 function fetchBar(id) {
-    print(getComputedStyle(document.getElementById(id)).minWidth);
+    //print(getComputedStyle(document.getElementById(id)).minWidth);
     if (document.getElementById(id)) return parseFloat(getComputedStyle(document.getElementById(id)).minWidth.slice(0, -2))/60;
     else console.error(`can not find card id: ${id}`);
 };
