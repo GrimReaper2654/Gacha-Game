@@ -4103,7 +4103,7 @@ const advancedSkills = { // very op skills
         desc: `[attacker] throws a frag grenade towards the enemies.`,
         animation: { 
             range: 'fullScreen',
-            projectile: 'explosionLarge',
+            projectile: 'fireStorm',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 0,
