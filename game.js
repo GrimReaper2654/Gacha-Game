@@ -31,6 +31,7 @@ const magic = 'magic';
 const piercing = 'piercing';
 const normal = 'normal';
 const heal = 'heal';
+const effect = 'effect';
 
 const male = 'male';
 const female = 'female';
@@ -948,7 +949,7 @@ var data = {
             },
         },
         { // UC
-            Lucy: { // character with very high defence
+            Lucy: { // tank
                 name: `Lucy`,
                 title: `The Invulnerable`,
                 description: `Lucy is a timid girl who somehow stumbled upon a legendary set of armor. She has no idea how to fight but her equipment makes her nearly invincible.`,
@@ -967,22 +968,22 @@ var data = {
             },
         },
         { // R
-            Anonymous: { // debuffer
+            Anonymous: { // debuffer / support
                 name: `Anonymous`,
                 title: `Positron Lord`,
                 description: `Former high school student, Anonymous135 quantum tunneled her way into the other world usilising her extensive knowledge of the standard model. She hates the demon lord with a burning passion as the demons don't obey the laws of physics`,
                 personality: 'calm',
-                stats: {atk: 'high', def: 'medium'},
+                stats: {atk: 'low', def: 'low'},
                 rarity: R,
                 gender: female,
                 pfp: `assets/AnimeGirl54.jpeg`,
-                hp: 150,
+                hp: 140,
                 mp: 200,
-                str: 1.25,
-                int: 90,
+                str: 0.9,
+                int: 150,
                 mpRegen: 40,
                 skills: [`positronRay`,`analysis`,`gravityBind`,`lecture`],
-                armour: {physical: [10, 25], magic: [25, 35]},
+                armour: {physical: [0, 25], magic: [0, 10]},
             },
         },
         { // SR
@@ -996,7 +997,7 @@ var data = {
                 gender: female,
                 pfp: `assets/AnimeGirl55.jpeg`,
                 hp: 220,
-                mp: 200,
+                mp: 220,
                 str: 1.5,
                 int: 30,
                 mpRegen: 0,
@@ -1006,18 +1007,18 @@ var data = {
             Edwarda: { // support
                 name: `Edwarda`,
                 title: `Drug Dealer`,
-                description: `Former chemist and part time drug dealer, Edwarda broke through reality to reach the other world by synthesising a compound with negative molar mass. Now she synthesises her drugs with alchemy and deals meth in the other world, where there are no pesky poice to ruin her business. However, the return of the demon king has negatively affected her profits, so the demon lord must die.`,
+                description: `Former chemist and part time drug dealer, Edwarda broke through reality to reach the other world by synthesising a compound with negative molar mass. Now, she synthesises her drugs with alchemy and deals meth in the other world, where there are no pesky poicemen to ruin her business. However, the return of the demon king has negatively affected her profits, so the demon lord must die.`,
                 personality: 'angry',
-                stats: {atk: 'low', def: 'low'},
+                stats: {atk: 'medium', def: 'low'},
                 rarity: SR,
                 gender: female,
                 pfp: `assets/AnimeGirl56.jpeg`,
                 hp: 220,
                 mp: 220,
                 str: 1,
-                int: 75,
+                int: 120,
                 mpRegen: 50,
-                skills: [],
+                skills: ['mediumMeth', 'molotovCocktail', 'greaterHeal', 'greaterMeth'],
                 armour: {physical: [5, 10], magic: [5, 10]},
             },
         },
@@ -1027,16 +1028,16 @@ var data = {
                 title: `Chicken Farmer`,
                 description: `Born and raised on on a rural farm, π-thagoreas grew up as a talented chicken farmer, ruling over several chicken pens and over 300 chickens. When the demon lord attacked, π-thagoreas was driven out of her hometown, her chicken pens destroyed. Swaering revenge against the evil demons, π-thagoreas is willing to do anything to kill the demon lord.`,
                 personality: 'calm',
-                stats: {atk: 'low', def: 'low'},
+                stats: {atk: 'none', def: 'low'},
                 rarity: E,
                 gender: female,
                 pfp: `assets/AnimeGirl52.jpeg`,
-                hp: 240,
-                mp: 450,
+                hp: 300,
+                mp: 300,
                 str: 2,
                 int: 30,
                 mpRegen: 50,
-                skills: [`slash`, `summonChicken`, `summonChickenFlock`, `summonPheonix`],
+                skills: [`roastChicken`, `summonChicken`, `summonChickenFlock`, `summonPheonix`],
                 armour: {physical: [10, 10], magic: [5, 10]},
             },
         },
@@ -1055,7 +1056,7 @@ var data = {
                 str: 1.2,
                 int: 200,
                 mpRegen: 80,
-                skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'greaterHeal'],
+                skills: ['shadowLance', 'darkBlast', 'arcaneBlast', 'gravityBind'],
                 armour: {physical: [10, 0], magic: [25, 75]},
             },
         },
@@ -2799,6 +2800,7 @@ animation: {
 },
 */
 
+// assorted skills and abilities
 const debuffEffects = { // effects (debuffs)
     lesserBleed: {
         desc: `a minor bleed effect`, 
@@ -2816,12 +2818,35 @@ const debuffEffects = { // effects (debuffs)
         type: physical, 
         dmg: 5, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 2,
+    },
+    burning: {
+        desc: `a burning effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `redDrop.png`,
+                desc: `25 fire damage / round`,
+            },
+        ],
+        // inflict damage per round
+        type: normal, // close enough (fire damage does not exist)
+        dmg: 25, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 3,
     },
     lesserWeaken: {
         desc: `a minor weakening effect`, 
@@ -2839,12 +2864,85 @@ const debuffEffects = { // effects (debuffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: -0.05, int: 0, reg: 0},
         duration: 2,
+    },
+    mediumWeaken: {
+        desc: `a medium weakening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `brokenSword.png`,
+                desc: `- 25% physical strength`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: -0.25, int: 0, reg: 0},
+        duration: 3,
+    },
+    greaterWeaken: {
+        desc: `a medium weakening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `brokenSword.png`,
+                desc: `- 50% physical strength`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: -0.5, int: 0, reg: 0},
+        duration: 3,
+    },
+    analised: {
+        desc: `a significant weakening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `current round only`,
+            },
+            {
+                icon: `brokenShield.png`,
+                desc: `removes physical negation`,
+            },
+            {
+                icon: `brokenShield.png`,
+                desc: `removes magical negation`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: ['removeAll', 0], magic: ['removeAll', 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
     },
 };
 const buffEffects = { // effects (buffs)
@@ -2864,14 +2962,37 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 100], magic: [0, 100]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 1,
     },
-    lesserPhysicalEnhancement: {
+    barrier: {
+        desc: `not currently supported (tempoarily replaced with immortality)`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 1 round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `immunity to all damage`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 100], magic: [0, 100]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 1,
+    },
+    lesserStrengthEnhancement: {
         desc: `a minor strengthening effect`, 
         stats: [
             {
@@ -2880,18 +3001,72 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `sword.png`,
-                desc: `+ 20% physical strength`,
+                desc: `+ 15% physical strength`,
             },
         ],
         // inflict damage per round
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
-        statChange: {str: 0.2, int: 0, reg: 0},
+        statChange: {str: 0.15, int: 0, reg: 0},
+        duration: 3,
+    },
+    greaterStrengthEnhancement: {
+        desc: `a greater strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `sword.png`,
+                desc: `+ 100% physical strength`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 1, int: 0, reg: 0},
+        duration: 3,
+    },
+    lesserPhysicalEnhancement: {
+        desc: `a medium strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `sword.png`,
+                desc: `+ 10% physical strength`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 5% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 5% magical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 5], magic: [0, 5]},
+        statChange: {str: 0.1, int: 0, reg: 0},
         duration: 3,
     },
     mediumPhysicalEnhancement: {
@@ -2918,11 +3093,65 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 10], magic: [0, 10]},
         statChange: {str: 0.25, int: 0, reg: 0},
+        duration: 3,
+    },
+    lesserMagicEnhancement: {
+        desc: `a minor magic strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 10 intelligence`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 25 mana regen per round`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 10], magic: [0, 10]},
+        statChange: {str: 0, int: 25, reg: 25},
+        duration: 3,
+    },
+    mediumMagicEnhancement: {
+        desc: `a medium magic strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 25 intelligence`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 50 mana regen per round`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 10], magic: [0, 10]},
+        statChange: {str: 0, int: 25, reg: 25},
         duration: 3,
     },
     greaterBodyEnhancement: {
@@ -2953,7 +3182,7 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 25], magic: [0, 25]},
@@ -2980,7 +3209,7 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buggs / debuffs
         defChange: {physical: [5, 10], magic: [0, 0]},
@@ -3003,7 +3232,7 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 5, mp: 0}, 
         // buggs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
@@ -3026,34 +3255,11 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 15, mp: 0}, 
         // buggs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
-        duration: 3,
-    },
-    attackBoost: {
-        desc: `a greater strengthening effect`, 
-        stats: [
-            {
-                icon: `clock.png`,
-                desc: `lasts 3 rounds`,
-            },
-            {
-                icon: `sword.png`,
-                desc: `+ 100% physical strength`,
-            },
-        ],
-        // inflict damage per round
-        type: physical, 
-        dmg: 0, 
-        accuracy: 100, 
-        // chnage stats per round
-        change: {hp: 0, mp: 0}, 
-        // buffs / debuffs
-        defChange: {physical: [0, 0], magic: [0, 0]},
-        statChange: {str: 1, int: 0, reg: 0},
         duration: 3,
     },
     raiseGuard: {
@@ -3076,7 +3282,7 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buggs / debuffs
         defChange: {physical: [10, 25], magic: [0, 0]},
@@ -3103,12 +3309,90 @@ const buffEffects = { // effects (buffs)
         type: physical, 
         dmg: 0, 
         accuracy: 100, 
-        // chnage stats per round
+        // change stats per round
         change: {hp: 0, mp: 0}, 
         // buggs / debuffs
         defChange: {physical: [0, 99], magic: [0, 99]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 1,
+    },
+    high: {
+        desc: `high on drugs`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `sword.png`,
+                desc: `+ 75% physical strength`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 25 mp regen / round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 50% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 50% magical resistance`,
+            },
+            {
+                icon: `redDrop.png`,
+                desc: `- 15 health / round (drugs are bad, kids)`,
+            },
+        ],
+        // inflict damage per round
+        type: piercing, 
+        dmg: 15, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 50], magic: [0, 50]},
+        statChange: {str: 0.75, int: 0, reg: 25},
+        duration: 3,
+    },
+    veryHigh: {
+        desc: `very high on drugs`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `sword.png`,
+                desc: `+ 100% physical strength`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 40 mp regen / round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 90% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 75% magical resistance`,
+            },
+            {
+                icon: `redDrop.png`,
+                desc: `- 40 health / round (drugs are bad, kids)`,
+            },
+        ],
+        // inflict damage per round
+        type: piercing, 
+        dmg: 40, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 90], magic: [0, 75]},
+        statChange: {str: 1, int: 0, reg: 40},
+        duration: 3,
     },
 };
 const basicPhysicalAttacks = { // martial arts attacks
@@ -3452,6 +3736,142 @@ const basicRangedAttacks = { // ranged attacks
         attacks: 7, 
     },
 };
+const basicVerbalAttacks = { // insults and talking
+    brag: {
+        name: `Brag`,
+        desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'musicNotes',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 150,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 10,
+        multiplier: int,
+        effects: [],
+        cost: {hp: 0, mp: 5},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+};
+const advancedSwordAttacks = { // sword attacks but better
+    ascendedSlash: {
+        name: `Slash`,
+        desc: `[attacker] unleashes a powerful slash imbued with divine energy that pierces through armour.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 90,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 1,
+    },
+    auraSlash: {
+        name: `Aura Slash`,
+        desc: `[attacker] releases a wave of energy from [pronoun] sword that cuts through all enemies.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'swordSwingLarge',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: normal,
+        targeting: aoe,
+        dmg: 125,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 100},
+        accuracy: 100,
+        attacks: 1,
+    },
+    rapidStrikes: {
+        name: `Rapid Strikes`,
+        desc: `[attacker] performs a series of rapid strikes on the targeted enemy.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 10,
+        },
+        type: normal,
+        targeting: single,
+        dmg: 50,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 7,
+    },
+    swordDance: {
+        name: `Sword Dance`,
+        desc: `[attacker] dances through enemies, rapidly striking at them.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 2,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: normal,
+        targeting: multi,
+        dmg: 35,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 375},
+        accuracy: 100,
+        attacks: 45,
+    },
+    realitySlash: {
+        name: `Reality Slash`,
+        desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a slash that cuts through reality itself.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordThrust',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 1250,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 800},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+};
 const healingSkills = { // heals
     lesserHeal: { // A healing skill is an attack that does negative damage
         name: `Lesser Healing`,
@@ -3629,6 +4049,28 @@ const healingSkills = { // heals
         accuracy: Infinity,
         attacks: 1,
     },
+    roastChicken: {
+        name: `Chimkin`,
+        desc: `[attacker] feeds the targeted ally a roast chicken.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'chimkin',
+            hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: heal,
+        targeting: single,
+        dmg: -15,
+        multiplier: int,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
 };
 const selfBuffs = { // self enhancement
     lesserPhysicalEnhancement: {
@@ -3643,7 +4085,7 @@ const selfBuffs = { // self enhancement
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
-        effects: [{effect: 'lesserPhysicalEnhancement', chance: 100}], 
+        effects: [{effect: 'lesserStrengthEnhancement', chance: 100}], 
         cost: {hp: 0, mp: 15}, 
         accuracy: none,
     },
@@ -3664,6 +4106,23 @@ const selfBuffs = { // self enhancement
         accuracy: none,
         attacks: 1,
     },
+    greaterRaiseGuard: {
+        name: `Raise Guard`,
+        desc: `[attacker] raises [pronoun] guard, significantly reducing damage from all attacks in the next round.`,
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'defenceUp',
+        },
+        type: none, 
+        targeting: selfOnly,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'greaterRaiseGuard', chance: 100}],
+        cost: {hp: 0, mp: 0},
+        accuracy: none,
+        attacks: 1,
+    },
     cower: {
         name: `Cower in Fear`,
         desc: `[attacker] cowers in fear, channeling mana into [pronoun] armour to reist more damage.`,
@@ -3678,6 +4137,167 @@ const selfBuffs = { // self enhancement
         multiplier: none,
         effects: [{effect: 'lesserArmourReinforcement', chance: 100}],
         cost: {hp: 0, mp: 25},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    superCharge: {
+        name: `Super Charge`,
+        desc: `[attacker] super charges [pronoun] body with aura, greatly increasing all stats.`,
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'statUp',
+        },
+        type: heal, 
+        targeting: selfOnly,
+        dmg: -25,
+        multiplier: int,
+        effects: [{effect: 'greaterBodyEnhancement', chance: 100}],
+        cost: {hp: 0, mp: 400},
+        accuracy: none,
+        attacks: 1,
+    },
+};
+const buffSkills = { // makes target stronk
+    warCry: {
+        name: `War Cry`,
+        desc: `[attacker] lets out a powerful war cry, boosting the attack of all allies.`,
+        animation: { 
+            range: 'allUnits',
+            projectile: 'none',
+            hitEffect: 'attackUp',
+        },
+        targeting: aoe,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'greaterStrengthEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 150},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    battlefieldCommand: {
+        name: `Battlefield Command`,
+        desc: `[attacker] commands the battlefield, boosting the attack and defense of all allies.`,
+        animation: { 
+            range: 'allUnits',
+            projectile: 'none',
+            hitEffect: 'statUp',
+        },
+        targeting: aoe,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'mediumPhysicalEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 125},
+        accuracy: none,
+        attacks: 1,
+    },
+    shadowVeil: {
+        name: `Shadow Veil`,
+        desc: `[attacker] surrounds the targeted ally in a barrier, protecting them from attacks.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'shadowball',
+            hitEffect: 'defenceUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: magic,
+        targeting: single,
+        dmg: 0,
+        multiplier: int,
+        effects: [{effect: 'barrier', chance: 100}],
+        cost: {hp: 0, mp: 300},
+        accuracy: Infinity,
+        attacks: 1,
+    },  
+    mediumMeth: {
+        name: `Mid Grade Methamphetamine`,
+        desc: `[attacker] synthesises some meth of medium purity which has a chance of making the targeted entity high.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'bagOfWhitePowder',
+            hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        targeting: single,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'high', chance: 90}], 
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    greaterMeth: {
+        name: `High Grade Methamphetamine`,
+        desc: `[attacker] synthesises some meth of high purity which makes the targeted entity very high.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'bagOfWhitePowder',
+            hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        targeting: single,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'veryHigh', chance: 100}], 
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+};
+const debuffSkills = { // makes target weak
+    analysis: {
+        name: `Analysis`,
+        desc: `[attacker] locates the targeted enemy's weakness, removing their damage negation.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'none',
+            hitEffect: 'defenceDown',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: effect, 
+        targeting: single,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'analised', chance: 100}],
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    gravityBind: {
+        name: `Gravity Bind`,
+        desc: `[attacker] manipulates the gravitational field around the targeted enemy to weaken them.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'blackHole',
+            hitEffect: 'attackDown',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: effect, 
+        targeting: single,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'mediumWeaken', chance: 100}],
+        cost: {hp: 0, mp: 125},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -3837,211 +4457,6 @@ const magicAttacks = { // spells
         accuracy: 100,
         attacks: 30,
     },
-    shadowVeil: {
-        name: `Shadow Veil`,
-        desc: `[attacker] surrounds the targeted ally in a barrier, protecting them from all damage.`,
-        animation: { 
-            range: 'ranged',
-            projectile: 'shadowball',
-            hitEffect: 'defenceUp',
-            moveSpeed: 0,
-            projectileSpeed: 60,
-            projectileFade: false,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: magic,
-        targeting: single,
-        dmg: 0,
-        multiplier: int,
-        effects: [{effect: 'immortality', chance: 100}],
-        cost: {hp: 0, mp: 300},
-        accuracy: Infinity,
-        attacks: 1,
-    },
-};
-const advancedSkills = { // very op skills
-    debugFist: {
-        name: `Debug Fist`, 
-        desc: `[attacker] punches the targeted enemy several times to debug the code.`, 
-        animation: { 
-            range: 'ranged',
-            projectile: 'fireball',
-            hitEffect: 'physicalHit',
-            moveSpeed: 20,
-            projectileSpeed: 100,
-            projectileFade: false,
-            smooth: true,
-            projectileDelay: 25,
-        },
-        type: physical, 
-        targeting: multi, 
-        dmg: 10, 
-        multiplier: str, 
-        effects: [], 
-        cost: {hp: 10, mp: 10}, 
-        accuracy: 100, 
-        attacks: 50, 
-    },
-    ascendedSlash: {
-        name: `Slash`,
-        desc: `[attacker] unleashes a powerful slash imbued with divine energy that pierces through armour.`,
-        animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
-            hitEffect: 'none',
-            moveSpeed: 0,
-            projectileSpeed: 50,
-            projectileFade: true,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: piercing,
-        targeting: single,
-        dmg: 90,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 100,
-        attacks: 1,
-    },
-    auraSlash: {
-        name: `Aura Slash`,
-        desc: `[attacker] releases a wave of energy from [pronoun] sword that cuts through all enemies.`,
-        animation: { 
-            range: 'ranged',
-            projectile: 'swordSwingLarge',
-            hitEffect: 'none',
-            moveSpeed: 0,
-            projectileSpeed: 120,
-            projectileFade: true,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: normal,
-        targeting: aoe,
-        dmg: 125,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 100},
-        accuracy: 100,
-        attacks: 1,
-    },
-    rapidStrikes: {
-        name: `Rapid Strikes`,
-        desc: `[attacker] performs a series of rapid strikes on the targeted enemy.`,
-        animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
-            hitEffect: 'none',
-            moveSpeed: 0,
-            projectileSpeed: 50,
-            projectileFade: true,
-            smooth: true,
-            projectileDelay: 10,
-        },
-        type: normal,
-        targeting: single,
-        dmg: 50,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 100,
-        attacks: 7,
-    },
-    swordDance: {
-        name: `Sword Dance`,
-        desc: `[attacker] dances through enemies, rapidly striking at them.`,
-        animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
-            hitEffect: 'none',
-            moveSpeed: 2,
-            projectileSpeed: 50,
-            projectileFade: true,
-            smooth: true,
-            projectileDelay: 0,
-        },
-        type: normal,
-        targeting: multi,
-        dmg: 35,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 375},
-        accuracy: 100,
-        attacks: 45,
-    },
-    realitySlash: {
-        name: `Reality Slash`,
-        desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a slash that cuts through reality itself.`,
-        animation: { 
-            range: 'melee',
-            projectile: 'swordThrust',
-            hitEffect: 'none',
-            moveSpeed: 0,
-            projectileSpeed: 50,
-            projectileFade: true,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: piercing,
-        targeting: single,
-        dmg: 1250,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 800},
-        accuracy: Infinity,
-        attacks: 1,
-    },
-    superCharge: {
-        name: `Super Charge`,
-        desc: `[attacker] super charges [pronoun] body with aura, greatly increasing attack power and defence as well as recovering some health.`,
-        animation: { 
-            range: 'self',
-            projectile: 'none',
-            hitEffect: 'statUp',
-        },
-        type: heal, 
-        targeting: selfOnly,
-        dmg: -25,
-        multiplier: int,
-        effects: [{effect: 'greaterBodyEnhancement', chance: 100}],
-        cost: {hp: 0, mp: 400},
-        accuracy: none,
-        attacks: 1,
-    },
-    warCry: {
-        name: `War Cry`,
-        desc: `[attacker] lets out a powerful war cry, boosting the attack of all allies.`,
-        animation: { 
-            range: 'allUnits',
-            projectile: 'none',
-            hitEffect: 'attackUp',
-        },
-        targeting: aoe,
-        dmg: 0,
-        multiplier: none,
-        effects: [{effect: 'attackBoost', chance: 100}], 
-        cost: {hp: 0, mp: 150},
-        accuracy: none,
-        attacks: 1,
-    },
-    battlefieldCommand: {
-        name: `Battlefield Command`,
-        desc: `[attacker] commands the battlefield, boosting the attack and defense of all allies.`,
-        animation: { 
-            range: 'allUnits',
-            projectile: 'none',
-            hitEffect: 'statUp',
-        },
-        targeting: aoe,
-        dmg: 0,
-        multiplier: none,
-        effects: [{effect: 'mediumPhysicalEnhancement', chance: 100}], 
-        cost: {hp: 0, mp: 125},
-        accuracy: none,
-        attacks: 1,
-    },
     righteousSmite: {
         name: `Righteous Smite`,
         desc: `[attacker] calls down lightning from the heavens to smite the targeted enemy`,
@@ -4059,23 +4474,8 @@ const advancedSkills = { // very op skills
         accuracy: 100,
         attacks: 1,
     },
-    greaterRaiseGuard: {
-        name: `Raise Guard`,
-        desc: `[attacker] raises [pronoun] guard, significantly reducing damage from all attacks in the next round.`,
-        animation: { 
-            range: 'self',
-            projectile: 'none',
-            hitEffect: 'defenceUp',
-        },
-        type: none, 
-        targeting: selfOnly,
-        dmg: 0,
-        multiplier: none,
-        effects: [{effect: 'greaterRaiseGuard', chance: 100}],
-        cost: {hp: 0, mp: 0},
-        accuracy: none,
-        attacks: 1,
-    },
+};
+const modernWeaponry = { // guns and bombs
     assaultRifle: {
         name: `Assault Rifle`,
         desc: `[attacker] unloads a full magazine towards the targeted enemy.`,
@@ -4120,6 +4520,109 @@ const advancedSkills = { // very op skills
         accuracy: 100,
         attacks: 1,
     },
+    molotovCocktail: {
+        name: `Molotov Cocktail`,
+        desc: `[attacker] throws a homemade molotov cocktail towards the enemies.`,
+        animation: { 
+            range: 'fullScreen',
+            projectile: 'fireStorm',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: normal,
+        targeting: aoe,
+        dmg: 25,
+        multiplier: none,
+        effects: [{effect: 'burning', chance: 100}],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 1,
+    },
+};
+const mathsAndScienceMemes = { // self explanatory
+    positronRay: {
+        name: `Positron Ray`,
+        desc: `[attacker] launches a concentrated beam of positrons at the targeted enemy.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'magicBolt',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 1,
+        multiplier: int,
+        effects: [],
+        cost: {hp: 0, mp: 60},
+        accuracy: 100,
+        attacks: 30,
+    },
+    lecture: {
+        name: `Lecture`,
+        desc: `[attacker] lectures all allies on the standard model of particle phyiscs, increasing their intelligence and magical abilities.`,
+        animation: { 
+            range: 'allUnits',
+            projectile: 'none',
+            hitEffect: 'attackUp',
+        },
+        targeting: aoe,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'mediumMagicEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+};
+const uniqueSkills = { // very op skills
+    debugFist: {
+        name: `Debug Fist`, 
+        desc: `[attacker] punches the targeted enemy several times to debug the code.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'fireball',
+            hitEffect: 'physicalHit',
+            moveSpeed: 20,
+            projectileSpeed: 100,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 25,
+        },
+        type: physical, 
+        targeting: multi, 
+        dmg: 10, 
+        multiplier: str, 
+        effects: [], 
+        cost: {hp: 10, mp: 10}, 
+        accuracy: 100, 
+        attacks: 50, 
+    },
+    pervertedStare: {
+        name: `Perverted Stare`, 
+        desc: `[attacker] gives a creepy stare, which does nothing most of the time.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'none',
+            hitEffect: 'none',
+        },
+        type: none, 
+        targeting: single, 
+        dmg: 0, 
+        multiplier: none, 
+        effects: [], 
+        cost: {hp: 0, mp: 10}, 
+        accuracy: Infinity, 
+        attacks: 1,
+    },
     soulHarvest: {
         name: `Soul Harvest`,
         desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
@@ -4143,43 +4646,10 @@ const advancedSkills = { // very op skills
         attacks: 1,
     },
 };
-const miscSkills = {
-    pervertedStare: {
-        name: `Perverted Stare`, 
-        desc: `[attacker] gives a creepy stare, which does nothing most of the time.`, 
-        animation: { 
-            range: 'ranged',
-            projectile: 'none',
-            hitEffect: 'none',
-        },
-        type: none, 
-        targeting: single, 
-        dmg: 0, 
-        multiplier: none, 
-        effects: [], 
-        cost: {hp: 0, mp: 10}, 
-        accuracy: Infinity, 
-        attacks: 1,
-    },
-    brag: {
-        name: `Brag`,
-        desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
-        animation: { 
-            range: 'ranged',
-            projectile: 'musicNotes',
-            hitEffect: 'none',
-        },
-        type: piercing,
-        targeting: single,
-        dmg: 10,
-        multiplier: int,
-        effects: [],
-        cost: {hp: 0, mp: 5},
-        accuracy: Infinity,
-        attacks: 1,
-    },
+const miscSkills = { // unsorted stuff
+    
 };
-data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...healingSkills, ...selfBuffs, ...magicAttacks, ...advancedSkills, ...miscSkills };
+data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...basicRangedAttacks, ...basicVerbalAttacks, ...advancedSwordAttacks, ...healingSkills, ...selfBuffs, ...buffSkills, ...debuffSkills, ...magicAttacks, ...modernWeaponry, ...mathsAndScienceMemes, ...uniqueSkills, ...miscSkills};
 data.effects = {...debuffEffects, ...buffEffects};
 deepFreeze(data);
 console.log(data);
@@ -4355,6 +4825,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
                 icon = `greenCross.png`;
                 bg = `greenGlow`;
                 break;
+            case `defDown`:
             case `defUp`:
                 icon = `shield.png`;
                 bg = `greyGlow`;
@@ -4370,6 +4841,10 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             case `statUp`:
                 icon = `yellowArrow.png`;
                 bg = `yellowGlow`;
+                break;
+            case `attackDown`:
+                icon = `brokenSword.png`;
+                bg = `blackGlow`;
                 break;
             default:
                 console.warn(`WARNING: this effect is currently not supported ${effect}`);
@@ -4658,6 +5133,9 @@ async function simulateSingleAttack(user, skill, target) { // TODO: implement mi
         if (skill.animation.hitEffect != 'none') {
             await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
         }
+    }
+    for (let i = 0; i < skill.effects.length; i++) {
+        if (randint(0,100) <= skill.effects[i].chance) target.effect.push(data.effects[skill.effects[i].effect]);
     }
 };
 
