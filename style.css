@@ -1,7 +1,6 @@
 #main {
-    border: 1px solid black;
-    background-color: rgb(101, 178, 24); 
-    z-index: 1;
+    width: 0px;
+    height: 0px;
 }
 
 canvas {
@@ -902,4 +901,11 @@ body {
     color: rgba(100, 100, 100, 1);
     font-size: xx-large;
     font-weight: 1000;
+}
+
+.endTurn {
+    position: fixed;
+    right: 360px;
+    bottom: 10px;
+    width: 200px !important;
 }
