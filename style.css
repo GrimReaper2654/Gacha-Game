@@ -454,7 +454,7 @@ body {
 }
 
 #focusTopRow {
-    height: 70px;
+    height: 90px;
     width: 100%;
     padding-bottom: 25px;
 }
@@ -466,7 +466,7 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 40px;
     color: rgba(250, 250, 250, 1);
-    width: 100%;
+    width: calc(100% - 75px);
     margin-bottom: 0px;
     padding-top: 15px;
 }
@@ -909,3 +909,4 @@ body {
     bottom: 10px;
     width: 200px !important;
 }
+
