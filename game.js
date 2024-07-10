@@ -862,41 +862,41 @@ var data = {
                 skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
                 armour: {physical: [2, 5], magic: [2, 5]}, 
             },
-            Yuki: { // melee DPS character
+            Yuki: { // dps
                 name: `Yuki`, // name of character
-                title: `Warrior`, // title to put before name
+                title: `Soldier`, // title to put before name
                 description: `Yuki recently graduated from the kingdom's swordmen academy. She's not inexperienced with the sword and knows how to use mana to strengthen her attacks. Additionally her light armour improves her felxibility and allows her to hit harder.`, // description of character
                 personality: 'calm', // determines voice lines for character
-                stats: {atk: 'medium', def: 'medium'}, // stats to show to user
+                stats: {atk: 'high', def: 'low'}, // stats to show to user
                 rarity: N, // how 'good' the character is. In ascending order, the rarities are N (normal), UC (uncommon), R (rare), SR (super rare), E (epic), L (legendary), and G (godly)
                 gender: female, // gender of character, used for determining voice lines
                 pfp: `assets/AnimeGirl42.jpeg`, // character icon image
-                hp: 100, // health
-                mp: 50, // mana
-                str: 1.2, // strength (physical attack damage = attack base damage * str)
+                hp: 110, // health
+                mp: 75, // mana
+                str: 1.25, // strength (physical attack damage = attack base damage * str)
                 int: 10, // intelligence (magic attack damage = attack base damage * int/100)
-                mpRegen: 7, // mana regeneration per round
+                mpRegen: 5, // mana regeneration per round
                 skills: ['slash', 'lesserStrengthEnhancement', 'swordCharge', 'overheadStrike'], // attacks and abilities (every character should have at least 4)
-                armour: {physical: [5, 10], magic: [0, 0]}, // resistances to damage, first number is flat damage reduction, second is a percentage reduction
+                armour: {physical: [5, 0], magic: [0, 0]}, // resistances to damage, first number is flat damage reduction, second is a percentage reduction
             },
-            Akane: { // tank dps hybrid
+            Akane: { // tank
                 name: `Akane`,
                 title: `Knight`,
-                description: `Akane is one of the kingdom's many knights. She's good at both attacking and defending.`,
+                description: `Akane is one of the kingdom's many knights. She's got good durability and knows her way around a fight.`,
                 personality: 'arrogant',
-                stats: {atk: 'medium', def: 'medium'},
+                stats: {atk: 'medium', def: 'high'},
                 rarity: N,
                 gender: female,
                 pfp: `assets/AnimeGirl40.jpeg`,
-                hp: 150,
+                hp: 170,
                 mp: 30,
-                str: 1,
+                str: 0.9,
                 int: 5,
                 mpRegen: 5,
-                skills: ['punch', 'slash', 'thrust', 'swordCharge'],
-                armour: {physical: [10, 15], magic: [2, 5]}, // Added minimal magic armor
+                skills: ['stunningBlows', 'slash', 'reinforceArmour', 'swordCharge'],
+                armour: {physical: [12, 25], magic: [2, 5]}, 
             },
-            Emi: { // glass cannon ranged dps
+            Emi: { // glass cannon dps
                 name: `Emi`,
                 title: `Mage`,
                 description: `Emi is an apprentice mage from the red mage tower. She specializes in fire elemental attacks at long ranges but is inexperienced in close combat.`,
@@ -930,9 +930,43 @@ var data = {
                 skills: [`punch`, `summonPotato`, `summonChicken`, `insult`],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
+            Hana: { // tank / dps
+                name: `Hana`,
+                title: `Wanderer`,
+                description: `Hana was orphaned after her village was razed by the demon lord's army. She swore a vow of vengence to hunt down all demonic creatures and trains relentlessly every day.`,
+                personality: 'angry',
+                stats: {atk: 'high', def: 'medium'},
+                rarity: N,
+                gender: female,
+                pfp: `assets/AnimeGirl8.jpeg`,
+                hp: 125,
+                mp: 50,
+                str: 1,
+                int: 5,
+                mpRegen: 7,
+                skills: ['slash', 'raiseGuard', 'swordCharge', 'overheadStrike'],
+                armour: {physical: [10, 10], magic: [2, 0]}, 
+            },
+            Maiko: { // dps
+                name: `Maiko`,
+                title: `Wanderer`, 
+                description: `With no home to call her own, Maiko roams from town to town, taking on any quest that promises a warm meal and a place to rest for the night. Years of living alone in the wilderness has taught Maiko how to fight and some basic first aid.`,
+                personality: 'calm', 
+                stats: {atk: 'high', def: 'low'}, 
+                rarity: N,
+                gender: female, 
+                pfp: `assets/AnimeGirl41.jpeg`, 
+                hp: 100, 
+                mp: 100, 
+                str: 1, 
+                int: 10, 
+                mpRegen: 10, 
+                skills: ['heavySlash', 'lesserStrengthEnhancement', 'inferiorSwordDance', 'firstAid'], 
+                armour: {physical: [3, 0], magic: [0, 0]}, 
+            },
         },
         { // UC
-            Rei: { // tanker
+            Rei: { // tank
                 name: `Rei`,
                 title: `Warrior`,
                 description: `Rei is clumsy and often misses her attacks, but has a suit of heavy armour that allows her to tank damage quite well.`,
@@ -941,12 +975,12 @@ var data = {
                 rarity: UC,
                 gender: female,
                 pfp: `assets/AnimeGirl9.jpeg`,
-                hp: 200, 
-                mp: 20,
-                str: 0.9,
+                hp: 230, 
+                mp: 30,
+                str: 1,
                 int: 5,
-                mpRegen: 3,
-                skills: ['kick', 'wildSwing', 'wildCharge', 'raiseGuard'],
+                mpRegen: 5,
+                skills: ['kick', 'raiseGuard', 'wildSwing', 'reinforceArmour'],
                 armour: {physical: [20, 25], magic: [5, 5]}, 
             },
         },
@@ -968,7 +1002,7 @@ var data = {
                 skills: [`positronRay`,`analysis`,`gravityBind`,`lecture`],
                 armour: {physical: [0, 25], magic: [0, 10]},
             },   
-            Kaede: { // tanker
+            Kaede: { // tank
                 name: `Kaede`,
                 title: `Shielder`,
                 description: `Hailing from a fallen empire, Kaede is a soldier experienced in team combat. She wields her shield effectively to protect her allies from harm.`,
@@ -1059,7 +1093,7 @@ var data = {
             },
         },
         { // L
-            Kohana: { // dps and support
+            Kohana: { // dps / support
                 name: `Kohana`,
                 title: `Archmage`,
                 description: `Kohana is a grand archmage who has seen countless battles over the centuries. She weilds high teir shadow magic.`,
@@ -1112,7 +1146,7 @@ var data = {
                 skills: ['ascendedSlash', 'rapidStrikes', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
                 armour: {physical: [0, 25], magic: [0, 25]},
             },
-            Yui: { // tank and support
+            Yui: { // tank / support
                 name: `Yui`,
                 title: `War Goddess`,
                 description: `Yui, the War Goddess, commands the battlefield with an iron fist. Her presence alone can turn the tide of battle, and her unparalleled strength and defense make her a formidable opponent.`,
@@ -1129,7 +1163,6 @@ var data = {
                 skills: ['ascendedSlash', 'rapidStrikes', 'warCry', 'battlefieldCommand', 'righteousSmite'],
                 armour: {physical: [200, 75], magic: [200, 50]},
             },
-            
         },
         { // EX
             Eco: { // useless trash
@@ -1149,7 +1182,7 @@ var data = {
                 skills: ['debugFist', 'punch', 'bodySlam', 'pervertedStare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
-            Redacted: { // terrorist
+            Redacted: { // tank / dps
                 name: `[Redacted]`,
                 title: `Terrorist`,
                 description: `Former high school student, [redacted] was isekaied into the other world as the demon lord. Despite being gender bent, she is still obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
@@ -1169,18 +1202,18 @@ var data = {
             Borude: { // healer?
                 name: `Borude`,
                 title: `Surgeon`,
-                description: `Borude became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most skilled opperations with 102% success rate. Borude helps the team by transfering her own hp to teammates.`,
+                description: `Borude became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most difficult opperations with 102% success rate. Because Borude was simply too good, the godess transmigrated her to the other world where her healing would be more useful. Borude helps the team by transfering her own hp to teammates.`,
                 personality: 'confident',
                 stats: {atk: 'none', def: 'none'},
                 rarity: EX,
                 gender: female,
-                pfp: `assets/AnimeGirl55.jpeg`,
-                hp: 2250,
+                pfp: `assets/AnimeGirl61.jpeg`,
+                hp: 2500,
                 mp: 400,
                 str: 1,
                 int: 6900,
                 mpRegen: 0,
-                skills: ['cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
+                skills: ['aggressiveSurgery', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
                 armour: {physical: [0, 0], magic: [0, 0]},
             },
         },
@@ -1192,7 +1225,7 @@ var data = {
             pfp: `assets/Goblin1.jpeg`,
             hp: [40, 45, 50, 60, 70],
             mp: [0, 0, 0, 0, 0],
-            str: [0.9, 1, 1.1, 1.25, 1.5],
+            str: [0.9, 1, 1.25, 1.5, 2],
             int: [0, 0, 0, 0, 0],
             mpRegen: [0, 0, 0, 0, 0],
             skills: ['hit', 'rapidHit'],
@@ -1203,9 +1236,9 @@ var data = {
             name: `Goblin`,
             rarity: N,
             pfp: `assets/Goblin2.jpeg`,
-            hp: [25, 45, 60],
+            hp: [25, 30, 45],
             mp: [0, 0, 0],
-            str: [1, 1.25, 2],
+            str: [1, 1.75, 2.5],
             int: [0, 0, 0],
             mpRegen: [0, 0, 0],
             skills: ['crossbow', 'crossbow', 'crossbowCrit'],
@@ -1218,7 +1251,7 @@ var data = {
             pfp: `assets/Goblin3.jpeg`,
             hp: [75, 100, 140],
             mp: [0, 0, 0],
-            str: [1.4, 1.75, 2],
+            str: [1.5, 1.75, 2],
             int: [0, 0, 0],
             mpRegen: [0, 0, 0],
             skills: ['smash', 'hit', 'heavySlash'],
@@ -1231,20 +1264,20 @@ var data = {
             pfp: `assets/Goblin4.jpeg`,
             hp: [150, 225],
             mp: [0, 0],
-            str: [1.75, 2],
+            str: [2, 2.5],
             int: [0, 0],
             mpRegen: [0, 0],
-            skills: ['hit', 'heavySlash', 'roar'],
-            armour: {physical: [10, 25], magic: [0, 10]},
+            skills: ['crushingBlow', 'heavySlash', 'roar'],
+            armour: {physical: [10, 25], magic: [5, 10]},
             ai: `rng`,
         },
         goblinLord: {
             name: `Goblin Lord`,
             rarity: N,
             pfp: `assets/Goblin5.jpeg`,
-            hp: [500],
+            hp: [750],
             mp: [0],
-            str: [2.5],
+            str: [3],
             int: [0],
             mpRegen: [0],
             skills: ['crushingBlow', 'heavySlash', 'rallyingRoar'],
@@ -2274,7 +2307,7 @@ var data = {
             preventDefault: true,
         },
     },
-    enemySkills: {
+    enemySkillsOld: {
         hit: {
             attackType: `physical`,
             type: physical,
@@ -3114,7 +3147,7 @@ const debuffEffects = { // effects (debuffs)
                 desc: `lasts 2 rounds`,
             },
             {
-                icon: `brokenSword.png`,
+                icon: `brokenRedSword.png`,
                 desc: `- 5% physical strength`,
             },
         ],
@@ -3137,7 +3170,7 @@ const debuffEffects = { // effects (debuffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `brokenSword.png`,
+                icon: `brokenRedSword.png`,
                 desc: `- 25% physical strength`,
             },
         ],
@@ -3160,7 +3193,7 @@ const debuffEffects = { // effects (debuffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `brokenSword.png`,
+                icon: `brokenRedSword.png`,
                 desc: `- 50% physical strength`,
             },
         ],
@@ -3183,11 +3216,11 @@ const debuffEffects = { // effects (debuffs)
                 desc: `lasts 1 rounds`,
             },
             {
-                icon: `brokenSword.png`,
+                icon: `brokenRedSword.png`,
                 desc: `- 100% physical strength`,
             },
             {
-                icon: `brokenSword.png`,
+                icon: `brokenRedSword.png`,
                 desc: `- 100% magic damage`,
             },
         ],
@@ -3285,7 +3318,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 5 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 25% physical strength`,
             },
         ],
@@ -3308,7 +3341,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 50% physical strength`,
             },
         ],
@@ -3331,7 +3364,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 100% physical strength`,
             },
         ],
@@ -3354,7 +3387,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 10% physical strength`,
             },
             {
@@ -3385,7 +3418,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 25% physical strength`,
             },
             {
@@ -3470,7 +3503,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 200% physical strength`,
             },
             {
@@ -3794,7 +3827,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 75% physical strength`,
             },
             {
@@ -3833,7 +3866,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 3 rounds`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 100% physical strength`,
             },
             {
@@ -3876,7 +3909,7 @@ const buffEffects = { // effects (buffs)
                 desc: `+ 50 mana / round`,
             },
             {
-                icon: `sword.png`,
+                icon: `redSword.png`,
                 desc: `+ 50% physical strength`,
             },
             {
@@ -3919,6 +3952,23 @@ const basicPhysicalAttacks = { // body and blunt attacks
         effects: [], 
         cost: {hp: 0, mp: 0}, 
         accuracy: 90, 
+        attacks: 3, 
+    },
+    stunningBlows: {
+        name: `Stunning Blows`, 
+        desc: `[attacker] punches the targeted enemy several times, potentially weakening them with each blow.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'none',
+            hitEffect: 'physicalHit',
+        },
+        type: 'physical', 
+        targeting: single,
+        dmg: 7, 
+        multiplier: 'str', 
+        effects: [{effect: 'lesserWeaken', chance: 15}], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 100,
         attacks: 3, 
     },
     heavyBlows: {
@@ -4095,8 +4145,8 @@ const basicSwordAttacks = { // sword attacks
         dmg: 60,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 15},
-        accuracy: 75,
+        cost: {hp: 0, mp: 20},
+        accuracy: 90,
         attacks: 1,
     },
     wildSwing: {
@@ -4277,6 +4327,50 @@ const basicRangedAttacks = { // ranged attacks
         accuracy: 70,
         attacks: 7, 
     },
+    crossbow: {
+        name: `Crossbow`, 
+        desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'arrow',
+            hitEffect: 'arrowInGround',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single, 
+        dmg: 30,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 90,
+        attacks: 1,
+    },
+    crossbowCrit: {
+        name: `Crossbow (Crit)`, 
+        desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'arrow',
+            hitEffect: 'arrowInGround',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single, 
+        dmg: 45,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 1,
+    },
 };
 const basicVerbalAttacks = { // insults and talking
     brag: {
@@ -4300,6 +4394,51 @@ const basicVerbalAttacks = { // insults and talking
         cost: {hp: 0, mp: 5},
         accuracy: Infinity,
         attacks: 1,
+    },
+};
+const intermediateSwordAttacks = {
+    heavySlash: {
+        name: `Heavy Slash`, 
+        desc: `[attacker] smashes [pronoun] sword down on the targeted enemy.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 50,
+            projectileSpeed: 0,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single, 
+        dmg: 50,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 95,
+        attacks: 1,
+    },
+    inferiorSwordDance: {
+        name: `Sword Dance`,
+        desc: `[attacker] dances through enemies, rapidly striking at them. The technique is crude and unrefined, but gets the job done.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 5,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: normal,
+        targeting: multi,
+        dmg: 15,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 50},
+        accuracy: 95,
+        attacks: 12,
     },
 };
 const advancedSwordAttacks = { // sword attacks but better 
@@ -4415,7 +4554,7 @@ const advancedSwordAttacks = { // sword attacks but better
     },
     lesserSwordDance: {
         name: `Sword Dance`,
-        desc: `[attacker] dances through enemies, rapidly striking at them.`,
+        desc: `[attacker] dances through enemies, rapidly striking at them. This technique is still an immitation that pales in comparison to origional.`,
         animation: { 
             range: 'melee',
             projectile: 'swordSwing',
@@ -4431,13 +4570,13 @@ const advancedSwordAttacks = { // sword attacks but better
         dmg: 24,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 150},
+        cost: {hp: 0, mp: 175},
         accuracy: 100,
         attacks: 30,
     },
     swordDance: {
         name: `Sword Dance`,
-        desc: `[attacker] dances through enemies, rapidly striking at them.`,
+        desc: `[attacker] dances through enemies with perfect technique, rapidly striking at them while leaving no room for counterattack.`,
         animation: { 
             range: 'melee',
             projectile: 'swordSwing',
@@ -4450,7 +4589,7 @@ const advancedSwordAttacks = { // sword attacks but better
         },
         type: normal,
         targeting: multi,
-        dmg: 35,
+        dmg: 37,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 375},
@@ -4679,6 +4818,28 @@ const healingSkills = { // heals
         accuracy: Infinity,
         attacks: 1,
     },
+    firstAid: {
+        name: `First Aid`,
+        desc: `[attacker] does some basic first Aid to recover some health.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'healingLight',
+            hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: heal,
+        targeting: single,
+        dmg: -15,
+        multiplier: none,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: Infinity,
+        attacks: 1,
+    },
     healAura: {
         name: `Healing Aura`,
         desc: `[attacker] releases a healing aura, regenerating the health and mana of all allies.`,
@@ -4741,7 +4902,7 @@ const healingSkills = { // heals
     },
     heartTransplant: {
         name: `Heart Transplant`,
-        desc: `[attacker] transfers [pronoun] heart to the targeted ally. IDK how [attacker] has multiple hearts...`,
+        desc: `[attacker] transfers [pronoun] heart to the targeted ally. IDK how somebody can have multiple hearts...`,
         animation: {
             range: 'ranged',
             projectile: 'none',
@@ -4787,7 +4948,7 @@ const selfBuffs = { // self enhancement
         animation: { 
             range: 'self',
             projectile: 'none',
-            hitEffect: 'defenceUp',
+            hitEffect: 'defUp',
         },
         type: none, 
         targeting: single,
@@ -4805,7 +4966,7 @@ const selfBuffs = { // self enhancement
         animation: { 
             range: 'self',
             projectile: 'none',
-            hitEffect: 'defenceUp',
+            hitEffect: 'defUp',
         },
         type: none, 
         targeting: single,
@@ -4823,7 +4984,7 @@ const selfBuffs = { // self enhancement
         animation: { 
             range: 'self',
             projectile: 'none',
-            hitEffect: 'defenceUp',
+            hitEffect: 'defUp',
         },
         type: none, 
         targeting: single,
@@ -4853,13 +5014,31 @@ const selfBuffs = { // self enhancement
         attacks: 1,
         instantUse: true,
     },
+    reinforceArmour: {
+        name: `Reinforce Armour`,
+        desc: `[attacker] reinforces [pronoun] armour with mana, reducing damage from all attacks in the next round.`,
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'defUp',
+        },
+        type: none, 
+        targeting: single,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'lesserResistDamage', chance: 100}],
+        cost: {hp: 0, mp: 20},
+        accuracy: Infinity,
+        attacks: 1,
+        instantUse: true,
+    },
     reinforceShield: {
         name: `Reinforce Shield`,
         desc: `[attacker] reinforces [pronoun] shield with mana, greatly reducing damage from all attacks in the next round.`,
         animation: { 
             range: 'self',
             projectile: 'none',
-            hitEffect: 'defenceUp',
+            hitEffect: 'defUp',
         },
         type: none, 
         targeting: single,
@@ -4915,7 +5094,7 @@ const buffSkills = { // makes target stronk
         animation: { 
             range: 'ranged',
             projectile: 'shadowball',
-            hitEffect: 'defenceUp',
+            hitEffect: 'defUp',
             moveSpeed: 0,
             projectileSpeed: 60,
             projectileFade: false,
@@ -5022,7 +5201,7 @@ const debuffSkills = { // makes target weak
         animation: { 
             range: 'ranged',
             projectile: 'none',
-            hitEffect: 'defenceDown',
+            hitEffect: 'defDown',
             moveSpeed: 0,
             projectileSpeed: 0,
             projectileFade: false,
@@ -5471,6 +5650,28 @@ const uniqueSkills = { // very op skills
         attacks: 1,
         instantUse: true,
     },
+    aggressiveSurgery: {
+        name: `Aggressive Surgery`, 
+        desc: `[attacker] hacks and slashes at the targeted enemy with a scalple.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 15,
+        },
+        type: piercing, 
+        targeting: single,
+        dmg: 24, 
+        multiplier: str, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 100,
+        attacks: 12, 
+    },
 };
 const miscSkills = { // unsorted stuff
     reposition: {
@@ -5555,27 +5756,7 @@ const goblinSkills = {
         multiplier: str,
         effects: [],
         cost: {hp: 10, mp: 0},
-        accuracy: 70,
-        attacks: 1,
-    },
-    heavySlash: {
-        name: `heavySlash`, 
-        desc: `[attacker] smashes down on the targeted enemy.`, 
-        animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
-            hitEffect: 'none',
-            moveSpeed: 50,
-            projectileSpeed: 0,
-            smooth: false,
-        },
-        type: physical,
-        targeting: single, 
-        dmg: 50,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 95,
+        accuracy: 80,
         attacks: 1,
     },
     crushingBlow: {
@@ -5589,57 +5770,13 @@ const goblinSkills = {
             projectileSpeed: 0,
             smooth: false,
         },
-        type: physical,
+        type: piercing,
         targeting: single, 
-        dmg: 75,
+        dmg: 35,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 0},
         accuracy: 85,
-        attacks: 1,
-    },
-    crossbow: {
-        name: `Crossbow`, 
-        desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
-        animation: { 
-            range: 'ranged',
-            projectile: 'arrow',
-            hitEffect: 'arrowInGround',
-            moveSpeed: 0,
-            projectileSpeed: 90,
-            projectileFade: false,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: physical,
-        targeting: single, 
-        dmg: 30,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 90,
-        attacks: 1,
-    },
-    crossbowCrit: {
-        name: `Crossbow (Crit)`, 
-        desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
-        animation: { 
-            range: 'ranged',
-            projectile: 'arrow',
-            hitEffect: 'arrowInGround',
-            moveSpeed: 0,
-            projectileSpeed: 90,
-            projectileFade: false,
-            smooth: false,
-            projectileDelay: 0,
-        },
-        type: physical,
-        targeting: single, 
-        dmg: 45,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 100,
         attacks: 1,
     },
     roar: {
@@ -5679,7 +5816,7 @@ const goblinSkills = {
         instantUse: true,
     },
 };
-data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...basicRangedAttacks, ...basicVerbalAttacks, ...advancedSwordAttacks, ...healingSkills, ...selfBuffs, ...buffSkills, ...debuffSkills, ...magicAttacks, ...modernWeaponry, ...mathsAndScienceMemes, ...uniqueSkills, ...miscSkills, ...goblinSkills};
+data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...basicRangedAttacks, ...basicVerbalAttacks, ...intermediateSwordAttacks, ...advancedSwordAttacks, ...healingSkills, ...selfBuffs, ...buffSkills, ...debuffSkills, ...magicAttacks, ...modernWeaponry, ...mathsAndScienceMemes, ...uniqueSkills, ...miscSkills, ...goblinSkills};
 data.effects = {...debuffEffects, ...buffEffects};
 deepFreeze(data);
 console.log(data);
@@ -5848,41 +5985,42 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
     let id = generateId();
     let r = noRotate ? 0 : randint(0,360);
     let html = ``;
-    if (effect.includes('Up') || effect.includes('Down')) { // special animated hit effect
-        let icon = ``;
-        let bg = ``;
-        switch(effect) {
-            case `hpUp`:
-                icon = `greenCross.png`;
-                bg = `greenGlow`;
-                break;
-            case `defDown`:
-            case `defUp`:
-                icon = `shield.png`;
-                bg = `greyGlow`;
-                break;
-            case `attackUp`:
-                icon = `redSword.png`;
-                bg = `redGlow`;
-                break;
-            case `mpUp`:
-                icon = `blueStar.png`;
-                bg = `blueGlow`;
-                break;
-            case `statUp`:
-                icon = `yellowArrow.png`;
-                bg = `yellowGlow`;
-                break;
-            case `attackDown`:
-                icon = `brokenSword.png`;
-                bg = `blackGlow`;
-                break;
-            default:
-                console.warn(`WARNING: this effect is currently not supported ${effect}`);
-                return;
-        }
-        //{x: -75, y: -95}
-        console.log(pos);
+    // special animated hit effect
+    let icon = ``;
+    let bg = ``;
+    switch(effect) {
+        case `hpUp`:
+            icon = `greenCross.png`;
+            bg = `greenGlow`;
+            break;
+        case `defDown`:
+            icon = `brokenShield.png`;
+            bg = `greyGlow`;
+            break;
+        case `defUp`:
+            icon = `shield.png`;
+            bg = `greyGlow`;
+            break;
+        case `attackUp`:
+            icon = `redSword.png`;
+            bg = `redGlow`;
+            break;
+        case `mpUp`:
+            icon = `blueStar.png`;
+            bg = `blueGlow`;
+            break;
+        case `statUp`:
+            icon = `yellowArrow.png`;
+            bg = `yellowGlow`;
+            break;
+        case `attackDown`:
+            icon = `brokenRedSword.png`;
+            bg = `redGlow`;
+            break;
+        default:
+            if (effect.includes('Up') || effect.includes('Down')) console.warn(`WARNING: this stat change effect is not supported: ${effect}`);
+    }
+    if (icon != ``) {
         hitEffect(bg, pos, {x: 87.5-75, y: 100-95}, true, 750, 300, 0.99);
         for (let i = 0; i < 4; i++) {
             let particle = {
@@ -5914,8 +6052,8 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             //console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
             game.gamestate.particles[particle.id] = particle;
         }
-    }
-    else { // normal hit effect
+    } else {
+        // normal hit effect
         html = `<img src="assets/${effect}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
         addhtml('effects', html);
         //console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
@@ -6140,6 +6278,7 @@ function calculateEffect(card, effect) {
         changeStat(card, {stat: 'mp', change: effect.change.mp});
         dmgNumber(card, -effect.change.mp);
     }
+    effect.duration--;
     if (effect.duration <= 0) {
         card.armour.physical[0] -= effect.defChange.physical[0];
         card.armour.physical[1] -= effect.defChange.physical[1];
@@ -6148,10 +6287,8 @@ function calculateEffect(card, effect) {
         card.str -= effect.statChange.str;
         card.int -= effect.statChange.int;
         card.mpRegen -= effect.statChange.reg;
+        return undefined;
     }
-    effect.duration--;
-    console.log(card);
-    if (effect.duration <= 0) return undefined;
     return effect;
 };
 
@@ -6248,15 +6385,17 @@ function skills(card=undefined, enabled=true) {
         let buttonGridHtml = ``;
         for (let i = 0; i < card.skills.length; i++) {
             let dmg = data.skills[card.skills[i]].dmg;
-            switch (data.skills[card.skills[i]].multiplier) {
-                case str:
-                    dmg *= card.str;
-                    break;
-                case int:
-                    dmg *= card.int/100;
-                    break;
+            if (data.skills[card.skills[i]].type != heal) {
+                switch (data.skills[card.skills[i]].multiplier) {
+                    case str:
+                        dmg *= card.str;
+                        break;
+                    case int:
+                        dmg *= card.int/100;
+                        break;
+                }
+                dmg = Math.floor(dmg);
             }
-            dmg = Math.floor(dmg);
             let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
             let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmg == 0? `` : `<img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg} × ${data.skills[card.skills[i]].attacks}<br>`}<img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${data.skills[card.skills[i]].cost.hp ? `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
             let buttonData = `${enabled? `onclick="useSkill('${card.skills[i]}')" ` : ``}id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
