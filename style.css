@@ -910,3 +910,103 @@ body {
     width: 200px !important;
 }
 
+#dungeonName {
+    position: absolute;
+    text-align: center;
+    padding-top: 25px;
+    font-size: 75px;
+    color: azure;
+    font-family: 'Trebuchet MS';
+    font-weight: 900;
+    text-shadow: 0px 3px #424242, 3px 0px #424242, 0px -3px #424242, -3px 0px #424242, 3px 3px #424242, -3px -3px #424242, -3px 3px #424242, 3px -3px #424242;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    opacity: 0.75;
+}
+
+.leftNextButton {
+    position: absolute;
+    top: 0px;
+    left: 1.5px;
+    padding: 0;
+    margin: 0;
+    --r:10px; /* border radius */
+    transform: scale(0.8, 0.825);
+    width: 60px;
+    aspect-ratio: 1/2;
+    --_g:calc(var(--r)/tan(22.5deg)) right var(--r),#000 98%,#0000 101%;
+    -webkit-mask:
+        conic-gradient(from 247.5deg at calc(100% + 100%/tan(22.5deg) - var(--r)/(3*sqrt(2) - 4)) 50%,#000 45deg,#0000 0) 100% 0/calc(100% - var(--r)/sqrt(2)) no-repeat,
+        radial-gradient(var(--r) at calc(var(--r)*sqrt(2)) 50%,#000 98%,#0000 101%),
+        radial-gradient(var(--r) at top    var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(0 50%,100% 100%,100% 0);
+    background: rgb(240, 240, 240);
+    border: none;
+}
+
+.leftNextButtonBack {
+    position: absolute;
+    top: calc(45vh);
+    left: 20px;
+    padding: 0;
+    margin: 0;
+    --r:10px; /* border radius */
+    transform: scale(1, 1.5);
+    width: 60px;
+    aspect-ratio: 1/2;
+    --_g:calc(var(--r)/tan(22.5deg)) right var(--r),#000 98%,#0000 101%;
+    -webkit-mask:
+        conic-gradient(from 247.5deg at calc(100% + 100%/tan(22.5deg) - var(--r)/(3*sqrt(2) - 4)) 50%,#000 45deg,#0000 0) 100% 0/calc(100% - var(--r)/sqrt(2)) no-repeat,
+        radial-gradient(var(--r) at calc(var(--r)*sqrt(2)) 50%,#000 98%,#0000 101%),
+        radial-gradient(var(--r) at top    var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(0 50%,100% 100%,100% 0);
+    background: rgb(120, 120, 120);
+}
+
+.rightNextButton {
+    position: absolute;
+    top: 0px;
+    left: 1.5px;
+    padding: 0;
+    margin: 0;
+    --r:10px; /* border radius */
+    transform: scale(0.8, 0.825);
+    width: 60px;
+    aspect-ratio: 1/2;
+    --_g:calc(var(--r)/tan(22.5deg)) right var(--r),#000 98%,#0000 101%;
+    -webkit-mask:
+        conic-gradient(from 247.5deg at calc(100% + 100%/tan(22.5deg) - var(--r)/(3*sqrt(2) - 4)) 50%,#000 45deg,#0000 0) 100% 0/calc(100% - var(--r)/sqrt(2)) no-repeat,
+        radial-gradient(var(--r) at calc(var(--r)*sqrt(2)) 50%,#000 98%,#0000 101%),
+        radial-gradient(var(--r) at top    var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(0 50%,100% 100%,100% 0);
+    background: rgb(240, 240, 240);
+    border: none;
+}
+
+.rightNextButtonBack {
+    position: absolute;
+    top: calc(45vh);
+    right: 20px;
+    padding: 0;
+    margin: 0;
+    --r:10px; /* border radius */
+    transform: scale(-1, 1.5);
+    width: 60px;
+    aspect-ratio: 1/2;
+    --_g:calc(var(--r)/tan(22.5deg)) right var(--r),#000 98%,#0000 101%;
+    -webkit-mask:
+        conic-gradient(from 247.5deg at calc(100% + 100%/tan(22.5deg) - var(--r)/(3*sqrt(2) - 4)) 50%,#000 45deg,#0000 0) 100% 0/calc(100% - var(--r)/sqrt(2)) no-repeat,
+        radial-gradient(var(--r) at calc(var(--r)*sqrt(2)) 50%,#000 98%,#0000 101%),
+        radial-gradient(var(--r) at top    var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(0 50%,100% 100%,100% 0);
+    background: rgb(120, 120, 120);
+}
+
+.disabled {
+    filter: brightness(75%);
+}

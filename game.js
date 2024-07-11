@@ -830,7 +830,7 @@ var data = {
                 id: 9,
             },
         ],
-        progression: 0,
+        dungeon: 0,
         inBattle: false,
         battleState: {
             battleOver: false,
@@ -858,7 +858,7 @@ var data = {
                 mp: 120, 
                 str: 0.8,
                 int: 100, 
-                mpRegen: 15, 
+                mpRegen: 30, 
                 skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
                 armour: {physical: [2, 5], magic: [2, 5]}, 
             },
@@ -1089,6 +1089,23 @@ var data = {
                 skills: ['mediumMeth', 'molotovCocktail', 'greaterHeal', 'greaterMeth'],
                 armour: {physical: [5, 10], magic: [5, 10]},
             },
+            WSM: { // support
+                name: `WSM`,
+                title: `Musician`, 
+                description: `Fomer high school music student, WSM played the oboe so loudly that spacetime resonated at its fundamental frequency and shattered, sending her to the other world. After her transmigration, WSM's music gained magical properties, granting buffs to the allies around her.`,
+                personality: 'calm', 
+                stats: {atk: 'low', def: 'low'}, 
+                rarity: SR,
+                gender: female, 
+                pfp: `assets/AnimeGirl67.jpeg`, 
+                hp: 220, 
+                mp: 220, 
+                str: 1, 
+                int: 130, 
+                mpRegen: 60, 
+                skills: ['destructiveResonance', 'battleBallad', 'strengthingSong', 'healingMelody'], 
+                armour: {physical: [5, 10], magic: [10, 25]}, 
+            },
             Shiori: { // dps
                 name: `Shiori`,
                 title: `Martial Master`, 
@@ -1125,23 +1142,6 @@ var data = {
                 skills: [`roastChicken`, `summonChicken`, `summonChickenFlock`, `summonPheonix`],
                 armour: {physical: [10, 10], magic: [5, 10]},
             },
-            Misaki: { // dps
-                name: `Misaki`,
-                title: `Swordmaster`,
-                description: `Misaki is a powerful swordmaster who wields a pair of deadly blades. She is also the first diciple of the sword goddess Natsuki.`,
-                personality: 'confident',
-                stats: {atk: 'high', def: 'high'},
-                rarity: E,
-                gender: female,
-                pfp: `assets/AnimeGirl58.jpeg`,
-                hp: 375, 
-                mp: 250,
-                str: 1,
-                int: 130,
-                mpRegen: 90,
-                skills: ['ascendedThrust', 'rapidStrikes', 'ascendedOverheadStrike', 'auraSlash', 'lesserSwordDance'],
-                armour: {physical: [50, 75], magic: [15, 60]}, 
-            },
             Zoe: { // dps
                 name: `Zoe`,
                 title: `Reaper`, 
@@ -1156,7 +1156,7 @@ var data = {
                 str: 1.5, 
                 int: 125, 
                 mpRegen: 120, 
-                skills: ['savageTornado', 'darkBlast', 'superiorPhysicalEnhancement', 'cheapSoulHarvest'], 
+                skills: ['savageTornado', 'darkBlast', 'superiorBodyEnhancement', 'ultraHeavySlash', 'minorSoulHarvest'], 
                 armour: {physical: [35, 50], magic: [30, 75]}, 
             },
         },
@@ -1177,6 +1177,23 @@ var data = {
                 mpRegen: 120,
                 skills: ['shadowLance', 'forceLance', 'darkBlast', 'arcaneBlast', 'gravityBind', 'mediumHeal'],
                 armour: {physical: [15, 20], magic: [25, 75]},
+            },
+            Misaki: { // dps
+                name: `Misaki`,
+                title: `Swordmaster`,
+                description: `Misaki is a powerful swordmaster who wields a pair of deadly blades. She is also the first diciple of the sword goddess Natsuki.`,
+                personality: 'confident',
+                stats: {atk: 'high', def: 'high'},
+                rarity: L,
+                gender: female,
+                pfp: `assets/AnimeGirl58.jpeg`,
+                hp: 420, 
+                mp: 340,
+                str: 2,
+                int: 130,
+                mpRegen: 100,
+                skills: ['ascendedThrust', 'rapidStrikes', 'ascendedOverheadStrike', 'auraSlash', 'lesserSwordDance', 'battleFocus'],
+                armour: {physical: [80, 75], magic: [60, 75]}, 
             },
             Misato: { // healer
                 name: `Misato`,
@@ -1207,11 +1224,11 @@ var data = {
                 gender: female,
                 pfp: `assets/AnimeGirl10.jpeg`,
                 hp: 150,
-                mp: 875,
-                str: 4,
+                mp: 900,
+                str: 5,
                 int: 160,
                 mpRegen: 225,
-                skills: ['ascendedSlash', 'rapidStrikes', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
+                skills: ['ascendedSlash', 'ascendedOverheadStrike', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
                 armour: {physical: [0, 25], magic: [0, 25]},
                 additionalAp: 1,
             },
@@ -1220,17 +1237,35 @@ var data = {
                 title: `War Goddess`,
                 description: `Yui, the War Goddess, commands the battlefield with an iron fist. Her presence alone can turn the tide of battle, and her unparalleled strength and defense make her a formidable opponent.`,
                 personality: 'arrogant',
-                stats: {atk: 'high', def: 'high'},
+                stats: {atk: 'medium', def: 'high'},
                 rarity: G,
                 gender: female,
                 pfp: `assets/AnimeGirl38.jpeg`,
-                hp: 750,
-                mp: 375,
+                hp: 800,
+                mp: 350,
                 str: 1.75,
-                int: 175,
-                mpRegen: 75,
-                skills: ['ascendedSlash', 'rapidStrikes', 'warCry', 'battlefieldCommand', 'righteousSmite'],
-                armour: {physical: [200, 75], magic: [200, 50]},
+                int: 200,
+                mpRegen: 85,
+                skills: ['ascendedSlash', 'rapidStrikes', 'sevenfoldSlash', 'warCry', 'battlefieldCommand', 'righteousSmite'],
+                armour: {physical: [200, 85], magic: [175, 75]},
+                additionalAp: 1,
+            },
+            Prawns: { // healer / support
+                name: `Prawns`,
+                title: `Surgeon`,
+                description: `Prawns became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most difficult opperations with 102% success rate. Because Prawns was simply too good, the godess transmigrated her to the other world where her healing would be more useful. Beware, Borude can not regenerate mana on her own, finding a reliable source of mana would be prudent.`,
+                personality: 'confident',
+                stats: {atk: 'low', def: 'low'},
+                rarity: G,
+                gender: female,
+                pfp: `assets/AnimeGirl61.jpeg`,
+                hp: 500,
+                mp: 600,
+                str: 1,
+                int: 6900,
+                mpRegen: 0,
+                skills: ['aggressiveSurgery', 'steroids', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
+                armour: {physical: [30, 25], magic: [25, 25]},
                 additionalAp: 1,
             },
         },
@@ -1253,6 +1288,24 @@ var data = {
                 armour: {physical: [0, 0], magic: [0, 0]},
                 additionalAp: 1,
             },
+            Eric: { // useless trash 2
+                name: `Eric`,
+                title: `MLG`,
+                description: `Eco's only 'friend' and bad influence who is still stuck 5 years in the past. Eric is simply a cringe individual, however has potential, unlike Eco.`,
+                personality: 'chunni',
+                stats: {atk: 'low', def: 'none'},
+                rarity: EX,
+                gender: male,
+                pfp: `assets/aPerson.png`,
+                hp: 75,
+                mp: 25,
+                str: 1,
+                int: -1,
+                mpRegen: 5,
+                skills: ['punch', 'flyingKick', 'stunningBlows', 'brag'],
+                armour: {physical: [0, 0], magic: [0, 0]},
+                additionalAp: 1,
+            },
             Redacted: { // tank / dps
                 name: `[Redacted]`,
                 title: `Terrorist`,
@@ -1271,27 +1324,28 @@ var data = {
                 armour: {physical: [100, 80], magic: [250, 25]},
                 additionalAp: 1,
             },
-            Borude: { // healer?
-                name: `Borude`,
-                title: `Surgeon`,
-                description: `Borude became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most difficult opperations with 102% success rate. Because Borude was simply too good, the godess transmigrated her to the other world where her healing would be more useful. Borude helps the team by transfering her own hp to teammates.`,
-                personality: 'confident',
-                stats: {atk: 'none', def: 'none'},
+            MQ69Reaper: { // dps
+                name: `MQ69Reaper`,
+                title: `==[JAT]==`,
+                description: `==[JAT]== MQ69-Reaper MK1 is the first autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
+                personality: 'calm',
+                stats: {atk: 'extreme', def: 'high'},
                 rarity: EX,
                 gender: female,
-                pfp: `assets/AnimeGirl61.jpeg`,
-                hp: 2500,
+                pfp: `assets/MQ69-Reaper.jpeg`,
+                hp: 350,
                 mp: 400,
                 str: 1,
-                int: 6900,
-                mpRegen: 0,
-                skills: ['aggressiveSurgery', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
-                armour: {physical: [0, 0], magic: [0, 0]},
+                int: 690,
+                mpRegen: 400,
+                skills: ['ionCannon', 'gattlingRailgun', 'heavyRailcannon', 'rocketStorm', 'airStrike'],
+                armour: {physical: [100, 0], magic: [75, 0]},
+                additionalAp: 9999999, // unique ability: can attack as many times as mp permits
             },
             MQ69Reaper2: { // dps
                 name: `MQ69Reaper2`,
                 title: `==[JAT]==`,
-                description: `==[JAT]== MQ69-Reaper MK2 is a second generation advanced autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper 2 drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
+                description: `With the success of the MQ69-Reaper MK1 drone, the Tajism church designed an even stronger combat vehicle with improved armour and a larger power core. The ==[JAT]== MQ69-Reaper MK2 is a second generation advanced autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper 2 drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
                 personality: 'calm',
                 stats: {atk: 'extreme', def: 'high'},
                 rarity: EX,
@@ -1309,15 +1363,15 @@ var data = {
         },
     ],
     enemies: {
-        goblin: { // 5 tiers
+        goblin: { // 4 tiers
             name: `Goblin`,
             rarity: N,
             pfp: `assets/Goblin1.jpeg`,
-            hp: [40, 45, 50, 60, 70],
-            mp: [0, 0, 0, 0, 0],
-            str: [0.9, 1, 1.25, 1.5, 2],
-            int: [0, 0, 0, 0, 0],
-            mpRegen: [0, 0, 0, 0, 0],
+            hp: [40, 45, 55, 75],
+            mp: [0, 0, 0, 0],
+            str: [0.9, 1, 1.25, 1.75],
+            int: [0, 0, 0, 0],
+            mpRegen: [0, 0, 0, 0],
             skills: ['hit', 'rapidHit'],
             armour: {physical: [0, 0], magic: [0, 0]},
             ai: `rng`,
@@ -1385,6 +1439,32 @@ var data = {
             mpRegen: 0,
             skills: [], // give time freeze and health increase
             armour: {physical: [50, 0], magic: [50, 0]},
+            ai: `rng`,
+        },
+        greenDragon: { // 3 tiers
+            name: `Dragon`, // (deez nuts)
+            rarity: UC,
+            pfp: `assets/greenDragon.jpeg`,
+            hp: [500, 600, 750],
+            mp: [200, 240, 300],
+            str: [2, 2.5, 3.25],
+            int: [120, 130, 140],
+            mpRegen: [40, 45, 60],
+            skills: ['dragonClaw', 'tailSwipe', 'dragonRoar', 'dragonWing'],
+            armour: {physical: [25, 50], magic: [15, 50]},
+            ai: `rng`,
+        },
+        redDragon: { // 1 tier
+            name: `Dragon`, // (deez nuts)
+            rarity: E,
+            pfp: `assets/redDragon.jpeg`,
+            hp: [2500],
+            mp: [1000],
+            str: [4],
+            int: [110],
+            mpRegen: [150],
+            skills: ['fireBreath', 'dragonRoar', 'infernoBeam', 'dragonBite'],
+            armour: {physical: [150, 75], magic: [90, 60]},
             ai: `rng`,
         },
     },
@@ -2912,7 +2992,7 @@ var data = {
                     enemies: [
                         {
                             enemy: `goblin`,
-                            lvl: 4,
+                            lvl: 3,
                             quantity: 2,
                             location: `frontline`,
                             drops: {exp: 125, gold: 16},
@@ -2928,7 +3008,7 @@ var data = {
                         },
                         {
                             enemy: `goblin`,
-                            lvl: 4,
+                            lvl: 3,
                             quantity: 2,
                             location: `frontline`,
                             drops: {exp: 125, gold: 16},
@@ -2974,7 +3054,7 @@ var data = {
                             enemy: `goblinGuard`,
                             lvl: 0,
                             quantity: 1,
-                            location: `frontline`,
+                            location: `backline`,
                             drops: {exp: 175, gold: 25},
                             itemDrops: {item: `lowGradeMagicStone`, chance: 0.25},
                         },
@@ -2990,7 +3070,7 @@ var data = {
                             enemy: `goblinGuard`,
                             lvl: 0,
                             quantity: 1,
-                            location: `frontline`,
+                            location: `backline`,
                             drops: {exp: 175, gold: 25},
                             itemDrops: {item: `lowGradeMagicStone`, chance: 0.25},
                         },
@@ -3002,7 +3082,7 @@ var data = {
                     enemies: [
                         {
                             enemy: `goblin`,
-                            lvl: 4,
+                            lvl: 3,
                             quantity: 4,
                             location: `frontline`,
                             drops: {exp: 125, gold: 15},
@@ -3037,7 +3117,107 @@ var data = {
                 },
             ],
             firstClearReward: [{type: `exp`, quantity: 25000, chance: 1}, {type: `gold`, quantity: 5000, chance: 1}, {type: `item`, quantity: 2, chance: 1, item: `goblinWarHorn`}],
-        }
+        },
+        {
+            name: `Dragon Peaks`,
+            outerBac: `assets/DragonPeaks.jpeg`,
+            innerBac: `assets/bronze.png`,
+            waves: [
+                { // 1
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `greenDragon`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 1000, gold: 100},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                { // 2
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `greenDragon`,
+                            lvl: 1,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 1000, gold: 100},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                { // 3
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `greenDragon`,
+                            lvl: 2,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 1000, gold: 100},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                { // 4
+                    type: `big`,
+                    enemies: [
+                        {
+                            enemy: `greenDragon`,
+                            lvl: 0,
+                            quantity: 3,
+                            location: `backline`,
+                            drops: {exp: 1000, gold: 100},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.1},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 2500, chance: 1}, {type: `gold`, quantity: 250, chance: 1}],
+                },
+                { // 5
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `redDragon`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 2500, gold: 500},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.25},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+                { // 6
+                    type: `normal`,
+                    enemies: [
+                        {
+                            enemy: `greenDragon`,
+                            lvl: 2,
+                            quantity: 3,
+                            location: `frontline`,
+                            drops: {exp: 1000, gold: 100},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.1},
+                        },
+                        {
+                            enemy: `redDragon`,
+                            lvl: 0,
+                            quantity: 1,
+                            location: `backline`,
+                            drops: {exp: 2500, gold: 500},
+                            itemDrops: {item: `highGradeMagicStone`, chance: 0.25},
+                        },
+                    ],
+                    clearRewards: [{type: `exp`, quantity: 1000, chance: 1}, {type: `gold`, quantity: 100, chance: 1}],
+                },
+            ],
+            firstClearReward: [{type: `exp`, quantity: 25000, chance: 1}, {type: `gold`, quantity: 5000, chance: 1}, {type: `item`, quantity: 5, chance: 1, item: `dragonScale`}],
+        },
     ],
     voiceLines: {
         enemyAppears: {
@@ -3215,12 +3395,12 @@ const debuffEffects = { // effects (debuffs)
             },
             {
                 icon: `redDrop.png`,
-                desc: `10 fire damage / round`,
+                desc: `5 fire damage / round`,
             },
         ],
         // inflict damage per round
-        type: normal, // close enough (fire damage does not exist)
-        dmg: 10, 
+        type: piercing, 
+        dmg: 5, 
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
@@ -3423,12 +3603,81 @@ const buffEffects = { // effects (buffs)
         statChange: {str: 0, int: 0, reg: 0},
         duration: 1,
     },
+    lesserIntelligenceEnhancement: {
+        desc: `a minor smartening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 10 intelligence`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 10, reg: 0},
+        duration: 5,
+    },
+    mediumIntelligenceEnhancement: {
+        desc: `a medium smartening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 25 intelligence`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 25, reg: 0},
+        duration: 5,
+    },
     lesserStrengthEnhancement: {
         desc: `a minor strengthening effect`, 
         stats: [
             {
                 icon: `clock.png`,
                 desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 10% physical strength`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0.1, int: 0, reg: 0},
+        duration: 5,
+    },
+    mediumStrengthEnhancement: {
+        desc: `a minor strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
             },
             {
                 icon: `redSword.png`,
@@ -3444,10 +3693,10 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0.25, int: 0, reg: 0},
-        duration: 5,
+        duration: 3,
     },
-    mediumStrengthEnhancement: {
-        desc: `a minor strengthening effect`, 
+    decentStrengthEnhancement: {
+        desc: `a decent strengthening effect`, 
         stats: [
             {
                 icon: `clock.png`,
@@ -3466,7 +3715,7 @@ const buffEffects = { // effects (buffs)
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
-        statChange: {str: 0.3, int: 0, reg: 0},
+        statChange: {str: 0.5, int: 0, reg: 0},
         duration: 3,
     },
     greaterStrengthEnhancement: {
@@ -3474,7 +3723,7 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 3 rounds`,
+                desc: `lasts 4 rounds`,
             },
             {
                 icon: `redSword.png`,
@@ -3490,7 +3739,30 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 1, int: 0, reg: 0},
-        duration: 3,
+        duration: 4,
+    },
+    superiorStrengthEnhancement: {
+        desc: `a greater strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 1 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 150% physical strength`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 1.5, int: 0, reg: 0},
+        duration: 1,
     },
     lesserPhysicalEnhancement: {
         desc: `a medium strengthening effect`, 
@@ -3501,7 +3773,7 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `redSword.png`,
-                desc: `+ 20% physical strength`,
+                desc: `+ 15% physical strength`,
             },
             {
                 icon: `shield.png`,
@@ -3520,7 +3792,7 @@ const buffEffects = { // effects (buffs)
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 10], magic: [0, 10]},
-        statChange: {str: 0.2, int: 0, reg: 0},
+        statChange: {str: 0.15, int: 0, reg: 0},
         duration: 5,
     },
     mediumPhysicalEnhancement: {
@@ -3532,7 +3804,7 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `redSword.png`,
-                desc: `+ 40% physical strength`,
+                desc: `+ 30% physical strength`,
             },
             {
                 icon: `shield.png`,
@@ -3551,7 +3823,7 @@ const buffEffects = { // effects (buffs)
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 20], magic: [0, 20]},
-        statChange: {str: 0.4, int: 0, reg: 0},
+        statChange: {str: 0.3, int: 0, reg: 0},
         duration: 3,
     },
     greaterPhysicalEnhancement: {
@@ -3590,7 +3862,7 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 4 rounds`,
+                desc: `lasts 5 rounds`,
             },
             {
                 icon: `redSword.png`,
@@ -3614,7 +3886,7 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [0, 50], magic: [0, 50]},
         statChange: {str: 0.5, int: 0, reg: 0},
-        duration: 3,
+        duration: 5,
     },
     lesserMagicEnhancement: {
         desc: `a minor magic strengthening effect`, 
@@ -3668,6 +3940,76 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [0, 10], magic: [0, 10]},
         statChange: {str: 0, int: 25, reg: 25},
+        duration: 3,
+    },
+    lesserBodyEnhancement: {
+        desc: `a lesser strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 2 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 25% physical strength`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 15 mp regen / round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 15% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 15% magical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 15], magic: [0, 15]},
+        statChange: {str: 0.25, int: 0, reg: 15},
+        duration: 2,
+    },
+    mediumBodyEnhancement: {
+        desc: `a medium strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 3 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 100% physical strength`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 20 mp regen / round`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 20% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 20% magical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 20], magic: [0, 20]},
+        statChange: {str: 1, int: 0, reg: 20},
         duration: 3,
     },
     greaterBodyEnhancement: {
@@ -3930,7 +4272,7 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 3 rounds`,
+                desc: `lasts 5 rounds`,
             },
             {
                 icon: `greenCross.png`,
@@ -3953,11 +4295,11 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 3 rounds`,
+                desc: `lasts 5 rounds`,
             },
             {
                 icon: `greenCross.png`,
-                desc: `60 mana / round`,
+                desc: `40 mana / round`,
             },
         ],
         // inflict damage per round
@@ -3976,11 +4318,11 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 2 rounds`,
+                desc: `lasts 5 rounds`,
             },
             {
                 icon: `greenCross.png`,
-                desc: `200 mana / round`,
+                desc: `60 mana / round`,
             },
         ],
         // inflict damage per round
@@ -4081,11 +4423,15 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `blueStar.png`,
-                desc: `+ 50 mana / round`,
+                desc: `+ 25 mana / round`,
             },
             {
                 icon: `redSword.png`,
-                desc: `+ 50% physical strength`,
+                desc: `+ 30% physical strength`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 25 intelligence`,
             },
             {
                 icon: `shield.png`,
@@ -4093,7 +4439,15 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `shield.png`,
-                desc: `+ 50% physical damage resistance`,
+                desc: `+ 25% physical damage resistance`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 10 magical damage negation`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 25% magical damage resistance`,
             },
         ],
         // inflict damage per round
@@ -4101,10 +4455,10 @@ const buffEffects = { // effects (buffs)
         dmg: 0, 
         accuracy: 100, 
         // change stats per round
-        change: {hp: 0, mp: 50}, 
+        change: {hp: 0, mp: 25}, 
         // buffs / debuffs
-        defChange: {physical: [10, 50], magic: [0, 0]},
-        statChange: {str: 0.5, int: 0, reg: 0},
+        defChange: {physical: [10, 25], magic: [10, 25]},
+        statChange: {str: 0.3, int: 25, reg: 0},
         duration: 10,
     },
 };
@@ -4622,6 +4976,7 @@ const intermediateSwordAttacks = { // sword attacks but better
             hitEffect: 'none',
             moveSpeed: 50,
             projectileSpeed: 60,
+            projectileFade: false,
             smooth: false,
             projectileDelay: 0,
         },
@@ -4635,7 +4990,7 @@ const intermediateSwordAttacks = { // sword attacks but better
         attacks: 1,
     },
     bladesOfFury: {
-        name: `BladesOfFury`,
+        name: `Blades Of Fury`,
         desc: `[attacker] unleashes a flurry of seven swift sword strikes, capable of hitting multiple enemies in a whirlwind of steel.`,
         animation: { 
             range: 'melee',
@@ -4645,9 +5000,9 @@ const intermediateSwordAttacks = { // sword attacks but better
             projectileSpeed: 60,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 25,
         },
-        type: normal,
+        type: physical,
         targeting: multi,
         dmg: 25,
         multiplier: str,
@@ -4667,9 +5022,9 @@ const intermediateSwordAttacks = { // sword attacks but better
             projectileSpeed: 60,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 15,
         },
-        type: normal,
+        type: physical,
         targeting: multi,
         dmg: 8,
         multiplier: str,
@@ -4691,7 +5046,7 @@ const intermediateSwordAttacks = { // sword attacks but better
             smooth: true,
             projectileDelay: 0,
         },
-        type: normal,
+        type: physical,
         targeting: multi,
         dmg: 12,
         multiplier: str,
@@ -4761,16 +5116,60 @@ const advancedSwordAttacks = { // best sword attacks
         },
         type: piercing,
         targeting: single,
-        dmg: 90,
+        dmg: 60,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 0},
         accuracy: 100,
         attacks: 1,
     },
+    rapidStrikes: {
+        name: `Rapid Strikes`,
+        desc: `[attacker] performs a series of rapid slashes and stabs on the targeted enemy.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 10,
+        },
+        type: physical,
+        targeting: single,
+        dmg: 50,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 7,
+    },
+    sevenfoldSlash: {
+        name: `Sevenfold Slash of Light`,
+        desc: `[attacker] unleashes seven holy energy infused slashes towards the enemies.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 15,
+            projectileSpeed: 60,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 15,
+        },
+        type: normal,
+        targeting: multi,
+        dmg: 60,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 50},
+        accuracy: 100,
+        attacks: 7,
+    },
     ascendedOverheadStrike: {
         name: `Overhead Strike`,
-        desc: `[attacker] gathers a massive amount of aura on [pronoun] sword and strikes at the targeted enemy from above.`,
+        desc: `[attacker] gathers a massive amount of aura on [pronoun] blade and strikes down at the targeted enemy from above.`,
         animation: { 
             range: 'melee',
             projectile: 'swordThrust',
@@ -4781,13 +5180,13 @@ const advancedSwordAttacks = { // best sword attacks
             smooth: false,
             projectileDelay: 0,
         },
-        type: normal,
+        type: physical,
         targeting: single,
         dmg: 500,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 125},
-        accuracy: 90,
+        accuracy: 100,
         attacks: 1,
     },
     ultraHeavySlash: {
@@ -4799,6 +5198,7 @@ const advancedSwordAttacks = { // best sword attacks
             hitEffect: 'none',
             moveSpeed: 50,
             projectileSpeed: 50,
+            projectileFade: false,
             smooth: false,
             projectileDelay: 0,
         },
@@ -4832,28 +5232,6 @@ const advancedSwordAttacks = { // best sword attacks
         cost: {hp: 0, mp: 100},
         accuracy: 100,
         attacks: 1,
-    },
-    rapidStrikes: {
-        name: `Rapid Strikes`,
-        desc: `[attacker] performs a series of rapid slashes and stabs on the targeted enemy.`,
-        animation: { 
-            range: 'melee',
-            projectile: 'swordSwing',
-            hitEffect: 'none',
-            moveSpeed: 0,
-            projectileSpeed: 50,
-            projectileFade: true,
-            smooth: true,
-            projectileDelay: 10,
-        },
-        type: physical,
-        targeting: single,
-        dmg: 50,
-        multiplier: str,
-        effects: [],
-        cost: {hp: 0, mp: 0},
-        accuracy: 100,
-        attacks: 7,
     },
     lesserSwordDance: {
         name: `Sword Dance`,
@@ -4892,7 +5270,7 @@ const advancedSwordAttacks = { // best sword attacks
         },
         type: normal,
         targeting: multi,
-        dmg: 37,
+        dmg: 42,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 375},
@@ -4912,9 +5290,9 @@ const advancedSwordAttacks = { // best sword attacks
             smooth: false,
             projectileDelay: 0,
         },
-        type: piercing,
+        type: normal, // piercing was simply too OP
         targeting: single,
-        dmg: 1250,
+        dmg: 1750,
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 800},
@@ -5161,7 +5539,7 @@ const healingSkills = { // heals
     },
     bloodTransfusion: {
         name: `Blood Transfusion`,
-        desc: `[attacker] transfers [pronoun] blood to the targeted ally.`,
+        desc: `[attacker] transfers a small amount of blood to the targeted ally.`,
         animation: { 
             range: 'ranged',
             projectile: 'none',
@@ -5177,13 +5555,13 @@ const healingSkills = { // heals
         dmg: -50,
         multiplier: none,
         effects: [],
-        cost: {hp: 50, mp: 0},
+        cost: {hp: 0, mp: 0},
         accuracy: Infinity,
         attacks: 1,
     },
     largeBloodTransfusion: {
         name: `Blood Transfusion`,
-        desc: `[attacker] transfers [pronoun] blood to the targeted ally.`,
+        desc: `[attacker] transfers blood to the targeted ally.`,
         animation: { 
             range: 'ranged',
             projectile: 'none',
@@ -5199,13 +5577,13 @@ const healingSkills = { // heals
         dmg: -250,
         multiplier: none,
         effects: [],
-        cost: {hp: 250, mp: 0},
+        cost: {hp: 0, mp: 50},
         accuracy: Infinity,
         attacks: 1,
     },
     heartTransplant: {
         name: `Heart Transplant`,
-        desc: `[attacker] transfers [pronoun] heart to the targeted ally. IDK how somebody can have multiple hearts...`,
+        desc: `[attacker] transfers a heart to the targeted ally. Don't question where the heart came from...`,
         animation: {
             range: 'ranged',
             projectile: 'none',
@@ -5221,7 +5599,29 @@ const healingSkills = { // heals
         dmg: -1000,
         multiplier: none,
         effects: [],
-        cost: {hp: 1000, mp: 0},
+        cost: {hp: 0, mp: 200},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    healingMelody: {
+        name: `Healing Melody`,
+        desc: `[attacker] plays a short tune that heals all allies and boosts their mana regeneration.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'music',
+            hitEffect: 'hpUp',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: heal,
+        targeting: aoe,
+        dmg: -10,
+        multiplier: none,
+        effects: [{effect: 'mediumHealOverTime', chance: 100}, {effect: 'mediumManaRegen', chance: 100}],
+        cost: {hp: 0, mp: 100},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -5234,13 +5634,41 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
         effects: [{effect: 'lesserStrengthEnhancement', chance: 100}], 
         cost: {hp: 0, mp: 15}, 
+        accuracy: Infinity,
+        attacks: 1,
+        instantUse: true,
+    },
+    battleFocus: {
+        name: `Battle Focus`, 
+        desc: `[attacker] focuses [pronoun] mind and pushes [pronoun] body to the limit.`, 
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: effect, 
+        targeting: selfOnly,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'greaterStrengthEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 0}, 
         accuracy: Infinity,
         attacks: 1,
         instantUse: true,
@@ -5252,6 +5680,11 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal, 
         targeting: selfOnly,
@@ -5270,6 +5703,11 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal, 
         targeting: selfOnly,
@@ -5288,6 +5726,11 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal, 
         targeting: selfOnly,
@@ -5299,19 +5742,24 @@ const selfBuffs = { // self enhancement
         attacks: 1,
         instantUse: true,
     },
-    superiorPhysicalEnhancement: {
-        name: `Superior Physical Enhancement`, 
-        desc: `[attacker] enhances their physical abilities temporarily.`, 
+    superiorBodyEnhancement: {
+        name: `Superior Body Enhancement`, 
+        desc: `[attacker] enhances their physical and magical abilities temporarily.`, 
         animation: { 
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal, 
         targeting: selfOnly,
         dmg: -100,
         multiplier: none,
-        effects: [{effect: 'superiorPhysicalEnhancement', chance: 100}], 
+        effects: [{effect: 'superiorPhysicalEnhancement', chance: 100}, {effect: 'lesserMagicEnhancement', chance: 100}], 
         cost: {hp: 0, mp: 100}, 
         accuracy: Infinity,
         attacks: 1,
@@ -5324,8 +5772,13 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'defUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
@@ -5342,8 +5795,13 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'defUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
@@ -5360,8 +5818,13 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'defUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
@@ -5378,6 +5841,11 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: heal, 
         targeting: selfOnly,
@@ -5396,8 +5864,13 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'defUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
@@ -5414,8 +5887,13 @@ const selfBuffs = { // self enhancement
             range: 'self',
             projectile: 'none',
             hitEffect: 'defUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: selfOnly,
         dmg: 0,
         multiplier: none,
@@ -5434,12 +5912,17 @@ const buffSkills = { // makes target stronk
             range: 'allUnits',
             projectile: 'none',
             hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: aoe,
         dmg: 0,
         multiplier: none,
-        effects: [{effect: 'greaterStrengthEnhancement', chance: 100}], 
+        effects: [{effect: 'decentStrengthEnhancement', chance: 100}], 
         cost: {hp: 0, mp: 150},
         accuracy: Infinity,
         attacks: 1,
@@ -5452,8 +5935,13 @@ const buffSkills = { // makes target stronk
             range: 'allUnits',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: aoe,
         dmg: 0,
         multiplier: none,
@@ -5476,7 +5964,7 @@ const buffSkills = { // makes target stronk
             smooth: false,
             projectileDelay: 0,
         },
-        type: magic,
+        type: effect,
         targeting: single,
         dmg: 0,
         multiplier: int,
@@ -5498,7 +5986,7 @@ const buffSkills = { // makes target stronk
             smooth: false,
             projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: single,
         dmg: 0,
         multiplier: none,
@@ -5520,7 +6008,7 @@ const buffSkills = { // makes target stronk
             smooth: false,
             projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: single,
         dmg: 0,
         multiplier: none,
@@ -5536,8 +6024,13 @@ const buffSkills = { // makes target stronk
             range: 'ranged',
             projectile: 'none',
             hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
-        type: none, 
+        type: effect, 
         targeting: single,
         dmg: 0,
         multiplier: none,
@@ -5561,7 +6054,7 @@ const buffSkills = { // makes target stronk
         },
         type: heal, 
         targeting: single,
-        dmg: -50,
+        dmg: -10,
         multiplier: none,
         effects: [{effect: 'cyborg', chance: 100}], 
         cost: {hp: 0, mp: 0},
@@ -5582,6 +6075,72 @@ const buffSkills = { // makes target stronk
         multiplier: none,
         effects: [{effect: 'mediumResistDamage', chance: 100}], 
         cost: {hp: 0, mp: 50}, 
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    strengthingSong: {
+        name: `Strengthing Song`,
+        desc: `[attacker] plays a short tune that empowers all allies, making them stronger and smarter.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'music',
+            hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: effect,
+        targeting: aoe,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'mediumStrengthEnhancement', chance: 100}, {effect: 'mediumIntelligenceEnhancement', chance: 100}],
+        cost: {hp: 0, mp: 70},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    battleBallad: {
+        name: `Battle Ballad`,
+        desc: `[attacker] increases the stats of all allies with this battle ballad.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'music',
+            hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 75,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: effect,
+        targeting: aoe,
+        dmg: 0,
+        multiplier: none,
+        effects: [{effect: 'lesserBodyEnhancement', chance: 100}],
+        cost: {hp: 0, mp: 60},
+        accuracy: Infinity,
+        attacks: 1,
+    },
+    steroids: {
+        name: `Steroids Injection`,
+        desc: `[attacker] injects the targeted ally with steroids, greatly strengthening them in the currect round. The injection is rather painful...`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'syringe',
+            hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 90,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing, 
+        targeting: single,
+        dmg: 25,
+        multiplier: none,
+        effects: [{effect: 'superiorStrengthEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 0},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -6107,7 +6666,7 @@ const uniqueSkills = { // very op skills
         accuracy: Infinity, 
         attacks: 1,
     },
-    cheapSoulHarvest: {
+    minorSoulHarvest: {
         name: `Soul Harvest`,
         desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
         animation: { 
@@ -6122,10 +6681,10 @@ const uniqueSkills = { // very op skills
         },
         type: piercing,
         targeting: single,
-        dmg: 500,
-        multiplier: str,
+        dmg: 300,
+        multiplier: none,
         effects: [],
-        cost: {hp: -500, mp: 300},
+        cost: {hp: -300, mp: 300},
         accuracy: 100,
         attacks: 1,
     },
@@ -6145,7 +6704,7 @@ const uniqueSkills = { // very op skills
         type: piercing,
         targeting: single,
         dmg: 1000,
-        multiplier: str,
+        multiplier: none,
         effects: [],
         cost: {hp: -1000, mp: 1400},
         accuracy: 100,
@@ -6153,9 +6712,9 @@ const uniqueSkills = { // very op skills
     },
     defibrillator: {
         name: `Defibrillator`,
-        desc: `[attacker] uses CPR a defibrillator to instantly heal back to full health.`,
+        desc: `[attacker] uses CPR and a defibrillator to instantly heal the targeted ally back to full health.`,
         animation: {
-            range: 'self',
+            range: 'ranged',
             projectile: 'none',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -6169,10 +6728,9 @@ const uniqueSkills = { // very op skills
         dmg: -69420,
         multiplier: none,
         effects: [],
-        cost: {hp: 0, mp: 400},
+        cost: {hp: 0, mp: 500},
         accuracy: Infinity,
         attacks: 1,
-        instantUse: true,
     },
     aggressiveSurgery: {
         name: `Aggressive Surgery`, 
@@ -6194,7 +6752,7 @@ const uniqueSkills = { // very op skills
         effects: [], 
         cost: {hp: 0, mp: 0}, 
         accuracy: 100,
-        attacks: 12, 
+        attacks: 5, 
     },
 };
 const miscSkills = { // unsorted stuff
@@ -6221,6 +6779,28 @@ const miscSkills = { // unsorted stuff
         attacks: 0,
         instantUse: true, 
     },
+    destructiveResonance: {
+        name: `Destructive Resonance`,
+        desc: `[attacker] sends out sound waves with great amplitude that damage all enemies.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 5,
+        },
+        type: piercing,
+        targeting: aoe,
+        dmg: 3,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 50},
+        accuracy: 100,
+        attacks: 4,
+    },
 };
 const goblinSkills = {
     hit: {
@@ -6232,7 +6812,9 @@ const goblinSkills = {
             hitEffect: 'physicalHit',
             moveSpeed: 0,
             projectileSpeed: 0,
+            projectileFade: false,
             smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single, 
@@ -6252,7 +6834,9 @@ const goblinSkills = {
             hitEffect: 'physicalHit',
             moveSpeed: 50,
             projectileSpeed: 0,
+            projectileFade: false,
             smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single, 
@@ -6272,7 +6856,9 @@ const goblinSkills = {
             hitEffect: 'physicalHit',
             moveSpeed: 50,
             projectileSpeed: 0,
+            projectileFade: false,
             smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single, 
@@ -6292,7 +6878,9 @@ const goblinSkills = {
             hitEffect: 'none',
             moveSpeed: 50,
             projectileSpeed: 0,
+            projectileFade: true,
             smooth: false,
+            projectileDelay: 0,
         },
         type: piercing,
         targeting: single, 
@@ -6310,6 +6898,11 @@ const goblinSkills = {
             range: 'self',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: none, 
         targeting: single,
@@ -6328,6 +6921,11 @@ const goblinSkills = {
             range: 'allUnits',
             projectile: 'none',
             hitEffect: 'statUp',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: none, 
         targeting: aoe,
@@ -6340,7 +6938,163 @@ const goblinSkills = {
         instantUse: true,
     },
 };
-data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...basicRangedAttacks, ...basicVerbalAttacks, ...intermediatePhysicalAttacks, ...intermediateSwordAttacks, ...advancedSwordAttacks, ...healingSkills, ...selfBuffs, ...buffSkills, ...debuffSkills, ...magicAttacks, ...modernWeaponry, ...mathsAndScienceMemes, ...uniqueSkills, ...miscSkills, ...goblinSkills};
+const dragonSkills = {
+    dragonClaw: {
+        name: `Claw Slash`, 
+        desc: `[attacker] slashes at its enemies with its claws.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'swordThrust',
+            hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: multi, 
+        dmg: 35,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 3,
+    },
+    tailSwipe: {
+        name: `Tail Swipe`, 
+        desc: `[attacker] slaps the targeted enemy with its tail.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'physicalHit',
+            moveSpeed: 50,
+            projectileSpeed: 0,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single, 
+        dmg: 80,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 90,
+        attacks: 1,
+    },
+    dragonRoar: {
+        name: `Roar`,
+        desc: `[attacker] roars, intimidating all enemies and weakening them.`,
+        animation: { 
+            range: 'ranged',
+            projectile: 'none',
+            hitEffect: 'attackDown',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: effect, 
+        targeting: aoe, 
+        dmg: 0, 
+        multiplier: none, 
+        effects: [{effect: 'mediumWeaken', chance: 100}], 
+        cost: {hp: 0, mp: 60}, 
+        accuracy: Infinity, 
+        attacks: 1, 
+    },
+    dragonWing: {
+        name: `Flap`, 
+        desc: `[attacker] flaps its wings, damaging all enemies and potentially weakening them.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 150,
+            projectileFade: true,
+            smooth: true,
+            projectileDelay: 20,
+        },
+        type: physical,
+        targeting: aoe, 
+        dmg: 15,
+        multiplier: str,
+        effects: [{effect: 'lesserWeaken', chance: 80}],
+        cost: {hp: 0, mp: 30},
+        accuracy: 100,
+        attacks: 3,
+    },
+    fireBreath: {
+        name: `Fire Breath`, 
+        desc: `[attacker] breathes a wave of scorching flames at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'fireBlast',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 150,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: multi, 
+        dmg: 9,
+        multiplier: none,
+        effects: [{effect: 'burning', chance: 80}],
+        cost: {hp: 0, mp: 200},
+        accuracy: 100,
+        attacks: 18,
+    },
+    infernoBeam: {
+        name: `Inferno Beam`, 
+        desc: `[attacker] breathes a concentrated jet of fire and plasma at the targeted enemy.`, 
+        animation: { 
+            range: 'ranged',
+            projectile: 'fireBlast',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 120,
+            projectileFade: false,
+            smooth: true,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single, 
+        dmg: 11,
+        multiplier: none,
+        effects: [{effect: 'burning', chance: 90}],
+        cost: {hp: 0, mp: 250},
+        accuracy: 100,
+        attacks: 24,
+    },
+    dragonBite: {
+        name: `Bite`, 
+        desc: `[attacker] bites the targeted enemy with its deadly fangs.`, 
+        animation: { 
+            range: 'melee',
+            projectile: 'none',
+            hitEffect: 'physicalHit',
+            moveSpeed: 50,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single, 
+        dmg: 180,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 0},
+        accuracy: 100,
+        attacks: 1,
+    },
+};
+data.skills = {...basicPhysicalAttacks, ...basicSwordAttacks, ...basicRangedAttacks, ...basicVerbalAttacks, ...intermediatePhysicalAttacks, ...intermediateSwordAttacks, ...advancedSwordAttacks, ...healingSkills, ...selfBuffs, ...buffSkills, ...debuffSkills, ...magicAttacks, ...modernWeaponry, ...mathsAndScienceMemes, ...uniqueSkills, ...miscSkills, ...goblinSkills, ...dragonSkills};
 data.effects = {...debuffEffects, ...buffEffects};
 deepFreeze(data);
 console.log(data);
@@ -6609,7 +7363,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
     }
 };
 
-async function simulateSmoothProjectileAttack(animation, start, target, dmg) {
+async function simulateSmoothProjectileAttack(animation, start, target, dmg, number=true) {
     let projectile = animation.projectile;
     let steps = animation.projectileSpeed;
     let fade = animation.projectileFade;
@@ -6640,7 +7394,7 @@ async function simulateSmoothProjectileAttack(animation, start, target, dmg) {
     document.getElementById(id).remove();
 
     changeStat(target, {stat: 'hp', change: -dmg});
-    dmgNumber(target, dmg);
+    if (number) dmgNumber(target, dmg);
     if (animation.hitEffect != 'none') {
         hitEffect(animation.hitEffect, getCardCoords(target), randOffset);
     }
@@ -6724,10 +7478,9 @@ async function fakeMoveCard(card, targetCard, steps, reset=false, offset={x: 0, 
     
 };
 
-async function changeStat(target, effect) {
+async function changeStat(target, effect={stat: '', change: 0}, time=750) {
     if (effect.change == 0) return;
     //print(`final ${final}`);                                                                                                                                                                            
-    let time = 750;
     let steps = 20;
     //console.log(target);
     //let position = readID(target.id);
@@ -6800,16 +7553,17 @@ function calculateEffect(card, effect) {
     }
     //console.log('effects updated');
     if (effect.dmg > 0) {
-        let miss = randint(0, 100) > accuracy;
-        if (!miss) changeStat(card, {stat: 'hp', change: -dmg});
+        let miss = randint(0, 100) > effect.accuracy;
+        console.log(miss);
+        if (!miss) changeStat(card, {stat: 'hp', change: -effect.dmg}, 500);
         dmgNumber(card, miss? 0 : calcResistance(effect.type, effect.dmg, card), miss);
     }
     if (effect.change.hp) {
-        changeStat(card, {stat: 'hp', change: effect.change.hp});
+        changeStat(card, {stat: 'hp', change: effect.change.hp}, 500);
         dmgNumber(card, -effect.change.hp);
     }
     if (effect.change.mp) {
-        changeStat(card, {stat: 'mp', change: effect.change.mp});
+        changeStat(card, {stat: 'mp', change: effect.change.mp}, 500);
         dmgNumber(card, -effect.change.mp);
     }
     effect.duration--;
@@ -6866,7 +7620,7 @@ function dmgNumber(card, dmg, miss=false) { // there is better way to do this, b
 
 async function simulateSingleAttack(user, skill, target) { // TODO: implement missing and accuracy stuff
     let number = true;
-    if (skill.dmg == 0) number = false; // skills that do not intend to do damage should not have damage numbers
+    if (skill.dmg == 0 || skill.type == effect) number = false; // skills that do not intend to do damage should not have damage numbers
     let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.01 : 1) : 1), target)) : skill.dmg);
     let done = false;
     let offset = undefined;
@@ -6890,7 +7644,7 @@ async function simulateSingleAttack(user, skill, target) { // TODO: implement mi
         let endPos = getCardCoords(target);
         if (skill.animation.smooth) {
             done = true;
-            simulateSmoothProjectileAttack(skill.animation, startPos, target, dmg);
+            simulateSmoothProjectileAttack(skill.animation, startPos, target, dmg, number);
             await sleep(skill.animation.projectileDelay);
         } 
         else offset = await simulateProjectileAttack(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
@@ -6934,7 +7688,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
                 dmg = Math.floor(dmg);
             }
             let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
-            let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmg == 0? `` : `<img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg} × ${data.skills[card.skills[i]].attacks}<br>`}<img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${data.skills[card.skills[i]].cost.hp ? `<img src="assets/greenCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
+            let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg} × ${data.skills[card.skills[i]].attacks}<br>`}<img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
             let buttonData = `${enabled? `onclick="useSkill('${card.skills[i]}')" ` : ``}id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
             buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
         }
@@ -7099,7 +7853,7 @@ function useSkill(skillId=undefined) {
 
 function regenCardMana(card) {
     if (!card.specialConditions.noRegen) {
-        card.mp = Math.min(card.mp + card.mpRegen, card.mpMax);
+        changeStat(card, {stat: 'mp', change: card.mpRegen}, 500);
     }
 };
 
@@ -7164,6 +7918,11 @@ async function enemyTurn() {
     console.log('end enemy turn, start handle effects');
     handleStatusEffects();
     regenMana();
+    await sleep(550);
+    game.gamestate.battleState.eb = checkDead(game.gamestate.battleState.eb);
+    game.gamestate.battleState.ef = checkDead(game.gamestate.battleState.ef);
+    game.gamestate.battleState.pb = checkDead(game.gamestate.battleState.pb);
+    game.gamestate.battleState.pf = checkDead(game.gamestate.battleState.pf);
     console.log('end handle effects');
     playerTurn();
 };
@@ -7178,7 +7937,7 @@ async function battle() {
 };
 
 function startWave() {
-    let dungeon = data.dungeons[game.gamestate.progression];
+    let dungeon = data.dungeons[game.gamestate.dungeon];
     let eb = game.gamestate.battleState.eb;
     let ef = game.gamestate.battleState.ef;
     for (let i = 0; i < dungeon.waves[game.gamestate.battleState.wave].enemies.length; i++) {
@@ -7189,9 +7948,9 @@ function startWave() {
         if (enemy.str.constructor === Array) enemy.str = enemy.str[enemyData.lvl];
         if (enemy.int.constructor === Array) enemy.int = enemy.int[enemyData.lvl];
         if (enemy.mpRegen.constructor === Array) enemy.mpRegen = enemy.mpRegen[enemyData.lvl];
-        enemy.hpMax =  enemy.hp;
-        enemy.mpMax =  enemy.mp;
-        enemy.rarity = enemyData.lvl;
+        enemy.hpMax = enemy.hp;
+        enemy.mpMax = enemy.mp;
+        enemy.rarity += enemyData.lvl;
         enemy.drops = enemyData.drops;
         enemy.itemDrops = enemyData.itemDrops;
         if (enemyData.location == `frontline`) {
@@ -7209,7 +7968,7 @@ function startWave() {
 };
 
 async function runDungeon() {
-    let dungeon = data.dungeons[game.gamestate.progression];
+    let dungeon = data.dungeons[game.gamestate.dungeon];
     let battleState = game.gamestate.battleState;
     for (battleState.wave; battleState.wave < dungeon.waves.length; battleState.wave++) {
         battleState.turn = `player`; // player always gets first move
@@ -7236,7 +7995,7 @@ async function runDungeon() {
 };
 
 function startDungeon() {
-    let dungeon = data.dungeons[game.gamestate.progression];
+    let dungeon = data.dungeons[game.gamestate.dungeon];
     exitFocus();
     replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`); // battle screen is in background as it can be scrolled
     replacehtml(`main`, ``);
@@ -7255,7 +8014,7 @@ function startDungeon() {
     }
     game.gamestate.inBattle = true;
     game.gamestate.battleState.battleOver = false;
-    game.gamestate.battleState.wave = 10;
+    game.gamestate.battleState.wave = 0;
     resize();
     inventory();
     console.log('dungeon started');
@@ -7285,19 +8044,19 @@ function rank(n) {
     }
 };
 
-function resize() {
+function resize() { // css calc is sometimes not enough (or I have a skill issue)
     console.log('resized');
+    let battleCardsPosition = (display.x - 1020) / 2;
     let sidebarWidth = Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
     if (game.gamestate.inBattle) sidebarWidth = 370;
-    document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
-    document.getElementById('bac').style['max-width'] = `${display.x - sidebarWidth}px`;
-    let teamPosition = ((display.x - sidebarWidth) - 685) / 2;
-    if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${teamPosition}px`;
-    let playButtonPosition = ((display.x - sidebarWidth) - 200) / 2;
-    if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${playButtonPosition}px`;
-    let focusWindowSize = display.x - sidebarWidth;
-    if (document.getElementById('focus')) document.getElementById('focus').style.width = `${focusWindowSize - 10}px`;
-    let battleCardsPosition = (display.x - 1020) / 2;
+    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
+    if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${display.x - sidebarWidth}px`;
+    if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${display.x - sidebarWidth}px`;
+    if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${display.x - sidebarWidth}px`;
+    if (document.getElementById('rightButton')) document.getElementById('rightButton').style['left'] = `${display.x - sidebarWidth - 60}px`; // grrrr there has to be a better way
+    if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${((display.x - sidebarWidth) - 685) / 2}px`;
+    if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${((display.x - sidebarWidth) - 200) / 2}px`;
+    if (document.getElementById('focus')) document.getElementById('focus').style.width = `${display.x - sidebarWidth - 10}px`;
     if (document.getElementById('enemyBackline')) document.getElementById('enemyBackline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('enemyFrontline')) document.getElementById('enemyFrontline').style.left = `${battleCardsPosition}px`;
     if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.left = `${battleCardsPosition}px`;
@@ -7568,12 +8327,23 @@ function startGame() {
     home();
 };
 
+function setDungeon(dungeon) {
+    game.gamestate.dungeon = dungeon;
+    replacehtml(`bac`, `<img src="${data.dungeons[game.gamestate.dungeon].outerBac}" id="bacImg"> `);
+    replacehtml(`dungeonTitle`, `<div id="dungeonName">${data.dungeons[game.gamestate.dungeon].name}</div>`);
+    let navHtml = `<div class="leftNextButtonBack"><button class="leftNextButton${data.dungeons[game.gamestate.dungeon-1]? `` : ` disabled`}" ${data.dungeons[game.gamestate.dungeon-1]? `onclick="setDungeon(${game.gamestate.dungeon-1})"` : ``}></button></div> <div id="rightButton" class="rightNextButtonBack"><button class="rightNextButton${data.dungeons[game.gamestate.dungeon+1]? `` : ` disabled`}" ${data.dungeons[game.gamestate.dungeon+1]? `onclick="setDungeon(${game.gamestate.dungeon+1})"` : ``}></button></div>`;
+    replacehtml(`dungeonNav`, navHtml);
+    resize();
+};
+
 function home() {
     homePage = `
     <span id="bac">
-            <img src="${data.dungeons[game.gamestate.progression].outerBac}" id="bacImg"> 
+        <img src="${data.dungeons[game.gamestate.dungeon].outerBac}" id="bacImg"> 
     </span>
     <span id="main">
+        <div id="dungeonTitle"></div>
+        <div id="dungeonNav"></div>
         <div id="playButton"></div>
         <div id="teamSelection"></div>
         <div id="focus">
@@ -7610,6 +8380,7 @@ function home() {
     </span>
     `;
     replacehtml(`game`, homePage);
+    setDungeon(game.gamestate.dungeon);
     resize();
     updateTeam();
 };
