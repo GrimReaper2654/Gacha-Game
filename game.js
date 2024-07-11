@@ -994,7 +994,7 @@ var data = {
                 pfp: `assets/AnimeGirl62.jpeg`, 
                 hp: 160, 
                 mp: 40, 
-                str: 1.75, 
+                str: 1.5, 
                 int: 100, 
                 mpRegen: 5, 
                 skills: ['heavyBlows', 'stunningBlows', 'flyingKick', 'lesserPhysicalEnhancement'], 
@@ -1089,6 +1089,23 @@ var data = {
                 skills: ['mediumMeth', 'molotovCocktail', 'greaterHeal', 'greaterMeth'],
                 armour: {physical: [5, 10], magic: [5, 10]},
             },
+            Shiori: { // dps
+                name: `Shiori`,
+                title: `Martial Master`, 
+                description: `Born and raised in the Mount Hua sect, Shiori has mastered the plum blossom sword style. Her swift and deadly sword strikes can cut down enemies with ease.`,
+                personality: 'angry', 
+                stats: {atk: 'high', def: 'low'}, 
+                rarity: SR,
+                gender: female, 
+                pfp: `assets/AnimeGirl63.jpeg`, 
+                hp: 250, 
+                mp: 200, 
+                str: 1.5, 
+                int: 110, 
+                mpRegen: 70, 
+                skills: ['flyingKick', 'bladesOfFury', 'skySplittingSlash', 'greaterPhysicalEnhancement'], 
+                armour: {physical: [15, 25], magic: [15, 30]}, 
+            },
         },
         { // E
             Pi_thagoreas: { // summoner
@@ -1111,7 +1128,7 @@ var data = {
             Misaki: { // dps
                 name: `Misaki`,
                 title: `Swordmaster`,
-                description: `Misaki is a powerful swordmaster who wields a pair of deadly blades.`,
+                description: `Misaki is a powerful swordmaster who wields a pair of deadly blades. She is also the first diciple of the sword goddess Natsuki.`,
                 personality: 'confident',
                 stats: {atk: 'high', def: 'high'},
                 rarity: E,
@@ -1124,6 +1141,23 @@ var data = {
                 mpRegen: 90,
                 skills: ['ascendedThrust', 'rapidStrikes', 'ascendedOverheadStrike', 'auraSlash', 'lesserSwordDance'],
                 armour: {physical: [50, 75], magic: [15, 60]}, 
+            },
+            Zoe: { // dps
+                name: `Zoe`,
+                title: `Reaper`, 
+                description: `Zoe is an elusive individual. Little is known about her and the reapers, apart from them possessing otherworldly physical strength and magical abilities.`,
+                personality: 'calm', 
+                stats: {atk: 'high', def: 'medium'}, 
+                rarity: E,
+                gender: female, 
+                pfp: `assets/AnimeGirl19.jpeg`, 
+                hp: 280, 
+                mp: 340, 
+                str: 1.5, 
+                int: 125, 
+                mpRegen: 120, 
+                skills: ['savageTornado', 'darkBlast', 'superiorPhysicalEnhancement', 'cheapSoulHarvest'], 
+                armour: {physical: [35, 50], magic: [30, 75]}, 
             },
         },
         { // L
@@ -1179,6 +1213,7 @@ var data = {
                 mpRegen: 225,
                 skills: ['ascendedSlash', 'rapidStrikes', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
                 armour: {physical: [0, 25], magic: [0, 25]},
+                additionalAp: 1,
             },
             Yui: { // tank / support
                 name: `Yui`,
@@ -1196,6 +1231,7 @@ var data = {
                 mpRegen: 75,
                 skills: ['ascendedSlash', 'rapidStrikes', 'warCry', 'battlefieldCommand', 'righteousSmite'],
                 armour: {physical: [200, 75], magic: [200, 50]},
+                additionalAp: 1,
             },
         },
         { // EX
@@ -1213,13 +1249,14 @@ var data = {
                 str: 0.5,
                 int: -1,
                 mpRegen: 5,
-                skills: ['debugFist', 'punch', 'bodySlam', 'pervertedStare', 'brag'],
+                skills: ['punch', 'bodySlam', 'pervertedStare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
+                additionalAp: 1,
             },
             Redacted: { // tank / dps
                 name: `[Redacted]`,
                 title: `Terrorist`,
-                description: `Former high school student, [redacted] was isekaied into the other world as the demon lord. Despite being gender bent, she is still obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld.`,
+                description: `Former high school student, [Redacted] was isekaied into the other world as the demon lord. Despite being gender bent, she is still obsessed with terrorism and decided to become the terrorist lord, who rules over many mafias and cartels, the lord of the criminal underworld. During her misadventures, [Redacted] unwillingly became the Tajism cult's object of worship, which later developed into a fully fledged religion as well as designed both versions of the ==[JAT]== MQ69-Reaper attack drones. [Redacted] is also the leader of the reapers.`,
                 personality: 'chunni',
                 stats: {atk: 'extreme', def: 'extreme'},
                 rarity: EX,
@@ -1232,6 +1269,7 @@ var data = {
                 mpRegen: 200,
                 skills: ['assaultRifle', 'fragGrenade', 'greaterRaiseGuard', 'swordDance', 'ultraHeavySlash', 'soulHarvest'],
                 armour: {physical: [100, 80], magic: [250, 25]},
+                additionalAp: 1,
             },
             Borude: { // healer?
                 name: `Borude`,
@@ -1259,14 +1297,14 @@ var data = {
                 rarity: EX,
                 gender: female,
                 pfp: `assets/MQ69-Reaper2.jpeg`,
-                hp: 350,
-                mp: 400,
-                str: 2,
-                int: 120,
-                mpRegen: 400,
+                hp: 650,
+                mp: 650,
+                str: 1,
+                int: 690,
+                mpRegen: 650,
                 skills: ['ionCannon', 'gattlingRailgun', 'heavyRailcannon', 'rocketStorm', 'airStrike'],
                 armour: {physical: [150, 0], magic: [125, 0]},
-                infiniteAp: true, // unique ability
+                additionalAp: 9999999, // unique ability: can attack as many times as mp permits
             },
         },
     ],
@@ -3463,7 +3501,7 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `redSword.png`,
-                desc: `+ 25% physical strength`,
+                desc: `+ 20% physical strength`,
             },
             {
                 icon: `shield.png`,
@@ -3482,7 +3520,7 @@ const buffEffects = { // effects (buffs)
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 10], magic: [0, 10]},
-        statChange: {str: 0.25, int: 0, reg: 0},
+        statChange: {str: 0.2, int: 0, reg: 0},
         duration: 5,
     },
     mediumPhysicalEnhancement: {
@@ -3494,7 +3532,7 @@ const buffEffects = { // effects (buffs)
             },
             {
                 icon: `redSword.png`,
-                desc: `+ 50% physical strength`,
+                desc: `+ 40% physical strength`,
             },
             {
                 icon: `shield.png`,
@@ -3513,6 +3551,68 @@ const buffEffects = { // effects (buffs)
         change: {hp: 0, mp: 0}, 
         // buffs / debuffs
         defChange: {physical: [0, 20], magic: [0, 20]},
+        statChange: {str: 0.4, int: 0, reg: 0},
+        duration: 3,
+    },
+    greaterPhysicalEnhancement: {
+        desc: `a significant strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 40% physical strength`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 35% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 35% magical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 35], magic: [0, 35]},
+        statChange: {str: 0.40, int: 0, reg: 0},
+        duration: 5,
+    },
+    superiorPhysicalEnhancement: {
+        desc: `a significant strengthening effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 4 rounds`,
+            },
+            {
+                icon: `redSword.png`,
+                desc: `+ 50% physical strength`,
+            },
+            {
+                icon: `shield.png`,
+                desc: `+ 50% physical resistance`,
+            },
+            {
+                icon: `blueShield.png`,
+                desc: `+ 50% magical resistance`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 50], magic: [0, 50]},
         statChange: {str: 0.5, int: 0, reg: 0},
         duration: 3,
     },
@@ -4600,6 +4700,28 @@ const intermediateSwordAttacks = { // sword attacks but better
         accuracy: 95,
         attacks: 17,
     },
+    skySplittingSlash: {
+        name: `Sky Splitting Slash`,
+        desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a powerful slash that splits apart the heavens.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordThrust',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical,
+        targeting: single,
+        dmg: 175,
+        multiplier: str,
+        effects: [],
+        cost: {hp: 0, mp: 100},
+        accuracy: Infinity,
+        attacks: 1,
+    },
 };
 const advancedSwordAttacks = { // best sword attacks 
     ascendedThrust: {
@@ -4735,7 +4857,7 @@ const advancedSwordAttacks = { // best sword attacks
     },
     lesserSwordDance: {
         name: `Sword Dance`,
-        desc: `[attacker] dances through enemies, rapidly striking at them. This technique has yet to be mastered.`,
+        desc: `[attacker] dances through enemies, rapidly striking at them. This technique has yet to be fully mastered.`,
         animation: { 
             range: 'melee',
             projectile: 'swordSwing',
@@ -5133,10 +5255,64 @@ const selfBuffs = { // self enhancement
         },
         type: heal, 
         targeting: selfOnly,
-        dmg: -40,
+        dmg: -30,
         multiplier: none,
         effects: [{effect: 'lesserPhysicalEnhancement', chance: 100}], 
         cost: {hp: 0, mp: 25}, 
+        accuracy: Infinity,
+        attacks: 1,
+        instantUse: true,
+    },
+    mediumPhysicalEnhancement: {
+        name: `Medium Physical Enhancement`, 
+        desc: `[attacker] enhances their physical abilities temporarily.`, 
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'statUp',
+        },
+        type: heal, 
+        targeting: selfOnly,
+        dmg: -50,
+        multiplier: none,
+        effects: [{effect: 'mediumPhysicalEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 40}, 
+        accuracy: Infinity,
+        attacks: 1,
+        instantUse: true,
+    },
+    greaterPhysicalEnhancement: {
+        name: `Greater Physical Enhancement`, 
+        desc: `[attacker] enhances their physical abilities temporarily.`, 
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'statUp',
+        },
+        type: heal, 
+        targeting: selfOnly,
+        dmg: -75,
+        multiplier: none,
+        effects: [{effect: 'greaterPhysicalEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 85}, 
+        accuracy: Infinity,
+        attacks: 1,
+        instantUse: true,
+    },
+    superiorPhysicalEnhancement: {
+        name: `Superior Physical Enhancement`, 
+        desc: `[attacker] enhances their physical abilities temporarily.`, 
+        animation: { 
+            range: 'self',
+            projectile: 'none',
+            hitEffect: 'statUp',
+        },
+        type: heal, 
+        targeting: selfOnly,
+        dmg: -100,
+        multiplier: none,
+        effects: [{effect: 'superiorPhysicalEnhancement', chance: 100}], 
+        cost: {hp: 0, mp: 100}, 
         accuracy: Infinity,
         attacks: 1,
         instantUse: true,
@@ -5931,6 +6107,28 @@ const uniqueSkills = { // very op skills
         accuracy: Infinity, 
         attacks: 1,
     },
+    cheapSoulHarvest: {
+        name: `Soul Harvest`,
+        desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
+        animation: { 
+            range: 'melee',
+            projectile: 'swordSwing',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 50,
+            projectileFade: true,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: piercing,
+        targeting: single,
+        dmg: 500,
+        multiplier: str,
+        effects: [],
+        cost: {hp: -500, mp: 300},
+        accuracy: 100,
+        attacks: 1,
+    },
     soulHarvest: {
         name: `Soul Harvest`,
         desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
@@ -5949,7 +6147,7 @@ const uniqueSkills = { // very op skills
         dmg: 1000,
         multiplier: str,
         effects: [],
-        cost: {hp: -975, mp: 1400},
+        cost: {hp: -1000, mp: 1400},
         accuracy: 100,
         attacks: 1,
     },
@@ -6188,7 +6386,7 @@ function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${Math.floor(character.hp)}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${Math.floor(character.mp)}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
-    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">!</span></div>` : ``}<span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
+    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
 };
 
 function cardLine(cards, pos, onClick) {
@@ -6721,7 +6919,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
         replacehtml(`money`, `<span><strong>${card.name}</strong></span>`);
         console.log('skills');
-        let buttonGridHtml = `<div id="stats"><p id="noPadding" class="statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
+        let buttonGridHtml = `<div id="stats"><p id="noPadding" class="statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
         for (let i = 0; i < card.skills.length; i++) {
             let dmg = data.skills[card.skills[i]].dmg;
             if (data.skills[card.skills[i]].type != heal) {
@@ -6943,7 +7141,7 @@ async function handleEnemyAttack(enemy) {
 function playerTurn() {
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         game.gamestate.player.team[i].ap = 1; 
-        if (game.gamestate.player.team[i].infiniteAp) game.gamestate.player.team[i].ap = Infinity;
+        if (game.gamestate.player.team[i].additionalAp) game.gamestate.player.team[i].ap += game.gamestate.player.team[i].additionalAp;
     }
     renderCards(`selectAction`, `selectAction`);
 };
