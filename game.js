@@ -856,12 +856,13 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
         //console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
         //console.log(pos);
         //document.getElementById(id).style.display = 'none';
-        document.getElementById(id).style.opacity = 1;
+        document.getElementById(id).style.opacity = 0.01;
         document.getElementById(id).style.position = `absolute`;
         await sleep(50); // let stuff load
         //console.log(document.getElementById(id).offsetHeight, document.getElementById(id).offsetWidth);
         document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
         document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+        document.getElementById(id).style.opacity = 1;
         //document.getElementById(id).style.display = 'block';
         //console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
         if (offset) {
@@ -932,11 +933,12 @@ async function simulateProjectileAttack(projectile, start, end, steps, fade) {
     let velocity = vMath(toMove, steps, '/');
     // unfortunately I can't define a variable to be the element otherwise async stuff breaks
     //document.getElementById(id).style.display = 'none';
-    document.getElementById(id).style.opacity = 1;
+    document.getElementById(id).style.opacity = 0.01;
     document.getElementById(id).style.position = `absolute`;
     await sleep(50); // let stuff load
     document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
     document.getElementById(id).style.left = `${start.x+75-document.getElementById(id).offsetWidth/2}px`;
+    document.getElementById(id).style.opacity = 1;
     //document.getElementById(id).style.display = 'block';
     for (let i = 0; i < steps; i++) {
         //console.log(i);
@@ -1294,7 +1296,8 @@ async function simulateSkill(user, skill, target=undefined) {
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
     }
     if (skill.animation.range === melee)  {
-        await fakeMoveCard(user, user, 100, true);
+        if (skill.animation.smooth) await sleep(750 + skill.attacks * 5);
+        await fakeMoveCard(user, user, 150, true);
     }
     if ((skill.animation.smooth || skill.targeting == aoe) && skill.animation.range != 'melee') { // estimate attack time (pretty reliable ngl)
         console.log('wait', Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed)-2500) + (skill.animation.projectile != 'none'? skill.animation.projectileSpeed*10 : 0));
