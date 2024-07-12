@@ -11,8 +11,8 @@ Update 5: I decided to deploy the still unplayable version of the game [here](ht
 Update 6: Its so jover...<br>
 Update 7: I hate css (part 4).<br>
 Update 8: Microsoft Word > Photoshop for editing images and making assets.<br>
-<img width="600" alt="Poorly Drawn Game Assets" src="https://github.com/GrimReaper2654/Gacha-Game/assets/80506189/121b86dc-3b2c-494e-8a0e-47e944487f1b">
-<br>
+<img width="600" alt="Poorly Drawn Game Assets" src="https://github.com/GrimReaper2654/Gacha-Game/assets/80506189/121b86dc-3b2c-494e-8a0e-47e944487f1b"><br>
+Update 9: Me when drawing a rounded triangle on desmos is easier than amking one with css. Also, did I mention I hate css<br>
 <br>
 <br>
 <br>
