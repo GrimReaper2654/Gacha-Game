@@ -856,7 +856,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
         //console.log(pos.y+95-document.getElementById(id).offsetHeight/2+randint(-50, 50));
         //console.log(pos);
         //document.getElementById(id).style.display = 'none';
-        document.getElementById(id).style.opacity = 0.01;
+        document.getElementById(id).style.opacity = 0;
         document.getElementById(id).style.position = `absolute`;
         await sleep(50); // let stuff load
         //console.log(document.getElementById(id).offsetHeight, document.getElementById(id).offsetWidth);
@@ -933,7 +933,7 @@ async function simulateProjectileAttack(projectile, start, end, steps, fade) {
     let velocity = vMath(toMove, steps, '/');
     // unfortunately I can't define a variable to be the element otherwise async stuff breaks
     //document.getElementById(id).style.display = 'none';
-    document.getElementById(id).style.opacity = 0.01;
+    document.getElementById(id).style.opacity = 0;
     document.getElementById(id).style.position = `absolute`;
     await sleep(50); // let stuff load
     document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
@@ -958,13 +958,13 @@ async function fakeMoveCard(card, targetCard, steps, reset=false, offset={x: 0, 
     if (!reset) pos = vMath(pos, {x: 0, y: targetCard.id[0] == 'E' ? 210 : -210}, '+');
     pos = vMath(pos, offset, '+');
     //console.log(getCoordsScuffed(id));
+    let original = document.getElementById(card.id);
     let element = undefined;
     //startingPos = getCoords(id);
     if (!document.getElementById(card.id+'animation')) {
         //console.log('ceating clone');
-        let original = document.getElementById(card.id);
         element = original.cloneNode(true);
-        original.style.display = 'none';
+        original.style.opacity = 0;
         element.id = element.id+'animation';
         document.getElementById('effects').appendChild(element); // bruh, you can do this?!?! would have been nice to know a few months ago
     } else {
@@ -992,7 +992,7 @@ async function fakeMoveCard(card, targetCard, steps, reset=false, offset={x: 0, 
     element.style.left = `${pos.x}px`;
     if (reset) {
         document.getElementById(card.id+'animation').remove();
-        document.getElementById(card.id).style.display = 'inline-block';
+        original.style.opacity = 1;
     } 
     //console.log('final', element.style.top, element.style.left);
     //console.log(getCoordsScuffed(id+'animation'));
@@ -1037,11 +1037,13 @@ function selectCard(id) {
     return game.gamestate.battleState[pos.row.toLowerCase()][pos.pos];
 }; window.selectCard = selectCard;
 
-function checkAllDead() {
-    game.gamestate.battleState.eb = checkDead(game.gamestate.battleState.eb);
-    game.gamestate.battleState.ef = checkDead(game.gamestate.battleState.ef);
-    game.gamestate.battleState.pb = checkDead(game.gamestate.battleState.pb);
-    game.gamestate.battleState.pf = checkDead(game.gamestate.battleState.pf);
+async function checkAllDead() {
+    let deaths = [false, false, false, false];
+    [game.gamestate.battleState.eb, deaths[0]] = checkDead(game.gamestate.battleState.eb);
+    [game.gamestate.battleState.ef, deaths[1]] = checkDead(game.gamestate.battleState.ef);
+    [game.gamestate.battleState.pb, deaths[2]] = checkDead(game.gamestate.battleState.pb);
+    [game.gamestate.battleState.pf, deaths[3]] = checkDead(game.gamestate.battleState.pf);
+    if (deaths[0] || deaths[1] || deaths[2] || deaths[3]) await sleep(1250);
 }; window.checkAllDead = checkAllDead;
 
 function calcResistance(dmgType, dmg, target) {
@@ -1308,7 +1310,7 @@ async function simulateSkill(user, skill, target=undefined) {
     console.log('buffer start');
     await sleep(1000);
     console.log('buffer end');
-    checkAllDead();
+    await checkAllDead();
     renderCards(`selectAction`, `selectAction`);
     replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
     skills(user, false);
@@ -1413,16 +1415,42 @@ function regenMana() {
     }
 }; window.regenMana = regenMana;
 
+async function deathEffect(card) {
+    await sleep(15);
+    document.getElementById(card.id).style['opacity'] = 1;
+    for (let i = 0; i < 20; i++) {
+        document.getElementById(card.id).style['opacity'] = document.getElementById(card.id).style['opacity'] - 0.05;
+        await sleep(15);
+    }
+    document.getElementById(card.id).style['opacity'] = 0;
+    document.getElementById(card.id).style['max-width'] = `150px`;
+    document.getElementById(card.id).style['border'] = `none`;
+    document.getElementById(card.id).style['overflow-x'] = 'hidden';
+    for (let i = 0; i < 50; i++) {
+        document.getElementById(card.id).style['max-width'] = `${unPixel(document.getElementById(card.id).style['max-width'])-3}px`;
+        await sleep(15);
+    }
+    /*
+    for (let i = 0; i < 50; i++) {
+        document.getElementById(card.id).style['transform'] = `scale(${(50 - i)/50}, 1)`;
+        await sleep(15);
+    }*/
+    document.getElementById(card.id).remove();
+}; window.deathEffect = deathEffect;
+
 function checkDead(row) {
+    let wait = false;
     let nRow = [];
     for (let i = 0; i < row.length; i++) {
         if (row[i].hp > 0) {
             nRow.push(row[i]);
         } else {
+            wait = true;
             row[i].alive = false; // this keeps track of whether player characters are dead so they can be revived later
+            deathEffect(row[i]);
         }
     }
-    return nRow;
+    return [nRow, wait];
 }; window.checkDead = checkDead;
 
 async function handleEnemyAttack(enemy) {
@@ -1464,10 +1492,7 @@ async function enemyTurn() {
     handleStatusEffects();
     regenMana();
     await sleep(550);
-    game.gamestate.battleState.eb = checkDead(game.gamestate.battleState.eb);
-    game.gamestate.battleState.ef = checkDead(game.gamestate.battleState.ef);
-    game.gamestate.battleState.pb = checkDead(game.gamestate.battleState.pb);
-    game.gamestate.battleState.pf = checkDead(game.gamestate.battleState.pf);
+    await checkAllDead();
     console.log('end handle effects');
     playerTurn();
 }; window.enemyTurn = enemyTurn;
