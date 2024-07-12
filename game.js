@@ -9,7 +9,7 @@ grey        green       blue      purple         red       gold       diamond   
 ---------------------------------------------------------------------------------------------------------------------
 */
 
-// Constants
+// Constants (catches spelling mistakes, the code will error if one of these is spelt wrong)
 const N = 0;
 const UC = 1;
 const R = 2;
@@ -48,6 +48,11 @@ const multi = 'multi target';
 const aoe = 'area of effect';
 const selfOnly = 'affects self only';
 const summon = 'summon';
+
+const ranged = 'ranged';
+const melee = 'melee';
+const fullScreen = 'fullScreen';
+const self = 'self';
 
 // The support functions that might not be necessary
 function print(a) { // GRRRRR snek
@@ -1227,7 +1232,7 @@ var data = {
                 mp: 900,
                 str: 5,
                 int: 160,
-                mpRegen: 225,
+                mpRegen: 300,
                 skills: ['ascendedSlash', 'ascendedOverheadStrike', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
                 armour: {physical: [0, 25], magic: [0, 25]},
                 additionalAp: 1,
@@ -1284,7 +1289,7 @@ var data = {
                 str: 0.5,
                 int: -1,
                 mpRegen: 5,
-                skills: ['punch', 'bodySlam', 'pervertedStare', 'brag'],
+                skills: ['debugFist', 'punch', 'bodySlam', 'pervertedStare', 'brag'],
                 armour: {physical: [0, 0], magic: [0, 0]},
                 additionalAp: 1,
             },
@@ -3352,12 +3357,12 @@ var data = {
 animation: { 
     range: '', // whether attacking card moves to defending card to attack
     projectile: '', // image that moves from attacker to defender
-    hitEffect: '', // image to is rendered on defender upon hitting
-    moveSpeed: 0, // how many frames the attacker takes to move between targets (melee range only) (for skills that hit multiple times)
+    hitEffect: '', // image that is rendered on defender upon hitting
+    moveSpeed: 0, // how many frames the attacker takes to move between targets (melee range only) (multi target only)
     projectileSpeed: 30, // how many frames taken for projectile to hit target (only relavent if there is a projectile)
     projectileFade: false, // whether the projectile fades over time (only relavent if there is a projectile)
     smooth: false, // does the attacker wait for the previous attack to land before firing another (for skills that hit multiple times)
-    projectileDelay: 0, // how many ms to wait between attacks (only applies for smooth=true)
+    projectileDelay: 0, // how many ms to wait between attacks 
 },
 */
 
@@ -4467,12 +4472,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Punch`, 
         desc: `[attacker] punches the targeted enemy several times.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
-            moveSpeed: 50,
+            moveSpeed: 0,
             projectileSpeed: 0,
+            projectileFade: false,
             smooth: false,
+            projectileDelay: 250,
         },
         type: physical, 
         targeting: single, 
@@ -4487,9 +4494,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Stunning Blows`, 
         desc: `[attacker] punches the targeted enemy several times, potentially weakening them with each blow.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 250,
         },
         type: 'physical', 
         targeting: single,
@@ -4504,12 +4516,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Heavy Punch`, 
         desc: `[attacker] repeatedly punches the targeted enemy very hard.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
-            moveSpeed: 50,
+            moveSpeed: 0,
             projectileSpeed: 0,
+            projectileFade: false,
             smooth: false,
+            projectileDelay: 400,
         },
         type: physical, 
         targeting: single, 
@@ -4524,9 +4538,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Kick`, 
         desc: `[attacker] kicks the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical, 
         targeting: single,
@@ -4541,9 +4560,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Slap`, 
         desc: `[attacker] slaps the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical, 
         targeting: single,
@@ -4558,9 +4582,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Body Slam`, 
         desc: `[attacker] slams [pronoun] body into the targeted enemy, dealing high damage but costing health.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: 'physical', 
         targeting: single,
@@ -4575,9 +4604,14 @@ const basicPhysicalAttacks = { // body and blunt attacks
         name: `Shield Bash`, 
         desc: `[attacker] slams [pronoun] shield into the targeted enemy, potentially weakening them.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: 'physical', 
         targeting: single,
@@ -4594,7 +4628,7 @@ const basicSwordAttacks = { // sword attacks
         name: `Slash`, 
         desc: `[attacker] slashes the targeted enemy with a sword.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4616,7 +4650,7 @@ const basicSwordAttacks = { // sword attacks
         name: `Thrust`,
         desc: `[attacker] thrusts at the targeted enemy.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4638,7 +4672,7 @@ const basicSwordAttacks = { // sword attacks
         name: `Sword Charge`, 
         desc: `[attacker] charges at the enemy with a powerful sword strike.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4660,7 +4694,7 @@ const basicSwordAttacks = { // sword attacks
         name: `Overhead Strike`,
         desc: `[attacker] leaps into the air and strikes at the targeted enemy from above.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4682,14 +4716,14 @@ const basicSwordAttacks = { // sword attacks
         name: `Wild Swings`,
         desc: `[attacker] wildly swings [pronoun] sword at the targeted enemy.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 30,
+            projectileDelay: 300,
         },
         type: physical,
         targeting: single,
@@ -4704,14 +4738,14 @@ const basicSwordAttacks = { // sword attacks
         name: `Wild Charge`,
         desc: `[attacker] charges the targeted enemy while flailing [pronoun] sword wildly, inflicting significant damage to all parties involved.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 30,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 25,
+            projectileDelay: 150,
         },
         type: physical,
         targeting: multi,
@@ -4726,14 +4760,14 @@ const basicSwordAttacks = { // sword attacks
         name: `Sparkle Slash`,
         desc: `[attacker]'s special attack that [pronoun] spent years developing. It is rather flashy and powerful...`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 40,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 25,
+            projectileDelay: 250,
         },
         type: normal,
         targeting: single,
@@ -4750,7 +4784,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Snipe`, 
         desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arrow',
             hitEffect: 'arrowInGround',
             moveSpeed: 0,
@@ -4772,14 +4806,14 @@ const basicRangedAttacks = { // ranged attacks
         name: `Rapid Fire`, 
         desc: `[attacker] rapidly fires a barrage of arrows at the enemies.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arrow',
             hitEffect: 'arrowInGround',
             moveSpeed: 0,
             projectileSpeed: 90,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 100,
+            projectileDelay: 200,
         },
         type: physical, 
         targeting: multi,
@@ -4794,7 +4828,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Tripple Shot`, 
         desc: `[attacker] fires 3 arrows at once towards the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arrow',
             hitEffect: 'arrowInGround',
             moveSpeed: 0,
@@ -4816,7 +4850,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Knife Throw`, 
         desc: `[attacker] accurately throws a dagger at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'dagger',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4838,7 +4872,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Knife Throw`, 
         desc: `[attacker] throws a handful of daggers at the enemies.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'dagger',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -4860,7 +4894,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Crossbow`, 
         desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arrow',
             hitEffect: 'arrowInGround',
             moveSpeed: 0,
@@ -4882,7 +4916,7 @@ const basicRangedAttacks = { // ranged attacks
         name: `Crossbow (Crit)`, 
         desc: `[attacker] accurately fires an arrow at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arrow',
             hitEffect: 'arrowInGround',
             moveSpeed: 0,
@@ -4906,8 +4940,8 @@ const basicVerbalAttacks = { // insults and talking
         name: `Brag`,
         desc: `[attacker] brags about [pronoun] accomplishments, irritating the targeted enemy.`,
         animation: { 
-            range: 'ranged',
-            projectile: 'musicNotes',
+            range: ranged,
+            projectile: 'music',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 150,
@@ -4918,7 +4952,7 @@ const basicVerbalAttacks = { // insults and talking
         type: piercing,
         targeting: single,
         dmg: 10,
-        multiplier: int,
+        multiplier: none,
         effects: [],
         cost: {hp: 0, mp: 5},
         accuracy: Infinity,
@@ -4930,9 +4964,14 @@ const intermediatePhysicalAttacks = { // cool martial arts
         name: `Flying Kick`, 
         desc: `[attacker] launches into the air with a powerful leap, delivering a swift and forceful kick to the target.`, 
         animation: { 
-            range: 'melee', 
+            range: melee, 
             projectile: 'none', 
             hitEffect: 'physicalHit', 
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical, 
         targeting: single,
@@ -4949,14 +4988,14 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Slash`, 
         desc: `[attacker] executes a precice series of slashes on the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 50,
             projectileFade: true,
-            smooth: false,
-            projectileDelay: 0,
+            smooth: true,
+            projectileDelay: 300,
         },
         type: physical, 
         targeting: single,
@@ -4971,7 +5010,7 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Heavy Slash`, 
         desc: `[attacker] smashes [pronoun] sword down on the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 50,
@@ -4993,14 +5032,14 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Blades Of Fury`,
         desc: `[attacker] unleashes a flurry of seven swift sword strikes, capable of hitting multiple enemies in a whirlwind of steel.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 15,
             projectileSpeed: 60,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 25,
+            projectileDelay: 250,
         },
         type: physical,
         targeting: multi,
@@ -5015,14 +5054,14 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Savage Tornado`,
         desc: `[attacker] spins wildly, slashing at nearby enemies.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 10,
             projectileSpeed: 60,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 15,
+            projectileDelay: 100,
         },
         type: physical,
         targeting: multi,
@@ -5037,14 +5076,14 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Sword Dance`,
         desc: `[attacker] dances through enemies, rapidly striking at them. The technique is crude and unrefined, but gets the job done.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
-            moveSpeed: 10,
+            moveSpeed: 12,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 100,
         },
         type: physical,
         targeting: multi,
@@ -5059,7 +5098,7 @@ const intermediateSwordAttacks = { // sword attacks but better
         name: `Sky Splitting Slash`,
         desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a powerful slash that splits apart the heavens.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5083,7 +5122,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Thrust`,
         desc: `[attacker] unleashes a powerful thrust at the targeted enemy.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5105,7 +5144,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Slash`,
         desc: `[attacker] unleashes a powerful slash imbued with divine energy that pierces through armour.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5127,14 +5166,14 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Rapid Strikes`,
         desc: `[attacker] performs a series of rapid slashes and stabs on the targeted enemy.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 10,
+            projectileDelay: 200,
         },
         type: physical,
         targeting: single,
@@ -5149,14 +5188,14 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Sevenfold Slash of Light`,
         desc: `[attacker] unleashes seven holy energy infused slashes towards the enemies.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 15,
             projectileSpeed: 60,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 15,
+            projectileDelay: 150,
         },
         type: normal,
         targeting: multi,
@@ -5171,7 +5210,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Overhead Strike`,
         desc: `[attacker] gathers a massive amount of aura on [pronoun] blade and strikes down at the targeted enemy from above.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5193,7 +5232,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Overhead Strike`, 
         desc: `[attacker] leaps into the air and strikes down on the targeted enemy with tremendous force.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 50,
@@ -5215,7 +5254,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Aura Slash`,
         desc: `[attacker] releases a wave of energy from [pronoun] sword that cuts through all enemies.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5237,14 +5276,14 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Sword Dance`,
         desc: `[attacker] dances through enemies, rapidly striking at them. This technique has yet to be fully mastered.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
-            moveSpeed: 5,
+            moveSpeed: 10,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 50,
         },
         type: normal,
         targeting: multi,
@@ -5259,21 +5298,21 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Sword Dance`,
         desc: `[attacker] dances through enemies with perfect technique, rapidly striking at them while leaving no room for counterattack.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
-            moveSpeed: 2,
+            moveSpeed: 7,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 30,
         },
         type: normal,
         targeting: multi,
         dmg: 42,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 375},
+        cost: {hp: 0, mp: 350},
         accuracy: 100,
         attacks: 45,
     },
@@ -5281,7 +5320,7 @@ const advancedSwordAttacks = { // best sword attacks
         name: `Reality Slash`,
         desc: `[attacker] charges [pronoun] sword with a vast amount of energy, releasing a slash that cuts through reality itself.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -5295,7 +5334,7 @@ const advancedSwordAttacks = { // best sword attacks
         dmg: 1750,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 800},
+        cost: {hp: 0, mp: 750},
         accuracy: Infinity,
         attacks: 1,
     },
@@ -5305,7 +5344,7 @@ const healingSkills = { // heals
         name: `Lesser Healing`,
         desc: `[attacker] heals the targeted ally.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'healingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5327,7 +5366,7 @@ const healingSkills = { // heals
         name: `Lesser Area Healing`,
         desc: `[attacker] heals all allies.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5349,7 +5388,7 @@ const healingSkills = { // heals
         name: `Medium Healing`,
         desc: `[attacker] heals the targeted ally.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'healingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5371,7 +5410,7 @@ const healingSkills = { // heals
         name: `Medium Area Healing`,
         desc: `[attacker] heals all allies moderately.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5393,7 +5432,7 @@ const healingSkills = { // heals
         name: `Greater Healing`,
         desc: `[attacker] heals the targeted ally and leaves a lingering heal over time effect.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'healingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5415,7 +5454,7 @@ const healingSkills = { // heals
         name: `Greater Area Healing`,
         desc: `[attacker] heals all allies greatly.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5437,7 +5476,7 @@ const healingSkills = { // heals
         name: `Superior Healing`,
         desc: `[attacker] heals the targeted ally and leaves a lingering heal over time effect.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'healingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5459,7 +5498,7 @@ const healingSkills = { // heals
         name: `Superior Area Healing`,
         desc: `[attacker] heals all allies greatly.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'areaHealingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5481,7 +5520,7 @@ const healingSkills = { // heals
         name: `Chimkin`,
         desc: `[attacker] feeds the targeted ally a roast chicken.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'chimkin',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5503,7 +5542,7 @@ const healingSkills = { // heals
         name: `First Aid`,
         desc: `[attacker] does some basic first Aid to recover some health.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'healingLight',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5525,7 +5564,7 @@ const healingSkills = { // heals
         name: `Healing Aura`,
         desc: `[attacker] releases a healing aura, regenerating the health and mana of all allies.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'none',
             hitEffect: 'hpUp',
         },
@@ -5541,7 +5580,7 @@ const healingSkills = { // heals
         name: `Blood Transfusion`,
         desc: `[attacker] transfers a small amount of blood to the targeted ally.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5563,7 +5602,7 @@ const healingSkills = { // heals
         name: `Blood Transfusion`,
         desc: `[attacker] transfers blood to the targeted ally.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5585,7 +5624,7 @@ const healingSkills = { // heals
         name: `Heart Transplant`,
         desc: `[attacker] transfers a heart to the targeted ally. Don't question where the heart came from...`,
         animation: {
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5607,7 +5646,7 @@ const healingSkills = { // heals
         name: `Healing Melody`,
         desc: `[attacker] plays a short tune that heals all allies and boosts their mana regeneration.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'music',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -5631,7 +5670,7 @@ const selfBuffs = { // self enhancement
         name: `Lesser Strength Enhancement`, 
         desc: `[attacker] enhances their physical abilities temporarily.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'attackUp',
             moveSpeed: 0,
@@ -5654,7 +5693,7 @@ const selfBuffs = { // self enhancement
         name: `Battle Focus`, 
         desc: `[attacker] focuses [pronoun] mind and pushes [pronoun] body to the limit.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'attackUp',
             moveSpeed: 0,
@@ -5677,7 +5716,7 @@ const selfBuffs = { // self enhancement
         name: `Lesser Physical Enhancement`, 
         desc: `[attacker] enhances their physical abilities temporarily.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5700,7 +5739,7 @@ const selfBuffs = { // self enhancement
         name: `Medium Physical Enhancement`, 
         desc: `[attacker] enhances their physical abilities temporarily.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5723,7 +5762,7 @@ const selfBuffs = { // self enhancement
         name: `Greater Physical Enhancement`, 
         desc: `[attacker] enhances their physical abilities temporarily.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5746,7 +5785,7 @@ const selfBuffs = { // self enhancement
         name: `Superior Body Enhancement`, 
         desc: `[attacker] enhances their physical and magical abilities temporarily.`, 
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5769,7 +5808,7 @@ const selfBuffs = { // self enhancement
         name: `Raise Guard`,
         desc: `[attacker] raises [pronoun] guard, reducing damage from physical attacks.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5792,7 +5831,7 @@ const selfBuffs = { // self enhancement
         name: `Raise Guard`,
         desc: `[attacker] raises [pronoun] guard, significantly reducing damage from all attacks in the next round.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5815,7 +5854,7 @@ const selfBuffs = { // self enhancement
         name: `Cower in Fear`,
         desc: `[attacker] cowers in fear, channeling mana into [pronoun] armour to reist more damage.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5838,7 +5877,7 @@ const selfBuffs = { // self enhancement
         name: `Super Charge`,
         desc: `[attacker] super charges [pronoun] body with aura, greatly increasing all stats.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5852,7 +5891,7 @@ const selfBuffs = { // self enhancement
         dmg: -25,
         multiplier: int,
         effects: [{effect: 'greaterBodyEnhancement', chance: 100}],
-        cost: {hp: 0, mp: 400},
+        cost: {hp: 0, mp: 200},
         accuracy: none,
         attacks: 1,
         instantUse: true,
@@ -5861,7 +5900,7 @@ const selfBuffs = { // self enhancement
         name: `Reinforce Armour`,
         desc: `[attacker] reinforces [pronoun] armour with mana, reducing damage from all attacks in the next round.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5884,7 +5923,7 @@ const selfBuffs = { // self enhancement
         name: `Reinforce Shield`,
         desc: `[attacker] reinforces [pronoun] shield with mana, greatly reducing damage from all attacks in the next round.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5909,7 +5948,7 @@ const buffSkills = { // makes target stronk
         name: `War Cry`,
         desc: `[attacker] lets out a powerful war cry, boosting the attack of all allies.`,
         animation: { 
-            range: 'allUnits',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'attackUp',
             moveSpeed: 0,
@@ -5932,7 +5971,7 @@ const buffSkills = { // makes target stronk
         name: `Battlefield Command`,
         desc: `[attacker] commands the battlefield, boosting the attack and defense of all allies.`,
         animation: { 
-            range: 'allUnits',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5955,7 +5994,7 @@ const buffSkills = { // makes target stronk
         name: `Shadow Veil`,
         desc: `[attacker] surrounds the targeted ally in a barrier, protecting them from attacks.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'shadowball',
             hitEffect: 'defUp',
             moveSpeed: 0,
@@ -5977,7 +6016,7 @@ const buffSkills = { // makes target stronk
         name: `Mid Grade Methamphetamine`,
         desc: `[attacker] synthesises some meth of medium purity which makes the targeted entity high.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'bagOfWhitePowder',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -5999,7 +6038,7 @@ const buffSkills = { // makes target stronk
         name: `High Grade Methamphetamine`,
         desc: `[attacker] synthesises some meth of high purity which makes the targeted entity very high.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'bagOfWhitePowder',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6021,7 +6060,7 @@ const buffSkills = { // makes target stronk
         name: `Righteous Fury`, 
         desc: `[attacker] enhances the physical abilities of the targeted ally with divine energy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'attackUp',
             moveSpeed: 0,
@@ -6043,7 +6082,7 @@ const buffSkills = { // makes target stronk
         name: `Cybernetics Implant Surgery`,
         desc: `[attacker] performs surgery on the targeted ally to cybernetically enhance their body.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6065,7 +6104,7 @@ const buffSkills = { // makes target stronk
         name: `Divine Protection`, 
         desc: `[attacker] invokes the divine protection of the Tajism deities to protect the targeted ally (or self).`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'defUp',
         },
@@ -6082,7 +6121,7 @@ const buffSkills = { // makes target stronk
         name: `Strengthing Song`,
         desc: `[attacker] plays a short tune that empowers all allies, making them stronger and smarter.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'music',
             hitEffect: 'attackUp',
             moveSpeed: 0,
@@ -6104,7 +6143,7 @@ const buffSkills = { // makes target stronk
         name: `Battle Ballad`,
         desc: `[attacker] increases the stats of all allies with this battle ballad.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'music',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6126,7 +6165,7 @@ const buffSkills = { // makes target stronk
         name: `Steroids Injection`,
         desc: `[attacker] injects the targeted ally with steroids, greatly strengthening them in the currect round. The injection is rather painful...`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'syringe',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6150,7 +6189,7 @@ const debuffSkills = { // makes target weak
         name: `Analysis`,
         desc: `[attacker] locates the targeted enemy's weakness, removing their damage negation.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'defDown',
             moveSpeed: 0,
@@ -6172,7 +6211,7 @@ const debuffSkills = { // makes target weak
         name: `Gravity Bind`,
         desc: `[attacker] manipulates the gravitational field around the targeted enemy to weaken them.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'blackHole',
             hitEffect: 'attackDown',
             moveSpeed: 0,
@@ -6194,7 +6233,7 @@ const debuffSkills = { // makes target weak
         name: `Dimension Reduction`,
         desc: `[attacker] distorts the space around the targeted enemy, reducing their combat ability.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'blackHole',
             hitEffect: 'blackHole',
             moveSpeed: 0,
@@ -6218,7 +6257,7 @@ const magicAttacks = { // spells
         name: `Fireball`,
         desc: `[attacker] launches a fireball at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireball',
             hitEffect: 'smallExplosion',
             moveSpeed: 0,
@@ -6240,7 +6279,7 @@ const magicAttacks = { // spells
         name: `Fire Lance`,
         desc: `[attacker] fires a lance of fire at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireArrow',
             hitEffect: 'smallExplosion',
             moveSpeed: 0,
@@ -6262,14 +6301,14 @@ const magicAttacks = { // spells
         name: `Fire Arrows`,
         desc: `[attacker] summons and fires arrows of fire at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireArrow',
             hitEffect: 'smallExplosion',
             moveSpeed: 0,
             projectileSpeed: 75,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 150,
+            projectileDelay: 250,
         },
         type: magic,
         targeting: multi,
@@ -6277,21 +6316,21 @@ const magicAttacks = { // spells
         multiplier: int,
         effects: [],
         cost: {hp: 0, mp: 50},
-        accuracy: 75,
+        accuracy: 90,
         attacks: 5,
     },
     firestorm: {
         name: `Firestorm`,
         desc: `[attacker] unleashes a storm of fire dealing splash damage to all enemies.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'fireStorm',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 0,
             projectileFade: false,
             smooth: false,
-            projectileDelay: 0,
+            projectileDelay: 100,
         },
         type: magic,
         targeting: aoe,
@@ -6306,7 +6345,7 @@ const magicAttacks = { // spells
         name: `Force Lance`,
         desc: `[attacker] launches a compressed lance of magic at the targeted enemy, inflicting physical damage.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -6328,7 +6367,7 @@ const magicAttacks = { // spells
         name: `Shadow Lance`,
         desc: `[attacker] launches a shadow lance constructed from mana at the targeted enemy. It can penetrate through barriers and armour.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'darkArrow',
             hitEffect: 'blackHole',
             moveSpeed: 0,
@@ -6350,7 +6389,7 @@ const magicAttacks = { // spells
         name: `Arcane Blast`,
         desc: `[attacker] fires a concentrated blast of mana at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'arcaneBlast',
             hitEffect: 'magicExplosion',
             moveSpeed: 0,
@@ -6372,14 +6411,14 @@ const magicAttacks = { // spells
         name: `Dark Blast`,
         desc: `[attacker] releases a torrent of dark energy at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'darkBlast',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 100,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 6,
+            projectileDelay: 60,
         },
         type: magic,
         targeting: multi,
@@ -6394,7 +6433,7 @@ const magicAttacks = { // spells
         name: `Righteous Smite`,
         desc: `[attacker] calls down lightning from the heavens to smite the targeted enemy`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'lightning',
         },
@@ -6413,14 +6452,14 @@ const modernWeaponry = { // guns and bombs
         name: `Assault Rifle`,
         desc: `[attacker] unloads a full magazine towards the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'bullet',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 10,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 25,
+            projectileDelay: 75,
         },
         type: physical,
         targeting: single,
@@ -6435,14 +6474,14 @@ const modernWeaponry = { // guns and bombs
         name: `Gattling Railgun`,
         desc: `[attacker] bombards the targeted enemy with a hail of tungsten darts travelling at Mach 6.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'bullet',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 7,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 15,
+            projectileDelay: 100,
         },
         type: physical,
         targeting: single,
@@ -6457,14 +6496,14 @@ const modernWeaponry = { // guns and bombs
         name: `Heavy Railcannon`,
         desc: `[attacker] launches an electromagnetically accelerated tungsten dart at Mach 10 into the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'railDart',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 7,
-            projectileFade: true,
-            smooth: true,
-            projectileDelay: 15,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         type: physical,
         targeting: single,
@@ -6479,7 +6518,7 @@ const modernWeaponry = { // guns and bombs
         name: `Frag Grenade`,
         desc: `[attacker] throws a frag grenade towards the enemies.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'fireStorm',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -6501,7 +6540,7 @@ const modernWeaponry = { // guns and bombs
         name: `Molotov Cocktail`,
         desc: `[attacker] throws a homemade molotov cocktail towards the enemies.`,
         animation: { 
-            range: 'fullScreen',
+            range: fullScreen,
             projectile: 'fireStorm',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -6523,14 +6562,14 @@ const modernWeaponry = { // guns and bombs
         name: `Air Strike`,
         desc: `[attacker] drops high explosive bombs on the enemy formation.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'miniNuke',
             hitEffect: 'explosion',
             moveSpeed: 0,
             projectileSpeed: 150,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 45,
+            projectileDelay: 300,
         },
         type: physical,
         targeting: aoe,
@@ -6545,14 +6584,14 @@ const modernWeaponry = { // guns and bombs
         name: `rocketStorm`,
         desc: `[attacker] unleashes a salvo of incindeary rockets towards the enemies.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'rocket',
             hitEffect: 'smallExplosion',
             moveSpeed: 0,
             projectileSpeed: 90,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 2,
+            projectileDelay: 50,
         },
         type: physical,
         targeting: multi,
@@ -6567,14 +6606,14 @@ const modernWeaponry = { // guns and bombs
         name: `Ion Cannon`,
         desc: `[attacker] fires concentrated beams of charged ions towards the enemies.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'ion',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 25,
         },
         type: normal,
         targeting: multi,
@@ -6591,14 +6630,14 @@ const mathsAndScienceMemes = { // self explanatory
         name: `Positron Ray`,
         desc: `[attacker] launches a concentrated beam of positrons at the targeted enemy.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'ion',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 90,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 40,
         },
         type: piercing,
         targeting: single,
@@ -6613,9 +6652,14 @@ const mathsAndScienceMemes = { // self explanatory
         name: `Lecture`,
         desc: `[attacker] lectures all allies on the standard model of particle phyiscs, increasing their intelligence and magical abilities.`,
         animation: { 
-            range: 'allUnits',
-            projectile: 'none',
+            range: ranged,
+            projectile: 'music',
             hitEffect: 'attackUp',
+            moveSpeed: 0,
+            projectileSpeed: 60,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
         },
         targeting: aoe,
         dmg: 0,
@@ -6631,14 +6675,14 @@ const uniqueSkills = { // very op skills
         name: `Debug Fist`, 
         desc: `[attacker] punches the targeted enemy several times to debug the code.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireball',
             hitEffect: 'physicalHit',
             moveSpeed: 20,
             projectileSpeed: 100,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 25,
+            projectileDelay: 100,
         },
         type: physical, 
         targeting: multi, 
@@ -6646,14 +6690,14 @@ const uniqueSkills = { // very op skills
         multiplier: str, 
         effects: [], 
         cost: {hp: 10, mp: 10}, 
-        accuracy: 100, 
+        accuracy: 60, 
         attacks: 50, 
     },
     pervertedStare: {
         name: `Perverted Stare`, 
         desc: `[attacker] gives a creepy stare, which does nothing most of the time.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'none',
         },
@@ -6670,7 +6714,7 @@ const uniqueSkills = { // very op skills
         name: `Soul Harvest`,
         desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -6692,7 +6736,7 @@ const uniqueSkills = { // very op skills
         name: `Soul Harvest`,
         desc: `[attacker] reaps the targeted enemies soul, deaing massive damage.`,
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
@@ -6714,7 +6758,7 @@ const uniqueSkills = { // very op skills
         name: `Defibrillator`,
         desc: `[attacker] uses CPR and a defibrillator to instantly heal the targeted ally back to full health.`,
         animation: {
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'hpUp',
             moveSpeed: 0,
@@ -6736,14 +6780,14 @@ const uniqueSkills = { // very op skills
         name: `Aggressive Surgery`, 
         desc: `[attacker] hacks and slashes at the targeted enemy with a scalple.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 50,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 15,
+            projectileDelay: 150,
         },
         type: piercing, 
         targeting: single,
@@ -6783,14 +6827,14 @@ const miscSkills = { // unsorted stuff
         name: `Destructive Resonance`,
         desc: `[attacker] sends out sound waves with great amplitude that damage all enemies.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 120,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 5,
+            projectileDelay: 150,
         },
         type: piercing,
         targeting: aoe,
@@ -6807,7 +6851,7 @@ const goblinSkills = {
         name: `Hit`, 
         desc: `[attacker] punches the targeted enemy several times.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
             moveSpeed: 0,
@@ -6829,14 +6873,14 @@ const goblinSkills = {
         name: `Rapid Hits`, 
         desc: `[attacker] punches the targeted enemy several times.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
             moveSpeed: 50,
             projectileSpeed: 0,
             projectileFade: false,
             smooth: false,
-            projectileDelay: 0,
+            projectileDelay: 250,
         },
         type: physical,
         targeting: single, 
@@ -6844,14 +6888,14 @@ const goblinSkills = {
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 0},
-        accuracy: 80,
+        accuracy: 95,
         attacks: 3,
     },
     smash: {
         name: `Smash`, 
         desc: `[attacker] smashes down on the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
             moveSpeed: 50,
@@ -6873,7 +6917,7 @@ const goblinSkills = {
         name: `Crushing Blow`, 
         desc: `[attacker] smashes down on the targeted enemy.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'none',
             moveSpeed: 50,
@@ -6895,7 +6939,7 @@ const goblinSkills = {
         name: `Roar`,
         desc: `[attacker] roars and gets stronger.`,
         animation: { 
-            range: 'self',
+            range: self,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6918,7 +6962,7 @@ const goblinSkills = {
         name: `Rallying Roar`,
         desc: `[attacker] roars, empowering all allies.`,
         animation: { 
-            range: 'allUnits',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'statUp',
             moveSpeed: 0,
@@ -6943,14 +6987,14 @@ const dragonSkills = {
         name: `Claw Slash`, 
         desc: `[attacker] slashes at its enemies with its claws.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordThrust',
             hitEffect: 'physicalHit',
             moveSpeed: 0,
             projectileSpeed: 0,
             projectileFade: true,
             smooth: false,
-            projectileDelay: 0,
+            projectileDelay: 200,
         },
         type: physical,
         targeting: multi, 
@@ -6958,14 +7002,14 @@ const dragonSkills = {
         multiplier: str,
         effects: [],
         cost: {hp: 0, mp: 0},
-        accuracy: 100,
+        accuracy: 95,
         attacks: 3,
     },
     tailSwipe: {
         name: `Tail Swipe`, 
         desc: `[attacker] slaps the targeted enemy with its tail.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'swordSwing',
             hitEffect: 'physicalHit',
             moveSpeed: 50,
@@ -6987,7 +7031,7 @@ const dragonSkills = {
         name: `Roar`,
         desc: `[attacker] roars, intimidating all enemies and weakening them.`,
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'none',
             hitEffect: 'attackDown',
             moveSpeed: 0,
@@ -7009,14 +7053,14 @@ const dragonSkills = {
         name: `Flap`, 
         desc: `[attacker] flaps its wings, damaging all enemies and potentially weakening them.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'swordSwing',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 150,
             projectileFade: true,
             smooth: true,
-            projectileDelay: 20,
+            projectileDelay: 300,
         },
         type: physical,
         targeting: aoe, 
@@ -7031,14 +7075,14 @@ const dragonSkills = {
         name: `Fire Breath`, 
         desc: `[attacker] breathes a wave of scorching flames at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireBlast',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 150,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 75,
         },
         type: piercing,
         targeting: multi, 
@@ -7053,14 +7097,14 @@ const dragonSkills = {
         name: `Inferno Beam`, 
         desc: `[attacker] breathes a concentrated jet of fire and plasma at the targeted enemy.`, 
         animation: { 
-            range: 'ranged',
+            range: ranged,
             projectile: 'fireBlast',
             hitEffect: 'none',
             moveSpeed: 0,
             projectileSpeed: 120,
             projectileFade: false,
             smooth: true,
-            projectileDelay: 0,
+            projectileDelay: 60,
         },
         type: piercing,
         targeting: single, 
@@ -7075,7 +7119,7 @@ const dragonSkills = {
         name: `Bite`, 
         desc: `[attacker] bites the targeted enemy with its deadly fangs.`, 
         animation: { 
-            range: 'melee',
+            range: melee,
             projectile: 'none',
             hitEffect: 'physicalHit',
             moveSpeed: 50,
@@ -7363,7 +7407,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
     }
 };
 
-async function simulateSmoothProjectileAttack(animation, start, target, dmg, number=true) {
+async function simulateSmoothProjectileAttack(animation, start, target, dmg, number=true, miss=false) {
     let projectile = animation.projectile;
     let steps = animation.projectileSpeed;
     let fade = animation.projectileFade;
@@ -7378,7 +7422,7 @@ async function simulateSmoothProjectileAttack(animation, start, target, dmg, num
     let html = `<img src="assets/${projectile}.png" style="transform: rotate(${r}deg);" id="${id}"></img>`;
     addhtml('effects', html);
     let velocity = vMath(toMove, steps, '/');
-    // unfortunately I can't define a variable to be the element otherwise async stuff breaks
+    // unfortunately I can't define a variable to be the element otherwise async stuff breaks (am I doing it wrong?)
     document.getElementById(id).style.opacity = 1;
     document.getElementById(id).style.position = `absolute`;
     document.getElementById(id).style.top = `${start.y+95-document.getElementById(id).offsetHeight/2}px`;
@@ -7394,7 +7438,7 @@ async function simulateSmoothProjectileAttack(animation, start, target, dmg, num
     document.getElementById(id).remove();
 
     changeStat(target, {stat: 'hp', change: -dmg});
-    if (number) dmgNumber(target, dmg);
+    if (number) dmgNumber(target, dmg, miss);
     if (animation.hitEffect != 'none') {
         hitEffect(animation.hitEffect, getCardCoords(target), randOffset);
     }
@@ -7517,6 +7561,13 @@ function selectCard(id) {
     return game.gamestate.battleState[row.toLowerCase()][pos];
 };
 
+function checkAllDead() {
+    game.gamestate.battleState.eb = checkDead(game.gamestate.battleState.eb);
+    game.gamestate.battleState.ef = checkDead(game.gamestate.battleState.ef);
+    game.gamestate.battleState.pb = checkDead(game.gamestate.battleState.pb);
+    game.gamestate.battleState.pf = checkDead(game.gamestate.battleState.pf);
+};
+
 function calcResistance(dmgType, dmg, target) {
     switch (dmgType) {
         case magic:
@@ -7618,21 +7669,26 @@ function dmgNumber(card, dmg, miss=false) { // there is better way to do this, b
     game.gamestate.particles[particle.id] = particle;
 };
 
-async function simulateSingleAttack(user, skill, target) { // TODO: implement missing and accuracy stuff
+async function simulateSingleAttack(user, skill, target) {
     let number = true;
-    if (skill.dmg == 0 || skill.type == effect) number = false; // skills that do not intend to do damage should not have damage numbers
+    let miss = false;
     let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.01 : 1) : 1), target)) : skill.dmg);
+    if (skill.dmg == 0 || skill.type == effect) number = false; // skills that do not intend to do damage should not have damage numbers
+    else if (isFinite(skill.accuracy) && randint(0,100) > skill.accuracy) {
+        dmg = 0;
+        miss = true;
+    }
     let done = false;
     let offset = undefined;
-    if (skill.animation.range === 'fullScreen') {
+    if (skill.animation.range === fullScreen) {
         aoeEffect(skill.animation.projectile, target.id[0]);
         console.log('changing stats');
         changeStat(target, {stat: 'hp', change: -dmg});
-        if (number) dmgNumber(target, dmg);
+        if (number) dmgNumber(target, dmg, miss);
         return;
     };
 
-    if (skill.animation.range === 'melee') {
+    if (skill.animation.range === melee) {
         await fakeMoveCard(user, target, skill.animation.moveSpeed);
     };
     if (skill.animation.projectile != 'none') {
@@ -7644,18 +7700,10 @@ async function simulateSingleAttack(user, skill, target) { // TODO: implement mi
         let endPos = getCardCoords(target);
         if (skill.animation.smooth) {
             done = true;
-            simulateSmoothProjectileAttack(skill.animation, startPos, target, dmg, number);
-            await sleep(skill.animation.projectileDelay);
+            simulateSmoothProjectileAttack(skill.animation, startPos, target, dmg, number, miss);
         } 
         else offset = await simulateProjectileAttack(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
     } 
-    if (!done) {
-        changeStat(target, {stat: 'hp', change: -dmg});
-        if (number) dmgNumber(target, dmg);
-        if (skill.animation.hitEffect != 'none') {
-            await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
-        }
-    }
     for (let i = 0; i < skill.effects.length; i++) {
         if (randint(0,100) <= skill.effects[i].chance) {
             let effect = JSON.parse(JSON.stringify(data.effects[skill.effects[i].effect]));
@@ -7665,6 +7713,14 @@ async function simulateSingleAttack(user, skill, target) { // TODO: implement mi
             console.log(target);
         }
     }
+    if (!done) {
+        changeStat(target, {stat: 'hp', change: -dmg});
+        if (number) dmgNumber(target, dmg, miss);
+        if (skill.animation.hitEffect != 'none') {
+            await hitEffect(skill.animation.hitEffect, getCardCoords(target), offset);
+        }
+    }
+    await sleep(skill.animation.projectileDelay);
 };
 
 function skills(card=undefined, enabled=true) { // sidebar skills in combat
@@ -7704,6 +7760,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
 async function simulateSkill(user, skill, target=undefined) { 
     console.log('skill used');
     user.ap--;
+    replacehtml(`main`, `<button class="endTurn disabled">End Turn</button>`);
     renderCards();
     skills(user, false);
     if (skill.cost.hp) {
@@ -7713,7 +7770,7 @@ async function simulateSkill(user, skill, target=undefined) {
         await changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     }
     await sleep(10);
-    if (skill.animation.range === 'melee') await fakeMoveCard(user, target, 100);
+    if (skill.animation.range === melee) await fakeMoveCard(user, target, 100);
     switch (skill.targeting) {
         case aoe:
             console.log('aoe skill used');
@@ -7737,7 +7794,7 @@ async function simulateSkill(user, skill, target=undefined) {
                         simulateSingleAttack(user, skill, game.gamestate.battleState.pb[i]);
                     }
                 }
-                await sleep(200);
+                if (skill.attacks > 1 && i < skill.attacks-1) await sleep(200);
             }
             break;
         case multi:
@@ -7747,14 +7804,12 @@ async function simulateSkill(user, skill, target=undefined) {
                 if (i == 0) chosen = target; // first attack always hits targeted enemy
                 //print(chosen.id);
                 await simulateSingleAttack(user, skill, chosen);
-                await sleep(100);
             }
             break;
         case selfOnly:
         case single:
             for (let i = 0; i < skill.attacks; i++) {
                 await simulateSingleAttack(user, skill, target);
-                await sleep(100);
             }
             break;
         case summon:
@@ -7763,13 +7818,16 @@ async function simulateSkill(user, skill, target=undefined) {
         default:
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
     }
-    if (skill.animation.range === 'melee') await fakeMoveCard(user, user, 100, true);
-    await sleep(2000);
-    game.gamestate.battleState.eb = checkDead(game.gamestate.battleState.eb);
-    game.gamestate.battleState.ef = checkDead(game.gamestate.battleState.ef);
-    game.gamestate.battleState.pb = checkDead(game.gamestate.battleState.pb);
-    game.gamestate.battleState.pf = checkDead(game.gamestate.battleState.pf);
+    if (skill.animation.range === melee)  {
+        await fakeMoveCard(user, user, 100, true);
+    }
+    if (skill.animation.smooth) { // estimate attack time
+        await sleep(skill.attacks * (skill.projectileDelay + skill.moveSpeed));
+    }
+    await sleep(900);
+    checkAllDead();
     renderCards(`selectAction`, `selectAction`);
+    replacehtml(`main`, `<button onclick="enemyTurn()" class="endTurn">End Turn</button>`);
     skills(user, false);
 };
 
@@ -7897,11 +7955,13 @@ function playerTurn() {
         game.gamestate.player.team[i].ap = 1; 
         if (game.gamestate.player.team[i].additionalAp) game.gamestate.player.team[i].ap += game.gamestate.player.team[i].additionalAp;
     }
+    replacehtml(`main`, `<button onclick="enemyTurn()" class="endTurn">End Turn</button>`);
     renderCards(`selectAction`, `selectAction`);
 };
 
 async function enemyTurn() {
     console.log('enemy attacking');
+    replacehtml(`main`, `<button class="endTurn disabled">End Turn</button>`);
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
         game.gamestate.battleState.eb[i].ap = 1;
     }
@@ -8003,7 +8063,7 @@ function startDungeon() {
     document.getElementById(`bac`).scrollLeft = 185;
     inventory();
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
-    replacehtml(`main`, `<button onclick="enemyTurn()" id="sellButton" class="endTurn">End Turn</button>`);
+    replacehtml(`main`, `<button onclick="enemyTurn()" class="endTurn">End Turn</button>`);
     let battleState = game.gamestate.battleState;
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         game.gamestate.player.team[i].hpMax = game.gamestate.player.team[i].hp;
@@ -8014,7 +8074,7 @@ function startDungeon() {
     }
     game.gamestate.inBattle = true;
     game.gamestate.battleState.battleOver = false;
-    game.gamestate.battleState.wave = 0;
+    game.gamestate.battleState.wave = 3;
     resize();
     inventory();
     console.log('dungeon started');
