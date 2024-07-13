@@ -318,7 +318,6 @@ var gachaGameData = {
             pb: [],
             tempStorage: {},
         },
-        particles: {},
     },
     characters: [],
     enemies: {},

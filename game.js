@@ -73,7 +73,6 @@ const data = JSON.parse(JSON.stringify(gachaGameData));
 deepFreeze(data);
 console.log(data);
 
-// Loading savegames
 var game = {
     gamestate: undefined,
     keypresses: [], // obsolete
@@ -81,13 +80,17 @@ var game = {
     forceMobile: false,
     forceDesktop: false,
     altMobile: false,
+    particles: {},
+    display: {x: window.innerWidth, y: window.innerHeight},
 };
 
-// Steal Data (get inputs)
-var mousepos = {x:0,y:0};
-var display = {x: window.innerWidth, y: window.innerHeight};
-
 // The support functions that might not be necessary
+function generateId() {
+    const timestamp = Date.now().toString(36); 
+    const randomNum = Math.random().toString(36).slice(2, 11);
+    return `${timestamp}-${randomNum}`; 
+}
+
 function randchoice(list, remove = false) { // chose 1 from a list and update list
     let length = list.length;
     let choice = randint(0, length-1);
@@ -97,12 +100,6 @@ function randchoice(list, remove = false) { // chose 1 from a list and update li
     }
     return list[choice];
 };
-
-function generateId() {
-    const timestamp = Date.now().toString(36); 
-    const randomNum = Math.random().toString(36).slice(2, 11);
-    return `${timestamp}-${randomNum}`; 
-}
 
 function randint(min, max, notequalto=false) {
     if (max - min < 1) {
@@ -131,101 +128,9 @@ function addhtml(element, text) {
     document.getElementById(element).innerHTML = document.getElementById(element).innerHTML + text;
 };
 
-function addImage(img, x, y, cx, cy, scale, r, absolute, opacity=1) {
-    var c = document.getElementById('main');
-    var ctx = c.getContext("2d");
-    ctx.globalAlpha = opacity;
-    if (absolute) {
-        ctx.setTransform(scale, 0, 0, scale, x, y); // sets scale and origin
-        ctx.rotate(r);
-        ctx.drawImage(img, -cx, -cy);
-    } else {
-        ctx.setTransform(scale, 0, 0, scale, x-player.x+display.x/2, y-player.y+display.y/2); // position relative to player
-        ctx.rotate(r);
-        ctx.drawImage(img, -cx, -cy);
-    }
-    ctx.globalAlpha = 1.0;
-};
-
-function clearCanvas(canvas) {
-    var c = document.getElementById(canvas);
-    var ctx = c.getContext("2d");
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, display.x, display.y);
-    ctx.restore();
-};
-
-function drawLine(pos, r, length, style, absolute) {
-    var c = document.getElementById("main");
-    var ctx = c.getContext("2d");
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    if (style) {
-        ctx.strokeStyle = style.colour;
-        ctx.lineWidth = style.width*data.constants.zoom;
-        ctx.globalAlpha = style.opacity;
-    }
-    ctx.beginPath();
-    if (absolute) {
-        ctx.moveTo(pos.x*data.constants.zoom, pos.y*data.constants.zoom);
-        ctx.lineTo((pos.x + length * Math.cos(r))*data.constants.zoom, (pos.y + length * Math.sin(r))*data.constants.zoom);
-    } else {
-        ctx.moveTo((pos.x-player.x)*data.constants.zoom+display.x/2, (pos.y-player.y)*data.constants.zoom+display.y/2);
-        ctx.lineTo((pos.x-player.x + length * Math.cos(r))*data.constants.zoom+display.x/2, (pos.y-player.y + length * Math.sin(r))*data.constants.zoom+display.y/2);
-    }
-    ctx.stroke();
-    ctx.restore();
-};
-
-function getDist(sPos, tPos) { 
-    // Mathematics METHods
-    var dx = tPos.x - sPos.x;
-    var dy = tPos.y - sPos.y;
-    var dist = Math.sqrt(dx*dx+dy*dy);
-    return dist;
-};
-
 function correctAngle(a) {
     a = a%(Math.PI*2);
     return a;
-};
-
-function adjustAngle(a) {
-    if (a > Math.PI) {
-        a -= 2*Math.PI;
-    }
-    return a;
-};
-
-function rotateAngle(r, rTarget, increment) {
-    if (Math.abs(r) > Math.PI*4 || Math.abs(rTarget) > Math.PI*4) {
-        throw "Error: You f*cked up the angle thing again...";
-    }
-    if (r == rTarget) {
-        return correctAngle(r);
-    }else if (rTarget - r <= Math.PI && rTarget - r > 0) {
-        if (rTarget - r < increment) {
-            r = rTarget;
-        } else {
-            r += increment;
-        }
-        return r;
-    } else if (r - rTarget < Math.PI && r - rTarget > 0) {
-        if (r - rTarget < increment) {
-            r = rTarget;
-        } else {
-            r -= increment;
-        }
-        return correctAngle(r);
-    } else {
-        if (r < rTarget) {
-            r += Math.PI*2;
-        } else {
-            rTarget += Math.PI*2;
-        }
-        return correctAngle(rotateAngle(r, rTarget, increment));
-    }
 };
 
 function aim(initial, final) {
@@ -256,14 +161,6 @@ function aim(initial, final) {
     } else {
         return 3*Math.PI/2 + angle;
     }
-};
-
-function offsetPoints(points, offset) {
-    for (let i = 0; i < points.length; i++){
-        points[i].x += offset.x;
-        points[i].y += offset.y;
-    }
-    return points;
 };
 
 function roman(number) {
@@ -314,144 +211,6 @@ function bigNumber(number) {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-};
-
-function toColour(colour) {
-    return `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
-};
-
-function drawCircle(x, y, radius, fill, stroke, strokeWidth, opacity, absolute) { // draw a circle
-    var canvas = document.getElementById('main');
-    var ctx = canvas.getContext("2d");
-    ctx.resetTransform();
-    ctx.beginPath();
-    ctx.globalAlpha = opacity;
-    if (absolute) {
-        ctx.arc(x*data.constants.zoom, y*data.constants.zoom, radius*data.constants.zoom, 0, 2 * Math.PI, false);
-    } else {
-        ctx.arc((-player.x+x)*data.constants.zoom+display.x/2, (-player.y+y)*data.constants.zoom+display.y/2, radius*data.constants.zoom, 0, 2 * Math.PI, false);
-    }
-    if (fill) {
-        ctx.fillStyle = fill;
-        ctx.fill();
-    }
-    if (stroke) {
-        ctx.lineWidth = strokeWidth*data.constants.zoom;
-        ctx.strokeStyle = stroke;
-        ctx.stroke();
-    }
-    ctx.globalAlpha = 1.0;
-};
-
-function displaytxt(txt, pos) {
-    var canvas = document.getElementById("canvasOverlay");
-    var ctx = canvas.getContext("2d");
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // Set the font and text color
-    ctx.font = "20px Verdana";
-    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
-    // Display the points on the canvas
-    ctx.fillText(txt, pos.x*data.constants.zoom, pos.y*data.constants.zoom);
-    ctx.stroke();
-    ctx.restore();
-};
-
-function rotatePolygon(point, r) {
-    let points = JSON.parse(JSON.stringify(point));
-    for (let i = 0; i < points.length; i++) {
-        points[i].x = point[i].x * Math.cos(r) - point[i].y * Math.sin(r); 
-        points[i].y = point[i].x * Math.sin(r) + point[i].y * Math.cos(r); 
-    }
-    return points
-};
-
-function drawPolygon(point, offset, r, fill, stroke, absolute, debug=false) {
-    let points = JSON.parse(JSON.stringify(point));
-    //console.log(points);
-    if (points.length < 3) {
-        throw "Error: Your polygon needs to have at least 3 points dumbass";
-    }
-    points = rotatePolygon(points, r)
-    var canvas = document.getElementById('main');
-    var ctx = canvas.getContext("2d");
-    ctx.resetTransform();
-    ctx.beginPath();
-    if (absolute) {
-        ctx.moveTo((points[0].x + offset.x)*data.constants.zoom, (points[0].y + offset.y)*data.constants.zoom);
-        if (debug) {displaytxt(`(${Math.round((points[0].x + offset.x)*data.constants.zoom)}, ${Math.round((points[0].y + offset.y)*data.constants.zoom)})`, {x: (points[0].x + offset.x)*data.constants.zoom, y: (points[0].y + offset.y)*data.constants.zoom});}
-    } else {
-        ctx.moveTo((points[0].x-player.x + offset.x)*data.constants.zoom+display.x/2, (points[0].y-player.y + offset.y)*data.constants.zoom+display.y/2);
-        if (debug) {displaytxt(`(${Math.round((points[0].x-player.x + offset.x)*data.constants.zoom+display.x/2)}, ${Math.round((points[0].y-player.y + offset.y)*data.constants.zoom+display.y/2)})`, {x: (points[0].x-player.x + offset.x)*data.constants.zoom+display.x/2, y: (points[0].y-player.y + offset.y)*data.constants.zoom+display.y/2});}
-        //if (debug) {displaytxt(`(${Math.round(points[0].x-player.x+display.x/2 + offset.x)}, ${Math.round(points[0].y-player.y+display.y/2 + offset.y)})`, {x: points[0].x-player.x+display.x/2 + offset.x, y: points[0].y-player.y+display.y/2 + offset.y});}
-    }
-    for (let i = 1; i < points.length; i++) {
-        if (absolute) {
-            ctx.lineTo((points[i].x + offset.x)*data.constants.zoom, (points[i].y + offset.y)*data.constants.zoom);
-            if (debug) {displaytxt(`(${Math.round((points[i].x + offset.x)*data.constants.zoom)}, ${Math.round((points[i].y + offset.y)*data.constants.zoom)})`, {x: (points[i].x + offset.x)*data.constants.zoom, y: (points[i].y + offset.y)*data.constants.zoom});}
-        } else {
-            ctx.lineTo((points[i].x-player.x + offset.x)*data.constants.zoom+display.x/2, (points[i].y-player.y + offset.y)*data.constants.zoom+display.y/2);
-            if (debug) {displaytxt(`(${Math.round((points[i].x-player.x + offset.x)*data.constants.zoom+display.x/2)}, ${Math.round((points[i].y-player.y + offset.y)*data.constants.zoom+display.y/2)})`, {x: (points[i].x-player.x + offset.x)*data.constants.zoom+display.x/2, y: (points[i].y-player.y + offset.y)*data.constants.zoom+display.y/2});}
-            //if (debug) {displaytxt(`(${Math.round(points[i].x-player.x+display.x/2 + offset.x)}, ${Math.round(points[i].y-player.y+display.y/2 + offset.y)})`, {x: points[i].x-player.x+display.x/2 + offset.x, y: points[i].y-player.y+display.y/2 + offset.y});}
-        }
-    }
-    ctx.closePath();
-    if (fill) {
-        ctx.fillStyle = fill;
-        ctx.fill();
-    }
-    if (stroke) {
-        ctx.lineWidth = stroke.width*data.constants.zoom;
-        ctx.strokeStyle = stroke.colour;
-        ctx.stroke();
-    }
-};
-
-function rect(coords, size, style, absolute=false, canvas='main') {
-    var canvas = document.getElementById(canvas);
-    var ctx = canvas.getContext("2d");
-    ctx.resetTransform();
-    ctx.beginPath();
-    if (absolute) {
-        ctx.moveTo(coords.x*data.constants.zoom, coords.y*data.constants.zoom);
-        ctx.lineTo(coords.x*data.constants.zoom, (coords.y+size.y)*data.constants.zoom);
-        ctx.lineTo((coords.x+size.x)*data.constants.zoom, (coords.y+size.y)*data.constants.zoom);
-        ctx.lineTo((coords.x+size.x)*data.constants.zoom, coords.y*data.constants.zoom);
-    } else {
-        ctx.moveTo((coords.x-player.x)*data.constants.zoom+display.x/2, (coords.y-player.y)*data.constants.zoom+display.y/2);
-        ctx.lineTo((coords.x-player.x)*data.constants.zoom+display.x/2, (coords.y+size.y-player.y)*data.constants.zoom+display.y/2);
-        ctx.lineTo((coords.x+size.x-player.x)*data.constants.zoom+display.x/2, (coords.y+size.y-player.y)*data.constants.zoom+display.y/2);
-        ctx.lineTo((coords.x+size.x-player.x)*data.constants.zoom+display.x/2, (coords.y-player.y)*data.constants.zoom+display.y/2);
-    }
-    ctx.closePath();
-    ctx.fillStyle = style.fill;
-    ctx.fill();
-    ctx.lineWidth = style.stroke.width*data.constants.zoom;
-    ctx.strokeStyle = style.stroke.colour;
-    ctx.stroke();
-};
-
-function renderBar(centre, shift, size, value, increments, padding, spacing, bgStyle, fillStyle) {
-    let vPadding = {x: padding, y: padding};
-    let startPos = vMath(centre, vMath(size, 0.5, '*'), '-');
-    if (shift != 0) {
-        startPos = vMath(startPos, shift, '+');
-    }
-    let blockSize = {x: (size.x - spacing * (increments-1)) / increments, y: size.y};
-    rect(vMath(startPos, vPadding, '-'), vMath(size, vMath(vPadding, 2, '*'), '+'), bgStyle);
-    for (let i = 0; i < value; i++) {
-        rect(startPos, blockSize, fillStyle);
-        startPos.x += spacing + blockSize.x;
-    }
-};
-
-function normalDistribution(mean, sDiv) {
-    let u = 0;
-    let v = 0;
-    while (u === 0) u = Math.random(); 
-    while (v === 0) v = Math.random(); 
-    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    return mean + z * sDiv;
 };
 
 function vMath(v1, v2, mode) { 
@@ -637,7 +396,7 @@ document.addEventListener('mouseup', function(event) {
 });
 
 window.addEventListener("resize", function () {
-    display = {x: window.innerWidth, y: window.innerHeight};
+    game.display = {x: window.innerWidth, y: window.innerHeight};
     resize();
 });
 
@@ -763,9 +522,9 @@ const handleParticles = (obj) => {
 }; window.handleParticles = handleParticles;
 
 async function handleEffects() {
-    if (countValidProperties(game.gamestate.particles) == 0) return
+    if (countValidProperties(game.particles) == 0) return
     for (let i = 0; i < 9; i++) {
-        handleParticles(game.gamestate.particles);
+        handleParticles(game.particles);
         await sleep(25);
     }
 }; window.handleEffects = handleEffects;
@@ -843,7 +602,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
             document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
             //console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
-            game.gamestate.particles[particle.id] = particle;
+            game.particles[particle.id] = particle;
         }
         for (let i = 0; i < 8; i++) {
             let particle = {
@@ -858,7 +617,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             document.getElementById(particle.id).style.top = `${pos.y + 95 + randint(0, 180) - 90 - document.getElementById(particle.id).offsetHeight/2}px`;
             document.getElementById(particle.id).style.left = `${pos.x + 75 + randint(-75, 75) - document.getElementById(particle.id).offsetWidth/2}px`;
             //console.log(document.getElementById(particle.id).style.top, document.getElementById(particle.id).style.left);
-            game.gamestate.particles[particle.id] = particle;
+            game.particles[particle.id] = particle;
         }
     } else {
         // normal hit effect
@@ -1162,7 +921,7 @@ function dmgNumber(card, dmg, miss=false) { // there is better way to do this, b
     document.getElementById(particle.id).style.position = `absolute`;
     document.getElementById(particle.id).style.top = `${coords.y+randint(60, 150)}px`;
     document.getElementById(particle.id).style.left = `${75+coords.x+randint(-50, 50)-document.getElementById(particle.id).offsetWidth/2}px`;
-    game.gamestate.particles[particle.id] = particle;
+    game.particles[particle.id] = particle;
 }; window.dmgNumber = dmgNumber;
 
 async function simulateSingleAttack(user, skill, target) {
@@ -1433,27 +1192,24 @@ function regenMana() {
     }
 }; window.regenMana = regenMana;
 
-async function deathEffect(card) {
-    await sleep(15);
+async function deathEffect(card) {;
     document.getElementById(card.id).style['opacity'] = 1;
     for (let i = 0; i < 20; i++) {
-        document.getElementById(card.id).style['opacity'] = document.getElementById(card.id).style['opacity'] - 0.05;
         await sleep(15);
+        if (document.getElementById(card.id)) document.getElementById(card.id).style['opacity'] = document.getElementById(card.id).style['opacity'] - 0.05;
+        else return;
     }
     document.getElementById(card.id).style['opacity'] = 0;
     document.getElementById(card.id).style['max-width'] = `150px`;
     document.getElementById(card.id).style['border'] = `none`;
     document.getElementById(card.id).style['overflow-x'] = 'hidden';
     for (let i = 0; i < 50; i++) {
-        document.getElementById(card.id).style['max-width'] = `${unPixel(document.getElementById(card.id).style['max-width'])-3}px`;
         await sleep(15);
+        if (document.getElementById(card.id)) document.getElementById(card.id).style['max-width'] = `${unPixel(document.getElementById(card.id).style['max-width'])-3}px`;
+        else return;
     }
-    /*
-    for (let i = 0; i < 50; i++) {
-        document.getElementById(card.id).style['transform'] = `scale(${(50 - i)/50}, 1)`;
-        await sleep(15);
-    }*/
-    document.getElementById(card.id).remove();
+    await sleep(15);
+    if (document.getElementById(card.id)) document.getElementById(card.id).remove();
 }; window.deathEffect = deathEffect;
 
 function checkDead(row) {
@@ -1629,39 +1385,39 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
     if ((isMobileDevice() || game.forceMobile) && !game.forceDesktop) { // crappy mobile version
         document.body.style['overflow-x'] = `hidden`;
         document.body.style['overflow-y'] = `hidden`;
-        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 740 : Math.max(740, Math.floor((display.x*2 - display.y*2 - 60) / 340) * 340 + 60);
-        let battleWidth = Math.max(display.x*2 - sidebarWidth, 1200);
-        let batleHeight = Math.max(display.y*2, 1100);
+        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 740 : Math.max(740, Math.floor((game.display.x*2 - game.display.y*2 - 60) / 340) * 340 + 60);
+        let battleWidth = Math.max(game.display.x*2 - sidebarWidth, 1200);
+        let batleHeight = Math.max(game.display.y*2, 1100);
         let battleCardsPosition = (battleWidth - 1020) / 2;
         if (document.getElementById('game')) document.getElementById('game').style['zoom'] = `0.5`;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style['width'] = `${sidebarWidth}px`;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style['height'] = `200vh`;
-        if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${display.x*2 - sidebarWidth}px`;
-        if (document.getElementById('bac')) document.getElementById('bac').style['max-height'] = `${display.y*2}px`;
-        if (document.getElementById('bacImg')) document.getElementById('bacImg').style[(display.x*2 - sidebarWidth > display.y*2)? 'width' : 'height'] = `${Math.max(display.x*2 - sidebarWidth, display.y*2)}px`;
-        if (document.getElementById('bacImg')) document.getElementById('bacImg').style[(display.x*2 - sidebarWidth < display.y*2)? 'width' : 'height'] = `auto`;
+        if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${game.display.x*2 - sidebarWidth}px`;
+        if (document.getElementById('bac')) document.getElementById('bac').style['max-height'] = `${game.display.y*2}px`;
+        if (document.getElementById('bacImg')) document.getElementById('bacImg').style[(game.display.x*2 - sidebarWidth > game.display.y*2)? 'width' : 'height'] = `${Math.max(game.display.x*2 - sidebarWidth, game.display.y*2)}px`;
+        if (document.getElementById('bacImg')) document.getElementById('bacImg').style[(game.display.x*2 - sidebarWidth < game.display.y*2)? 'width' : 'height'] = `auto`;
         if (document.getElementById('nav')) document.getElementById('nav').style['zoom'] = `2`;
         if (document.getElementById('money')) document.getElementById('money').style['zoom'] = `2`;
         if (document.getElementById('buttonGridInventory')) document.getElementById('buttonGridInventory').style['zoom'] = `2`;
-        if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${display.x*2 - sidebarWidth}px`;
+        if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${game.display.x*2 - sidebarWidth}px`;
         if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['transform'] = `scale(1.5, 1.5)`;
-        if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${display.x*2 - sidebarWidth}px`;
+        if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${game.display.x*2 - sidebarWidth}px`;
         if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['left'] = `20px`;
-        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${display.x*2 - sidebarWidth - 90}px`;
+        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${game.display.x*2 - sidebarWidth - 90}px`;
         if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['top'] = `90vh`;
         if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['top'] = `90vh`;
         if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['transform'] = `scale(1.5, 2.25)`;
         if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['transform'] = `scale(-1.5, 2.25)`;
-        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['left'] = `${((display.x*2 - sidebarWidth) - 685) / 2}px`;
+        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['left'] = `${((game.display.x*2 - sidebarWidth) - 685) / 2}px`;
         if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['top'] = `calc(200vh - 235px)`;
-        if (document.getElementById('playButton')) document.getElementById('playButton').style['left'] = `${((display.x*2 - sidebarWidth) - 200) / 2}px`;
+        if (document.getElementById('playButton')) document.getElementById('playButton').style['left'] = `${((game.display.x*2 - sidebarWidth) - 200) / 2}px`;
         if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(200vh - 350px)`;
         if (document.getElementById('playButton')) document.getElementById('playButton').style['transform'] = `scale(1.5, 1.5)`;
         if (document.getElementById('focus')) document.getElementById('focus').style['position'] = `absolute`;
         if (document.getElementById('focus')) document.getElementById('focus').style['top'] = `20px`;
         if (document.getElementById('focus')) document.getElementById('focus').style['left'] = `20px`;
         if (document.getElementById('focus')) document.getElementById('focus').style['height'] = `calc(200vh - 40px)`;
-        if (document.getElementById('focus')) document.getElementById('focus').style['width'] = `${display.x*2 - sidebarWidth - 40}px`;
+        if (document.getElementById('focus')) document.getElementById('focus').style['width'] = `${game.display.x*2 - sidebarWidth - 40}px`;
         if (document.getElementById('focusDescription')) document.getElementById('focusDescription').style['zoom'] = `175%`;
         if (document.getElementById('focusStats')) document.getElementById('focusStats').style['zoom'] = `110%`;
         if (document.getElementById('focusSkills')) document.getElementById('focusSkills').style['zoom'] = `175%`;
@@ -1684,20 +1440,20 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
             if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(100vh - 350px)`;
         }
     } else {
-        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 370 : Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
-        let battleWidth = Math.max(display.x - sidebarWidth, 1200);
-        let batleHeight = Math.max(display.y, 1100);
+        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 370 : Math.max(370, Math.ceil((game.display.x - game.display.y - 30) / 170) * 170 + 30);
+        let battleWidth = Math.max(game.display.x - sidebarWidth, 1200);
+        let batleHeight = Math.max(game.display.y, 1100);
         let battleCardsPosition = (battleWidth - 1020) / 2;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
-        if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${display.x - sidebarWidth}px`;
+        if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${game.display.x - sidebarWidth}px`;
         if (document.getElementById('bac')) document.getElementById('bac').style['max-height'] = `100vh`;
         if (document.getElementById('bacImg')) document.getElementById('bacImg').style['height'] = `100vh`;
-        if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${display.x - sidebarWidth}px`;
-        if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${display.x - sidebarWidth}px`;
-        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${display.x - sidebarWidth - 60}px`; // grrrr there has to be a better way
-        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${((display.x - sidebarWidth) - 685) / 2}px`;
-        if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${((display.x - sidebarWidth) - 200) / 2}px`;
-        if (document.getElementById('focus')) document.getElementById('focus').style.width = `${display.x - sidebarWidth - 10}px`;
+        if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${game.display.x - sidebarWidth}px`;
+        if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${game.display.x - sidebarWidth}px`;
+        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${game.display.x - sidebarWidth - 60}px`; // grrrr there has to be a better way
+        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${((game.display.x - sidebarWidth) - 685) / 2}px`;
+        if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${((game.display.x - sidebarWidth) - 200) / 2}px`;
+        if (document.getElementById('focus')) document.getElementById('focus').style.width = `${game.display.x - sidebarWidth - 10}px`;
         if (document.getElementById('battleScreen')) document.getElementById('battleScreen').style['width'] = `${battleWidth}px`;
         if (document.getElementById('battleScreen')) document.getElementById('battleScreen').style['height'] = `${batleHeight}px`;
         if (document.getElementById('bigBacImg')) document.getElementById('bigBacImg').style['width'] = `${battleWidth}px`;
