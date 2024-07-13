@@ -6,6 +6,8 @@ grey        green       blue      purple         red       gold       diamond   
  0            1          2          3             4          5           6        7
  x1         x1.3       x1.7       x2.2           x3        x3.8         x5      x6.5
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 ---------------------------------------------------------------------------------------------------------------------
 */
 
