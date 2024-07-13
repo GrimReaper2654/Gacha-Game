@@ -75,7 +75,6 @@ console.log(data);
 
 // Loading savegames
 var game = {
-    interface: `home`, // obsolete
     gamestate: undefined,
     keypresses: [], // obsolete
     mousepos: {x: 0, y: 0}, // obsolete
@@ -1268,7 +1267,7 @@ async function simulateSkill(user, skill, target=undefined) {
         await changeStat(user, {stat: 'mp', change: -skill.cost.mp}); 
     }
     await sleep(10);
-    if (skill.animation.range === melee) await fakeMoveCard(user, target, 100);
+    if (skill.animation.range === melee) await fakeMoveCard(user, target, Math.min(200, Math.max(50, 150 - ((user.agi? user.agi : 100) + (skill.agi? skill.agi : 0))/2)));
     switch (skill.targeting) {
         case aoe:
             console.log('aoe skill used');
@@ -1318,7 +1317,7 @@ async function simulateSkill(user, skill, target=undefined) {
     }
     if (skill.animation.range === melee)  {
         if (skill.animation.smooth) await sleep(750 + skill.attacks * 5);
-        await fakeMoveCard(user, user, 150, true);
+        await fakeMoveCard(user, user, user.agi? Math.min(250, Math.max(100, 200 - user.agi/2)) : 150, true);
     }
     if ((skill.animation.smooth || skill.targeting == aoe) && skill.animation.range != 'melee') { // estimate attack time (pretty reliable ngl)
         console.log('wait', Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed)-2500) + (skill.animation.projectile != 'none'? skill.animation.projectileSpeed*10 : 0));
@@ -1516,15 +1515,6 @@ async function enemyTurn() {
     playerTurn();
 }; window.enemyTurn = enemyTurn;
 
-async function battle() {
-    playerTurn();
-    while (1) {
-        await new Promise(resolve => setTimeout(resolve, 250));
-        handleEffects();
-        if (!game.gamestate.inBattle) break;
-    }
-}; window.battle = battle;
-
 function startWave() {
     let dungeon = data.dungeons[game.gamestate.dungeon];
     let eb = game.gamestate.battleState.eb;
@@ -1565,7 +1555,7 @@ async function runDungeon() {
         startWave();
         renderCards();
         console.log('battle');
-        battle();
+        playerTurn();
         while (battleState.ef.length + battleState.eb.length > 0) {
             /* Kill all enemies
             game.gamestate.battleState.ef = [];
@@ -1987,6 +1977,14 @@ async function startGame() {
     }
 
     home();
+
+    // update effects for the rest of the session
+    await sleep(100);
+    console.log('starting up effects');
+    while (1) {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        handleEffects();
+    }
 }; window.startGame = startGame;
 
 function setDungeon(dungeon) {
@@ -1998,7 +1996,7 @@ function setDungeon(dungeon) {
     resize();
 }; window.setDungeon = setDungeon;
 
-function home() {
+async function home() {
     let homePage = `
     <div id="bac">
         <img src="${data.dungeons[game.gamestate.dungeon].outerBac}" id="bacImg"> 
@@ -2027,6 +2025,7 @@ function home() {
                 </div>
             </div>
         </div>
+        <div id="effects"></div>
     </span>
     <span id="sidebar">
         <div id="nav">
@@ -2045,21 +2044,7 @@ function home() {
     setDungeon(game.gamestate.dungeon);
     resize();
     updateTeam();
-}; window.home = home;
 
-function main() {
-    const start = performance.now();
-    switch (gamestate.interface) {
-        case 'home':
-            home();
-            break;
-        default:
-            break;
-    }
-    t++;
-    const end = performance.now();
-    //console.log(`Processing Time: ${end-start}ms, max: ${1000/FPS}ms for ${FPS}fps. Max Possible FPS: ${1000/(end-start)}`);
-    return gamestate;
-}; window.main = main;
+}; window.home = home;
 
 console.error('ERROR: The operation completed successfully.');
