@@ -1,12 +1,10 @@
 /*
 ------------------------------------------------------Changelog------------------------------------------------------
 Rarities:
-normal --> uncommon --> rare --> super rare --> epic --> legendary --> godly --> EX
-grey        green       blue      purple         red       gold       diamond   black
- 0            1          2          3             4          5           6        7
- x1         x1.3       x1.7       x2.2           x3        x3.8         x5      x6.5
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
+normal --> uncommon --> rare --> super rare --> epic --> legendary --> mythical --> godly --> EX
+grey        green       blue      purple        silver       gold        red      diamond   black
+ 0            1          2          3             4           5           6         7        8
+ x1         x1.3       x1.7       x2.2           x3          x4           x6        x9      
 
 ---------------------------------------------------------------------------------------------------------------------
 */
@@ -18,8 +16,9 @@ const R = 2;
 const SR = 3;
 const E = 4;
 const L = 5;
-const G = 6;
-const EX = 7;
+const M = 6;
+const G = 7;
+const EX = 8;
 
 const str = 'str';
 const int = 'int';
@@ -572,6 +571,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             icon = `redSword.png`;
             bg = `redGlow`;
             break;
+        case `mpDown`:
         case `mpUp`:
             icon = `blueStar.png`;
             bg = `blueGlow`;
@@ -854,6 +854,11 @@ function calculateEffect(card, effect) {
         card.str = Math.round(card.str*100)/100;
         card.int += effect.statChange.int;
         card.mpRegen += effect.statChange.reg;
+        if (effect.specialEffects) {
+            for (let i = 0; i < effect.specialEffects.length; i++) {
+                card.specialConditions[effect.specialEffects[i].effect] = effect.specialEffects[i].effect.value;
+            }
+        }
         effect.initialised = true;
         return effect;
     }
@@ -883,6 +888,11 @@ function calculateEffect(card, effect) {
         card.str = Math.round(card.str*100)/100;
         card.int -= effect.statChange.int;
         card.mpRegen -= effect.statChange.reg;
+        if (effect.specialEffects) {
+            for (let i = 0; i < effect.specialEffects.length; i++) {
+                card.specialConditions[effect.specialEffects[i].effect] = !effect.specialEffects[i].effect.value;
+            }
+        }
         return false;
     }
     return effect;
@@ -1056,7 +1066,7 @@ async function simulateSkill(user, skill, target=undefined) {
         case multi:
             let targets = target.id[0] == 'E' ? [].concat(game.gamestate.battleState.ef, game.gamestate.battleState.eb) : [].concat(game.gamestate.battleState.pf, game.gamestate.battleState.pb);
             for (let i = 0; i < skill.attacks; i++) {
-                let chosen = randchoice([0,1]) ? target : randchoice(targets);
+                let chosen = (randchoice([0,1]) || skill.isRandom) ? randchoice(targets) : target;
                 if (i == 0) chosen = target; // first attack always hits targeted enemy
                 //console.log(chosen.id);
                 await simulateSingleAttack(user, skill, chosen);
@@ -1133,7 +1143,16 @@ async function repositionCard(card) {
     renderCards();
     let newID = `P${card.id[1] == `F`? `B` : `F`}${card.id[1] == `F`? game.gamestate.battleState.pb.length: game.gamestate.battleState.pf.length}ID`;
     console.log(newID);
-    await fakeMoveCard(card, {id: newID}, 50, true, {x: -85, y: 0});
+    fakeMoveCard(card, {id: newID}, 50, true, {x: -85, y: 0});
+    document.getElementById(card.id).style['opacity'] = 0;
+    document.getElementById(card.id).style['max-width'] = `150px`;
+    document.getElementById(card.id).style['border'] = `none`;
+    document.getElementById(card.id).style['overflow-x'] = 'hidden';
+    for (let i = 0; i < 50; i++) {
+        await sleep(10);
+        document.getElementById(card.id).style['max-width'] = `${unPixel(document.getElementById(card.id).style['max-width'])-3}px`;
+    }
+    document.getElementById(card.id).remove();
     if (card.id[1] == `F`) {
         let newPf = [];
         for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
@@ -1149,7 +1168,7 @@ async function repositionCard(card) {
         game.gamestate.battleState.pf.push(card);
         game.gamestate.battleState.pb = newPb;
     }
-    renderCards(`selectAction`);
+    renderCards(`selectAction`, `selectAction`);
     skills(card, false);
 }; window.repositionCard = repositionCard;
 
@@ -1228,11 +1247,14 @@ function checkDead(row) {
 }; window.checkDead = checkDead;
 
 async function handleEnemyAttack(enemy) {
-    let skillToUse = data.skills[randchoice(enemy.skills)];
-    console.log(skillToUse);
-    let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
-    if (skillToUse.instantUse) target = enemy;
-    await simulateSkill(enemy, skillToUse, target);
+    while (enemy.ap > 0) {
+        enemy.ap--;
+        let skillToUse = data.skills[randchoice(enemy.skills)];
+        console.log(skillToUse);
+        let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
+        if (skillToUse.instantUse) target = enemy;
+        await simulateSkill(enemy, skillToUse, target);
+    }
 }; window.handleEnemyAttack = handleEnemyAttack;
 
 function playerTurn() {
@@ -1250,9 +1272,11 @@ async function enemyTurn() {
     replacehtml(`main`, `<button id="endTurnButton" class="endTurn disabled">End Turn</button>`);
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
         game.gamestate.battleState.eb[i].ap = 1;
+        if (game.gamestate.battleState.eb[i].additionalAp) game.gamestate.battleState.eb[i].ap += game.gamestate.battleState.eb[i].additionalAp;
     }
     for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
         game.gamestate.battleState.ef[i].ap = 1;
+        if (game.gamestate.battleState.ef[i].additionalAp) game.gamestate.battleState.ef[i].ap += game.gamestate.battleState.ef[i].additionalAp;
     }
     renderCards();
     resize();
@@ -1359,20 +1383,22 @@ function startDungeon() {
 function rank(n) {
     switch (n) {
         case 0:
-            return ' [N]';
+            return '[N]';
         case 1:
             return '[UC]';
         case 2:
-            return ' [R]';
+            return '[R]';
         case 3:
             return '[SR]';
         case 4:
-            return ' [E]';
+            return '[E]';
         case 5:
-            return ' [L]';
+            return '[L]';
         case 6:
-            return ' [G]';
+            return '[M]';
         case 7:
+            return '[G]';
+        case 8:
             return '[EX]';
         default:
             return '[unknown]';

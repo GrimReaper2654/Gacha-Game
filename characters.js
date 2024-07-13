@@ -1,22 +1,24 @@
 /*
-------------------------------------------------------Rarities------------------------------------------------------
+------------------------------------------------------Changelog------------------------------------------------------
+Rarities:
+normal --> uncommon --> rare --> super rare --> epic --> legendary --> mythical --> godly --> EX
+grey        green       blue      purple        silver       gold        red      diamond   black
+ 0            1          2          3             4           5           6         7        8
+ x1         x1.3       x1.7       x2.2           x3          x4           x6        x9      
 
-normal --> uncommon --> rare --> super rare --> epic --> legendary --> godly --> EX
-grey        green       blue      purple         red       gold       diamond   black
- 0            1          2          3             4          5           6        7
- x1         x1.3       x1.7       x2.2           x3        x3.8         x5      x6.5
-
---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 */
 
+// Constants (catches spelling mistakes, the code will error if one of these is spelt wrong)
 const N = 0;
 const UC = 1;
 const R = 2;
 const SR = 3;
 const E = 4;
 const L = 5;
-const G = 6;
-const EX = 7;
+const M = 6;
+const G = 7;
+const EX = 8;
 
 const male = 'male';
 const female = 'female';
@@ -203,7 +205,7 @@ const rankR = { // R
         mpRegen: 40,
         agi: 110,
         skills: [`positronRay`,`analysis`,`gravityBind`,`lecture`],
-        armour: {physical: [0, 25], magic: [0, 10]},
+        armour: {physical: [5, 25], magic: [5, 10]},
     }, 
     Miki: { // tank / dps
         name: `Miki`,
@@ -240,6 +242,24 @@ const rankR = { // R
         agi: 60,
         skills: ['heavyBlows', 'shieldBash', 'raiseGuard', 'reinforceShield'],
         armour: {physical: [25, 50], magic: [15, 35]}, 
+    },
+    Junko: { // dps
+        name: `Junko`,
+        title: `Mage`,
+        description: `Junko is a young artillery mage from the red mage tower. She specializes in fire elemental attacks at long ranges but doesn't do well at close ranges.`,
+        personality: 'angry',
+        stats: {atk: 'high', def: 'low'},
+        rarity: R,
+        gender: female,
+        pfp: `assets/AnimeGirl69.jpeg`,
+        hp: 100, 
+        mp: 240,
+        str: 0.9,
+        int: 150, 
+        mpRegen: 60, 
+        agi: 80,
+        skills: ['fireLance', 'greaterFireball', 'improvedFireArrows', 'hellfire'],
+        armour: {physical: [5, 10], magic: [25, 50]},
     },
 };
 const rankSR = { // SR
@@ -350,6 +370,42 @@ const rankE = { // E
         skills: ['savageTornado', 'darkBlast', 'superiorBodyEnhancement', 'ultraHeavySlash', 'minorSoulHarvest'], 
         armour: {physical: [35, 50], magic: [30, 75]}, 
     },
+    Nagi: { // dps / support
+        name: `Nagi`,
+        title: `Princess`, 
+        description: `Nagi is a warrior princess from the Toomwn kingdom. She frequently leads her army into battle and is an experienced commander and warrior.`,
+        personality: 'calm', 
+        stats: {atk: 'high', def: 'medium'}, 
+        rarity: E,
+        gender: female, 
+        pfp: `assets/AnimeGirl65.jpeg`, 
+        hp: 200, 
+        mp: 400, 
+        str: 1.5, 
+        int: 160, 
+        mpRegen: 100, 
+        agi: 160,
+        skills: ['improvedThrust', 'commandingPresence', 'rallyingSpeech', 'lesserSwordDance'], 
+        armour: {physical: [25, 40], magic: [15, 25]}, 
+    },
+    Izumi: { // tank
+        name: `Izumi`,
+        title: `Guardian`,
+        description: `Izumi has faithfully guarded the gates of Fort Spud for many years. She can wield her spear and shield effectively to attack and defend.`,
+        personality: 'confident',
+        stats: {atk: 'medium', def: 'high'},
+        rarity: E, 
+        gender: female,
+        pfp: `assets/AnimeGirl17.jpeg`,
+        hp: 500, 
+        mp: 100, 
+        str: 1.25, 
+        int: 75, 
+        mpRegen: 30, 
+        agi: 80,
+        skills: ['improvedThrust', 'mediumRaiseGuard', 'greaterReinforceShield', 'improvedCharge'], 
+        armour: {physical: [90, 80], magic: [75, 75]}, 
+    },
 };
 const rankL = { // L
     Kohana: { // dps / support
@@ -370,24 +426,6 @@ const rankL = { // L
         skills: ['shadowLance', 'forceLance', 'darkBlast', 'arcaneBlast', 'gravityBind', 'mediumHeal'],
         armour: {physical: [15, 20], magic: [25, 75]},
     },
-    Misaki: { // dps
-        name: `Misaki`,
-        title: `Swordmaster`,
-        description: `Misaki is a powerful swordmaster who wields a pair of deadly blades. She is also the first diciple of the sword goddess Natsuki.`,
-        personality: 'confident',
-        stats: {atk: 'high', def: 'high'},
-        rarity: L,
-        gender: female,
-        pfp: `assets/AnimeGirl58.jpeg`,
-        hp: 420, 
-        mp: 340,
-        str: 2,
-        int: 130,
-        mpRegen: 100,
-        agi: 180,
-        skills: ['ascendedThrust', 'rapidStrikes', 'ascendedOverheadStrike', 'auraSlash', 'lesserSwordDance', 'battleFocus'],
-        armour: {physical: [80, 75], magic: [60, 75]}, 
-    },
     Misato: { // healer
         name: `Misato`,
         title: `High Priestess`,
@@ -397,13 +435,53 @@ const rankL = { // L
         rarity: L,
         gender: female,
         pfp: `assets/AnimeGirl5.jpeg`,
-        hp: 300,
+        hp: 350,
         mp: 450,
         str: 1,
         int: 80,
-        mpRegen: 80,
+        mpRegen: 120,
         skills: ['greaterHeal', 'greaterAreaHeal', 'superiorHeal', 'healAura', 'righteousFury', 'righteousSmite'],
         armour: {physical: [15, 10], magic: [15, 25]},
+    },
+};
+const rankM = { // M
+    Misaki: { // dps
+        name: `Misaki`,
+        title: `Swordmaster`,
+        description: `Misaki is a powerful swordmaster who wields a pair of deadly blades. She is also the first diciple of the sword goddess Natsuki.`,
+        personality: 'confident',
+        stats: {atk: 'high', def: 'medium'},
+        rarity: M,
+        gender: female,
+        pfp: `assets/AnimeGirl58.jpeg`,
+        hp: 500, 
+        mp: 700,
+        str: 3,
+        int: 130,
+        mpRegen: 175,
+        agi: 180,
+        skills: ['ascendedSlash', 'ascendedThrust', 'ascendedOverheadStrike', 'auraSlash', 'swordDance', 'battleFocus'],
+        armour: {physical: [80, 75], magic: [60, 75]}, 
+        additionalAp: 1,
+    },
+    Saori: { // dps
+        name: `Saori`,
+        title: `Dragonslayer`,
+        description: `Saori is a skilled warrior who has slain many evil dragons and protected the continent multiple times.`,
+        personality: 'confident',
+        stats: {atk: 'high', def: 'high'},
+        rarity: M,
+        gender: female,
+        pfp: `assets/AnimeGirl64.jpeg`,
+        hp: 600, 
+        mp: 600,
+        str: 2.5,
+        int: 120,
+        mpRegen: 150,
+        agi: 150,
+        skills: ['rapidStrikes', 'mediumRaiseGuard', 'auraSlash', 'ultraHeavySlash', 'lesserSwordDance', 'battleFocus'],
+        armour: {physical: [150, 80], magic: [75, 75]}, 
+        additionalAp: 1,
     },
 };
 const rankG = { // G
@@ -412,18 +490,18 @@ const rankG = { // G
         title: `Sword Goddess`,
         description: `Natsuki, the Sword Goddess, is an unparalleled master of swordsmanship. Her strikes are swift and devastating, but her frail body cannot withstand much damage.`,
         personality: 'calm',
-        stats: {atk: 'extreme', def: 'none'},
+        stats: {atk: 'extreme', def: 'low'},
         rarity: G,
         gender: female,
         pfp: `assets/AnimeGirl10.jpeg`,
-        hp: 150,
-        mp: 900,
-        str: 5,
-        int: 160,
-        mpRegen: 300,
+        hp: 300,
+        mp: 1500,
+        str: 6,
+        int: 250,
+        mpRegen: 400,
         agi: 200,
-        skills: ['ascendedSlash', 'ascendedOverheadStrike', 'auraSlash', 'greaterRaiseGuard', 'swordDance', 'realitySlash', 'superCharge'],
-        armour: {physical: [0, 25], magic: [0, 25]},
+        skills: ['ascendedSlash', 'auraSlash', 'greaterRaiseGuard', 'magicSealingSword', 'swordDance', 'realitySlash', 'superCharge'],
+        armour: {physical: [150, 0], magic: [90, 0]},
         additionalAp: 1,
     },
     Yui: { // tank / support
@@ -435,32 +513,32 @@ const rankG = { // G
         rarity: G,
         gender: female,
         pfp: `assets/AnimeGirl38.jpeg`,
-        hp: 800,
+        hp: 1450,
         mp: 350,
         str: 1.75,
         int: 200,
-        mpRegen: 85,
+        mpRegen: 175,
         agi: 175,
         skills: ['ascendedSlash', 'rapidStrikes', 'sevenfoldSlash', 'warCry', 'battlefieldCommand', 'righteousSmite'],
-        armour: {physical: [200, 85], magic: [175, 75]},
+        armour: {physical: [200, 90], magic: [175, 85]},
         additionalAp: 1,
     },
-    Prawns: { // healer / support
+    Prawns: { // healer
         name: `Prawns`,
         title: `Surgeon`,
-        description: `Prawns became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most difficult opperations with 102% success rate. Because Prawns was simply too good, the godess transmigrated her to the other world where her healing would be more useful. Beware, Borude can not regenerate mana on her own, finding a reliable source of mana would be prudent.`,
+        description: `Prawns became a master surgeon with her perfect scores in her med exams. She can masterfully complete the most difficult opperations with 102% success rate. Because Prawns was simply too good, the godess transmigrated her to the other world where her healing would be more useful. Beware, Borude does not regenerate mana naturally, she can only gain more mana from skills or external buffs.`,
         personality: 'confident',
         stats: {atk: 'low', def: 'low'},
         rarity: G,
         gender: female,
         pfp: `assets/AnimeGirl61.jpeg`,
-        hp: 500,
-        mp: 600,
+        hp: 900,
+        mp: 900,
         str: 1,
         int: 6900,
         mpRegen: 0,
-        skills: ['aggressiveSurgery', 'steroids', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
-        armour: {physical: [30, 25], magic: [25, 25]},
+        skills: ['organHarvest', 'steroids', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
+        armour: {physical: [50, 25], magic: [75, 25]},
         additionalAp: 1,
     },
 };
@@ -645,28 +723,85 @@ const gachaGameEnemies = {
         name: `Dragon`, // (deez nuts)
         rarity: UC,
         pfp: `assets/greenDragon.jpeg`,
-        hp: [500, 600, 750],
-        mp: [200, 240, 300],
-        str: [2, 2.5, 3.25],
-        int: [120, 130, 140],
-        mpRegen: [40, 45, 60],
+        hp: [500, 750],
+        mp: [200, 300],
+        str: [2, 3],
+        int: [120, 140],
+        mpRegen: [40, 60],
         agi: 75,
         skills: ['dragonClaw', 'tailSwipe', 'dragonRoar', 'dragonWing'],
         armour: {physical: [25, 50], magic: [15, 50]},
         ai: `rng`,
     },
-    redDragon: { // 1 tier
+    crystalDragon: { // 1 tier
         name: `Dragon`, // (deez nuts)
-        rarity: E,
+        rarity: SR,
+        pfp: `assets/crystalDragon.jpeg`,
+        hp: [1200],
+        mp: [250],
+        str: [4],
+        int: [110],
+        mpRegen: [50],
+        agi: 125,
+        skills: ['dragonClaw', 'spectralBlast', 'dragonRoar', 'earthquake'],
+        armour: {physical: [50, 50], magic: [10, 0]},
+        ai: `rng`,
+    },
+    redDragon: { // 1 tier
+        name: `Red Dragon`, // (deez nuts)
+        rarity: M,
         pfp: `assets/redDragon.jpeg`,
         hp: [2500],
         mp: [1000],
         str: [4],
-        int: [110],
+        int: [100],
         mpRegen: [150],
         agi: 75,
         skills: ['fireBreath', 'dragonRoar', 'infernoBeam', 'dragonBite'],
         armour: {physical: [150, 75], magic: [90, 60]},
+        ai: `rng`,
+    },
+    electroDragon: { // 1 tier
+        name: `Electro Dragon`, // (deez nuts)
+        rarity: R,
+        pfp: `assets/electroDragon.jpeg`,
+        hp: [1000],
+        mp: [600],
+        str: [3],
+        int: [200],
+        mpRegen: [150],
+        agi: 110,
+        skills: ['dragonClaw', 'dragonWing', 'energybeam', 'lightningStrike', 'stasisField'],
+        armour: {physical: [25, 25], magic: [60, 80]},
+        ai: `rng`,
+    },
+    blackDragon: { // 1 tier
+        name: `Black Dragon`, // (deez nuts)
+        rarity: EX, 
+        pfp: `assets/blackDragon.jpeg`,
+        hp: [3000],
+        mp: [1000],
+        str: [4],
+        int: [600],
+        mpRegen: [200],
+        agi: 150,
+        skills: ['infernoBeam', 'dragonBite', 'darkBlast', 'dimensionRedution'],
+        armour: {physical: [600, 90], magic: [500, 90]},
+        ai: `rng`,
+        additionalAp: 1,
+    },
+    redDragonKing: { // 1 tier
+        name: `Red Dragon`, // (deez nuts)
+        rarity: M,
+        pfp: `assets/redDragonKing.jpeg`,
+        hp: [7500],
+        mp: [2000],
+        str: [8],
+        int: [150],
+        mpRegen: [400],
+        agi: 75,
+        skills: ['dragonClaw', 'fireBreath', 'infernoBeam'],
+        armour: {physical: [200, 75], magic: [100, 75]},
         ai: `rng`,
     },
 };
@@ -725,6 +860,6 @@ const gachaGameSummons = {
     },
 };
 
-const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankG, rankEX];
+const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankM, rankG, rankEX];
 
 export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons};

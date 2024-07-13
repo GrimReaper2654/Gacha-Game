@@ -703,7 +703,7 @@ body {
 }
 
 #rank4Button {
-    border-color: rgba(200, 75, 75, 1);
+    border-color: rgba(230, 240, 255, 1);
 }
 
 #rank5Button {
@@ -711,10 +711,14 @@ body {
 }
 
 #rank6Button {
-    border-color: rgba(150, 255, 255, 1);
+    border-color: rgba(200, 75, 75, 1);
 }
 
 #rank7Button {
+    border-color: rgba(150, 255, 255, 1);
+}
+
+#rank8Button {
     border-color: rgba(0, 0, 0, 1);
 }
 
@@ -747,7 +751,7 @@ body {
 }
 
 #rank4Text {
-    color: rgba(200, 75, 75, 1);
+    color: rgba(230, 240, 255, 1);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.2);
     white-space: pre-wrap;
@@ -761,13 +765,20 @@ body {
 }
 
 #rank6Text {
-    color: rgba(150, 255, 255, 1);
+    color: rgba(200, 75, 75, 1);
     border-radius: 10px;
     background-color: rgba(200, 200, 200, 0.2);
     white-space: pre-wrap;
 }
 
 #rank7Text {
+    color: rgba(150, 255, 255, 1);
+    border-radius: 10px;
+    background-color: rgba(200, 200, 200, 0.2);
+    white-space: pre-wrap;
+}
+
+#rank8Text {
     color: rgba(0, 0, 0, 1);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.2);
@@ -791,7 +802,7 @@ body {
 }
 
 .rank4Button {
-    border-color: rgba(200, 75, 75, 1);
+    border-color: rgba(230, 240, 255, 1);
 }
 
 .rank5Button {
@@ -799,10 +810,14 @@ body {
 }
 
 .rank6Button {
-    border-color: rgba(150, 255, 255, 1);
+    border-color: rgba(200, 75, 75, 1);
 }
 
 .rank7Button {
+    border-color: rgba(150, 255, 255, 1);
+}
+
+.rank8Button {
     border-color: rgba(0, 0, 0, 1);
 }
 
