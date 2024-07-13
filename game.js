@@ -81,6 +81,7 @@ var game = {
     mousepos: {x: 0, y: 0}, // obsolete
     forceMobile: false,
     forceDesktop: false,
+    altMobile: false,
 };
 
 // Steal Data (get inputs)
@@ -667,6 +668,15 @@ function forceDesktop() {
     console.warn(`Device type set to desktop`);
     return true;
 }; window.forceDesktop = forceDesktop;
+
+function altMobile() {
+    game.forceMobile = true;
+    game.forceDesktop = false;
+    game.altMobile = game.altMobile? false : true;
+    resize();
+    console.warn(`Toggled alternate mobile view to: ${game.altMobile}`);
+    return true;
+}; window.altMobile = altMobile;
 
 function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
@@ -1641,14 +1651,14 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${display.x*2 - sidebarWidth}px`;
         if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['left'] = `20px`;
         if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${display.x*2 - sidebarWidth - 90}px`;
-        if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['top'] = `60vh`;
-        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['top'] = `60vh`;
+        if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['top'] = `90vh`;
+        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['top'] = `90vh`;
         if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['transform'] = `scale(1.5, 2.25)`;
         if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['transform'] = `scale(-1.5, 2.25)`;
         if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['left'] = `${((display.x*2 - sidebarWidth) - 685) / 2}px`;
-        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['top'] = `calc(100vh - 235px)`;
+        if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['top'] = `calc(200vh - 235px)`;
         if (document.getElementById('playButton')) document.getElementById('playButton').style['left'] = `${((display.x*2 - sidebarWidth) - 200) / 2}px`;
-        if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(100vh - 350px)`;
+        if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(200vh - 350px)`;
         if (document.getElementById('playButton')) document.getElementById('playButton').style['transform'] = `scale(1.5, 1.5)`;
         if (document.getElementById('focus')) document.getElementById('focus').style['position'] = `absolute`;
         if (document.getElementById('focus')) document.getElementById('focus').style['top'] = `20px`;
@@ -1670,6 +1680,12 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.top = `${batleHeight - 220}px`;
         if (document.getElementById('endTurnButton')) document.getElementById('endTurnButton').style.right = `${sidebarWidth + 10}px`;
         if (document.getElementById('endTurnButton')) document.getElementById('endTurnButton').style.bottom = `20px`;
+        if (game.altMobile) {
+            if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['top'] = `50vh`;
+            if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['top'] = `50vh`;
+            if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style['top'] = `calc(100vh - 235px)`;
+            if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(100vh - 350px)`;
+        }
     } else {
         let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 370 : Math.max(370, Math.ceil((display.x - display.y - 30) / 170) * 170 + 30);
         let battleWidth = Math.max(display.x - sidebarWidth, 1200);
