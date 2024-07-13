@@ -780,7 +780,7 @@ async function aoeEffect(effect, team) {
     document.getElementById(id).style.opacity = 1;
     document.getElementById(id).style.position = `absolute`;
     document.getElementById(id).style.top = `${team == 'E'? 0 : document.getElementById('battleScreen').getBoundingClientRect().height-450}px`;
-    document.getElementById(id).style.left = `${document.getElementById('battleScreen').getBoundingClientRect().width/2 - 325}px`;
+    document.getElementById(id).style.left = `${document.getElementById('battleScreen').getBoundingClientRect().width/2 - 510}px`;
     console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
     await sleep(1000);
     for (let i = 0; i < 300; i++) {
@@ -872,8 +872,15 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
         document.getElementById(id).style.position = `absolute`;
         await sleep(50); // let stuff load
         //console.log(document.getElementById(id).offsetHeight, document.getElementById(id).offsetWidth);
-        document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
-        document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+        if (document.getElementById(id).offsetHeight) {
+            document.getElementById(id).style.top = `${pos.y+95-document.getElementById(id).offsetHeight/2}px`;
+            document.getElementById(id).style.left = `${pos.x+75-document.getElementById(id).offsetWidth/2}px`;
+        } else { // If dimensions don't load, assume it is a glow effect
+            console.warn('HIT EFFECTS: Dimensions not loaded, assume glow effect');
+            document.getElementById(id).style.top = `${pos.y+95-200/2}px`;
+            document.getElementById(id).style.left = `${pos.x+75-175/2}px`;
+        }
+        
         document.getElementById(id).style.opacity = 1;
         //document.getElementById(id).style.display = 'block';
         //console.log(document.getElementById(id).style.top, document.getElementById(id).style.left);
