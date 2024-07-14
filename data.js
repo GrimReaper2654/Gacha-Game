@@ -37,13 +37,6 @@ const effect = 'effect';
 const male = 'male';
 const female = 'female';
 
-const grey = 'grey';
-const red = 'red';
-const bronze = 'bronze';
-const silver = 'silver';
-const gold = 'gold';
-const black = 'black';
-
 const single = 'single target';
 const multi = 'multi target';
 const aoe = 'area of effect';
@@ -54,6 +47,21 @@ const ranged = 'ranged';
 const melee = 'melee';
 const fullScreen = 'fullScreen';
 const self = 'self';
+
+const grey = 'grey';
+const red = 'red';
+const bronze = 'bronze';
+const silver = 'silver';
+const black = 'black';
+const gold = 'gold'; // both a colour and a currency
+const exp = 'exp';
+const item = 'item';
+
+const magicStoneN = '[N] Magic Stone';
+const magicStoneR = '[R] Magic Stone';
+const magicStoneE = '[E] Magic Stone';
+const magicStoneL = '[L] Magic Stone';
+const magicStoneG = '[G] Magic Stone';
 
 var gachaGameData = {
     startingGamestate: {
@@ -338,6 +346,19 @@ var gachaGameData = {
     effects: {},
     dungeons: [],
     items: [],
+    drops: {},
+    leveling: `Math.floor(([r]+1)/2*(1.5**([l]-1)+4)*10)*100`, // turst me it works
+    levelUpStatChange: [ // +hp +mp *str *mp
+        {hp: 10, mp: 10, str: 1.025, int: 1.025}, // 0 N 
+        {hp: 13, mp: 13, str: 1.025, int: 1.025}, // 1 UC
+        {hp: 17, mp: 17, str: 1.025, int: 1.025}, // 2 R
+        {hp: 22, mp: 22, str: 1.05, int: 1.05},   // 3 SR
+        {hp: 30, mp: 30, str: 1.05, int: 1.05},   // 4 E
+        {hp: 40, mp: 40, str: 1.05, int: 1.05},   // 5 L
+        {hp: 60, mp: 60, str: 1.06, int: 1.06},   // 6 M
+        {hp: 90, mp: 90, str: 1.07, int: 1.07},   // 7 G
+        {hp: 0, mp: 0, str: 1, int: 1},           // 8 EX
+    ],
     pulls: {
         
     },
@@ -457,6 +478,7 @@ var gachaGameData = {
     characterData: {
         effects: [],
         exp: 0,
+        expToAdd: 0,
         level: 1,
         ap: 0,
         alive: true,
@@ -467,13 +489,14 @@ var gachaGameData = {
         ap: 0,
         id: '',
         specialConditions: {},
+        lastHit: '',
     },
 };
 
 import {gachaGameCharacters, gachaGameEnemies, gachaGameSummons} from "./characters.js";
 import {gachaGameSkills, gachaGameEffects} from "./skills.js";
 import {gachaGameDungeons} from "./dungeons.js";
-import {gachaGameItems} from "./items.js";
+import {gachaGameItems, gachaGameDrops} from "./items.js";
 
 gachaGameData.characters = gachaGameCharacters;
 gachaGameData.enemies = gachaGameEnemies;
@@ -482,5 +505,6 @@ gachaGameData.skills = gachaGameSkills;
 gachaGameData.effects = gachaGameEffects;
 gachaGameData.dungeons = gachaGameDungeons;
 gachaGameData.items = gachaGameItems;
+gachaGameData.drops = gachaGameDrops;
 
 export {gachaGameData};

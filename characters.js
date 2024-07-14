@@ -23,6 +23,10 @@ const EX = 8;
 const male = 'male';
 const female = 'female';
 
+const gold = 'gold';
+const exp = 'exp';
+const item = 'item';
+
 const rankN = { // N
     Abby: { // healer
         name: `Abby`,
@@ -639,7 +643,8 @@ const rankEX = { // EX
 };
 const gachaGameEnemies = {
     goblin: { // 4 tiers
-        name: `Goblin`,
+        enemyType: `goblinGrunt`,
+        name: `Goblin`, 
         rarity: N,
         pfp: `assets/Goblin1.jpeg`,
         hp: [40, 45, 55, 75],
@@ -653,7 +658,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinArcher: { // 3 tiers
-        name: `Goblin`,
+        enemyType: `goblinArcher`,
+        name: `Goblin Archer`,
         rarity: N,
         pfp: `assets/Goblin2.jpeg`,
         hp: [25, 30, 45],
@@ -666,7 +672,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinWarrior: { // 3 tiers
-        name: `Goblin`,
+        enemyType: `goblinWarrior`,
+        name: `Goblin Warrior`,
         rarity: N,
         pfp: `assets/Goblin3.jpeg`,
         hp: [75, 100, 140],
@@ -679,7 +686,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinGuard: { // 2 tiers
-        name: `Goblin`,
+        enemyType: `goblinGuard`,
+        name: `Goblin Guard`,
         rarity: N,
         pfp: `assets/Goblin4.jpeg`,
         hp: [150, 225],
@@ -693,6 +701,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinLord: {
+        enemyType: `goblinBoss`,
         name: `Goblin Lord`,
         rarity: N,
         pfp: `assets/Goblin5.jpeg`,
@@ -707,6 +716,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     sir: {
+        enemyType: `sir`,
         name: `Sir`, // a certain computer science teacher
         rarity: L,
         pfp: `assets/empty.jpeg`,
@@ -720,7 +730,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     greenDragon: { // 3 tiers
-        name: `Dragon`, // (deez nuts)
+        enemyType: `dragonGreen`,
+        name: `Green Dragon`, // (deez nuts)
         rarity: UC,
         pfp: `assets/greenDragon.jpeg`,
         hp: [500, 750],
@@ -734,7 +745,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     crystalDragon: { // 1 tier
-        name: `Dragon`, // (deez nuts)
+        enemyType: `dragonRainbow`,
+        name: `Crystal Dragon`, 
         rarity: SR,
         pfp: `assets/crystalDragon.jpeg`,
         hp: [1200],
@@ -748,7 +760,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     redDragon: { // 1 tier
-        name: `Red Dragon`, // (deez nuts)
+        enemyType: `dragonRed`,
+        name: `Red Dragon`,
         rarity: M,
         pfp: `assets/redDragon.jpeg`,
         hp: [2500],
@@ -762,7 +775,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     electroDragon: { // 1 tier
-        name: `Electro Dragon`, // (deez nuts)
+        enemyType: `dragonBlue`,
+        name: `Electro Dragon`,
         rarity: R,
         pfp: `assets/electroDragon.jpeg`,
         hp: [1000],
@@ -776,7 +790,8 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     blackDragon: { // 1 tier
-        name: `Black Dragon`, // (deez nuts)
+        enemyType: `dragonBlack`,
+        name: `Black Dragon`, 
         rarity: EX, 
         pfp: `assets/blackDragon.jpeg`,
         hp: [3000],
@@ -791,7 +806,8 @@ const gachaGameEnemies = {
         additionalAp: 1,
     },
     redDragonKing: { // 1 tier
-        name: `Red Dragon`, // (deez nuts)
+        enemyType: `dragonRedBig`,
+        name: `Red Dragon King`,
         rarity: M,
         pfp: `assets/redDragonKing.jpeg`,
         hp: [7500],
@@ -802,6 +818,21 @@ const gachaGameEnemies = {
         agi: 75,
         skills: ['dragonClaw', 'fireBreath', 'infernoBeam'],
         armour: {physical: [200, 75], magic: [100, 75]},
+        ai: `rng`,
+    },
+    chicken: { // 1 tier
+        enemyType: `chicken`,
+        name: `Chimkin`, 
+        rarity: EX,
+        pfp: `assets/summon2.jpeg`,
+        hp: [1000],
+        mp: [2500],
+        str: [1],
+        int: [100],
+        mpRegen: [1000],
+        agi: 200,
+        skills: ['realitySlash', 'lightningStrike', 'infernoBeam'],
+        armour: {physical: [0, 0], magic: [0, 0]},
         ai: `rng`,
     },
 };

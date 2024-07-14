@@ -6,6 +6,10 @@ grey        green       blue      purple        silver       gold        red    
  0            1          2          3             4           5           6         7        8
  x1         x1.3       x1.7       x2.2           x3          x4           x6        x9      
 
+for (let i = 0; i < 250; i++) {
+    game.gamestate.player.characters[0].exp += 75; focusCharacter(0); await sleep(10);
+}
+
 ---------------------------------------------------------------------------------------------------------------------
 */
 
@@ -37,13 +41,6 @@ const effect = 'effect';
 const male = 'male';
 const female = 'female';
 
-const grey = 'grey';
-const red = 'red';
-const bronze = 'bronze';
-const silver = 'silver';
-const gold = 'gold';
-const black = 'black';
-
 const single = 'single target';
 const multi = 'multi target';
 const aoe = 'area of effect';
@@ -54,6 +51,15 @@ const ranged = 'ranged';
 const melee = 'melee';
 const fullScreen = 'fullScreen';
 const self = 'self';
+
+const grey = 'grey';
+const red = 'red';
+const bronze = 'bronze';
+const silver = 'silver';
+const black = 'black';
+const gold = 'gold'; // both a colour and a currency
+const exp = 'exp';
+const item = 'item';
 
 function deepFreeze(obj) {
     let propNames = Object.getOwnPropertyNames(obj);
@@ -72,7 +78,7 @@ const data = JSON.parse(JSON.stringify(gachaGameData));
 deepFreeze(data);
 console.log(data);
 
-var game = {
+const game = {
     gamestate: undefined,
     keypresses: [], // obsolete
     mousepos: {x: 0, y: 0}, // obsolete
@@ -81,14 +87,14 @@ var game = {
     altMobile: false,
     particles: {},
     display: {x: window.innerWidth, y: window.innerHeight},
-};
+}; window.game = game;
 
 // The support functions that might not be necessary
 function generateId() {
     const timestamp = Date.now().toString(36); 
     const randomNum = Math.random().toString(36).slice(2, 11);
     return `${timestamp}-${randomNum}`; 
-}
+}; window.generateId = generateId;
 
 function randchoice(list, remove = false) { // chose 1 from a list and update list
     let length = list.length;
@@ -98,7 +104,7 @@ function randchoice(list, remove = false) { // chose 1 from a list and update li
         return [chosen, list];
     }
     return list[choice];
-};
+}; window.randchoice = randchoice;
 
 function randint(min, max, notequalto=false) {
     if (max - min < 1) {
@@ -117,20 +123,20 @@ function randint(min, max, notequalto=false) {
     } while (notequalto && (gen === min || gen === max));
     
     return gen;
-};
+}; window.randint = randint;
 
 function replacehtml(element, text) {
     document.getElementById(element).innerHTML = text;
-};
+}; window.replacehtml = replacehtml;
 
 function addhtml(element, text) {
     document.getElementById(element).innerHTML = document.getElementById(element).innerHTML + text;
-};
+}; window.addhtml = addhtml;
 
 function correctAngle(a) {
     a = a%(Math.PI*2);
     return a;
-};
+}; window.correctAngle = correctAngle;
 
 function aim(initial, final) {
     if (initial == final) { 
@@ -160,7 +166,7 @@ function aim(initial, final) {
     } else {
         return 3*Math.PI/2 + angle;
     }
-};
+}; window.aim = aim;
 
 function roman(number) {
     if (number <= 0 || number >= 4000) {
@@ -193,7 +199,7 @@ function roman(number) {
         }
     }
     return romanNumeral;
-};
+}; window.roman = roman;
 
 function bigNumber(number) {
     const bacs = [`K`, `M`, `B`, `T`, `Q`];
@@ -206,11 +212,11 @@ function bigNumber(number) {
     }
 
     return `${number.toPrecision(3)}${bac}`;
-};
+}; window.bigNumber = bigNumber;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-};
+}; window.sleep = sleep;
 
 function vMath(v1, v2, mode) { 
     switch (mode) {
@@ -245,11 +251,11 @@ function vMath(v1, v2, mode) {
         default:
             console.error('what are you trying to do to to that poor vector?');
     }
-};
+}; window.vMath = vMath;
 
 function toComponent(m, r) {
     return {x: m * Math.sin(r), y: -m * Math.cos(r), i: m * Math.sin(r), j: -m * Math.cos(r)};
-};
+}; window.toComponent = toComponent;
 
 function toPol(i, j) {
     if (i instanceof Object) {
@@ -257,7 +263,7 @@ function toPol(i, j) {
         return {m: Math.sqrt(i.x**2+i.y**2), r: aim({x: 0, y: 0}, {x: i.x, y: i.y})};
     } 
     return {m: Math.sqrt(i**2+j**2), r: aim({x: 0, y: 0}, {x: i, y: j})};
-};
+}; window.toPol = toPol;
 
 // a graveyard of failed getCoords functions
 /*
@@ -367,11 +373,11 @@ function getCardCoords(card) { // calculate coordinates manually
     coords.x += 150 * pos.pos + 20 * pos.pos; // move to correct pos
     //console.log(coords);
     return coords;
-};
+}; window.getCardCoords = getCardCoords;
 
 function unPixel(px) {
     return parseFloat(px.slice(0, -2));
-};
+}; window.unPixel = unPixel;
 
 // Most of game logic and stuff
 window.onkeyup = function(e) {
@@ -401,7 +407,7 @@ window.addEventListener("resize", function () {
 
 function tellPos(p){
     game.mousepos = {x: p.pageX, y:p.pageY};
-};
+}; 
 
 window.addEventListener('mousemove', tellPos, false);
 
@@ -439,7 +445,7 @@ function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${Math.floor(character.hp)}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${Math.floor(character.mp)}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
-    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
+    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<span id="up"><p id="noPadding" class="${character.name.length > 11? `smallC` : `c`}haracterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
 }; window.createCharacterCard = createCharacterCard;
 
 function cardLine(cards, pos, onClick) {
@@ -460,6 +466,7 @@ function massUpdateBars(cards) {
 
 function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.gamestate.battleState.eb, enemyFront=game.gamestate.battleState.ef, playerFront=game.gamestate.battleState.pf, playerBack=game.gamestate.battleState.pb) {
     //console.log(pOnClick, eOnClick);
+    if (!game.gamestate.inBattle) return;
     replacehtml(`enemyBackline`, cardLine(enemyBack, 'EB', eOnClick));
     replacehtml(`enemyFrontline`, cardLine(enemyFront, 'EF', eOnClick));
     replacehtml(`playerFrontline`, cardLine(playerFront, 'PF', pOnClick));
@@ -492,30 +499,20 @@ const handleParticles = (obj) => {
             delete obj[key];
         } else {
             value.life--;
-            switch (value.type) {
-                case 'float':
-                    document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) - 2}px`;
-                    //console.log(document.getElementById(value.id).style.top);
-                    
-                    if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
-                    //console.log(document.getElementById(value.id).style.opacity);
-                    break;
-                case 'fall':
-                    document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) + 2}px`;
-                    //console.log(document.getElementById(value.id).style.top);
-
-                    if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
-                    //console.log(document.getElementById(value.id).style.opacity);
-                    break;
-                default:
-                    console.error(`unknown particle type: ${value.type}`)
+            if (value.type.includes('float')) {
+                document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) - 2}px`;
+            }
+            if (value.type.includes('fall')) {
+                document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) + 2}px`;
+            }    
+            if (value.type.includes('fade')) {
+                if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
             }
             if (value.life < 0) {
                 document.getElementById(value.id).remove();
                 delete obj[key];
             }
         }
-
     });
     return obj;
 }; window.handleParticles = handleParticles;
@@ -593,7 +590,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             let particle = {
                 id: generateId(),
                 life: 50,
-                type: effect.includes('Up')? 'float' : 'fall',
+                type: effect.includes('Up')? 'float fade' : 'fall fade',
             };
             let html = `<img src="assets/${icon}" id="${particle.id}" class="mediumIcon">`;
             addhtml('effects', html);
@@ -608,7 +605,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             let particle = {
                 id: generateId(),
                 life: 50,
-                type: effect.includes('Up')? 'float' : 'fall',
+                type: effect.includes('Up')? 'float fade' : 'fall fade',
             };
             let html = `<img src="assets/${icon}" id="${particle.id}" class="smallIcon">`;
             addhtml('effects', html);
@@ -809,10 +806,18 @@ function readID(id) {
     };
 }; window.readID = readID;
 
-function selectCard(id) {
+function getCardById(id) {
     let pos = readID(id)
     return game.gamestate.battleState[pos.row.toLowerCase()][pos.pos];
-}; window.selectCard = selectCard;
+}; window.getCardById = getCardById;
+
+function getCardByName(name) {
+    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        if (name == game.gamestate.player.team[i].name) return game.gamestate.player.team[i];
+    }
+    console.error(`GET CARD BY NAME: Card with name '${name}' not found!`);
+    return undefined;
+}; window.getCardById = getCardById;
 
 async function checkAllDead() {
     let deaths = [false, false, false, false];
@@ -838,7 +843,7 @@ function calcResistance(dmgType, dmg, target) {
 
 function calculateEffect(card, effect) {
     //console.log('calculateEffect');
-    if (!effect.initialised) {
+    if (!effect.initialised && !effect.duration == 0) {
         // wtf is this
         if (effect.defChange.physical[0] < 0) effect.defChange.physical[0] = -Math.min(card.armour.physical[0], -effect.defChange.physical[0]);
         card.armour.physical[0] += effect.defChange.physical[0];
@@ -917,11 +922,11 @@ function handleStatusEffects() {
     handleStatusEffectsRow(game.gamestate.battleState.pb);
 }; window.handleStatusEffects = handleStatusEffects;
 
-function dmgNumber(card, dmg, miss=false) { // there is better way to do this, but its already made so I won't change it
+function dmgNumber(card, dmg, miss=false) {
     let particle = {
         id: generateId(),
         life: 70,
-        type: 'float',
+        type: 'float fade',
     };
     console.log(particle);
     let html = miss? `<div id="${particle.id}" class="resistNum">miss</div>` : `<div id="${particle.id}" class="${dmg > 0? `dmgNum` : (dmg == 0 ? `resistNum` : `healNum`)}">${Math.abs(dmg)}</div>`;
@@ -979,6 +984,7 @@ async function simulateSingleAttack(user, skill, target) {
         }
     }
     if (!done) {
+        if (target.id[0] == 'E') target.lastHit = user.name;
         changeStat(target, {stat: 'hp', change: -dmg});
         if (number) dmgNumber(target, dmg, miss);
         if (skill.animation.hitEffect != 'none') {
@@ -1104,7 +1110,7 @@ async function simulateSkill(user, skill, target=undefined) {
 }; window.simulateSkill = simulateSkill;
 
 function selectAction(id) {
-    let card = selectCard(id);
+    let card = getCardById(id);
     // if (!card.ap) return; 
     let cardHtml = document.getElementById(id);
     for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
@@ -1127,8 +1133,8 @@ function selectAction(id) {
 }; window.selectAction = selectAction;
 
 function selectTarget(id) {
-    let targetedCard = selectCard(id);
-    let activeCard = selectCard(game.gamestate.battleState.tempStorage.activeCardId);
+    let targetedCard = getCardById(id);
+    let activeCard = getCardById(game.gamestate.battleState.tempStorage.activeCardId);
     let skillUsed = data.skills[game.gamestate.battleState.tempStorage.skillId];
     //console.log(targetedCard);
     //console.log(activeCard);
@@ -1180,9 +1186,9 @@ function useSkill(skillId=undefined) {
     document.getElementById(skill.name).className += ` selected`;
     if (skill.instantUse) {
         if (skill.name == 'Reposition') {
-            repositionCard(selectCard(game.gamestate.battleState.tempStorage.activeCardId));
+            repositionCard(getCardById(game.gamestate.battleState.tempStorage.activeCardId));
         } else {
-            simulateSkill(selectCard(game.gamestate.battleState.tempStorage.activeCardId), skill, selectCard(game.gamestate.battleState.tempStorage.activeCardId));
+            simulateSkill(getCardById(game.gamestate.battleState.tempStorage.activeCardId), skill, getCardById(game.gamestate.battleState.tempStorage.activeCardId));
         }
     } else {
         game.gamestate.battleState.tempStorage.skillId = skillId;
@@ -1210,6 +1216,29 @@ function regenMana() {
         regenCardMana(game.gamestate.battleState.pf[i]);
     }
 }; window.regenMana = regenMana;
+
+function giveKillRewards(victim) {
+    let killer = getCardByName(victim.lastHit);
+    let drops = data.drops.enemy[victim.enemyType];
+    console.log(victim, killer);
+    for (let i = 0; i < drops.length; i++) {
+        if (randint(0, 100) < drops[i].chance) {
+            switch (drops[i].type) {
+                case exp:
+                    killer.expToAdd += drops[i].quantity;
+                    break;
+                case item:
+                    break;
+                    addItemToInventory(); // TODO: add this function
+                case gold:
+                    game.gamestate.player.money += drops[i].quantity; // TODO: make this nicer
+                    break;
+                default:
+                    console.warn(`REWARDS: Unknown reward type: ${drops[i.type]}`);
+            }
+        }
+    }
+}; window.giveKillRewards = giveKillRewards;
 
 async function deathEffect(card) {;
     document.getElementById(card.id).style['opacity'] = 1;
@@ -1240,6 +1269,7 @@ function checkDead(row) {
         } else {
             wait = true;
             row[i].alive = false; // this keeps track of whether player characters are dead so they can be revived later
+            if (row[i].id[0] == 'E') giveKillRewards(row[i]);
             deathEffect(row[i]);
         }
     }
@@ -1257,19 +1287,34 @@ async function handleEnemyAttack(enemy) {
     }
 }; window.handleEnemyAttack = handleEnemyAttack;
 
+function resetCharacterStats() {
+    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        let card = game.gamestate.player.team[i];
+        card.effects = [];
+        card.specialConditions = {};
+        card.ap = 0;
+        card.hp = card.hpMax;
+        card.mp = card.mpMax;
+        card.str = card.strInit;
+        card.int = card.intInit;
+        card.mpRegen = card.rgnInit;
+        card.armour = card.armourInit;
+    }
+}; window.resetCharacterStats = resetCharacterStats;
+
 function playerTurn() {
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         game.gamestate.player.team[i].ap = 1; 
         if (game.gamestate.player.team[i].additionalAp) game.gamestate.player.team[i].ap += game.gamestate.player.team[i].additionalAp;
     }
-    replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
-    renderCards(`selectAction`, `selectAction`);
-    resize();
+    if (game.gamestate.inBattle) replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
+    if (game.gamestate.inBattle) renderCards(`selectAction`, `selectAction`);
+    if (game.gamestate.inBattle) resize();
 }; window.playerTurn = playerTurn;
 
 async function enemyTurn() {
     console.log('player turn ended, enemy attacking');
-    replacehtml(`main`, `<button id="endTurnButton" class="endTurn disabled">End Turn</button>`);
+    if (game.gamestate.inBattle) replacehtml(`main`, `<button id="endTurnButton" class="endTurn disabled">End Turn</button>`);
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
         game.gamestate.battleState.eb[i].ap = 1;
         if (game.gamestate.battleState.eb[i].additionalAp) game.gamestate.battleState.eb[i].ap += game.gamestate.battleState.eb[i].additionalAp;
@@ -1278,21 +1323,21 @@ async function enemyTurn() {
         game.gamestate.battleState.ef[i].ap = 1;
         if (game.gamestate.battleState.ef[i].additionalAp) game.gamestate.battleState.ef[i].ap += game.gamestate.battleState.ef[i].additionalAp;
     }
-    renderCards();
-    resize();
+    if (game.gamestate.inBattle) renderCards();
+    if (game.gamestate.inBattle) resize();
     for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
-        await handleEnemyAttack(game.gamestate.battleState.ef[i]);
+        if (game.gamestate.inBattle) await handleEnemyAttack(game.gamestate.battleState.ef[i]);
     }
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
-        await handleEnemyAttack(game.gamestate.battleState.eb[i]);
+        if (game.gamestate.inBattle) await handleEnemyAttack(game.gamestate.battleState.eb[i]);
     }
     console.log('end enemy turn, start handle effects');
-    handleStatusEffects();
-    regenMana();
-    await sleep(550);
-    await checkAllDead();
+    if (game.gamestate.inBattle) handleStatusEffects();
+    if (game.gamestate.inBattle) regenMana();
+    if (game.gamestate.inBattle) await sleep(550);
+    if (game.gamestate.inBattle) await checkAllDead();
     console.log('end handle effects');
-    playerTurn();
+    if (game.gamestate.inBattle) playerTurn();
 }; window.enemyTurn = enemyTurn;
 
 function startWave() {
@@ -1341,19 +1386,23 @@ async function runDungeon() {
             game.gamestate.battleState.ef = [];
             game.gamestate.battleState.eb = [];
             */
-            await new Promise(resolve => setTimeout(resolve, 500));
-            //console.log(`Dungeon: Waiting`);
+            await sleep(250);
+            if (battleState.pf.length + battleState.pb.length == 0) {
+                await sleep(2500);
+                return;
+            }
         }
         console.log(`Wave Cleared`);
         renderCards();
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await sleep(1000);
         // Do a wave cleared animation or something
     }
+    await sleep(2500);
     console.log('dungeon cleared');
     // give rewards and stuff
 }; window.runDungeon = runDungeon;
 
-function startDungeon() {
+async function startDungeon() {
     let dungeon = data.dungeons[game.gamestate.dungeon];
     exitFocus();
     replacehtml(`bac`, `<img src="${dungeon.innerBac}" id="bigBacImg"><div id="battleScreen"></div>`); // battle screen is in background as it can be scrolled
@@ -1364,20 +1413,32 @@ function startDungeon() {
     replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
     replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
     let battleState = game.gamestate.battleState;
+    battleState.eb = [];
+    battleState.ef = [];
+    battleState.pb = [];
+    battleState.pf = [];
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
-        game.gamestate.player.team[i].hpMax = game.gamestate.player.team[i].hp;
-        game.gamestate.player.team[i].mpMax = game.gamestate.player.team[i].mp;
-        game.gamestate.player.team[i].ap = 1;
-        game.gamestate.player.team[i].skills.push('reposition');
-        battleState.pb.push(game.gamestate.player.team[i]);
+        let card = game.gamestate.player.team[i];
+        card.hpMax = card.hp;
+        card.mpMax = card.mp;
+        card.strInit = card.str;
+        card.intInit = card.int;
+        card.rgnInit = card.mpRegen;
+        card.armourInit = JSON.parse(JSON.stringify(card.armour));
+        card.ap = 0;
+        card.skills.push('reposition');
+        battleState.pb.push(card);
     }
     game.gamestate.inBattle = true;
-    game.gamestate.battleState.battleOver = false;
     game.gamestate.battleState.wave = 0;
     resize();
     inventory();
     console.log('dungeon started');
-    runDungeon();
+    await runDungeon();
+    game.gamestate.inBattle = false;
+    resetCharacterStats();
+    home();
+    updateTeam();
 }; window.startDungeon = startDungeon;
 
 function rank(n) {
@@ -1590,8 +1651,44 @@ function focusItem(itemId) {
     replacehtml(`focusSkills`, shop);
 }; window.focusItem = focusItem;
 
-function focusCharacter(characterId) { 
+async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=250) {
     let character = game.gamestate.player.characters[characterId];
+    if (expIncrease == -1) expIncrease = character.expToAdd;
+    let rate = Math.floor(Math.min(maxRate, Math.max(minRate, expIncrease/90)));
+    while (expIncrease > 0) {
+        character.exp += Math.min(rate, expIncrease);
+        expIncrease -= rate;
+        await sleep(15);
+        handleLevelUp(character);
+        focusCharacter(characterId, false);
+    }
+    if (expIncrease < 0) expIncrease = 0;
+    console.log(character);
+}; window.increaseExp = increaseExp;
+
+function handleLevelUp(character) {
+    let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
+    let leveledUp = false;
+    while (character.exp > levelUpExp) {
+        character.exp -= levelUpExp;
+        character.level++;
+        character.hp += data.levelUpStatChange[character.rarity].hp;
+        character.mp += data.levelUpStatChange[character.rarity].mp;
+        character.str *= data.levelUpStatChange[character.rarity].str;
+        character.int *= data.levelUpStatChange[character.rarity].int;
+        character.str = Math.ceil(character.str*1000)/1000;
+        character.int = Math.ceil(character.int);
+        levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
+        leveledUp = true;
+    }
+    if (leveledUp) characters();
+}; window.handleLevelUp = handleLevelUp;
+
+function focusCharacter(characterId, addExp=true) { 
+    let character = game.gamestate.player.characters[characterId];
+    let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
+    if (addExp) increaseExp(characterId);
+    let expBar = `<div id="expBarOuter"><div id="expBarInner" style="width:${character.exp / levelUpExp * 100}%"></div><div id="expDescription">Level ${character.level}: ${character.exp}/${levelUpExp}</div></div>`;
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
@@ -1617,7 +1714,7 @@ function focusCharacter(characterId) {
         if (data.skills[character.skills[i]].effects) {
             for (let j = 0; j < data.skills[character.skills[i]].effects.length; j++) {
                 let effect = data.effects[data.skills[character.skills[i]].effects[j].effect];
-                console.log(effect);
+                //console.log(effect);
                 for (let k = 0; k < effect.stats.length; k++) {
                     skill += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
                 }
@@ -1632,14 +1729,15 @@ function focusCharacter(characterId) {
     }
     let shop = `<div id="inventoryShop">`;
     if (inTeam(characterId)) shop += `<button onclick="removeFromTeam(${characterId})" id="sellButton">Remove from Team</button>`;
-    else if (game.gamestate.player.team.length < 4) shop += `<button onclick="addToTeam(${characterId})" id="buyButton">Add to Team</button>`;
+    else if (game.gamestate.player.team.length < 4 && character.alive) shop += `<button onclick="addToTeam(${characterId})" id="buyButton">Add to Team</button>`;
     else shop += `<button id="cantBuyButton">Add to Team</button>`;
+    if (!character.alive) shop += `<button id="sellButton" class="disabled">Revive</button>`;
     shop += `</div>`;
     document.getElementById('focus').style.display = `block`;
-    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.title} ${character.name} </strong></span>`);
-    replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon">`);
-    replacehtml(`focusDescription`, character.description);
-    replacehtml(`focusStats`, stats.replace('none', 'no'));
+    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.alive? `` : `<s>`}${character.title} ${character.name}${character.alive? `` : `</s>`} </strong></span>`);
+    replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon${character.alive? `` : ` grey  disabled`}">`);
+    replacehtml(`focusDescription`, `${character.description}${character.alive? `` : ` ${character.name} has died!`}`);
+    replacehtml(`focusStats`, expBar + stats);
     replacehtml(`focusSkills`, shop + skills);
 }; window.focusCharacter = focusCharacter;
 
@@ -1650,6 +1748,13 @@ function exitFocus() {
 function updateTeam() {
     let canBattle = false;
     let buttonGridHtml = ``;
+    let nTeam = [];
+    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+        if (game.gamestate.player.team[i].alive) {
+            nTeam.push(game.gamestate.player.team[i]);
+        }
+    }
+    game.gamestate.player.team = nTeam;
     for (let i = 0; i < 4; i++) {
         if (game.gamestate.player.team[i] != undefined) {
             buttonGridHtml += createCharacterCard(game.gamestate.player.team[i]);
@@ -1705,10 +1810,10 @@ function characters() {
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.characters.length; i++) {
-        let title = `<strong>${game.gamestate.player.characters[i].name}</strong>`;
+        let title = `<strong>${game.gamestate.player.characters[i].alive? `` : `<s>`}${game.gamestate.player.characters[i].name}${game.gamestate.player.characters[i].alive? `` : `</s>`}</strong>`;
         let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
         let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
-        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon"><p id="noPadding" class="statsText">${desc}</p></button></span>`;
+        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon${game.gamestate.player.characters[i].alive? `` : ` grey disabled`}"><p id="noPadding" class="statsText">${desc}</p></button></span>`;
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -1822,7 +1927,7 @@ async function home() {
         </div>
     </span>
     `;
-    replacehtml(`game`, homePage);
+    replacehtml(`gameContainer`, homePage);
     setDungeon(game.gamestate.dungeon);
     resize();
     updateTeam();

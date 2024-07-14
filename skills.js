@@ -224,7 +224,7 @@ const debuffEffects = { // effects (debuffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [-5, -10], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -251,7 +251,7 @@ const debuffEffects = { // effects (debuffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [-10, -25], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -286,7 +286,7 @@ const debuffEffects = { // effects (debuffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [-50, -25], magic: [-50, -25]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -942,7 +942,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [5, 10], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -1052,6 +1052,213 @@ const buffEffects = { // effects (buffs)
         statChange: {str: 0, int: 0, reg: 0},
         duration: 1,
     },
+    minorInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `10 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 10, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    lesserInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `25 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 25, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    mediumInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `75 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 75, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    greaterInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `200 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 200, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    superiorInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `600 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 600, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    ascendedInstantHealth: {
+        desc: `an instant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `2000 heal`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 2000, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    minorInstantMana: {
+        desc: `an instant mp replenishing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `+ 25 mana`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 25}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    lesserInstantMana: {
+        desc: `an instant mp replenishing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `+ 50 mana`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 50}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
+    mediumInstantMana: {
+        desc: `an instant mp replenishing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `+ 100 mana`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 100}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
     lesserHealOverTime: {
         desc: `a medium healing effect`, 
         stats: [
@@ -1070,7 +1277,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 5, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -1093,7 +1300,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 15, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -1116,7 +1323,53 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 45, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 5,
+    },
+    superiorHealOverTime: {
+        desc: `a significant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `75 heal / round`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 75, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 5,
+    },
+    ascendedHealOverTime: {
+        desc: `a significant healing effect`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 5 rounds`,
+            },
+            {
+                icon: `greenCross.png`,
+                desc: `150 heal / round`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 150, mp: 0}, 
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 5,
@@ -1143,7 +1396,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [10, 25], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 2,
@@ -1170,7 +1423,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [25, 50], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 2,
@@ -1197,7 +1450,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 90], magic: [0, 90]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 2,
@@ -1210,7 +1463,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 5 rounds`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `25 mana / round`,
             },
         ],
@@ -1220,7 +1473,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 25}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -1233,7 +1486,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 5 rounds`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `40 mana / round`,
             },
         ],
@@ -1243,7 +1496,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 60}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 3,
@@ -1256,7 +1509,7 @@ const buffEffects = { // effects (buffs)
                 desc: `lasts 5 rounds`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `60 mana / round`,
             },
         ],
@@ -1266,7 +1519,7 @@ const buffEffects = { // effects (buffs)
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 200}, 
-        // buggs / debuffs
+        // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 2,
@@ -2101,8 +2354,8 @@ const intermediateSwordAttacks = { // sword attacks but better
         dmg: 12,
         multiplier: str,
         effects: [],
-        cost: {hp: 10, mp: 50},
-        accuracy: 95,
+        cost: {hp: 15, mp: 75},
+        accuracy: 90,
         attacks: 17,
         agi: 25,
     },
@@ -2306,7 +2559,7 @@ const advancedSwordAttacks = { // best sword attacks
         dmg: 24,
         multiplier: str,
         effects: [],
-        cost: {hp: 0, mp: 175},
+        cost: {hp: 0, mp: 250},
         accuracy: 100,
         attacks: 30,
         agi: 50,

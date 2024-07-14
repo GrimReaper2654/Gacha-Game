@@ -126,6 +126,8 @@ body {
     font-size: 45px;
     text-align: top;
     left: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 #data {
@@ -299,6 +301,18 @@ body {
     left: -5%;
 }
 
+.smallCharacterTitle {
+    position: relative;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    white-space: pre-wrap;
+    color: rgba(200, 200, 200, 1);
+    vertical-align: top;
+    width: 110%;
+    left: -5%;
+    top: -3px;
+}
+
 .characterButton {
     width: 150px;
     height: 250px;
@@ -405,6 +419,7 @@ body {
     margin: 0px;
     margin-left: 25px;
     margin-right: 25px;
+    filter: brightness(75%);
 }
 
 #sellButton {
@@ -444,6 +459,7 @@ body {
     border-radius: 15px;
     border-width: 5px;
     border-color: rgba(25, 100, 25, 1);
+    filter: brightness(75%);
 }
 
 #focus {
@@ -1041,4 +1057,43 @@ body {
 
 .disabled {
     filter: brightness(75%);
+}
+
+.grey {
+    filter: grayscale(1);
+}
+
+#expBarOuter {
+    width: 95%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 10px;
+    height: 30px;
+    background-color: #696969;
+    border-radius: 15px;
+}
+
+#expBarInner {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    max-width: calc(100% - 10px);
+    min-width: 20px;
+    margin: 0;
+    padding: 0;
+    height: 20px;
+    background-color: rgb(246,191,71);
+    border-radius: 10px;
+}
+
+#expDescription {
+    position: relative;
+    text-align: center;
+    top: -17.5px;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 25px;
+    font-weight: 900;
 }
