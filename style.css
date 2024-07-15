@@ -1097,3 +1097,17 @@ body {
     font-size: 25px;
     font-weight: 900;
 }
+
+#gameHints {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    font-size: 75px;
+    font-weight: 900;
+    color: azure;
+    top: 50%;
+    left: 0;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

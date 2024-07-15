@@ -328,6 +328,7 @@ var gachaGameData = {
             },
         ],
         dungeon: 0,
+        dungeonsCleared: {},
         inBattle: false,
         battleState: {
             battleOver: false,

@@ -214,12 +214,13 @@ const gachaGameDrops = {
         normal: [{type: exp, quantity: 1000, chance: 100}, {type: gold, quantity: 100, chance: 100}],
         big: [{type: exp, quantity: 2500, chance: 100}, {type: gold, quantity: 250, chance: 100}],
         boss: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
-        firstClear: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
     },
     clear: {
         goblinDen: [{type: item, quantity: 1, chance: 100, item: `goblinWarHorn`}],
         dragonPeaks: [{type: exp, quantity: 10000, chance: 100}, {type: item, quantity: 5, chance: 100, item: `dragonScale`}],
-        debugDungeon: [],
+        debugDungeon: [{type: exp, quantity: 25000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
+        
+        firstClear: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
     }, 
     enemy: {
         goblinGrunt: [{type: exp, quantity: 100, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
@@ -230,11 +231,12 @@ const gachaGameDrops = {
 
         dragonGreen: [{type: exp, quantity: 1500, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone4'}],
         dragonRainbow: [{type: exp, quantity: 2500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone4'}],
-        dragonRed: [{type: exp, quantity: 6000, chance: 100}, {type: item, quantity: 1, chance: 90, item: 'stone4'}],
-        dragonBlack: [{type: exp, quantity: 10000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
-        dragonRedBig: [{type: exp, quantity: 10000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
+        dragonBlue: [{type: exp, quantity: 5000, chance: 100}, {type: item, quantity: 1, chance: 90, item: 'stone4'}],
+        dragonRed: [{type: exp, quantity: 7500, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone4'}],
+        dragonBlack: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
+        dragonRedBig: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
 
-        chicken: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
+        chicken: [{type: exp, quantity: 50000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
     },
 };
 

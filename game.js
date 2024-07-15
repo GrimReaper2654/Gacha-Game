@@ -835,6 +835,8 @@ function calcResistance(dmgType, dmg, target) {
         case physical:
             return (dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100;
         case piercing:
+            // if defender has 100% resistance to damage, piercing damage can be blocked by damage negation.
+            if (target.armour.physical[1] >= 100 && target.armour.magical[1] >= 100) return Math.max(dmg-target.armour.physical[0], dmg-target.armour.magic[0]);
             return dmg;
         case normal:
             return Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100);
@@ -1217,15 +1219,19 @@ function regenMana() {
     }
 }; window.regenMana = regenMana;
 
-function giveKillRewards(victim) {
-    let killer = getCardByName(victim.lastHit);
-    let drops = data.drops.enemy[victim.enemyType];
-    console.log(victim, killer);
+function giveRewards(drops, killer=undefined) {
+    if (killer) killer = getCardByName(killer); 
     for (let i = 0; i < drops.length; i++) {
         if (randint(0, 100) < drops[i].chance) {
             switch (drops[i].type) {
                 case exp:
-                    killer.expToAdd += drops[i].quantity;
+                    if (killer) killer.expToAdd += drops[i].quantity;
+                    else {
+                        let perCharacter = Math.floor(drops[i].quantity / game.gamestate.player.team.length);
+                        for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                            game.gamestate.player.team[i].expToAdd += perCharacter;
+                        }
+                    }
                     break;
                 case item:
                     break;
@@ -1238,7 +1244,7 @@ function giveKillRewards(victim) {
             }
         }
     }
-}; window.giveKillRewards = giveKillRewards;
+}; window.giveRewards = giveRewards;
 
 async function deathEffect(card) {;
     document.getElementById(card.id).style['opacity'] = 1;
@@ -1269,7 +1275,7 @@ function checkDead(row) {
         } else {
             wait = true;
             row[i].alive = false; // this keeps track of whether player characters are dead so they can be revived later
-            if (row[i].id[0] == 'E') giveKillRewards(row[i]);
+            if (row[i].id[0] == 'E') giveRewards(data.drops.enemy[row[i].enemyType], row[i].lastHit);
             deathEffect(row[i]);
         }
     }
@@ -1299,6 +1305,7 @@ function resetCharacterStats() {
         card.int = card.intInit;
         card.mpRegen = card.rgnInit;
         card.armour = card.armourInit;
+        card.skills = card.skills.slice(0, -1); // remove the reposition skill (it will be added back in the next battle)
     }
 }; window.resetCharacterStats = resetCharacterStats;
 
@@ -1388,17 +1395,26 @@ async function runDungeon() {
             */
             await sleep(250);
             if (battleState.pf.length + battleState.pb.length == 0) {
+                console.log('Dungeon Failed')
+                replacehtml(`gameHints`, `Dungeon Failed!`);
                 await sleep(2500);
                 return;
             }
         }
         console.log(`Wave Cleared`);
+        giveRewards(data.drops.dungeon[dungeon.waves[battleState.wave].type]);
         renderCards();
         await sleep(1000);
         // Do a wave cleared animation or something
     }
+    console.log('Dungeon cleared');
+    replacehtml(`gameHints`, `Dungeon Cleared!`);
     await sleep(2500);
-    console.log('dungeon cleared');
+    giveRewards(data.drops.clear[dungeon.id]);
+    if (!game.gamestate.dungeonsCleared[dungeon.id]) {
+        game.gamestate.dungeonsCleared[dungeon.id] = true,
+        giveRewards(data.drops.clear.firstClear);
+    }
     // give rewards and stuff
 }; window.runDungeon = runDungeon;
 
@@ -1410,7 +1426,7 @@ async function startDungeon() {
     // scroll the page to centre the battle
     document.getElementById(`bac`).scrollLeft = 185;
     inventory();
-    replacehtml(`battleScreen`, `<div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="gameHints"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
+    replacehtml(`battleScreen`, `<div id="gameHints"></div><div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
     replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
     let battleState = game.gamestate.battleState;
     battleState.eb = [];
@@ -1439,6 +1455,7 @@ async function startDungeon() {
     resetCharacterStats();
     home();
     updateTeam();
+    save();
 }; window.startDungeon = startDungeon;
 
 function rank(n) {
@@ -1569,11 +1586,6 @@ function updateBar(id, percent, value=-1000000000) {
     else console.error(`can not find card id: ${id}`);
 }; window.updateBar = updateBar;
 
-function clearData() {
-    localStorage.removeItem('GatchaGameData');
-    console.log('cleared previous data');
-}; window.clearData = clearData;
-
 function inTeam(characterId) {
     let playerTeam = game.gamestate.player.team;
     for (let i = 0; i < playerTeam.length; i++) {
@@ -1587,6 +1599,7 @@ function addToTeam(characterId) {
     game.gamestate.player.team.push(character);
     updateTeam();
     focusCharacter(characterId);
+    save();
 }; window.addToTeam = addToTeam;
 
 function removeFromTeam(characterId) {
@@ -1601,6 +1614,7 @@ function removeFromTeam(characterId) {
     game.gamestate.player.team = nTeam;
     updateTeam();
     focusCharacter(characterId);
+    save();
 }; window.removeFromTeam = removeFromTeam;
 
 function inventorySellItem(itemId) {
@@ -1618,6 +1632,7 @@ function inventorySellItem(itemId) {
         focusItem(itemId);
     }
     inventory();
+    save();
 }; window.inventorySellItem = inventorySellItem;
 
 function inventoryBuyItem(itemId) {
@@ -1626,6 +1641,7 @@ function inventoryBuyItem(itemId) {
     game.gamestate.player.money -= item.purchacePrice;
     focusItem(itemId);
     inventory();
+    save();
 }; window.inventoryBuyItem = inventoryBuyItem;
 
 function focusItem(itemId) {
@@ -1651,22 +1667,33 @@ function focusItem(itemId) {
     replacehtml(`focusSkills`, shop);
 }; window.focusItem = focusItem;
 
-async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=250) {
+function getExpBar(character, set=false) {
+    let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
+    let expBar = `<div id="expBarInner" style="width:${character.exp / levelUpExp * 100}%"></div><div id="expDescription">Level ${character.level}: ${character.exp}/${levelUpExp}</div>`;
+    if (!set) return `<div id="expBarOuter">${expBar}</div>`;
+    if (document.getElementById('expBarOuter')) replacehtml('expBarOuter', expBar);
+}; window.getExpBar = getExpBar;
+
+async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=1000) {
     let character = game.gamestate.player.characters[characterId];
-    if (expIncrease == -1) expIncrease = character.expToAdd;
+    if (expIncrease == -1) {
+        expIncrease = character.expToAdd;
+        character.expToAdd = 0;
+    }
     let rate = Math.floor(Math.min(maxRate, Math.max(minRate, expIncrease/90)));
     while (expIncrease > 0) {
         character.exp += Math.min(rate, expIncrease);
         expIncrease -= rate;
         await sleep(15);
-        handleLevelUp(character);
-        focusCharacter(characterId, false);
+        getExpBar(character, true);
+        handleLevelUp(characterId);
     }
     if (expIncrease < 0) expIncrease = 0;
-    console.log(character);
+    save();
 }; window.increaseExp = increaseExp;
 
-function handleLevelUp(character) {
+function handleLevelUp(characterId) {
+    let character = game.gamestate.player.characters[characterId];
     let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
     let leveledUp = false;
     while (character.exp > levelUpExp) {
@@ -1681,14 +1708,18 @@ function handleLevelUp(character) {
         levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
         leveledUp = true;
     }
-    if (leveledUp) characters();
+    if (leveledUp) {
+        focusCharacter(characterId, false);
+        characters();
+        updateTeam();
+    }
 }; window.handleLevelUp = handleLevelUp;
 
 function focusCharacter(characterId, addExp=true) { 
     let character = game.gamestate.player.characters[characterId];
-    let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
+    
     if (addExp) increaseExp(characterId);
-    let expBar = `<div id="expBarOuter"><div id="expBarInner" style="width:${character.exp / levelUpExp * 100}%"></div><div id="expDescription">Level ${character.level}: ${character.exp}/${levelUpExp}</div></div>`;
+    
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
@@ -1737,7 +1768,7 @@ function focusCharacter(characterId, addExp=true) {
     replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.alive? `` : `<s>`}${character.title} ${character.name}${character.alive? `` : `</s>`} </strong></span>`);
     replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon${character.alive? `` : ` grey  disabled`}">`);
     replacehtml(`focusDescription`, `${character.description}${character.alive? `` : ` ${character.name} has died!`}`);
-    replacehtml(`focusStats`, expBar + stats);
+    replacehtml(`focusStats`, getExpBar(character) + stats);
     replacehtml(`focusSkills`, shop + skills);
 }; window.focusCharacter = focusCharacter;
 
@@ -1837,9 +1868,19 @@ function shop() {
     resize();
 }; window.shop = shop;
 
+function clearData() {
+    localStorage.removeItem('GatchaGameGamestate');
+    console.log('cleared previous data');
+}; window.clearData = clearData;
+
+function save() {
+    console.log(`Game Saved`);
+    localStorage.setItem('GatchaGameGamestate', JSON.stringify(game.gamestate));
+}; window.save = save;
+
 async function startGame() {
-    var savedPlayer = localStorage.getItem('GatchaGameData');
-    if (savedPlayer !== null) {
+    var savedPlayer = localStorage.getItem('GatchaGameGamestate');
+    if (savedPlayer) {
         console.log('loading previous save');
         game.gamestate = JSON.parse(savedPlayer);
         console.log(savedPlayer);
@@ -1881,6 +1922,7 @@ function setDungeon(dungeon) {
     let navHtml = `<div id="prevDungeon" class="leftNextButtonBack"><button class="leftNextButton${data.dungeons[game.gamestate.dungeon-1]? `` : ` disabled`}" ${data.dungeons[game.gamestate.dungeon-1]? `onclick="setDungeon(${game.gamestate.dungeon-1})"` : ``}></button></div> <div id="nextDungeon" class="rightNextButtonBack"><button class="rightNextButton${data.dungeons[game.gamestate.dungeon+1]? `` : ` disabled`}" ${data.dungeons[game.gamestate.dungeon+1]? `onclick="setDungeon(${game.gamestate.dungeon+1})"` : ``}></button></div>`;
     replacehtml(`dungeonNav`, navHtml);
     resize();
+    save();
 }; window.setDungeon = setDungeon;
 
 async function home() {

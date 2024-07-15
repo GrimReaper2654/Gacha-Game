@@ -439,7 +439,7 @@ const debugDungeon = {
     innerBac: `assets/bronze.png`,
     waves: [
         { // 1
-            type: `normal`,
+            type: `boss`,
             enemies: [
                 {
                     enemy: `chicken`,
