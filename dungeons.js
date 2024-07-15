@@ -1,8 +1,8 @@
 const goblinDen = {
     id: `goblinDen`,
     name: `Goblin Den`,
-    outerBac: `assets/DungeonOuter1.jpeg`,
-    innerBac: `assets/bronze.png`,
+    outerBac: `assets/goblinDen.jpeg`,
+    innerBac: `assets/mossyStone.jpeg`,
     waves: [
         { // 1
             type: `normal`,
@@ -338,8 +338,8 @@ const goblinDen = {
 const dragonPeaks = {
     id: `goblinDen`,
     name: `Dragon Peaks`,
-    outerBac: `assets/DragonPeaks.jpeg`,
-    innerBac: `assets/bronze.png`,
+    outerBac: `assets/dragonPeaks.jpeg`,
+    innerBac: `assets/stone.jpeg`,
     waves: [
         { // 1
             type: `normal`,
@@ -432,11 +432,210 @@ const dragonPeaks = {
     ],
 };
 
+const shadowCavern = {
+    id: `shadowCavern`,
+    name: `Shadow Cavern`,
+    outerBac: `assets/shadowCavern.jpeg`,
+    innerBac: `assets/darkStone.jpeg`,
+    waves: [
+        { // 1
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `shadowBat`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `spider`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 2,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 2
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `shadowBat`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `spider`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 3
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `shadowBat`,
+                    lvl: 2,
+                    quantity: 3,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 4
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `shadowBat`,
+                    lvl: 0,
+                    quantity: 4,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `spider`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 5
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `scorpion`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 6
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `spider`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 3,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 7
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `snake`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 2,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 3,
+                    quantity: 2,
+                    location: `backline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 2,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 8
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `snake`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `scorpion`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `snake`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `spider`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `shadowBat`,
+                    lvl: 3,
+                    quantity: 2,
+                    location: `backline`,
+                },
+                {
+                    enemy: `spider`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+    ],
+};
+
 const debugDungeon = {
     id: `debugDungeon`,
     name: `Debug Dungeon`,
     outerBac: `assets/lake.jpeg`,
-    innerBac: `assets/bronze.png`,
+    innerBac: `assets/rockyLake.jpeg`,
     waves: [
         { // 1
             type: `boss`,
@@ -449,8 +648,30 @@ const debugDungeon = {
                 },
             ],
         },
+        { // 2
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `stronkChicken`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 3
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `veryStronkChicken`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
     ],
 };
 
-const gachaGameDungeons = [goblinDen, dragonPeaks, debugDungeon];
+const gachaGameDungeons = [goblinDen, shadowCavern, dragonPeaks, debugDungeon];
 export {gachaGameDungeons};

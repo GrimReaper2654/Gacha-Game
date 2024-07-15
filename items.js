@@ -217,8 +217,9 @@ const gachaGameDrops = {
     },
     clear: {
         goblinDen: [{type: item, quantity: 1, chance: 100, item: `goblinWarHorn`}],
-        dragonPeaks: [{type: exp, quantity: 10000, chance: 100}, {type: item, quantity: 5, chance: 100, item: `dragonScale`}],
-        debugDungeon: [{type: exp, quantity: 25000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
+        shadowCavern: [{type: exp, quantity: 5000, chance: 100}],
+        dragonPeaks: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 5, chance: 100, item: `dragonScale`}],
+        debugDungeon: [{type: exp, quantity: 100000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
         
         firstClear: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
     }, 
@@ -236,7 +237,14 @@ const gachaGameDrops = {
         dragonBlack: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
         dragonRedBig: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
 
-        chicken: [{type: exp, quantity: 50000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
+        shadowBat: [{type: exp, quantity: 250, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
+        spider: [{type: exp, quantity: 300, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone1'}],
+        scorpion: [{type: exp, quantity: 500, chance: 100}, {type: item, quantity: 1, chance: 40, item: 'stone2'}],
+        snake: [{type: exp, quantity: 500, chance: 100}, {type: item, quantity: 1, chance: 60, item: 'stone2'}],
+
+        chicken: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
+        chickenStrong: [{type: exp, quantity: 75000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
+        chickenVeryStrong: [{type: exp, quantity: 200000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone5'}],
     },
 };
 

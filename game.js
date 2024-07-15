@@ -822,15 +822,15 @@ function getCardByName(name) {
 function calcResistance(dmgType, dmg, target) {
     switch (dmgType) {
         case magic:
-            return (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100;
+            return Math.max(0, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100);
         case physical:
-            return (dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100;
+            return Math.max(0, (dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100);
         case piercing:
             // if defender has 100% resistance to damage, piercing damage can be blocked by damage negation.
-            if (target.armour.physical[1] >= 100 && target.armour.magical[1] >= 100) return Math.max(dmg-target.armour.physical[0], dmg-target.armour.magic[0]);
+            if (target.armour.physical[1] >= 100 && target.armour.magical[1] >= 100) return Math.max(0, Math.max(dmg-target.armour.physical[0], dmg-target.armour.magic[0]));
             return dmg;
         case normal:
-            return Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100);
+            return Math.max(0, Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100));
     }
 }; window.calcResistance = calcResistance;
 
@@ -863,9 +863,9 @@ function calculateEffect(card, effect) {
     //console.log('effects updated');
     if (effect.dmg > 0) {
         let miss = randint(0, 100) > effect.accuracy;
-        console.log(miss);
-        if (!miss) changeStat(card, {stat: 'hp', change: -effect.dmg}, 500);
-        dmgNumber(card, miss? 0 : calcResistance(effect.type, effect.dmg, card), miss);
+        let dmg = calcResistance(effect.type, effect.dmg, card);
+        if (!miss) changeStat(card, {stat: 'hp', change: -dmg}, 500);
+        dmgNumber(card, miss? 0 : dmg, miss);
     }
     if (effect.change.hp) {
         changeStat(card, {stat: 'hp', change: effect.change.hp}, 500);
@@ -1109,8 +1109,8 @@ async function simulateSkill(user, skill, target=undefined) {
         await fakeMoveCard(user, user, user.agi? Math.min(250, Math.max(100, 200 - user.agi/2)) : 150, true);
     }
     if ((skill.animation.smooth || skill.targeting == aoe) && skill.animation.range != 'melee') { // estimate attack time (pretty reliable ngl)
-        console.log('wait', Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed)-2500) + (skill.animation.projectile != 'none'? skill.animation.projectileSpeed*10 : 0));
-        await sleep(Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed) - 2500));
+        console.log('wait', Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed)-(skill.targeting == aoe? 0 : 2500)) + (skill.animation.projectile != 'none'? skill.animation.projectileSpeed*10 : 0));
+        await sleep(Math.max(0, skill.attacks * (skill.animation.projectileDelay + skill.animation.moveSpeed) - (skill.targeting == aoe? 0 : 2500)));
         if (skill.animation.projectile != 'none') await sleep(skill.animation.projectileSpeed * 20);
         console.log('expected attack duration');
     }
@@ -1162,7 +1162,7 @@ function selectTarget(id) {
 async function repositionCard(card) {
     card.ap--;
     renderCards();
-    let newID = `P${card.id[1] == `F`? `B` : `F`}${card.id[1] == `F`? game.gamestate.battleState.pb.length: game.gamestate.battleState.pf.length}ID`;
+    let newID = `${card.id[0]}${card.id[1] == `F`? `B` : `F`}${card.id[1] == `F`? game.gamestate.battleState[`${card.id[0].toLowerCase()}b`].length: game.gamestate.battleState[`${card.id[0].toLowerCase()}f`].length}ID`;
     console.log(newID);
     fakeMoveCard(card, {id: newID}, 50, true, {x: -85, y: 0});
     document.getElementById(card.id).style['opacity'] = 0;
@@ -1175,21 +1175,22 @@ async function repositionCard(card) {
     }
     document.getElementById(card.id).remove();
     if (card.id[1] == `F`) {
-        let newPf = [];
-        for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
-            if (game.gamestate.battleState.pf[i].id != card.id) newPf.push(game.gamestate.battleState.pf[i]);
+        let newF = [];
+        for (let i = 0; i < game.gamestate.battleState[`${card.id[0].toLowerCase()}f`].length; i++) {
+            if (game.gamestate.battleState[`${card.id[0].toLowerCase()}f`][i].id != card.id) newF.push(game.gamestate.battleState[`${card.id[0].toLowerCase()}f`][i]);
         }
-        game.gamestate.battleState.pb.push(card);
-        game.gamestate.battleState.pf = newPf;
+        game.gamestate.battleState[`${card.id[0].toLowerCase()}b`].push(card);
+        game.gamestate.battleState[`${card.id[0].toLowerCase()}f`] = newF;
     } else {
-        let newPb = [];
-        for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
-            if (game.gamestate.battleState.pb[i].id != card.id) newPb.push(game.gamestate.battleState.pb[i]);
+        let newB = [];
+        for (let i = 0; i < game.gamestate.battleState[`${card.id[0].toLowerCase()}b`].length; i++) {
+            if (game.gamestate.battleState[`${card.id[0].toLowerCase()}b`][i].id != card.id) newB.push(game.gamestate.battleState[`${card.id[0].toLowerCase()}b`][i]);
         }
-        game.gamestate.battleState.pf.push(card);
-        game.gamestate.battleState.pb = newPb;
+        game.gamestate.battleState[`${card.id[0].toLowerCase()}f`].push(card);
+        game.gamestate.battleState[`${card.id[0].toLowerCase()}b`] = newB;
     }
-    renderCards(`selectAction`, `selectAction`);
+    if (card.id[0] == 'P') renderCards(`selectAction`, `selectAction`);
+    else renderCards();
     skills(card, false);
 }; window.repositionCard = repositionCard;
 
@@ -1201,6 +1202,7 @@ function useSkill(skillId=undefined) {
     document.getElementById(skill.name).className += ` selected`;
     if (skill.instantUse) {
         if (skill.name == 'Reposition') {
+            console.log('repositioning card');
             repositionCard(getCardById(game.gamestate.battleState.tempStorage.activeCardId));
         } else {
             simulateSkill(getCardById(game.gamestate.battleState.tempStorage.activeCardId), skill, getCardById(game.gamestate.battleState.tempStorage.activeCardId));
@@ -1308,6 +1310,12 @@ async function handleEnemyAttack(enemy) {
     while (enemy.ap > 0) {
         let skillToUse = data.skills[randchoice(enemy.skills)];
         console.log(skillToUse);
+        if (skillToUse.name == 'Reposition') {
+            console.log('repositioning card');
+            await repositionCard(enemy);
+            await sleep(500);
+            continue;
+        } 
         let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
         if (skillToUse.instantUse) target = enemy;
         console.log(target);
