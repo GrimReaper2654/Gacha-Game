@@ -1591,7 +1591,9 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.top = `${batleHeight - 430}px`;
         if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.top = `${batleHeight - 220}px`;
         if (document.getElementById('endTurnButton')) document.getElementById('endTurnButton').style.right = `${sidebarWidth + 10}px`;
+        if (document.getElementById('retreatButton')) document.getElementById('retreatButton').style.right = `${sidebarWidth + 10}px`;
         if (document.getElementById('endTurnButton')) document.getElementById('endTurnButton').style.bottom = `20px`;
+        
         if (game.altMobile) {
             if (document.getElementById('prevDungeon')) document.getElementById('prevDungeon').style['top'] = `50vh`;
             if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['top'] = `50vh`;
@@ -1609,7 +1611,7 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('bacImg')) document.getElementById('bacImg').style['height'] = `100vh`;
         if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${game.display.x - sidebarWidth}px`;
         if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${game.display.x - sidebarWidth}px`;
-        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${game.display.x - sidebarWidth - 60}px`; // grrrr there has to be a better way
+        if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${game.display.x - sidebarWidth - 80}px`; // grrrr there has to be a better way
         if (document.getElementById('teamSelection')) document.getElementById('teamSelection').style.left = `${((game.display.x - sidebarWidth) - 685) / 2}px`;
         if (document.getElementById('playButton')) document.getElementById('playButton').style.left = `${((game.display.x - sidebarWidth) - 200) / 2}px`;
         if (document.getElementById('focus')) document.getElementById('focus').style.width = `${game.display.x - sidebarWidth - 10}px`;

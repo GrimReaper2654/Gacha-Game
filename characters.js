@@ -603,7 +603,7 @@ const rankEX = { // EX
     MQ69Reaper: { // dps
         name: `MQ69Reaper`,
         title: `==[JAT]==`,
-        description: `==[JAT]== MQ69-Reaper MK1 is the first autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
+        description: `<span class="noWrap">==[JAT]==</span> MQ69-Reaper MK1 is the first autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
         personality: 'calm',
         stats: {atk: 'extreme', def: 'high'},
         rarity: EX,
@@ -621,7 +621,7 @@ const rankEX = { // EX
     MQ69Reaper2: { // dps
         name: `MQ69Reaper2`,
         title: `==[JAT]==`,
-        description: `With the success of the MQ69-Reaper MK1 drone, the Tajism church designed an even stronger combat vehicle with improved armour and a larger power core. The ==[JAT]== MQ69-Reaper MK2 is a second generation advanced autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper 2 drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
+        description: `With the success of the MQ69-Reaper MK1 drone, the Tajism church designed an even stronger combat vehicle with improved armour and a larger power core. The <span class="noWrap">==[JAT]==</span> MQ69-Reaper MK2 is a second generation advanced autonomous combat vehicle designed by the Tajism church to spread freedom and democracy throughout the continent of Arcadia. Piloted by the sapient ai codenamed T.A.J (Territory Annihilation Junkie), the MQ69-Reaper 2 drone is a formidable foe on any battlefield, its gattling railguns and rocket pods able to tear through enemy formations with ease.`,
         personality: 'calm',
         stats: {atk: 'extreme', def: 'high'},
         rarity: EX,
