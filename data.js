@@ -57,12 +57,6 @@ const gold = 'gold'; // both a colour and a currency
 const exp = 'exp';
 const item = 'item';
 
-const magicStoneN = '[N] Magic Stone';
-const magicStoneR = '[R] Magic Stone';
-const magicStoneE = '[E] Magic Stone';
-const magicStoneL = '[L] Magic Stone';
-const magicStoneG = '[G] Magic Stone';
-
 var gachaGameData = {
     startingGamestate: {
         player: {
@@ -338,6 +332,7 @@ var gachaGameData = {
             pf: [],
             pb: [],
             tempStorage: {},
+            retreat: false,
         },
     },
     characters: [],

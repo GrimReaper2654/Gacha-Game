@@ -76,7 +76,7 @@ function deepFreeze(obj) {
 import {gachaGameData} from "./data.js";
 const data = JSON.parse(JSON.stringify(gachaGameData));
 deepFreeze(data);
-console.log(data);
+window.data = data;
 
 const game = {
     gamestate: undefined,
@@ -819,15 +819,6 @@ function getCardByName(name) {
     return undefined;
 }; window.getCardById = getCardById;
 
-async function checkAllDead() {
-    let deaths = [false, false, false, false];
-    [game.gamestate.battleState.eb, deaths[0]] = checkDead(game.gamestate.battleState.eb);
-    [game.gamestate.battleState.ef, deaths[1]] = checkDead(game.gamestate.battleState.ef);
-    [game.gamestate.battleState.pb, deaths[2]] = checkDead(game.gamestate.battleState.pb);
-    [game.gamestate.battleState.pf, deaths[3]] = checkDead(game.gamestate.battleState.pf);
-    if (deaths[0] || deaths[1] || deaths[2] || deaths[3]) await sleep(1250);
-}; window.checkAllDead = checkAllDead;
-
 function calcResistance(dmgType, dmg, target) {
     switch (dmgType) {
         case magic:
@@ -942,6 +933,7 @@ function dmgNumber(card, dmg, miss=false) {
 }; window.dmgNumber = dmgNumber;
 
 async function simulateSingleAttack(user, skill, target) {
+    skill = JSON.parse(JSON.stringify(skill)); // deepcopy is only used in 1 scenario but I'm lazy so its here
     let number = true;
     let miss = false;
     let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.01 : 1) : 1), target)) : skill.dmg);
@@ -954,12 +946,10 @@ async function simulateSingleAttack(user, skill, target) {
     let offset = undefined;
     if (skill.animation.range === fullScreen) {
         aoeEffect(skill.animation.projectile, target.id[0]);
-        console.log('changing stats');
         changeStat(target, {stat: 'hp', change: -dmg});
         if (number) dmgNumber(target, dmg, miss);
         return;
     };
-
     if (skill.animation.range === melee) {
         await fakeMoveCard(user, target, skill.animation.moveSpeed);
     };
@@ -977,16 +967,24 @@ async function simulateSingleAttack(user, skill, target) {
         else offset = await simulateProjectileAttack(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
     } 
     for (let i = 0; i < skill.effects.length; i++) {
+        if (skill.effects[i].type) {
+            if (skill.effects[i].type == 'same') skill.effects[i].type = user.type? user.type : 'human';
+            if (skill.effects[i].type != (target.type? target.type : 'human')) {
+                if (skill.effects.length == 1) done = true; // no animation if the effect does not apply to the target
+                continue;
+            }
+        }
         if (randint(0,100) <= skill.effects[i].chance) {
             let effect = JSON.parse(JSON.stringify(data.effects[skill.effects[i].effect]));
             effect.initialised = false;
             console.log(effect);
             target.effects.push(calculateEffect(target, effect));
             console.log(target);
-        }
+        } else if (skill.effects.length == 1) done = true; // no animation if the effect fails to apply to the target
+        
     }
     if (!done) {
-        if (target.id[0] == 'E') target.lastHit = user.name;
+        if (target.id[0] == 'E') target.lastHit = user.owner? user.owner : user.name;
         changeStat(target, {stat: 'hp', change: -dmg});
         if (number) dmgNumber(target, dmg, miss);
         if (skill.animation.hitEffect != 'none') {
@@ -1005,7 +1003,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         let buttonGridHtml = `<div id="stats"><p id="noPadding" class="statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
         for (let i = 0; i < card.skills.length; i++) {
             let dmg = data.skills[card.skills[i]].dmg;
-            if (data.skills[card.skills[i]].type != heal) {
+            if (typeof dmg === 'number' && data.skills[card.skills[i]].type != heal) {
                 switch (data.skills[card.skills[i]].multiplier) {
                     case str:
                         dmg *= card.str;
@@ -1017,7 +1015,8 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
                 dmg = Math.floor(dmg);
             }
             let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
-            let desc = `${data.skills[card.skills[i]].desc.replace(`[attacker]`, card.name).replace(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg} × ${data.skills[card.skills[i]].attacks}<br>`}<img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
+            let dmgDesc = `${typeof dmg === 'number'? `${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg}`}` : `Summons: ${dmg}`}${data.skills[card.skills[i]].attacks > 1? ` × ${data.skills[card.skills[i]].attacks}` : ``}`;
+            let desc = `${data.skills[card.skills[i]].desc.replaceAll(`[attacker]`, card.name).replaceAll(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmgDesc}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
             let buttonData = `${enabled? `onclick="useSkill('${card.skills[i]}')" ` : ``}id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
             buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
         }
@@ -1034,7 +1033,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
 async function simulateSkill(user, skill, target=undefined) { 
     console.log('skill used');
     user.ap--;
-    replacehtml(`main`, `<button id="endTurnButton" class="endTurn disabled">End Turn</button>`);
+    addBattleControls(true);
     renderCards();
     skills(user, false);
     if (skill.cost.hp) {
@@ -1087,12 +1086,25 @@ async function simulateSkill(user, skill, target=undefined) {
             }
             break;
         case summon:
-
+            let toSummon = skill.attacks;
+            let summonedEntity = JSON.parse(JSON.stringify({...data.summons[skill.dmg], ...data.enemyData}));
+            summonedEntity.ap = 1;
+            summonedEntity.hpMax = summonedEntity.hp;
+            summonedEntity.mpMax = summonedEntity.mp;
+            summonedEntity.skills.push('reposition');
+            while (toSummon > 0 && game.gamestate.battleState.pb.length < 6) {
+                toSummon--;
+                game.gamestate.battleState.pb.push(JSON.parse(JSON.stringify(summonedEntity)));
+            }
+            while (toSummon > 0 && game.gamestate.battleState.pf.length < 6) {
+                toSummon--;
+                game.gamestate.battleState.pf.push(JSON.parse(JSON.stringify(summonedEntity)));
+            }
             break;
         default:
             console.error(`ERROR: unknown skill targeting: ${skill.targeting}`);
     }
-    if (skill.animation.range === melee)  {
+    if (skill.animation.range === melee) {
         if (skill.animation.smooth) await sleep(750 + skill.attacks * 5);
         await fakeMoveCard(user, user, user.agi? Math.min(250, Math.max(100, 200 - user.agi/2)) : 150, true);
     }
@@ -1107,7 +1119,7 @@ async function simulateSkill(user, skill, target=undefined) {
     console.log('buffer end');
     await checkAllDead();
     renderCards(`selectAction`, `selectAction`);
-    replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
+    addBattleControls();
     skills(user, false);
 }; window.simulateSkill = simulateSkill;
 
@@ -1142,7 +1154,8 @@ function selectTarget(id) {
     //console.log(activeCard);
     //console.log(skillUsed);
     
-    game.gamestate.battleState.tempStorage = {};
+    game.gamestate.battleState.tempStorage.activeCardId = undefined;
+    game.gamestate.battleState.tempStorage.skillId = undefined;
     simulateSkill(activeCard, skillUsed, targetedCard);
 }; window.selectTarget = selectTarget;
 
@@ -1282,13 +1295,22 @@ function checkDead(row) {
     return [nRow, wait];
 }; window.checkDead = checkDead;
 
+async function checkAllDead() {
+    let deaths = [false, false, false, false];
+    [game.gamestate.battleState.eb, deaths[0]] = checkDead(game.gamestate.battleState.eb);
+    [game.gamestate.battleState.ef, deaths[1]] = checkDead(game.gamestate.battleState.ef);
+    [game.gamestate.battleState.pb, deaths[2]] = checkDead(game.gamestate.battleState.pb);
+    [game.gamestate.battleState.pf, deaths[3]] = checkDead(game.gamestate.battleState.pf);
+    if (deaths[0] || deaths[1] || deaths[2] || deaths[3]) await sleep(1250);
+}; window.checkAllDead = checkAllDead;
+
 async function handleEnemyAttack(enemy) {
     while (enemy.ap > 0) {
-        enemy.ap--;
         let skillToUse = data.skills[randchoice(enemy.skills)];
         console.log(skillToUse);
         let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
         if (skillToUse.instantUse) target = enemy;
+        console.log(target);
         await simulateSkill(enemy, skillToUse, target);
     }
 }; window.handleEnemyAttack = handleEnemyAttack;
@@ -1306,22 +1328,33 @@ function resetCharacterStats() {
         card.mpRegen = card.rgnInit;
         card.armour = card.armourInit;
         card.skills = card.skills.slice(0, -1); // remove the reposition skill (it will be added back in the next battle)
+        for (let i = 0; i < game.gamestate.player.characters.length; i++) {
+            if (game.gamestate.player.characters[i].name == card.name) {
+                game.gamestate.player.characters[i] = card;
+            }
+        }
     }
 }; window.resetCharacterStats = resetCharacterStats;
 
 function playerTurn() {
-    for (let i = 0; i < game.gamestate.player.team.length; i++) {
-        game.gamestate.player.team[i].ap = 1; 
-        if (game.gamestate.player.team[i].additionalAp) game.gamestate.player.team[i].ap += game.gamestate.player.team[i].additionalAp;
+    game.gamestate.battleState.turn = 'player';
+    for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
+        game.gamestate.battleState.pb[i].ap = 1;
+        if (game.gamestate.battleState.pb[i].additionalAp) game.gamestate.battleState.pb[i].ap += game.gamestate.battleState.pb[i].additionalAp;
     }
-    if (game.gamestate.inBattle) replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
+    for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
+        game.gamestate.battleState.pf[i].ap = 1;
+        if (game.gamestate.battleState.pf[i].additionalAp) game.gamestate.battleState.pf[i].ap += game.gamestate.battleState.pf[i].additionalAp;
+    }
+    if (game.gamestate.inBattle) addBattleControls();
     if (game.gamestate.inBattle) renderCards(`selectAction`, `selectAction`);
     if (game.gamestate.inBattle) resize();
 }; window.playerTurn = playerTurn;
 
 async function enemyTurn() {
     console.log('player turn ended, enemy attacking');
-    if (game.gamestate.inBattle) replacehtml(`main`, `<button id="endTurnButton" class="endTurn disabled">End Turn</button>`);
+    game.gamestate.battleState.turn = 'enemy';
+    if (game.gamestate.inBattle) addBattleControls(true);
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
         game.gamestate.battleState.eb[i].ap = 1;
         if (game.gamestate.battleState.eb[i].additionalAp) game.gamestate.battleState.eb[i].ap += game.gamestate.battleState.eb[i].additionalAp;
@@ -1378,6 +1411,27 @@ function startWave() {
     }
 }; window.startWave = startWave;
 
+async function retreat() {
+    if (game.gamestate.battleState.tempStorage.retreat == 'awaitingConfirmation') {
+        game.gamestate.battleState.retreat = true;
+        game.gamestate.battleState.tempStorage.retreat = undefined;
+        document.getElementById("retreatButton").classList.replace(`greenButton`, `redButton`);
+        replacehtml(`retreatButton`, `Retreated!`);
+        console.log('retreat confirmed');
+    }
+    else { // five seconds to confirm before retreat will reset
+        game.gamestate.battleState.tempStorage.retreat = 'awaitingConfirmation';
+        document.getElementById("retreatButton").classList.replace(`greenButton`, `redButton`);
+        await sleep(5000);
+        game.gamestate.battleState.tempStorage.retreat = undefined;
+        if (!game.gamestate.battleState.retreat && document.getElementById("retreatButton")) document.getElementById("retreatButton").classList.replace(`redButton`, `greenButton`);
+    }
+}; window.retreat = retreat;
+
+function addBattleControls(disabled=false) { //addBattleControls();
+    replacehtml(`main`, `<button ${disabled? `` : `onclick="enemyTurn()"`} id="endTurnButton" class="endTurn${disabled? ` disabled` : ``}">End Turn</button><button onclick="retreat()" id="retreatButton" class="retreat ${game.gamestate.battleState.retreat? `redButton` : `greenButton`}">${game.gamestate.battleState.retreat? `Retreated!` : `Retreat`}</button>`);
+} ; window.addBattleControls = addBattleControls;
+
 async function runDungeon() {
     let dungeon = data.dungeons[game.gamestate.dungeon];
     let battleState = game.gamestate.battleState;
@@ -1394,9 +1448,10 @@ async function runDungeon() {
             game.gamestate.battleState.eb = [];
             */
             await sleep(250);
-            if (battleState.pf.length + battleState.pb.length == 0) {
+            if (battleState.pf.length + battleState.pb.length == 0 || (game.gamestate.battleState.retreat && game.gamestate.battleState.turn == 'player')) {
                 console.log('Dungeon Failed')
-                replacehtml(`gameHints`, `Dungeon Failed!`);
+                replacehtml(`gameHints`, game.gamestate.battleState.retreat? `Retreated!` : `Dungeon Failed!`);
+                game.gamestate.battleState.retreat = false;
                 await sleep(2500);
                 return;
             }
@@ -1427,7 +1482,7 @@ async function startDungeon() {
     document.getElementById(`bac`).scrollLeft = 185;
     inventory();
     replacehtml(`battleScreen`, `<div id="gameHints"></div><div id="enemyBackline" class="battleCardContainer"></div><div id="enemyFrontline" class="battleCardContainer"></div><div id="playerFrontline" class="battleCardContainer"></div><div id="playerBackline" class="battleCardContainer"></div><div id="effects"></div><div id="dialogueBox"></div>`);
-    replacehtml(`main`, `<button onclick="enemyTurn()" id="endTurnButton" class="endTurn">End Turn</button>`);
+    addBattleControls();
     let battleState = game.gamestate.battleState;
     battleState.eb = [];
     battleState.ef = [];
@@ -1677,6 +1732,7 @@ function getExpBar(character, set=false) {
 async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=1000) {
     let character = game.gamestate.player.characters[characterId];
     if (expIncrease == -1) {
+        console.log('adding stored exp');
         expIncrease = character.expToAdd;
         character.expToAdd = 0;
     }
@@ -1717,9 +1773,7 @@ function handleLevelUp(characterId) {
 
 function focusCharacter(characterId, addExp=true) { 
     let character = game.gamestate.player.characters[characterId];
-    
     if (addExp) increaseExp(characterId);
-    
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
@@ -1888,21 +1942,22 @@ async function startGame() {
         // No saved data found
         console.log('no save found, creating new player');
         game.gamestate = JSON.parse(JSON.stringify(data.startingGamestate));
+
+        // give debug items
+        if (true) {
+            console.log(`Giving Player Debug Items`);
+            for (let i = 0; i < data.items.length; i++) {
+                game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
+                game.gamestate.player.inventory[i].quantity = randint(1,100);
+            }
+            for (let i = 0; i < data.characters.length; i++) {
+                Object.keys(data.characters[i]).forEach(function(key) {
+                    game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
+                });
+            }
+        }
     };
     await sleep(100);
-    // Give Testing items
-    if (true) {
-        console.log(`Giving Player Debug Items`);
-        for (let i = 0; i < data.items.length; i++) {
-            game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
-            game.gamestate.player.inventory[i].quantity = randint(1,100);
-        }
-        for (let i = 0; i < data.characters.length; i++) {
-            Object.keys(data.characters[i]).forEach(function(key) {
-                game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
-            });
-        }
-    }
 
     home();
 

@@ -23,10 +23,6 @@ const EX = 8;
 const male = 'male';
 const female = 'female';
 
-const gold = 'gold';
-const exp = 'exp';
-const item = 'item';
-
 const rankN = { // N
     Abby: { // healer
         name: `Abby`,
@@ -102,19 +98,19 @@ const rankN = { // N
     Henrietta: { // summoner
         name: `Henrietta`,
         title: `Spedlord`,
-        description: `Henrietta le Bird is very tall. Way too tall. Also she is a spedlord.`,
+        description: `Henrietta le Bird is very tall. Way too tall. That is her only defining character trait.`,
         personality: 'timid',
         stats: {atk: 'low', def: 'none'},
         rarity: N,
         gender: female,
         pfp: `assets/AnimeGirl53.jpeg`,
         hp: 80,
-        mp: 100,
+        mp: 120,
         str: 0.75,
         int: 69,
         mpRegen: 25,
         agi: 50,
-        skills: [`punch`, `summonPotato`, `summonChicken`, `insult`],
+        skills: [`punch`, `summonBird`, `summonRock`, `scam2`],
         armour: {physical: [0, 0], magic: [0, 0]},
     },
     Hana: { // tank / dps
@@ -342,7 +338,7 @@ const rankE = { // E
     Pi_thagoreas: { // summoner
         name: `π-thagoreas`,
         title: `Chicken Farmer`,
-        description: `Born and raised on on a rural farm, π-thagoreas grew up as a talented chicken farmer, ruling over several chicken pens and over 300 chickens. When the demon lord attacked, π-thagoreas was driven out of her hometown, her chicken pens destroyed. Swaering revenge against the evil demons, π-thagoreas is willing to do anything to kill the demon lord.`,
+        description: `Born and raised on on a rural farm, π-thagoreas grew up as a talented chicken farmer, ruling over several nations (chicken pens) and over 300 loyal subjects (chickens). When the demon lord attacked, π-thagoreas was driven out of her hometown, her chicken pens destroyed. Swearing revenge against the evil demons, π-thagoreas is willing to do anything to kill the demon lord.`,
         personality: 'calm',
         stats: {atk: 'none', def: 'low'},
         rarity: E,
@@ -353,7 +349,7 @@ const rankE = { // E
         str: 2,
         int: 120,
         mpRegen: 50,
-        skills: [`roastChicken`, `summonChicken`, `summonChickenFlock`, `summonPheonix`],
+        skills: [`pitchfork`, `healingHerbs`, `summonRooster`, `summonFlock`, `summonPheonix`],
         armour: {physical: [10, 10], magic: [5, 10]},
     },
     Zoe: { // dps
@@ -505,7 +501,7 @@ const rankG = { // G
         mpRegen: 400,
         agi: 200,
         skills: ['ascendedSlash', 'ascendedThrust', 'auraSlash', 'magicSealingSword', 'swordDance', 'realitySlash', 'superCharge'],
-        armour: {physical: [150, 0], magic: [90, 0]},
+        armour: {physical: [100, 0], magic: [50, 0]},
         additionalAp: 1,
     },
     Yui: { // tank / support
@@ -643,6 +639,7 @@ const rankEX = { // EX
 };
 const gachaGameEnemies = {
     goblin: { // 4 tiers
+        type: 'goblin',
         enemyType: `goblinGrunt`,
         name: `Goblin`, 
         rarity: N,
@@ -658,6 +655,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinArcher: { // 3 tiers
+        type: 'goblin',
         enemyType: `goblinArcher`,
         name: `Goblin Archer`,
         rarity: N,
@@ -672,6 +670,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinWarrior: { // 3 tiers
+        type: 'goblin',
         enemyType: `goblinWarrior`,
         name: `Goblin Warrior`,
         rarity: N,
@@ -686,6 +685,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinGuard: { // 2 tiers
+        type: 'goblin',
         enemyType: `goblinGuard`,
         name: `Goblin Guard`,
         rarity: N,
@@ -701,17 +701,18 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     goblinLord: {
+        type: 'goblin',
         enemyType: `goblinBoss`,
         name: `Goblin Lord`,
         rarity: N,
         pfp: `assets/Goblin5.jpeg`,
         hp: [750],
-        mp: [0],
+        mp: [50],
         str: [3],
         int: [0],
-        mpRegen: [0],
+        mpRegen: [50],
         agi: 75,
-        skills: ['crushingBlow', 'heavySlash', 'rallyingRoar'],
+        skills: ['crushingBlow', 'heavySlash', 'rallyingCall'],
         armour: {physical: [10, 25], magic: [5, 10]},
         ai: `rng`,
     },
@@ -730,6 +731,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     greenDragon: { // 3 tiers
+        type: 'dragon',
         enemyType: `dragonGreen`,
         name: `Green Dragon`, // (deez nuts)
         rarity: UC,
@@ -745,6 +747,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     crystalDragon: { // 1 tier
+        type: 'dragon',
         enemyType: `dragonRainbow`,
         name: `Crystal Dragon`, 
         rarity: SR,
@@ -760,6 +763,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     redDragon: { // 1 tier
+        type: 'dragon',
         enemyType: `dragonRed`,
         name: `Red Dragon`,
         rarity: M,
@@ -775,6 +779,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     electroDragon: { // 1 tier
+        type: 'dragon',
         enemyType: `dragonBlue`,
         name: `Electro Dragon`,
         rarity: R,
@@ -790,6 +795,7 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     blackDragon: { // 1 tier
+        type: 'dragon',
         enemyType: `dragonBlack`,
         name: `Black Dragon`, 
         rarity: EX, 
@@ -806,6 +812,7 @@ const gachaGameEnemies = {
         additionalAp: 1,
     },
     redDragonKing: { // 1 tier
+        type: 'dragon',
         enemyType: `dragonRedBig`,
         name: `Red Dragon King`,
         rarity: M,
@@ -821,9 +828,10 @@ const gachaGameEnemies = {
         ai: `rng`,
     },
     chicken: { // 1 tier
-        enemyType: `chicken`,
-        name: `Chimkin`, 
-        rarity: EX,
+        type: 'chicken',
+        enemyType: `chicken`, 
+        name: `Greater Chimkin`, 
+        rarity: G,
         pfp: `assets/summon2.jpeg`,
         hp: [1000],
         mp: [2500],
@@ -837,57 +845,78 @@ const gachaGameEnemies = {
     },
 };
 const gachaGameSummons = {
-    potato: { // meat shield
-        name: `Potato`,
-        title: `Summoned`,
+    bird: { // meat shield
+        type: 'chicken',
+        name: `Birb`,
+        owner: `Henrietta`,
         rarity: N,
-        pfp: `assets/summon4.jpeg`,
-        hp: 10,
-        mp: 0,
-        str: 0,
-        int: 0,
-        mpRegen: 0,
-        skills: [],
-        armour: {physical: [0, 10], magic: [0, 0]},
-    },
-    chicken: { // meat shield
-        name: `Chicken`,
-        title: `Summoned`,
-        rarity: UC,
-        pfp: `assets/summon2.jpeg`,
-        hp: 40,
+        pfp: `assets/bird.jpeg`,
+        hp: 25,
         mp: 0,
         str: 1,
         int: 10,
         mpRegen: 0,
-        skills: ['peck', 'scratch'],
+        agi: 200,
+        skills: ['swoop', 'kamikaze'],
+        armour: {physical: [0, 0], magic: [0, 0]},
+    },
+    rock: { // tanker
+        type: 'object',
+        name: `Rock`,
+        owner: `Henrietta`,
+        rarity: N,
+        pfp: `assets/rocks.png`,
+        hp: 100,
+        mp: 0,
+        str: 0,
+        int: 0,
+        mpRegen: 0,
+        agi: 0,
+        skills: ['exist'],
+        armour: {physical: [10, 25], magic: [10, 25]},
+    },
+    chicken: { // meat shield
+        type: 'chicken',
+        name: `Lesser Chimkin`,
+        owner: `π-thagoreas`,
+        rarity: UC,
+        pfp: `assets/summon2.jpeg`,
+        hp: 40,
+        mp: 10,
+        str: 1,
+        int: 10,
+        mpRegen: 5,
+        agi: 175,
+        skills: ['peck', 'scratch', 'charge'],
         armour: {physical: [0, 0], magic: [0, 0]},
     },
     rooster: { // support
+        type: 'chicken',
         name: `Rooster`,
-        title: `Summoned`,
+        owner: `π-thagoreas`,
         rarity: R,
-        pfp: `assets/summon2.jpeg`,
-        hp: 60,
-        mp: 0,
+        pfp: `assets/summon1.jpeg`,
+        hp: 75,
+        mp: 25,
         str: 1.5,
         int: 10,
-        mpRegen: 0,
-        skills: ['peck', 'roosterRallyingCall'],
+        mpRegen: 10,
+        skills: ['peck', 'scratch', 'rallyingCall'],
         armour: {physical: [0, 0], magic: [0, 0]},
     },
     pheonix: { // tanker
-        name: `Chicken`,
-        title: `Summoned`,
+        type: 'chicken',
+        name: `Flaming Chimkin`,
+        owner: `π-thagoreas`,
         rarity: SR,
         pfp: `assets/summon3.jpeg`,
         hp: 500,
-        mp: 0,
-        str: 5,
+        mp: 75,
+        str: 2.5,
         int: 10,
-        mpRegen: 0,
-        skills: ['peck', 'scratch'],
-        armour: {physical: [25, 10], magic: [25, 10]},
+        mpRegen: 15,
+        skills: ['peck', 'scratch', 'charge', 'minorInfernoBeam'],
+        armour: {physical: [10, 25], magic: [10, 10]},
     },
 };
 
