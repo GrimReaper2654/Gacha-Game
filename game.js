@@ -1493,7 +1493,7 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         let battleWidth = Math.max(game.display.x*2 - sidebarWidth, 1200);
         let batleHeight = Math.max(game.display.y*2, 1100);
         let battleCardsPosition = (battleWidth - 1020) / 2;
-        if (document.getElementById('game')) document.getElementById('game').style['zoom'] = `0.5`;
+        if (document.getElementById('gameContainer')) document.getElementById('gameContainer').style['zoom'] = `0.5`;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style['width'] = `${sidebarWidth}px`;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style['height'] = `200vh`;
         if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${game.display.x*2 - sidebarWidth}px`;
