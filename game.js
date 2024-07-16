@@ -581,6 +581,10 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             icon = `brokenRedSword.png`;
             bg = `redGlow`;
             break;
+        case `gravityDown`:
+            icon = `purpleParticle.png`;
+            bg = `purpleGlow`;
+            break;
         default:
             if (effect.includes('Up') || effect.includes('Down')) console.warn(`WARNING: this stat change effect is not supported: ${effect}`);
     }

@@ -230,12 +230,12 @@ const gachaGameDrops = {
         goblinGuard: [{type: exp, quantity: 250, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],
         goblinBoss: [{type: exp, quantity: 1000, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone2'}],
 
-        dragonGreen: [{type: exp, quantity: 1500, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone4'}],
-        dragonRainbow: [{type: exp, quantity: 2500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone4'}],
-        dragonBlue: [{type: exp, quantity: 5000, chance: 100}, {type: item, quantity: 1, chance: 90, item: 'stone4'}],
-        dragonRed: [{type: exp, quantity: 7500, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone4'}],
-        dragonBlack: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
-        dragonRedBig: [{type: exp, quantity: 12500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
+        dragonGreen: [{type: exp, quantity: 5000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone4'}],
+        dragonRainbow: [{type: exp, quantity: 9000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone4'}],
+        dragonBlue: [{type: exp, quantity: 15000, chance: 100}, {type: item, quantity: 1, chance: 90, item: 'stone4'}],
+        dragonRed: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone4'}],
+        dragonBlack: [{type: exp, quantity: 75000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
+        dragonRedBig: [{type: exp, quantity: 75000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
 
         shadowBat: [{type: exp, quantity: 250, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
         spider: [{type: exp, quantity: 300, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone1'}],

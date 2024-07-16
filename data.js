@@ -358,7 +358,7 @@ var gachaGameData = {
     pulls: {
         
     },
-    voiceLines: {
+    voiceLines: { // I'll add these in someday, trust
         enemyAppears: {
             timid: [
                 `The scary [enemy] are attacking!`,
@@ -383,6 +383,12 @@ var gachaGameData = {
             ],
             angry: [
                 `Kill the [enemy]! Make them suffer!`,
+                `Die! Die! Die!`,
+                `Die stupid [enemy]!`
+            ],
+            excited: [
+                `Lets go! We can do this!`,
+                `I've always wanted to kill [enemy]!`,
             ],
             chunni: [
                 `[enemy], prepare to be amazed by my power!`,
