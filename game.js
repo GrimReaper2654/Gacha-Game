@@ -207,11 +207,11 @@ function bigNumber(number) {
     let i = 0;
     while (number >= 1000) {
         number /= 1000;
-        bac = bacs[i];
+        bac = bacs[i]? bacs[i] : '∞';
         i++
     }
 
-    return `${number.toPrecision(3)}${bac}`;
+    return bac == '∞'? bac : `${number.toPrecision(3)}${bac}`;
 }; window.bigNumber = bigNumber;
 
 function sleep(ms) {
@@ -1124,7 +1124,8 @@ async function simulateSkill(user, skill, target=undefined) {
     await checkAllDead();
     renderCards(`selectAction`, `selectAction`);
     addBattleControls();
-    skills(user, false);
+    skills(user, user.ap > 0);
+    if (user.ap > 0) selectAction(user.id);
 }; window.simulateSkill = simulateSkill;
 
 function selectAction(id) {
@@ -1195,7 +1196,8 @@ async function repositionCard(card) {
     }
     if (card.id[0] == 'P') renderCards(`selectAction`, `selectAction`);
     else renderCards();
-    skills(card, false);
+    skills(card, card.ap > 0);
+    if (card.ap > 0) selectAction(card.id);
 }; window.repositionCard = repositionCard;
 
 function useSkill(skillId=undefined) {
@@ -2008,7 +2010,7 @@ async function home() {
             <div id="focusTopRow">
                 <span id="focusTitle"><strong></strong></span>
                 <span id="exitFocus">
-                    <button onclick="exitFocus()" class="closeButton"><img src="assets/blackX.png" class="mediumIcon"></button>
+                    <button onclick="exitFocus()" class="closeButton"><img src="assets/greyX.png" class="mediumIcon"></button>
                 </span>
             </div>
             <div id="focusBody">

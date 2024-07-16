@@ -126,6 +126,7 @@ const healthPots = [
         stackSize: 999999999,
     },
 ];
+
 const stones = [
     {
         id: `stone1`,
