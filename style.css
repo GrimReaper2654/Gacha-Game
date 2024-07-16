@@ -244,6 +244,9 @@ body {
     width: 150px;
     height: 180px;
     margin: 10px;
+    padding: 0;
+    padding-left: 5px;
+    padding-right: 5px;
     text-align: top;
     border: none;
     border-radius: 8px;

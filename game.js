@@ -581,6 +581,7 @@ async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fade
             icon = `brokenRedSword.png`;
             bg = `redGlow`;
             break;
+        case `poisonUp`:
         case `gravityDown`:
             icon = `purpleParticle.png`;
             bg = `purpleGlow`;
@@ -877,7 +878,6 @@ function calculateEffect(card, effect) {
     }
     if (effect.change.mp) {
         changeStat(card, {stat: 'mp', change: effect.change.mp}, 500);
-        dmgNumber(card, -effect.change.mp);
     }
     effect.duration--;
     if (effect.duration <= 0) {
@@ -974,7 +974,7 @@ async function simulateSingleAttack(user, skill, target) {
         if (skill.effects[i].type) {
             if (skill.effects[i].type == 'same') skill.effects[i].type = user.type? user.type : 'human';
             if (skill.effects[i].type != (target.type? target.type : 'human')) {
-                if (skill.effects.length == 1) done = true; // no animation if the effect does not apply to the target
+                if (skill.effects.length == 1 && skill.type == effect) done = true; // no animation if the effect does not apply to the target
                 continue;
             }
         }
@@ -984,7 +984,7 @@ async function simulateSingleAttack(user, skill, target) {
             console.log(effect);
             target.effects.push(calculateEffect(target, effect));
             console.log(target);
-        } else if (skill.effects.length == 1) done = true; // no animation if the effect fails to apply to the target
+        } else if (skill.effects.length == 1 && skill.type == effect) done = true; // no animation if the effect fails to apply to the target
         
     }
     if (!done) {
@@ -1028,7 +1028,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
     } else {
         replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
-        replacehtml(`money`, `<span>Select Card</span>`);
+        replacehtml(`money`, `<span><strong>Select Card</strong></span>`);
         replacehtml(`grid`, `<div id="buttonGridInventory"></div>`);
     }
     resize();
@@ -1127,6 +1127,60 @@ async function simulateSkill(user, skill, target=undefined) {
     skills(user, user.ap > 0);
     if (user.ap > 0) selectAction(user.id);
 }; window.simulateSkill = simulateSkill;
+
+async function simulateItem(itemId, cardId) {
+    renderCards();
+    console.log(`simulating item`);
+    for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+        document.getElementById(`item${i}`).className = document.getElementById(`item${i}`).className.replace(` selected`, ``);
+    }
+    let item = game.gamestate.player.inventory[itemId];
+    let card = getCardById(cardId);
+    console.log(item);
+    console.log(card);
+    item.quantity--;
+    if (item.quantity <= 0) {
+        let newItem = [];
+        for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+            if (game.gamestate.player.inventory[i].quantity > 0) newItem.push(game.gamestate.player.inventory[i]);
+        }
+        game.gamestate.player.inventory = newItem;
+    }
+    inventory();
+    let animation = true;
+    for (let i = 0; i < item.effects.length; i++) {
+        if (randint(0,100) <= item.effects[i].chance) {
+            let effect = JSON.parse(JSON.stringify(data.effects[item.effects[i].effect]));
+            effect.initialised = false;
+            console.log(effect);
+            let res = calculateEffect(card, effect);
+            if (res) card.effects.push(res);
+            console.log(card);
+        } else if (item.effects.length == 1) animation = false; // no animation if the effect fails to apply to the target
+    }
+    if (animation) await hitEffect(item.hitEffect, getCardCoords(card));
+    await sleep(1000);
+    await checkAllDead();
+    renderCards(`selectAction`, `selectAction`);
+}; window.simulateItem = simulateItem;
+
+function useItem(id) {
+    for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+        document.getElementById(`item${i}`).className = document.getElementById(`item${i}`).className.replace(` selected`, ``);
+    }
+    if (game.gamestate.player.inventory[id].useable && game.gamestate.battleState.tempStorage.activeItemId != id && game.gamestate.player.inventory[id].quantity > 0) {
+        document.getElementById(`item${id}`).className = document.getElementById(`item${id}`).className + ` selected`;
+        game.gamestate.battleState.tempStorage.activeItemId = id;
+        renderCards(`selectItemTarget`, `selectItemTarget`);
+    } else {
+        game.gamestate.battleState.tempStorage.activeItemId = undefined;
+        renderCards(`selectAction`, `selectAction`);
+    }
+}; window.useItem = useItem;
+
+function selectItemTarget(id) {
+    simulateItem(game.gamestate.battleState.tempStorage.activeItemId, id);
+}; window.selectItemTarget = selectItemTarget;
 
 function selectAction(id) {
     let card = getCardById(id);
@@ -1368,6 +1422,9 @@ function playerTurn() {
 async function enemyTurn() {
     console.log('player turn ended, enemy attacking');
     game.gamestate.battleState.turn = 'enemy';
+    game.gamestate.battleState.tempStorage.activeCardId = undefined;
+    game.gamestate.battleState.tempStorage.skillId = undefined;
+    game.gamestate.battleState.tempStorage.activeItemId = undefined;
     if (game.gamestate.inBattle) addBattleControls(true);
     for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
         game.gamestate.battleState.eb[i].ap = 1;
@@ -1516,8 +1573,9 @@ async function startDungeon() {
     }
     game.gamestate.inBattle = true;
     game.gamestate.battleState.wave = 0;
+    game.gamestate.battleState.turn = 'player'; // this lets inventory know that it can be opened
     resize();
-    inventory();
+    inventory(); 
     console.log('dungeon started');
     await runDungeon();
     game.gamestate.inBattle = false;
@@ -1731,7 +1789,7 @@ function focusItem(itemId) {
     if (item.sellable) shop += `<button onclick="inventorySellItem(${itemId})" id="sellButton">Sell 1 ($${bigNumber(item.sellPrice)})</button>`;
     shop += `</div>`;
     document.getElementById('focus').style.display = `block`;
-    replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.displayName ? item.displayName : item.name} </strong></span>`);
+    replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.name} </strong></span>`);
     replacehtml(`focusImageContainer`, `<img src="${item.pfp}" class="focusIcon">`);
     replacehtml(`focusDescription`, item.description);
     replacehtml(`focusStats`, stats);
@@ -1888,17 +1946,37 @@ function pull() {
     resize();
 }; window.pull = pull;
 
-function inventory() {
+function inventory(forceBattleMode=false) {
     console.log('inventory');
-    if (game.gamestate.inBattle) replacehtml(`nav`, `<button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="unFocusedButton"><h3>Skills</h3></button>`);
-    else replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
-    if (!game.gamestate.inBattle) replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
-    else replacehtml(`money`, ``);
+    if (game.gamestate.inBattle || forceBattleMode) {
+        if (game.gamestate.battleState.turn != 'player') return;
+        game.gamestate.battleState.tempStorage.activeCardId = undefined;
+        game.gamestate.battleState.tempStorage.skillId = undefined;
+        renderCards();
+        for (let i = 0; i < game.gamestate.battleState.pb.length; i++) {
+            document.getElementById(`PB${i}ID`).className = document.getElementById(`PB${i}ID`).className.replace(` selected`, ``);
+        }
+        for (let i = 0; i < game.gamestate.battleState.pf.length; i++) {
+            document.getElementById(`PF${i}ID`).className = document.getElementById(`PF${i}ID`).className.replace(` selected`, ``);
+        }
+        for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
+            document.getElementById(`EB${i}ID`).className = document.getElementById(`EB${i}ID`).className.replace(` selected`, ``);
+        }
+        for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
+            document.getElementById(`EF${i}ID`).className = document.getElementById(`EF${i}ID`).className.replace(` selected`, ``);
+        }
+        renderCards(`selectAction`, `selectAction`);
+        replacehtml(`nav`, `<button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="unFocusedButton"><h3>Skills</h3></button>`);
+        replacehtml(`money`, `<span><strong>Use Item</strong></span>`);
+    }
+    else {
+        replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="focusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
+        replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
+    }
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
-        let title = `<strong>${game.gamestate.player.inventory[i].name}</strong>`;
-
-        let buttonData = `${game.gamestate.inBattle ? `onclick="useItem(${i})"` : `onclick="focusItem(${i})"`} class="itemButton" id="rank${game.gamestate.player.inventory[i].rarity}Button"`;
+        let title = `<strong>${game.gamestate.player.inventory[i].displayName ? game.gamestate.player.inventory[i].displayName : game.gamestate.player.inventory[i].name}</strong>`;
+        let buttonData = `${game.gamestate.inBattle ? `onclick="useItem(${i})"` : `onclick="focusItem(${i})"`} class="itemButton rank${game.gamestate.player.inventory[i].rarity}Button" id="item${i}"`;
         buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p>${game.gamestate.player.inventory[i].quantity > 1 ? `<div id="cornerIcon"><span id="down">${game.gamestate.player.inventory[i].quantity > 99 ? `99+`: game.gamestate.player.inventory[i].quantity}</span></div></button>` : ``}</span>`;
     }
     console.log(buttonGridHtml);
