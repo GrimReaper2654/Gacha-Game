@@ -326,6 +326,23 @@ const offensiveItems = [
         quantity: 0,
         stackSize: 999999999,
     },
+    {
+        id: `terroristBomb`,
+        name: `Terrorist Bomb`,
+        displayName: `Terrorist Bomb\n `,
+        description: `A bomb commonly used by terrorists.`,
+        rarity: EX,
+        pfp: `assets/terroristBomb.png`,
+        useable: true,
+        effects: [{effect: 'terroristBomb', chance: 100}],
+        hitEffect: `explosion`,
+        purchaceable: true,
+        purchacePrice: 25000,
+        sellable: false,
+        sellPrice: 0,
+        quantity: 0,
+        stackSize: 999999999,
+    },
 ];
 
 const stones = [

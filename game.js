@@ -1776,12 +1776,16 @@ function inventoryBuyItem(itemId) {
 function focusItem(itemId) {
     let item = game.gamestate.player.inventory[itemId];
     let stats = `<br><span id="veryBig"><strong>Stats:</strong></span><br>`;
-    if (item.hp) stats += `<img src="assets/greenCross.png" class="mediumIconDown"> replenishes ${item.hp} health instantly<br>`;
-    if (item.mp) stats += `<img src="assets/blueStar.png" class="mediumIconDown"> replenishes ${item.mp} mana instantly<br>`;
-    if (item.str) stats += `<img src="assets/lightning.png" class="mediumIconDown"> increases strength by ${item.str*100}%<br>`;
-    if (item.int) stats += `<img src="assets/blueStar.png" class="mediumIconDown"> increases inteligence by ${item.int}<br>`;
-    if (item.effects[0]) stats += `<img src="assets/greenCross.png" class="mediumIconDown"> ${item.effects[0].id == 'hot' ? `heals ${item.effects[0].lvl} hp per round for ${item.effects[0].duration} rounds` : `removes all status effects`}<br>`;
-    stats += `<img src="assets/lightnings.png" class="mediumIconDown"> ${item.uses} use${item.uses > 1 ? 's' : ''}<br>`;
+    if (item.effects) {
+        for (let j = 0; j < item.effects.length; j++) {
+            let effect = data.effects[item.effects[j].effect];
+            console.log(effect);
+            stats += `Applies effect:<br>`;
+            for (let k = 0; k < effect.stats.length; k++) {
+                stats += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
+            }
+        }
+    }
     stats += `<img src="assets/box.png" class="mediumIconDown"> ${item.quantity} in stock<br>`;
     let shop = `<div id="inventoryShop">`;
     if (item.purchaceable) shop += (game.gamestate.player.money >= item.purchacePrice ?  `<button onclick="inventoryBuyItem(${itemId})" id="buyButton">` : `<button id="cantBuyButton">`) + `Buy 1 ($${bigNumber(item.purchacePrice)})</button>`;
@@ -1795,6 +1799,66 @@ function focusItem(itemId) {
     replacehtml(`focusStats`, stats);
     replacehtml(`focusSkills`, shop);
 }; window.focusItem = focusItem;
+
+function focusCharacter(characterId, addExp=true) { 
+    let character = game.gamestate.player.characters[characterId];
+    if (addExp) increaseExp(characterId);
+    let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
+    let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
+    for (let i = 0; i < character.skills.length; i++) {
+        let skill = `<span id="bigger">${data.skills[character.skills[i]].name}</span><br>`;
+        skill += `<span id="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
+        let dmg = data.skills[character.skills[i]].dmg;
+        switch (data.skills[character.skills[i]].multiplier) {
+            case str:
+                dmg *= character.str;
+                break;
+            case int:
+                dmg *= character.int/100;
+                break;
+        }
+        dmg = Math.floor(dmg);
+        if (data.skills[character.skills[i]].dmg > 0) skill += `<img src="assets/lightning.png" class="smallIcon"> ${dmg} damage<br>`;
+        else if (data.skills[character.skills[i]].dmg < 0) skill += `<img src="assets/greenCross.png" class="smallIcon"> ${-dmg} heal<br>`;
+        if (data.skills[character.skills[i]].extraStats) {
+            for (let j = 0; j < data.skills[character.skills[i]].extraStats.length; j++) {
+                skill += `<img src="assets/${data.skills[character.skills[i]].extraStats[j].icon}" class="smallIcon"> ${data.skills[character.skills[i]].extraStats[j].desc}<br>`;
+            }
+        }
+        if (data.skills[character.skills[i]].effects) {
+            for (let j = 0; j < data.skills[character.skills[i]].effects.length; j++) {
+                let effect = data.effects[data.skills[character.skills[i]].effects[j].effect];
+                //console.log(effect);
+                skill += `${data.skills[character.skills[i]].effects[j].chance == 100? `applies` : `${data.skills[character.skills[i]].effects[j].chance}% chance to apply`} effect:<br>`;
+                for (let k = 0; k < effect.stats.length; k++) {
+                    skill += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
+                }
+            }
+        }
+        if (data.skills[character.skills[i]].cost.hp) skill += `<img src="assets/redDrop.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.hp} hp<br>`;
+        if (data.skills[character.skills[i]].cost.mp) skill += `<img src="assets/blueStar.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.mp} mp<br>`;
+        if (data.skills[character.skills[i]].attacks > 1) skill += `<img src="assets/lightnings.png" class="smallIcon"> ${data.skills[character.skills[i]].attacks} attacks<br>`;
+        skill += `<img src="assets/explosion.png" class="smallIcon"> ${data.skills[character.skills[i]].selfOnly? 'self only' : data.skills[character.skills[i]].targeting}<br>`;
+        skill += `<br>`;
+        skills += skill;
+    }
+    let shop = `<div id="inventoryShop">`;
+    if (inTeam(characterId)) shop += `<button onclick="removeFromTeam(${characterId})" id="sellButton">Remove from Team</button>`;
+    else if (game.gamestate.player.team.length < 4 && character.alive) shop += `<button onclick="addToTeam(${characterId})" id="buyButton">Add to Team</button>`;
+    else shop += `<button id="cantBuyButton">Add to Team</button>`;
+    if (!character.alive) shop += `<button id="sellButton" class="disabled">Revive</button>`;
+    shop += `</div>`;
+    document.getElementById('focus').style.display = `block`;
+    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.alive? `` : `<s>`}${character.title} ${character.name}${character.alive? `` : `</s>`} </strong></span>`);
+    replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon${character.alive? `` : ` grey  disabled`}">`);
+    replacehtml(`focusDescription`, `${character.description}${character.alive? `` : ` ${character.name} has died!`}`);
+    replacehtml(`focusStats`, getExpBar(character) + stats);
+    replacehtml(`focusSkills`, shop + skills);
+}; window.focusCharacter = focusCharacter;
+
+function exitFocus() {
+    document.getElementById('focus').style.display = `none`;
+}; window.exitFocus = exitFocus;
 
 function getExpBar(character, set=false) {
     let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
@@ -1844,65 +1908,6 @@ function handleLevelUp(characterId) {
         updateTeam();
     }
 }; window.handleLevelUp = handleLevelUp;
-
-function focusCharacter(characterId, addExp=true) { 
-    let character = game.gamestate.player.characters[characterId];
-    if (addExp) increaseExp(characterId);
-    let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
-    let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
-    for (let i = 0; i < character.skills.length; i++) {
-        let skill = `<span id="bigger">${data.skills[character.skills[i]].name}</span><br>`;
-        skill += `<span id="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
-        let dmg = data.skills[character.skills[i]].dmg;
-        switch (data.skills[character.skills[i]].multiplier) {
-            case str:
-                dmg *= character.str;
-                break;
-            case int:
-                dmg *= character.int/100;
-                break;
-        }
-        dmg = Math.floor(dmg);
-        if (data.skills[character.skills[i]].dmg > 0) skill += `<img src="assets/lightning.png" class="smallIcon"> ${dmg} damage<br>`;
-        else if (data.skills[character.skills[i]].dmg < 0) skill += `<img src="assets/greenCross.png" class="smallIcon"> ${-dmg} heal<br>`;
-        if (data.skills[character.skills[i]].extraStats) {
-            for (let j = 0; j < data.skills[character.skills[i]].extraStats.length; j++) {
-                skill += `<img src="assets/${data.skills[character.skills[i]].extraStats[j].icon}" class="smallIcon"> ${data.skills[character.skills[i]].extraStats[j].desc}<br>`;
-            }
-        }
-        if (data.skills[character.skills[i]].effects) {
-            for (let j = 0; j < data.skills[character.skills[i]].effects.length; j++) {
-                let effect = data.effects[data.skills[character.skills[i]].effects[j].effect];
-                //console.log(effect);
-                for (let k = 0; k < effect.stats.length; k++) {
-                    skill += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
-                }
-            }
-        }
-        if (data.skills[character.skills[i]].cost.hp) skill += `<img src="assets/redDrop.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.hp} hp<br>`;
-        if (data.skills[character.skills[i]].cost.mp) skill += `<img src="assets/blueStar.png" class="smallIcon"> consumes ${data.skills[character.skills[i]].cost.mp} mp<br>`;
-        if (data.skills[character.skills[i]].attacks > 1) skill += `<img src="assets/lightnings.png" class="smallIcon"> ${data.skills[character.skills[i]].attacks} attacks<br>`;
-        skill += `<img src="assets/explosion.png" class="smallIcon"> ${data.skills[character.skills[i]].selfOnly? 'self only' : data.skills[character.skills[i]].targeting}<br>`;
-        skill += `<br>`;
-        skills += skill;
-    }
-    let shop = `<div id="inventoryShop">`;
-    if (inTeam(characterId)) shop += `<button onclick="removeFromTeam(${characterId})" id="sellButton">Remove from Team</button>`;
-    else if (game.gamestate.player.team.length < 4 && character.alive) shop += `<button onclick="addToTeam(${characterId})" id="buyButton">Add to Team</button>`;
-    else shop += `<button id="cantBuyButton">Add to Team</button>`;
-    if (!character.alive) shop += `<button id="sellButton" class="disabled">Revive</button>`;
-    shop += `</div>`;
-    document.getElementById('focus').style.display = `block`;
-    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.alive? `` : `<s>`}${character.title} ${character.name}${character.alive? `` : `</s>`} </strong></span>`);
-    replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon${character.alive? `` : ` grey  disabled`}">`);
-    replacehtml(`focusDescription`, `${character.description}${character.alive? `` : ` ${character.name} has died!`}`);
-    replacehtml(`focusStats`, getExpBar(character) + stats);
-    replacehtml(`focusSkills`, shop + skills);
-}; window.focusCharacter = focusCharacter;
-
-function exitFocus() {
-    document.getElementById('focus').style.display = `none`;
-}; window.exitFocus = exitFocus;
 
 function updateTeam() {
     let canBattle = false;

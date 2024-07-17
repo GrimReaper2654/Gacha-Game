@@ -359,6 +359,29 @@ const itemsEffects = { // potions, spells and more (all instantly activated)
         statChange: {str: 0, int: 0, reg: 0},
         duration: 0,
     },
+    terroristBomb: {
+        desc: `a big explosion`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `instant`,
+            },
+            {
+                icon: `lightning.png`,
+                desc: `10000 physical damage`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 10000, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 0,
+    },
 };
 const debuffEffects = { // effects (debuffs)
     lesserBleed: {
