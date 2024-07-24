@@ -631,6 +631,26 @@ const shadowCavern = {
     ],
 };
 
+const macelineFactory = {
+    id: `macelineFactory`,
+    name: `[WIP] MacELine™ Factory`,
+    outerBac: `assets/VScodeGrey.jpeg`,
+    innerBac: `assets/VScodeGrey.jpeg`,
+    waves: [
+        { // 1
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineGuard`,
+                    lvl: 0,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+            ],
+        },
+    ],
+};
+
 const debugDungeon = {
     id: `debugDungeon`,
     name: `Debug Dungeon`,
@@ -673,5 +693,5 @@ const debugDungeon = {
     ],
 };
 
-const gachaGameDungeons = [goblinDen, shadowCavern, dragonPeaks, debugDungeon];
+const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, dragonPeaks, debugDungeon];
 export {gachaGameDungeons};

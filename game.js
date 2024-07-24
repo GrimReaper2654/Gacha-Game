@@ -546,6 +546,7 @@ async function aoeEffect(effect, team) {
 
 async function hitEffect(effect, pos, offset, noRotate=false, duration=250, fadeDuration=50, fadeAmount=0.95) {
     let id = generateId();
+    if (effect == 'integral' || effect == 'derivitive') noRotate = true;
     let r = noRotate ? 0 : randint(0,360);
     let html = ``;
     // special animated hit effect
@@ -779,29 +780,15 @@ async function fakeMoveCard(card, targetCard, steps, reset=false, offset={x: 0, 
 }; window.fakeMoveCard = fakeMoveCard;
 
 async function changeStat(target, effect={stat: '', change: 0}, time=750) {
-    if (effect.change == 0) return;
-    //console.log(`final ${final}`);                                                                                                                                                                            
+    if (effect.change == 0) return;                                                                                                                                                                       
     let steps = 20;
-    //console.log(target);
-    //let position = readID(target.id);
-    //console.log(target);
-    //console.log(effect.change);
-    //console.log(effect.change/steps);
     for (let i = 0; i < steps; i++) {
-        target[effect.stat] = Math.min(target[effect.stat] + effect.change/steps, target[effect.stat+'Max']);
-        //game.gamestate.battleState[position.row][position.pos][effect.stat] += effect.change/steps; // should handle multiple changeStat functions running for the same bar, however, floating point errors
-        //console.log(Math.ceil(target[effect.stat]));
-        //console.log(i);
-        //console.log(target.hp);
-        //console.log(game.gamestate.battleState.ef[0].hp);
+        target[effect.stat] = Math.max(0, Math.min(target[effect.stat] + effect.change/steps, target[effect.stat+'Max']));
+        if (target[effect.stat] < 1) target[effect.stat] = 0;
         updateBar(target.id+effect.stat, target[effect.stat]/target[effect.stat+'Max'], Math.floor(target[effect.stat]));
-        //console.log(target[effect.stat]/target[effect.stat+'Max']);
         await new Promise(resolve => setTimeout(resolve, time/steps));
+        if (target[effect.stat] == 0) break;
     }
-    //console.log(target);
-    //console.log(position);
-    //console.log(game.gamestate.battleState[position.row][position.pos]);
-    //console.log(game.gamestate.battleState[position.row][position.pos][effect.stat]);
 }; window.changeStat = changeStat;
 
 function readID(id) {
@@ -973,10 +960,12 @@ async function simulateSingleAttack(user, skill, target) {
     for (let i = 0; i < skill.effects.length; i++) {
         if (skill.effects[i].type) {
             if (skill.effects[i].type == 'same') skill.effects[i].type = user.type? user.type : 'human';
+            console.log(skill.effects[i].type, (target.type? target.type : 'human'));
             if (skill.effects[i].type != (target.type? target.type : 'human')) {
                 if (skill.effects.length == 1 && skill.type == effect) done = true; // no animation if the effect does not apply to the target
                 continue;
             }
+            console.log('success');
         }
         if (randint(0,100) <= skill.effects[i].chance) {
             let effect = JSON.parse(JSON.stringify(data.effects[skill.effects[i].effect]));
@@ -1258,6 +1247,7 @@ function useSkill(skillId=undefined) {
     let skill = data.skills[skillId];
     console.log(`skill selected`);
     console.log(skill);
+    if (skill.cost.mp > getCardById(game.gamestate.battleState.tempStorage.activeCardId).mp) return; // must have sufficient mana
     document.getElementById(`buttonGridInventory`).innerHTML = document.getElementById(`buttonGridInventory`).innerHTML.replace(` selected`, ``);
     document.getElementById(skill.name).className += ` selected`;
     if (skill.instantUse) {
@@ -1499,7 +1489,7 @@ async function retreat() {
     }
 }; window.retreat = retreat;
 
-function addBattleControls(disabled=false) { //addBattleControls();
+function addBattleControls(disabled=false) { // addBattleControls();
     replacehtml(`main`, `<button ${disabled? `` : `onclick="enemyTurn()"`} id="endTurnButton" class="endTurn${disabled? ` disabled` : ``}">End Turn</button><button onclick="retreat()" id="retreatButton" class="retreat ${game.gamestate.battleState.retreat? `redButton` : `greenButton`}">${game.gamestate.battleState.retreat? `Retreated!` : `Retreat`}</button>`);
 } ; window.addBattleControls = addBattleControls;
 

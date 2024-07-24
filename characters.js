@@ -405,10 +405,10 @@ const rankSR = { // SR
         skills: ['wildSwing', 'wildCharge', 'cower', 'sparkleSlash'], 
         armour: {physical: [75, 95], magic: [50, 90]}, 
     },
-    Edwarda: { // support
-        name: `Edwarda`,
+    Edwinette: { // support
+        name: `Edwinette`,
         title: `Drug Dealer`,
-        description: `Former chemist and part time drug dealer, Edwarda broke through reality to reach the other world by synthesising a compound with negative molar mass. Now, she synthesises her drugs with alchemy and deals meth in the other world, where there are no pesky poicemen to ruin her business. However, the return of the demon king has negatively affected her profits, so the demon lord must die.`,
+        description: `Former chemist and part time drug dealer, Edwinette broke through reality to reach the other world by synthesising a compound with negative molar mass. Now, she synthesises her drugs with alchemy and deals meth in the other world, where there are no pesky policemen to ruin her business. However, the return of the demon king has negatively affected her profits, so the demon lord must die.`,
         personality: 'angry',
         stats: {atk: 'medium', def: 'low'},
         rarity: SR,
@@ -692,10 +692,10 @@ const rankG = { // G
         rarity: G,
         gender: female,
         pfp: `assets/AnimeGirl61.jpeg`,
-        hp: 900,
-        mp: 900,
+        hp: 1000,
+        mp: 800,
         str: 1,
-        int: 6900,
+        int: 4200,
         mpRegen: 0,
         skills: ['organHarvest', 'steroids', 'cyborgSurgery', 'bloodTransfusion', 'largeBloodTransfusion', 'heartTransplant', 'defibrillator'],
         armour: {physical: [50, 25], magic: [75, 25]},
@@ -758,6 +758,24 @@ const rankEX = { // EX
         agi: 125,
         skills: ['assaultRifle', 'fragGrenade', 'greaterRaiseGuard', 'swordDance', 'ultraHeavySlash', 'soulHarvest'],
         armour: {physical: [100, 80], magic: [250, 25]},
+        additionalAp: 1,
+    },
+    Yape: { // dps / tank / support (can do anything really)
+        name: `Yape`,
+        title: `Mathmatician`,
+        description: `Yape is the greatest mathmatician who has ever lived. She can manipulate reality with calculus equations. Yape also enjoys badminton.`,
+        personality: 'confident',
+        stats: {atk: 'extreme', def: 'extreme'},
+        rarity: EX,
+        gender: female,
+        pfp: `assets/empty.png`,
+        hp: 600,
+        mp: 1200,
+        str: 1.5,
+        int: 6900,
+        mpRegen: 100,
+        skills: ['badmintonSmash', 'indefiniteIntegral', 'footwork', 'fundamentalTheormOfCalculus', 'differentiate', 'mathLecture'],
+        armour: {physical: [50, 50], magic: [75, 50]},
         additionalAp: 1,
     },
     MQ69Reaper: { // dps
@@ -1103,6 +1121,21 @@ const gachaGameEnemies = {
         ai: `rng`,
         additionalAp: 1,
     },
+    macelineGuard: {
+        type: 'robot',
+        enemyType: `macelineGuard`,
+        name: `Guard`, 
+        rarity: N,
+        pfp: `assets/empty.jpeg`,
+        hp: [250],
+        mp: [0],
+        str: [1],
+        int: [100],
+        mpRegen: [0],
+        skills: ['crushingBlow', 'reposition', 'exist', 'baseballBat'], 
+        armour: {physical: [25, 50], magic: [0, 50]},
+        ai: `rng`,
+    },
 };
 const gachaGameSummons = {
     bird: { // meat shield
@@ -1210,4 +1243,4 @@ const gachaGameSummons = {
 
 const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankM, rankG, rankEX];
 
-export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons};
+export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons}; 
