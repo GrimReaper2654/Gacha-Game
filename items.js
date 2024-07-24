@@ -435,13 +435,19 @@ const gachaGameDrops = {
         boss: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
     },
     clear: {
-        goblinDen: [{type: item, quantity: 1, chance: 100, item: `goblinWarHorn`}],
-        shadowCavern: [{type: exp, quantity: 5000, chance: 100}],
-        dragonPeaks: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 5, chance: 100, item: `dragonScale`}],
-        macelineFactory: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
-        debugDungeon: [{type: exp, quantity: 100000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
-        
-        firstClear: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
+        goblinDen: [{type: exp, quantity: 7500, chance: 100}],
+        shadowCavern: [{type: exp, quantity: 10000, chance: 100}],
+        dragonPeaks: [{type: exp, quantity: 50000, chance: 100}],
+        macelineFactory: [{type: exp, quantity: 25000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
+        chickenLake: [{type: exp, quantity: 250000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
+        debugDungeon: [{type: exp, quantity: 1000000, chance: 100}],
+
+        goblinDenFirst: [{type: exp, quantity: 50000, chance: 100}],
+        shadowCavernFirst: [{type: exp, quantity: 25000, chance: 100}],
+        dragonPeaksFirst: [{type: exp, quantity: 100000, chance: 100}],
+        macelineFactoryFirst: [{type: exp, quantity: 75000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
+        chickenLakeFirst: [{type: exp, quantity: 1000000, chance: 100}, {type: gold, quantity: 50000, chance: 100}],
+        debugDungeonFirst: [{type: exp, quantity: 1000000, chance: 100}],
     }, 
     enemy: {
         goblinGrunt: [{type: exp, quantity: 100, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
@@ -462,9 +468,11 @@ const gachaGameDrops = {
         scorpion: [{type: exp, quantity: 1000, chance: 100}, {type: item, quantity: 1, chance: 40, item: 'stone2'}],
         snake: [{type: exp, quantity: 1000, chance: 100}, {type: item, quantity: 1, chance: 60, item: 'stone2'}],
 
+        chickenWeaker: [{type: exp, quantity: 10000, chance: 100}, {type: item, quantity: 1, chance: 10, item: 'stone5'}],
         chicken: [{type: exp, quantity: 25000, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone5'}],
-        chickenStrong: [{type: exp, quantity: 75000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
-        chickenVeryStrong: [{type: exp, quantity: 200000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone5'}],
+        chickenStrong: [{type: exp, quantity: 100000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
+        chickenStronger: [{type: exp, quantity: 250000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone5'}],
+        chickenVeryStrong: [{type: exp, quantity: 750000, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone5'}],
 
         scrapBotMelee: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],
         scrapBotRanged: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],

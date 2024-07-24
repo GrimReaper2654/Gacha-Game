@@ -821,7 +821,7 @@ function calcResistance(dmgType, dmg, target) {
             return Math.max(0, (dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100);
         case piercing:
             // if defender has 100% resistance to damage, piercing damage can be blocked by damage negation.
-            if (target.armour.physical[1] >= 100 && target.armour.magical[1] >= 100) return Math.max(0, Math.max(dmg-target.armour.physical[0], dmg-target.armour.magic[0]));
+            if (target.armour.physical[1] >= 100 && target.armour.magic[1] >= 100) return Math.max(0, Math.max(dmg-target.armour.physical[0], dmg-target.armour.magic[0]));
             return dmg;
         case normal:
             return Math.max(0, Math.max((dmg-target.armour.physical[0])*(100-target.armour.physical[1])/100, (dmg-target.armour.magic[0])*(100-target.armour.magic[1])/100));
@@ -830,6 +830,7 @@ function calcResistance(dmgType, dmg, target) {
 
 function calculateEffect(card, effect) {
     //console.log('calculateEffect');
+    if (!effect) return false;
     if (!effect.initialised && !effect.duration == 0) {
         // wtf is this
         if (effect.defChange.physical[0] < 0) effect.defChange.physical[0] = -Math.min(card.armour.physical[0], -effect.defChange.physical[0]);
@@ -1319,6 +1320,9 @@ function giveRewards(drops, killer=undefined) {
                             game.gamestate.player.team[i].expToAdd += perCharacter;
                         }
                     }
+                    for (let i = 0; i < game.gamestate.player.team.length; i++) {
+                        console.log(game.gamestate.player.team[i].name, ': ', game.gamestate.player.team[i].expToAdd);
+                    }
                     break;
                 case item:
                     break;
@@ -1379,22 +1383,18 @@ async function checkAllDead() {
 }; window.checkAllDead = checkAllDead;
 
 async function handleEnemyAttack(enemy) {
-    while (enemy.ap > 0) {
-        let skillToUse = data.skills[randchoice(enemy.skills)];
-        console.log(skillToUse);
-        if (skillToUse.name == 'Reposition') {
-            console.log('repositioning card');
-            await repositionCard(enemy);
-            await sleep(500);
-            continue;
-        } 
-        let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
-        if (skillToUse.instantUse) target = enemy;
-        console.log(target);
-        await simulateSkill(enemy, skillToUse, target);
-        if (skillToUse.type == summon || skillToUse.name == "reposition") return true;
-    }
-    return false;
+    let skillToUse = data.skills[randchoice(enemy.skills)];
+    console.log(skillToUse);
+    if (skillToUse.name == 'Reposition') {
+        console.log('repositioning card');
+        await repositionCard(enemy);
+        await sleep(500);
+        return;
+    } 
+    let target = game.gamestate.battleState.pf.length > 0? randchoice(game.gamestate.battleState.pf) : randchoice(game.gamestate.battleState.pb);
+    if (skillToUse.instantUse) target = enemy;
+    console.log(target);
+    await simulateSkill(enemy, skillToUse, target);
 }; window.handleEnemyAttack = handleEnemyAttack;
 
 function resetCharacterStats() {
@@ -1454,15 +1454,22 @@ async function enemyTurn() {
     while (cont) { 
         cont = false;
         for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
-            if (game.gamestate.inBattle) cont = await handleEnemyAttack(game.gamestate.battleState.ef[i]);
-            if (cont) break;
+            if (game.gamestate.battleState.ef[i].ap > 0) {
+                await handleEnemyAttack(game.gamestate.battleState.ef[i]);
+                cont = true;
+                break;
+            }
         }
         if (cont) continue;
         for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
-            if (game.gamestate.inBattle) cont = await handleEnemyAttack(game.gamestate.battleState.eb[i]);
-            if (cont) break;
+            if (game.gamestate.battleState.eb[i].ap > 0) {
+                await handleEnemyAttack(game.gamestate.battleState.eb[i]);
+                cont = true;
+                break;
+            }
         }
     }
+    
     console.log('end enemy turn, start handle effects');
     if (game.gamestate.inBattle) handleStatusEffects();
     if (game.gamestate.inBattle) regenMana();
@@ -1560,7 +1567,7 @@ async function runDungeon() {
     giveRewards(data.drops.clear[dungeon.id]);
     if (!game.gamestate.dungeonsCleared[dungeon.id]) {
         game.gamestate.dungeonsCleared[dungeon.id] = true,
-        giveRewards(data.drops.clear.firstClear);
+        giveRewards(data.drops.clear[dungeon.id+'First']);
     }
     // give rewards and stuff
 }; window.runDungeon = runDungeon;
@@ -1888,7 +1895,7 @@ function getExpBar(character, set=false) {
     if (document.getElementById('expBarOuter')) replacehtml('expBarOuter', expBar);
 }; window.getExpBar = getExpBar;
 
-async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=1000) {
+async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=10000) {
     let character = game.gamestate.player.characters[characterId];
     if (expIncrease == -1) {
         console.log('adding stored exp');

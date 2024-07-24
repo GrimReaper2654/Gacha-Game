@@ -633,9 +633,9 @@ const shadowCavern = {
 
 const macelineFactory = {
     id: `macelineFactory`,
-    name: `[WIP] MacELine™ Factory`,
-    outerBac: `assets/VScodeBackgroundGrey.png`,
-    innerBac: `assets/VScodeBackgroundGrey.png`,
+    name: `MacELine™ Factory`,
+    outerBac: `assets/MacELineFactory.jpeg`,
+    innerBac: `assets/factoryBackground.jpeg`,
     waves: [
         { // 1
             type: `normal`,
@@ -868,9 +868,9 @@ const macelineFactory = {
     ],
 };
 
-const debugDungeon = {
+const chickenLake = {
     id: `debugDungeon`,
-    name: `Debug Dungeon`,
+    name: `Lake of Chimkin`,
     outerBac: `assets/lake.jpeg`,
     innerBac: `assets/rockyLake.jpeg`,
     waves: [
@@ -878,7 +878,7 @@ const debugDungeon = {
             type: `boss`,
             enemies: [
                 {
-                    enemy: `chicken`,
+                    enemy: `chickenWeaker`,
                     lvl: 0,
                     quantity: 1,
                     location: `frontline`,
@@ -889,7 +889,7 @@ const debugDungeon = {
             type: `boss`,
             enemies: [
                 {
-                    enemy: `stronkChicken`,
+                    enemy: `chicken`,
                     lvl: 0,
                     quantity: 1,
                     location: `frontline`,
@@ -897,6 +897,28 @@ const debugDungeon = {
             ],
         },
         { // 3
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `stronkChicken`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 4
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `moreStronkChicken`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 5
             type: `boss`,
             enemies: [
                 {
@@ -910,5 +932,25 @@ const debugDungeon = {
     ],
 };
 
-const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, dragonPeaks, debugDungeon];
+const debugDungeon = {
+    id: `debugDungeon`,
+    name: `Debug Dungeon`,
+    outerBac: `assets/VScodeBackgroundGrey.png`,
+    innerBac: `assets/VScodeBackgroundGrey.png`,
+    waves: [
+        { // 1
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `goblin`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+    ],
+};
+
+const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, dragonPeaks, chickenLake, debugDungeon];
 export {gachaGameDungeons};
