@@ -634,8 +634,8 @@ const shadowCavern = {
 const macelineFactory = {
     id: `macelineFactory`,
     name: `[WIP] MacELine™ Factory`,
-    outerBac: `assets/VScodeGrey.jpeg`,
-    innerBac: `assets/VScodeGrey.jpeg`,
+    outerBac: `assets/VScodeBackgroundGrey.png`,
+    innerBac: `assets/VScodeBackgroundGrey.png`,
     waves: [
         { // 1
             type: `normal`,
@@ -645,6 +645,223 @@ const macelineFactory = {
                     lvl: 0,
                     quantity: 2,
                     location: `frontline`,
+                },
+            ],
+        },
+        { // 2
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineGuard`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 3
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `securityDrone`,
+                    lvl: 0,
+                    quantity: 4,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 4
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 5
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `scrapBotMelee`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `scrapBotRanged`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 6
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 0,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityDrone`,
+                    lvl: 0,
+                    quantity: 2,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 7
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineGuard`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineGuard`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `scrapBotRanged`,
+                    lvl: 0,
+                    quantity: 5,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 8
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `securityMech`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 9
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityMech`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityDrone`,
+                    lvl: 0,
+                    quantity: 4,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 10
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 2,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 3,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 11
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `securityMech`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 2,
+                    quantity: 3,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 12
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `securityMech`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `mace`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
                 },
             ],
         },

@@ -317,7 +317,7 @@ const offensiveItems = [
         rarity: SR,
         pfp: `assets/pot15.jpeg`,
         useable: true,
-        effects: [{effect: 'greaterPoison', chance: 100}],
+        effects: [{effect: 'poisonPotion', chance: 100}],
         hitEffect: `poisonUp`,
         purchaceable: true,
         purchacePrice: 1500,
@@ -446,9 +446,9 @@ const gachaGameDrops = {
     enemy: {
         goblinGrunt: [{type: exp, quantity: 100, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
         goblinArcher: [{type: exp, quantity: 150, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone1'}],
-        goblinWarrior: [{type: exp, quantity: 200, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],
-        goblinGuard: [{type: exp, quantity: 250, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],
-        goblinBoss: [{type: exp, quantity: 2000, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone2'}],
+        goblinWarrior: [{type: exp, quantity: 300, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],
+        goblinGuard: [{type: exp, quantity: 500, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],
+        goblinBoss: [{type: exp, quantity: 2500, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone2'}],
 
         dragonGreen: [{type: exp, quantity: 2500, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone4'}],
         dragonRainbow: [{type: exp, quantity: 7500, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone4'}],
@@ -466,7 +466,15 @@ const gachaGameDrops = {
         chickenStrong: [{type: exp, quantity: 75000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
         chickenVeryStrong: [{type: exp, quantity: 200000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone5'}],
 
-        macelineGuard: [{type: exp, quantity: 500, chance: 100}, {type: gold, quantity: 100, chance: 100}],
+        scrapBotMelee: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],
+        scrapBotRanged: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],
+        macelineGuard: [{type: exp, quantity: 1000, chance: 100}, {type: gold, quantity: 100, chance: 100}],
+        securityDrone: [{type: exp, quantity: 2000, chance: 100}, {type: gold, quantity: 250, chance: 100}],
+        assemblingMachine: [{type: exp, quantity: 6000, chance: 100}, {type: gold, quantity: 500, chance: 100}],
+        macelineWorker: [{type: exp, quantity: 7500, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
+        securityMech: [{type: exp, quantity: 15000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
+        macelinePrototype: [{type: exp, quantity: 30000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
+        mace: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 20000, chance: 100}],
     },
 };
 

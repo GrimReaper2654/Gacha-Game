@@ -351,7 +351,9 @@ function getCardCoords(card) { // calculate coordinates manually
 
 function getCardCoords(card) { // calculate coordinates manually
     //console.log(document.getElementById('battleScreen').getBoundingClientRect().width, document.getElementById('battleScreen').getBoundingClientRect().height);
-    let pos = readID(card.id);
+    let pos = undefined;
+    if (card.row && typeof card.pos === 'number') pos = card; // allow directly giving position
+    else pos = readID(card.id);
     let coords = {x: -10, y: 0}; // idk why
     //console.log(pos);
     switch (pos.row) {
@@ -957,7 +959,9 @@ async function simulateSingleAttack(user, skill, target) {
         } 
         else offset = await simulateProjectileAttack(skill.animation.projectile, startPos, endPos, skill.animation.projectileSpeed, skill.animation.projectileFade);
     } 
+    console.log('effects');
     for (let i = 0; i < skill.effects.length; i++) {
+        console.log(skill.effects[i]);
         if (skill.effects[i].type) {
             if (skill.effects[i].type == 'same') skill.effects[i].type = user.type? user.type : 'human';
             console.log(skill.effects[i].type, (target.type? target.type : 'human'));
@@ -995,8 +999,9 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         console.log('skills');
         let buttonGridHtml = `<div id="stats"><p id="noPadding" class="statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
         for (let i = 0; i < card.skills.length; i++) {
+            console.log(card.skills[i]);
             let dmg = data.skills[card.skills[i]].dmg;
-            if (typeof dmg === 'number' && data.skills[card.skills[i]].type != heal) {
+            if (data.skills[card.skills[i]].type != summon && data.skills[card.skills[i]].type != heal) {
                 switch (data.skills[card.skills[i]].multiplier) {
                     case str:
                         dmg *= card.str;
@@ -1008,7 +1013,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
                 dmg = Math.floor(dmg);
             }
             let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
-            let dmgDesc = `${typeof dmg === 'number'? `${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg}`}` : `Summons: ${dmg}`}${data.skills[card.skills[i]].attacks > 1? ` × ${data.skills[card.skills[i]].attacks}` : ``}`;
+            let dmgDesc = `${data.skills[card.skills[i]].type != summon? `${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg}`}` : `Summons: ${dmg}`}${data.skills[card.skills[i]].attacks > 1? ` × ${data.skills[card.skills[i]].attacks}` : ``}`;
             let desc = `${data.skills[card.skills[i]].desc.replaceAll(`[attacker]`, card.name).replaceAll(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmgDesc}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
             let buttonData = `${enabled? `onclick="useSkill('${card.skills[i]}')" ` : ``}id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
             buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
@@ -1022,6 +1027,11 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
     }
     resize();
 }; window.skills = skills;
+
+function handleSummon(cardRow, summonedEntity, summonEffect) {
+    game.gamestate.battleState[cardRow].push(JSON.parse(JSON.stringify(summonedEntity)));
+    hitEffect(summonEffect, getCardCoords({row: cardRow, pos: game.gamestate.battleState[cardRow].length-1}), {x: 0, y: 0}, true, 750);
+};
 
 async function simulateSkill(user, skill, target=undefined) { 
     console.log('skill used');
@@ -1084,14 +1094,25 @@ async function simulateSkill(user, skill, target=undefined) {
             summonedEntity.ap = 1;
             summonedEntity.hpMax = summonedEntity.hp;
             summonedEntity.mpMax = summonedEntity.mp;
-            summonedEntity.skills.push('reposition');
-            while (toSummon > 0 && game.gamestate.battleState.pb.length < 6) {
-                toSummon--;
-                game.gamestate.battleState.pb.push(JSON.parse(JSON.stringify(summonedEntity)));
-            }
-            while (toSummon > 0 && game.gamestate.battleState.pf.length < 6) {
-                toSummon--;
-                game.gamestate.battleState.pf.push(JSON.parse(JSON.stringify(summonedEntity)));
+            if (user.id[0] == 'P') {
+                summonedEntity.skills.push('reposition');
+                while (toSummon > 0 && game.gamestate.battleState.pb.length < 6) {
+                    toSummon--;
+                    handleSummon('pb', summonedEntity, skill.animation.hitEffect);
+                }
+                while (toSummon > 0 && game.gamestate.battleState.pf.length < 6) {
+                    toSummon--;
+                    handleSummon('pf', summonedEntity, skill.animation.hitEffect);
+                }
+            } else {
+                while (toSummon > 0 && game.gamestate.battleState.ef.length < 6) {
+                    toSummon--;
+                    handleSummon('ef', summonedEntity, skill.animation.hitEffect);
+                }
+                while (toSummon > 0 && game.gamestate.battleState.eb.length < 6) {
+                    toSummon--;
+                    handleSummon('eb', summonedEntity, skill.animation.hitEffect);
+                }
             }
             break;
         default:
@@ -1108,7 +1129,8 @@ async function simulateSkill(user, skill, target=undefined) {
         console.log('expected attack duration');
     }
     console.log('buffer start');
-    await sleep(1000);
+    if (skill.targeting != summon) await sleep(750);
+    await sleep(250);
     console.log('buffer end');
     await checkAllDead();
     renderCards(`selectAction`, `selectAction`);
@@ -1370,7 +1392,9 @@ async function handleEnemyAttack(enemy) {
         if (skillToUse.instantUse) target = enemy;
         console.log(target);
         await simulateSkill(enemy, skillToUse, target);
+        if (skillToUse.type == summon || skillToUse.name == "reposition") return true;
     }
+    return false;
 }; window.handleEnemyAttack = handleEnemyAttack;
 
 function resetCharacterStats() {
@@ -1426,11 +1450,18 @@ async function enemyTurn() {
     }
     if (game.gamestate.inBattle) renderCards();
     if (game.gamestate.inBattle) resize();
-    for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
-        if (game.gamestate.inBattle) await handleEnemyAttack(game.gamestate.battleState.ef[i]);
-    }
-    for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
-        if (game.gamestate.inBattle) await handleEnemyAttack(game.gamestate.battleState.eb[i]);
+    let cont = true;
+    while (cont) { 
+        cont = false;
+        for (let i = 0; i < game.gamestate.battleState.ef.length; i++) {
+            if (game.gamestate.inBattle) cont = await handleEnemyAttack(game.gamestate.battleState.ef[i]);
+            if (cont) break;
+        }
+        if (cont) continue;
+        for (let i = 0; i < game.gamestate.battleState.eb.length; i++) {
+            if (game.gamestate.inBattle) cont = await handleEnemyAttack(game.gamestate.battleState.eb[i]);
+            if (cont) break;
+        }
     }
     console.log('end enemy turn, start handle effects');
     if (game.gamestate.inBattle) handleStatusEffects();
