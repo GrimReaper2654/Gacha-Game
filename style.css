@@ -676,31 +676,31 @@ body {
 }
 
 .redButton {
-    color: rgba(225, 50, 50, 1);
+    color: rgba(250, 200, 200, 1);
     background-color: rgba(150, 25, 25, 1);
     /*background-image: url(assets/ruby.png);*/
 }
 
 .bronzeButton {
-    color: rgba(220, 160, 90, 1);
+    color: rgba(240, 200, 110, 1);
     background-color: rgba(170, 110, 60, 1);
     /*background-image: url(assets/bronze.png);*/
 }
 
 .silverButton {
-    color: rgba(225, 225, 225, 1);
+    color: rgba(250, 250, 250, 1);
     background-color: rgba(175, 175, 175, 1);
     /*background-image: url(assets/silver.png);*/
 }
 
 .goldButton {
-    color: rgba(250, 200, 100, 1);
+    color: rgba(250, 220, 110, 1);
     background-color: rgba(200, 150, 0, 1);
     /*background-image: url(assets/gold.png);*/
 }
 
 .blackButton {
-    color: rgba(125, 125, 125, 1);
+    color: rgba(175, 175, 175, 1);
     background-color: rgba(10, 10, 10, 1);
     /*background-image: url(assets/black.png);*/
 }

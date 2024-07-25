@@ -443,6 +443,21 @@ function altMobile() {
     return true;
 }; window.altMobile = altMobile;
 
+function sortInventory(list, property='name') {
+    let nList = [];
+    for (let i = 0; i <= EX; i++) {
+        let sList = [];
+        for (let j = 0; j < list.length; j++) {
+            if (list[j].rarity == i) sList.push(list[j]);
+        }
+        sList.sort((a,b) => a[property].localeCompare(b[property]));
+        for (let j = 0; j < sList.length; j++) {
+            nList.push(sList[j]);
+        }
+    }
+    return nList;
+}; window.sortInventory = sortInventory;
+
 function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
@@ -1032,7 +1047,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
 function handleSummon(cardRow, summonedEntity, summonEffect) {
     game.gamestate.battleState[cardRow].push(JSON.parse(JSON.stringify(summonedEntity)));
     hitEffect(summonEffect, getCardCoords({row: cardRow, pos: game.gamestate.battleState[cardRow].length-1}), {x: 0, y: 0}, true, 750);
-};
+}; window.handleSummon = handleSummon;
 
 async function simulateSkill(user, skill, target=undefined) { 
     console.log('skill used');
@@ -1644,7 +1659,7 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
     if ((isMobileDevice() || game.forceMobile) && !game.forceDesktop) { // crappy mobile version
         document.body.style['overflow-x'] = `hidden`;
         document.body.style['overflow-y'] = `hidden`;
-        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 740 : Math.max(740, Math.floor((game.display.x*2 - game.display.y*2 - 60) / 340) * 340 + 60);
+        let sidebarWidth = ((game.gamestate && game.gamestate.inBattle)? 740 : Math.max(740, Math.floor((game.display.x*2 - game.display.y*2 - 60) / 340) * 340 + 60)) + 40;
         let battleWidth = Math.max(game.display.x*2 - sidebarWidth, 1200);
         let batleHeight = Math.max(game.display.y*2, 1100);
         let battleCardsPosition = (battleWidth - 1020) / 2;
@@ -1658,6 +1673,8 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('nav')) document.getElementById('nav').style['zoom'] = `2`;
         if (document.getElementById('money')) document.getElementById('money').style['zoom'] = `2`;
         if (document.getElementById('buttonGridInventory')) document.getElementById('buttonGridInventory').style['zoom'] = `2`;
+        if (document.getElementById('buttonGridPull')) document.getElementById('buttonGridPull').style['zoom'] = `2`;
+        if (document.getElementById('buttonGridShop')) document.getElementById('buttonGridShop').style['zoom'] = `2`;
         if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${game.display.x*2 - sidebarWidth}px`;
         if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['transform'] = `scale(1.5, 1.5)`;
         if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${game.display.x*2 - sidebarWidth}px`;
@@ -1701,14 +1718,15 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
             if (document.getElementById('playButton')) document.getElementById('playButton').style['top'] = `calc(100vh - 350px)`;
         }
     } else {
-        let sidebarWidth = (game.gamestate && game.gamestate.inBattle)? 370 : Math.max(370, Math.ceil((game.display.x - game.display.y - 30) / 170) * 170 + 30);
+        let sidebarWidth = ((game.gamestate && game.gamestate.inBattle)? 370 : Math.max(370, (Math.ceil((game.display.x - game.display.y - 30) / 170)-1) * 170 + 30))+40;
         let battleWidth = Math.max(game.display.x - sidebarWidth, 1200);
         let batleHeight = Math.max(game.display.y, 1100);
         let battleCardsPosition = (battleWidth - 1020) / 2;
         if (document.getElementById('sidebar')) document.getElementById('sidebar').style.width = `${sidebarWidth}px`;
         if (document.getElementById('bac')) document.getElementById('bac').style['max-width'] = `${game.display.x - sidebarWidth}px`;
         if (document.getElementById('bac')) document.getElementById('bac').style['max-height'] = `100vh`;
-        if (document.getElementById('bacImg')) document.getElementById('bacImg').style['height'] = `100vh`;
+        if (document.getElementById('bacImg')) document.getElementById('bacImg').style['min-width'] = `${Math.max(game.display.x - sidebarWidth, game.display.y)}px`;
+        if (document.getElementById('bacImg')) document.getElementById('bacImg').style['min-height'] = `${Math.max(game.display.x - sidebarWidth, game.display.y)}px`;
         if (document.getElementById('dungeonName')) document.getElementById('dungeonName').style['width'] = `${game.display.x - sidebarWidth}px`;
         if (document.getElementById('dungeonNav')) document.getElementById('dungeonNav').style['width'] = `${game.display.x - sidebarWidth}px`;
         if (document.getElementById('nextDungeon')) document.getElementById('nextDungeon').style['left'] = `${game.display.x - sidebarWidth - 80}px`; // grrrr there has to be a better way
@@ -1964,14 +1982,41 @@ function updateTeam() {
     }
 }; window.updateTeam = updateTeam;
 
+async function gachaPull(id) {
+    console.log(id);
+    let pullUsed = data.pulls[id];
+
+    // calculate costs
+    if (game.gamestate.player.money >= pullUsed.cost) game.gamestate.player.money -= pullUsed.cost;
+    else return;
+    let nPulls = [];
+    for (let i = 0; i < game.gamestate.pulls.length; i++) {
+        if (game.gamestate.pulls[i].id == id && game.gamestate.pulls[i].quantity) {
+            if (game.gamestate.pulls[i].quantity) {
+                game.gamestate.pulls[i].quantity--;
+                if (game.gamestate.pulls[i].quantity <= 0) continue;
+            }
+        }
+        nPulls.push(game.gamestate.pulls[i]);
+    }
+    game.gamestate.pulls = nPulls;
+
+    // give rewards
+
+
+    // reload the pulls
+    pull();
+}; window.gachaPull = gachaPull;
+
 function pull() {
     replacehtml(`nav`, `<button onclick="pull()" class="focusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.pulls.length; i++) {
-        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
-        let desc = `$${game.gamestate.pulls[i].cost}`;
-        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton ${game.gamestate.pulls[i].colour}Button"`;
+        let pull = data.pulls[game.gamestate.pulls[i].id];
+        let title = `<strong>${pull.name}</strong>`;
+        let desc = `$${pull.cost}`;
+        let buttonData = `onclick="gachaPull('${pull.pullData.id}')" class="pullButton ${pull.colour}Button"`;
         buttonGridHtml += `<button ${buttonData}><p>${title}<br>${desc}</p></button>`;
     }
     console.log(buttonGridHtml);
@@ -1981,6 +2026,7 @@ function pull() {
 
 function inventory(forceBattleMode=false) {
     console.log('inventory');
+    game.gamestate.player.inventory = sortInventory(game.gamestate.player.inventory);
     if (game.gamestate.inBattle || forceBattleMode) {
         if (game.gamestate.battleState.turn != 'player') return;
         game.gamestate.battleState.tempStorage.activeCardId = undefined;
@@ -2018,6 +2064,7 @@ function inventory(forceBattleMode=false) {
 }; window.inventory = inventory;
 
 function characters() {
+    game.gamestate.player.characters = sortInventory(game.gamestate.player.characters);
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="focusedButton"><h3>Characters</h3></button><button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>`);
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
@@ -2070,9 +2117,12 @@ async function startGame() {
         console.log('no save found, creating new player');
         game.gamestate = JSON.parse(JSON.stringify(data.startingGamestate));
 
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.startingBonus.pullData))); // give player starting bonus
+
         // give debug items
         if (true) {
             console.log(`Giving Player Debug Items`);
+            console.log(game.gamestate.player);
             for (let i = 0; i < data.items.length; i++) {
                 game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
                 game.gamestate.player.inventory[i].quantity = randint(1,100);
@@ -2082,6 +2132,7 @@ async function startGame() {
                     game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
                 });
             }
+            
         }
     };
     await sleep(100);
