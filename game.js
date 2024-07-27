@@ -512,10 +512,14 @@ const countValidProperties = (obj) => {
 const handleParticles = (obj) => {
     Object.keys(obj).forEach(key => {
         const value = obj[key];
-        if (!value || Number.isNaN(value)) {
+        if ((!value || Number.isNaN(value)) && value != -1) {
             delete obj[key];
         } else {
-            value.life--;
+            if (value.life != -1) value.life--;
+            if (value.type.includes('spin')) {
+                document.getElementById(value.id).style.transform = document.getElementById(value.id).style.transform.replace(`${value.rot}.69deg`, `${value.rot+value.speed}.69deg`);
+                value.rot += value.speed;
+            }
             if (value.type.includes('float')) {
                 document.getElementById(value.id).style.top = `${unPixel(document.getElementById(value.id).style.top) - 2}px`;
             }
@@ -525,7 +529,7 @@ const handleParticles = (obj) => {
             if (value.type.includes('fade')) {
                 if (value.life < 25) document.getElementById(value.id).style.opacity *= 0.9;
             }
-            if (value.life < 0) {
+            if (value.life == 0) {
                 document.getElementById(value.id).remove();
                 delete obj[key];
             }
@@ -1982,6 +1986,26 @@ function updateTeam() {
     }
 }; window.updateTeam = updateTeam;
 
+function lightRay(centre={x: 0, y: 0}) {
+    let particle = {
+        id: generateId(),
+        life: -1,
+        speed: 1,
+        rot: 0,
+        type: 'spin',
+    };
+
+    console.log(particle);
+    let html = `<div id="${particle.id}" class="lightRay"><div class="lightRayInner"></div></div>`;
+    addhtml('effects', html);
+    document.getElementById(particle.id).style.opacity = 1;
+    document.getElementById(particle.id).style.transform = `scale(2, 2) rotate(0.69deg)`;
+    console.log(document.getElementById(particle.id).style.transform);
+    document.getElementById(particle.id).style.top = centre.y? `${centre.y - 180}px`: `calc(50vh - 180px)`;
+    document.getElementById(particle.id).style.left = centre.x? `${centre.x - 1080}px`: `calc(50vw - ${180*4}px)`;
+    game.particles[particle.id] = particle;
+}; window.lightRay = lightRay;
+
 async function gachaPull(id) {
     console.log(id);
     let pullUsed = data.pulls[id];
@@ -2002,7 +2026,7 @@ async function gachaPull(id) {
     game.gamestate.pulls = nPulls;
 
     // give rewards
-
+    
 
     // reload the pulls
     pull();
