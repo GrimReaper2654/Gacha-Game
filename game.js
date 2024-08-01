@@ -87,6 +87,7 @@ const game = {
     altMobile: false,
     particles: {},
     display: {x: window.innerWidth, y: window.innerHeight},
+    tempStorage: {},
 }; window.game = game;
 
 // The support functions that might not be necessary
@@ -124,6 +125,11 @@ function randint(min, max, notequalto=false) {
     
     return gen;
 }; window.randint = randint;
+
+function randProperty(obj) { // stolen from stack overflow
+    var keys = Object.keys(obj);
+    return obj[keys[keys.length * Math.random() << 0]];
+}; window.randProperty = randProperty;
 
 function replacehtml(element, text) {
     document.getElementById(element).innerHTML = text;
@@ -210,8 +216,8 @@ function bigNumber(number) {
         bac = bacs[i]? bacs[i] : '∞';
         i++
     }
-
-    return bac == '∞'? bac : `${number.toPrecision(3)}${bac}`;
+    let a = number >= 10? number >= 100? 1 : 10 : 100;
+    return bac == '∞'? bac : `${Math.floor(number*a)/a}${bac}`;
 }; window.bigNumber = bigNumber;
 
 function sleep(ms) {
@@ -458,7 +464,12 @@ function sortInventory(list, property='name') {
     return nList;
 }; window.sortInventory = sortInventory;
 
+function blankCard(rarity, id=undefined, onClick=undefined) {
+    return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></button>`;
+}; window.blankCard = blankCard;
+
 function createCharacterCard(character, id=undefined, onClick=undefined) {
+    if (character.hidden) return blankCard(character.rarity, id, onClick);
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${Math.floor(character.hp)}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${Math.floor(character.mp)}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
@@ -502,13 +513,18 @@ function renderCards(pOnClick=undefined, eOnClick=undefined, enemyBack=game.game
     }*/
 }; window.renderCards = renderCards;
 
+function clearParticles() {
+    game.particles = {};
+    if (document.getElementById('effects')) replacehtml('effects', '');
+}; window.clearParticles = clearParticles;
+
 const countValidProperties = (obj) => {
     return Object.keys(obj).filter(key => {
         const value = obj[key];
         return value !== undefined && value !== null && value !== false && value !== 0 && value !== "" && !Number.isNaN(value);
     }).length;
 }; window.countValidProperties = countValidProperties;
-  
+
 const handleParticles = (obj) => {
     Object.keys(obj).forEach(key => {
         const value = obj[key];
@@ -820,8 +836,10 @@ function readID(id) {
 }; window.readID = readID;
 
 function getCardById(id) {
-    let pos = readID(id)
-    return game.gamestate.battleState[pos.row.toLowerCase()][pos.pos];
+    let pos = readID(id);
+    console.log(pos.row);
+    if (pos.row == 'rr') return game.tempStorage.rewardCards[pos.pos];
+    return game.gamestate.battleState[pos.row][pos.pos];
 }; window.getCardById = getCardById;
 
 function getCardByName(name) {
@@ -1659,6 +1677,9 @@ function rank(n) {
 
 function resize() { // css calc is sometimes not enough (or I have a skill issue)
     // due to my lack of css knowledge or plain laziness I have devised a system to change css styles without needing to edit style.css
+    // I feel like I am relying on this way too much
+    // Expect css update soon (not very soon)
+    // Nobody even reads this apart from me, idk who I'm talking to
     console.log('resized');
     if ((isMobileDevice() || game.forceMobile) && !game.forceDesktop) { // crappy mobile version
         document.body.style['overflow-x'] = `hidden`;
@@ -1747,6 +1768,8 @@ function resize() { // css calc is sometimes not enough (or I have a skill issue
         if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.left = `${battleCardsPosition}px`;
         if (document.getElementById('playerFrontline')) document.getElementById('playerFrontline').style.top = `${batleHeight - 430}px`;
         if (document.getElementById('playerBackline')) document.getElementById('playerBackline').style.top = `${batleHeight - 220}px`;
+        if (document.getElementById('endTurnButton')) document.getElementById('endTurnButton').style.right = `${sidebarWidth + 10}px`;
+        if (document.getElementById('retreatButton')) document.getElementById('retreatButton').style.right = `${sidebarWidth + 10}px`;
     }
 }; window.resize = resize;
 
@@ -1974,7 +1997,7 @@ function updateTeam() {
             buttonGridHtml += createCharacterCard(game.gamestate.player.team[i]);
             canBattle = true;
         } else {
-            buttonGridHtml += `<button class="smallCharacterButton"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></button>`;
+            buttonGridHtml += blankCard(-1);
         }
     }
     console.log(buttonGridHtml);
@@ -1986,20 +2009,26 @@ function updateTeam() {
     }
 }; window.updateTeam = updateTeam;
 
-function lightRay(centre={x: 0, y: 0}) {
+function acceptReward(id) {
+    let selected = getCardById(id);
+    selected.hidden = undefined;
+    replacehtml(`rewards`, cardLine(game.tempStorage.rewardCards, 'RR', 'acceptReward'));
+}; window.acceptReward = acceptReward;
+
+function lightRay(r = 0, centre={x: 0, y: 0}) {
     let particle = {
         id: generateId(),
         life: -1,
         speed: 1,
-        rot: 0,
+        rot: r,
         type: 'spin',
     };
 
     console.log(particle);
-    let html = `<div id="${particle.id}" class="lightRay"><div class="lightRayInner"></div></div>`;
+    let html = `<div id="${particle.id}" class="lightRay"></div>`;
     addhtml('effects', html);
     document.getElementById(particle.id).style.opacity = 1;
-    document.getElementById(particle.id).style.transform = `scale(2, 2) rotate(0.69deg)`;
+    document.getElementById(particle.id).style.transform = `scale(2, 2) rotate(${r}.69deg)`;
     console.log(document.getElementById(particle.id).style.transform);
     document.getElementById(particle.id).style.top = centre.y? `${centre.y - 180}px`: `calc(50vh - 180px)`;
     document.getElementById(particle.id).style.left = centre.x? `${centre.x - 1080}px`: `calc(50vw - ${180*4}px)`;
@@ -2025,9 +2054,46 @@ async function gachaPull(id) {
     }
     game.gamestate.pulls = nPulls;
 
-    // give rewards
-    
+    // fancy effects
+    let bgGlow = {
+        id: generateId(),
+        life: -1,
+        type: '',
+    };
+    let bg = {
+        id: generateId(),
+        life: -1,
+        type: '',
+    };
+    addhtml('effects', `<div id="${bg.id}" class="pullBackground"></div><div id="${bgGlow.id}" class="pullBackgroundGlow"></div>`);
+    game.particles[bg.id] = bg;
+    game.particles[bgGlow.id] = bgGlow;
+    let lights = 10
+    for (let i = 0; i < lights; i++) {
+        lightRay(360/lights*i+randint(0, 40)-20);
+    }
+    // TODO: Implement Confetti
 
+    // give rewards
+    let cards = [];
+    for (let i = 0; i < pullUsed.attempts; i++) {
+        let rng = randint(0,100);
+        let rarity = 8; // If the system breaks, get an EX rank character
+        for (let i = 0; i < pullUsed.rates.length; i++) {
+            if (rng <= pullUsed.rates[i]) rarity = i;
+            else rng -= pullUsed.rates[i];
+        }
+        let card = JSON.parse(JSON.stringify({...randProperty(data.characters[rarity]), ...data.characterData, ...{hidden: true}}));
+        cards.push(card);
+        game.gamestate.player.characters.push(card);
+    }
+    game.tempStorage.rewardCards = cards;
+    save(); // no cheesing the pulls by reloading
+    addhtml('effects', `<div id="rewards" class="battleCardContainer" style="z-index: 2; top: calc(50vh - 210px); left: calc(50vw - 510px); background-color: rgba(0, 0, 0, 0);"></div><button onclick="clearParticles()" id="closeRewards">Close</button>`);
+    replacehtml(`rewards`, cardLine(cards, 'RR', 'acceptReward'));
+    for (let i = 0; i < game.tempStorage.rewardCards.length; i++) {
+        document.getElementById(`RR${i}ID`).classList.add('hasQuestionMark');
+    }
     // reload the pulls
     pull();
 }; window.gachaPull = gachaPull;
@@ -2038,8 +2104,8 @@ function pull() {
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.pulls.length; i++) {
         let pull = data.pulls[game.gamestate.pulls[i].id];
-        let title = `<strong>${pull.name}</strong>`;
-        let desc = `$${pull.cost}`;
+        let title = `<strong>${pull.name}${game.gamestate.pulls[i].quantity? `(${game.gamestate.pulls[i].quantity})` : ``}</strong>`;
+        let desc = `$${bigNumber(pull.cost)}`;
         let buttonData = `onclick="gachaPull('${pull.pullData.id}')" class="pullButton ${pull.colour}Button"`;
         buttonGridHtml += `<button ${buttonData}><p>${title}<br>${desc}</p></button>`;
     }
@@ -2093,6 +2159,7 @@ function characters() {
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.characters.length; i++) {
+        if (game.gamestate.player.characters[i].hidden) game.gamestate.player.characters[i].hidden = undefined; // unhide any hidden characters
         let title = `<strong>${game.gamestate.player.characters[i].alive? `` : `<s>`}${game.gamestate.player.characters[i].name}${game.gamestate.player.characters[i].alive? `` : `</s>`}</strong>`;
         let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
         let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
@@ -2130,6 +2197,22 @@ function save() {
     localStorage.setItem('GatchaGameGamestate', JSON.stringify(game.gamestate));
 }; window.save = save;
 
+function debug() {
+    console.log(`Giving Player Debug Items`);
+    game.gamestate.player.inventory = [];
+    game.gamestate.player.characters = [];
+    game.gamestate.player.money = 69420;
+    for (let i = 0; i < data.items.length; i++) {
+        game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
+        game.gamestate.player.inventory[i].quantity = randint(1,100);
+    }
+    for (let i = 0; i < data.characters.length; i++) {
+        Object.keys(data.characters[i]).forEach(function(key) {
+            game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
+        });
+    }
+}; window.debug = debug;
+
 async function startGame() {
     var savedPlayer = localStorage.getItem('GatchaGameGamestate');
     if (savedPlayer) {
@@ -2142,21 +2225,20 @@ async function startGame() {
         game.gamestate = JSON.parse(JSON.stringify(data.startingGamestate));
 
         game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.startingBonus.pullData))); // give player starting bonus
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.starterPull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.normalPull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.bronzePull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.silverPull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.goldPull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.megaGoldPull.pullData)));
+        game.gamestate.pulls.push(JSON.parse(JSON.stringify(data.pulls.spedPull.pullData)));
+
+        game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[8]['Eco'], ...data.characterData})));
+        game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[8]['Eric'], ...data.characterData})));
 
         // give debug items
-        if (true) {
-            console.log(`Giving Player Debug Items`);
-            console.log(game.gamestate.player);
-            for (let i = 0; i < data.items.length; i++) {
-                game.gamestate.player.inventory.push(JSON.parse(JSON.stringify(data.items[i])));
-                game.gamestate.player.inventory[i].quantity = randint(1,100);
-            }
-            for (let i = 0; i < data.characters.length; i++) {
-                Object.keys(data.characters[i]).forEach(function(key) {
-                    game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[i][key], ...data.characterData})));
-                });
-            }
-            
+        if (false) {
+            debug();
         }
     };
     await sleep(100);

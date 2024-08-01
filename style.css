@@ -954,7 +954,6 @@ body {
     margin: 0px;
     margin-left: 25px;
     margin-right: 25px;
-    right: 360px;
     bottom: 10px;
 }
 
@@ -970,7 +969,6 @@ body {
     margin: 0px;
     margin-left: 25px;
     margin-right: 25px;
-    right: 360px;
     top: 10px;
 }
 
@@ -1148,6 +1146,43 @@ body {
     height: 180px;
     aspect-ratio: 8;
     clip-path: polygon(50% 50%,100% 100%,100% 0);
-    background: radial-gradient(farthest-corner at 50% 50%, rgba(255,255,255,0.05),rgba(255,255,255,0));
+    background: radial-gradient(farthest-corner at 50% 50%, rgba(255,255,255,0.1),rgba(255,255,255,0));
 }
 
+.pullBackground {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(50,75,60,0.75);
+}
+
+.pullBackgroundGlow {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: radial-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0));
+}
+
+#closeRewards {
+    position: absolute;
+    top: calc(75vh - 50px);
+    left: calc(50vw - 150px);
+    width: 300px;
+    height: 100px;
+    z-index: 2;
+    border-radius: 25px;
+    background-color: rgba(100,100,100,0.75);
+    color: rgba(200,200,200,1);
+    font-size: xx-large;
+}
+
+.hasQuestionMark {
+    /* fuck you */
+    background-image: url("assets/unknownCard.png") !important;
+}

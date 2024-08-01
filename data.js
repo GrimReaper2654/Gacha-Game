@@ -126,15 +126,38 @@ var gachaGameData = {
                 duration: none,
             },
         },
-        normalPull: {
-            name: `NormalPull`,
-            cost: 0,
+        starterPull: {
+            name: `Starter Card Pack`,
+            cost: 100,
             attempts: 1,
-            itemCharacterBias: 75,
+            itemCharacterBias: 10,
             rates: [
-                90, // N
-                9,   // UC
-                1,   // R
+                100, // N
+                0,   // UC
+                0,   // R
+                0,   // SR
+                0,   // E
+                0,   // L
+                0,   // M
+                0,   // G
+                0    // EX
+            ],
+            colour: red,
+            pullData: {
+                id: 'starterPull',
+                quantity: 3,
+                duration: none,
+            },
+        },
+        normalPull: {
+            name: `Normal Card Pack`,
+            cost: 1000,
+            attempts: 1,
+            itemCharacterBias: 25,
+            rates: [
+                95,  // N
+                5,   // UC
+                0,   // R
                 0,   // SR
                 0,   // E
                 0,   // L
@@ -144,7 +167,122 @@ var gachaGameData = {
             ],
             colour: grey,
             pullData: {
-                id: 'startingBonus',
+                id: 'normalPull',
+                quantity: none,
+                duration: none,
+            },
+        },
+        bronzePull: {
+            name: `Bronze Card Pack`,
+            cost: 7500,
+            attempts: 1,
+            itemCharacterBias: 25,
+            rates: [
+                75,  // N
+                20,  // UC
+                4,   // R
+                1,   // SR
+                0,   // E
+                0,   // L
+                0,   // M
+                0,   // G
+                0    // EX
+            ],
+            colour: bronze,
+            pullData: {
+                id: 'bronzePull',
+                quantity: none,
+                duration: none,
+            },
+        },
+        silverPull: {
+            name: `Silver Card Pack`,
+            cost: 25000,
+            attempts: 1,
+            itemCharacterBias: 25,
+            rates: [
+                50,  // N
+                25,  // UC
+                20,  // R
+                4,   // SR
+                1,   // E
+                0,   // L
+                0,   // M
+                0,   // G
+                0    // EX
+            ],
+            colour: silver,
+            pullData: {
+                id: 'silverPull',
+                quantity: none,
+                duration: none,
+            },
+        },
+        goldPull: {
+            name: `Gold Card Pack`,
+            cost: 100000,
+            attempts: 1,
+            itemCharacterBias: 25,
+            rates: [
+                0,   // N
+                50,  // UC
+                25,  // R
+                13,   // SR
+                8,   // E
+                3,   // L
+                1,   // M
+                0,   // G
+                0    // EX
+            ],
+            colour: gold,
+            pullData: {
+                id: 'goldPull',
+                quantity: none,
+                duration: none,
+            },
+        },
+        megaGoldPull: {
+            name: `Mega Gold Card Pack`,
+            cost: 1000000,
+            attempts: 10,
+            itemCharacterBias: 25,
+            rates: [
+                0,   // N
+                50,  // UC
+                25,  // R
+                10,  // SR
+                8,   // E
+                4,   // L
+                2,   // M
+                1,   // G
+                0    // EX
+            ],
+            colour: gold,
+            pullData: {
+                id: 'megaGoldPull',
+                quantity: none,
+                duration: none,
+            },
+        },
+        spedPull: {
+            name: `S.P.E.D Card Pack`,
+            cost: 2500000,
+            attempts: 1,
+            itemCharacterBias: 0,
+            rates: [
+                0,   // N
+                0,   // UC
+                0,   // R
+                5,   // SR
+                20,  // E
+                50,  // L
+                15,  // M
+                10,  // G
+                0    // EX
+            ],
+            colour: black,
+            pullData: {
+                id: 'spedPull',
                 quantity: none,
                 duration: none,
             },
