@@ -465,11 +465,25 @@ function sortInventory(list, property='name') {
 }; window.sortInventory = sortInventory;
 
 function blankCard(rarity, id=undefined, onClick=undefined) {
-    return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></button>`;
+    return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></span></button>`;
 }; window.blankCard = blankCard;
+
+function itemCard(item, itemID=undefined, hideQuantity=false) {
+    let title = `<strong>${item.displayName ? item.displayName : item.name}</strong>`;
+    let buttonData = `${typeof itemID == 'number'? game.gamestate.inBattle ? `onclick="useItem(${itemID})" ` : `onclick="focusItem(${itemID})" ` : ``}class="smallCharacterButton rank${item.rarity}Button" id="${typeof itemID == 'number'? `item${itemID}` : itemID}"`;
+    return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"></span>${item.quantity > 1 && hideQuantity == false? `<div id="cornerIcon"><span id="down">${item.quantity > 99 ? `99+`: item.quantity}</span></div>` : ``}</button>`;
+}; window.itemCard = itemCard;
+
+function isItem(item) {
+    for (let i = 0; i < data.items.length; i++) {
+        if (item.name == data.items[i].name) return true;
+    }
+    return false;
+}; window.isItem = isItem;
 
 function createCharacterCard(character, id=undefined, onClick=undefined) {
     if (character.hidden) return blankCard(character.rarity, id, onClick);
+    if (isItem(character)) return itemCard(character, id, true); // in case the character is an item (for pulls)
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${Math.floor(character.hp)}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${Math.floor(character.mp)}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
@@ -837,7 +851,6 @@ function readID(id) {
 
 function getCardById(id) {
     let pos = readID(id);
-    console.log(pos.row);
     if (pos.row == 'rr') return game.tempStorage.rewardCards[pos.pos];
     return game.gamestate.battleState[pos.row][pos.pos];
 }; window.getCardById = getCardById;
@@ -1852,7 +1865,6 @@ function focusItem(itemId) {
     if (item.effects) {
         for (let j = 0; j < item.effects.length; j++) {
             let effect = data.effects[item.effects[j].effect];
-            console.log(effect);
             stats += `Applies effect:<br>`;
             for (let k = 0; k < effect.stats.length; k++) {
                 stats += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
@@ -2009,10 +2021,34 @@ function updateTeam() {
     }
 }; window.updateTeam = updateTeam;
 
+function addCharacter(character) {
+    for (let i = 0; i < game.gamestate.player.characters.length; i++) {
+        if (character.name == game.gamestate.player.characters[i].name) {
+            game.gamestate.player.characters[i].expToAdd += Math.floor(Math.max(eval(data.leveling.replace('[l]', game.gamestate.player.characters[i].level).replace('[r]', game.gamestate.player.characters[i].rarity))*0.5, 5000*(game.gamestate.player.characters[i].rarity+1)**1.5));
+            return;
+        }
+    }
+    game.gamestate.player.characters.push(character);
+}; window.addCharacter = addCharacter;
+
+function addItem(item) {
+    for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+        if (item.name == game.gamestate.player.inventory[i].name) {
+            game.gamestate.player.inventory[i].quantity++;
+            return;
+        }
+    }
+    item.quantity = 1;
+    game.gamestate.player.inventory.push(item);
+}; window.addItem = addItem;
+
 function acceptReward(id) {
     let selected = getCardById(id);
     selected.hidden = undefined;
     replacehtml(`rewards`, cardLine(game.tempStorage.rewardCards, 'RR', 'acceptReward'));
+    for (let i = 0; i < game.tempStorage.rewardCards.length; i++) {
+        if (game.tempStorage.rewardCards[i].hidden) document.getElementById(`RR${i}ID`).classList.add('hasQuestionMark');
+    }
 }; window.acceptReward = acceptReward;
 
 function lightRay(r = 0, centre={x: 0, y: 0}) {
@@ -2077,19 +2113,31 @@ async function gachaPull(id) {
     // give rewards
     let cards = [];
     for (let i = 0; i < pullUsed.attempts; i++) {
-        let rng = randint(0,100);
+        let rng = randint(1,100);
+        //rng--;
         let rarity = 8; // If the system breaks, get an EX rank character
         for (let i = 0; i < pullUsed.rates.length; i++) {
-            if (rng <= pullUsed.rates[i]) rarity = i;
+            if (rng <= pullUsed.rates[i]) {
+                rarity = i;
+                break;
+            }
             else rng -= pullUsed.rates[i];
         }
-        let card = JSON.parse(JSON.stringify({...randProperty(data.characters[rarity]), ...data.characterData, ...{hidden: true}}));
-        cards.push(card);
-        game.gamestate.player.characters.push(card);
+        if (randint(1,100) < pullUsed.itemCharacterBias) {
+            console.log('item');
+            let card = JSON.parse(JSON.stringify({...randProperty(data.pullItems[rarity]), ...{hidden: true}}));
+            cards.push(card);
+            addItem(card);
+            //game.gamestate.player.inventory.push(card);
+        } else {
+            let card = JSON.parse(JSON.stringify({...randProperty(data.characters[rarity]), ...data.characterData, ...{hidden: true}}));
+            cards.push(card);
+            addCharacter(card);
+        }
     }
     game.tempStorage.rewardCards = cards;
     save(); // no cheesing the pulls by reloading
-    addhtml('effects', `<div id="rewards" class="battleCardContainer" style="z-index: 2; top: calc(50vh - 210px); left: calc(50vw - 510px); background-color: rgba(0, 0, 0, 0);"></div><button onclick="clearParticles()" id="closeRewards">Close</button>`);
+    addhtml('effects', `<div id="rewards" class="rewardCardContainer" style="z-index: 2; top: calc(50vh - ${cards.length > 5? 315 : 210}px); left: calc(50vw - 425px);"></div><button onclick="clearParticles()" id="closeRewards">Close</button>`);
     replacehtml(`rewards`, cardLine(cards, 'RR', 'acceptReward'));
     for (let i = 0; i < game.tempStorage.rewardCards.length; i++) {
         document.getElementById(`RR${i}ID`).classList.add('hasQuestionMark');
@@ -2144,9 +2192,7 @@ function inventory(forceBattleMode=false) {
     }
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
-        let title = `<strong>${game.gamestate.player.inventory[i].displayName ? game.gamestate.player.inventory[i].displayName : game.gamestate.player.inventory[i].name}</strong>`;
-        let buttonData = `${game.gamestate.inBattle ? `onclick="useItem(${i})"` : `onclick="focusItem(${i})"`} class="itemButton rank${game.gamestate.player.inventory[i].rarity}Button" id="item${i}"`;
-        buttonGridHtml += `<span><button ${buttonData}><img src="${game.gamestate.player.inventory[i].pfp}" class="itemIcon"><p id="noPadding">${title}</p>${game.gamestate.player.inventory[i].quantity > 1 ? `<div id="cornerIcon"><span id="down">${game.gamestate.player.inventory[i].quantity > 99 ? `99+`: game.gamestate.player.inventory[i].quantity}</span></div></button>` : ``}</span>`;
+        buttonGridHtml += itemCard(game.gamestate.player.inventory[i], i);
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -2315,4 +2361,11 @@ async function home() {
 
 }; window.home = home;
 
+function beg() {
+    console.log('A kind stranger gifts you $10000000!');
+    game.gamestate.player.money += 10000000
+}; window.beg = beg;
+
 console.error('ERROR: The operation completed successfully.');
+
+

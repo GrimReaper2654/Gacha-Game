@@ -15,9 +15,8 @@ const item = 'item';
 
 const healthPots = [
     {
-        id: `potHp1`,
         name: `Crude Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `A concoction of various herbs that has some healing properties. The effects are weak, but it's better than nothing.`,
         rarity: N,
         pfp: `assets/pot2.jpeg`,
@@ -30,11 +29,11 @@ const healthPots = [
         sellPrice: 10,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHp2`,
         name: `Lesser Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `A poorly crafted health potion crafted with low grade ingredients. It might just be enough for your troops to withstand an extra hit or two.`,
         rarity: UC,
         pfp: `assets/pot7.jpeg`,
@@ -47,11 +46,11 @@ const healthPots = [
         sellPrice: 25,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHp3`,
         name: `Mediocre Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `The standard health potion sold in most high end stores. Very useful but expensive.`,
         rarity: R,
         pfp: `assets/pot8.jpeg`,
@@ -64,11 +63,11 @@ const healthPots = [
         sellPrice: 150,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHpRgn1`,
         name: `Potion of Regeneration`,
-        displayName: `Regen Potion\n `,
+        displayName: `Regen Pot`,
         description: `An experimental healing potion designed by a master alchemist. The consumer will continuously regenerate health for a lengthy period of time.`,
         rarity: R,
         pfp: `assets/pot5.jpeg`,
@@ -81,11 +80,11 @@ const healthPots = [
         sellPrice: 125,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHp4`,
         name: `Greater Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `An incredible healing potion refined for years by a master alchemist. A single potion can heal even the most grevious injuries and replenishes lost mana.`,
         rarity: E,
         pfp: `assets/pot1.jpeg`,
@@ -98,11 +97,11 @@ const healthPots = [
         sellPrice: 1000,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHp5`,
         name: `Superior Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `A great alchemist didicated their entire lives to the refinement of this incredible healing potion. There are so few of them in existance that even the largest kingdoms only have a few stockpiled in their treasury.`,
         rarity: L,
         pfp: `assets/pot4.jpeg`,
@@ -115,11 +114,11 @@ const healthPots = [
         sellPrice: 10000,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potHp6`,
         name: `Ascended Health Potion`,
-        displayName: `Health Potion\n `,
+        displayName: `Health Pot`,
         description: `A priceless relic from the age of the gods, this potion can bring even the strongest of heroes back to full health. It would surely be worth millions of gold.`,
         rarity: G,
         pfp: `assets/pot10.jpeg`,
@@ -132,14 +131,14 @@ const healthPots = [
         sellPrice: 1000000,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
 ];
 
 const buffPots = [
     {
-        id: `potDef1`,
         name: `Lesser Reinforcement Potion`,
-        displayName: `Reinforcement Potion`,
+        displayName: `Defence Pot`,
         description: `Consuming this potion grants a significant increase in resistance against all attacks. Does not come with pain surpression.`,
         rarity: R,
         pfp: `assets/pot17.jpeg`,
@@ -152,11 +151,11 @@ const buffPots = [
         sellPrice: 100,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potDef2`,
         name: `Greater Reinforcement Potion`,
-        displayName: `Reinforcement Potion`,
+        displayName: `Defence Pot`,
         description: `Consuming this potion grants a significant increase in resistance against all attacks. Does not come with pain surpression.`,
         rarity: E,
         pfp: `assets/pot16.jpeg`,
@@ -169,11 +168,11 @@ const buffPots = [
         sellPrice: 500,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potMp1`,
         name: `Crude Mana Potion`,
-        displayName: `Mana Potion\n `,
+        displayName: `Mana Pot`,
         description: `Condensed mana ready for consumption. Grants mp immediately after use.`,
         rarity: N,
         pfp: `assets/pot19.jpeg`,
@@ -186,11 +185,11 @@ const buffPots = [
         sellPrice: 10,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potMp2`,
         name: `Lesser Mana Potion`,
-        displayName: `Mana Potion\n `,
+        displayName: `Mana Pot`,
         description: `Condensed mana ready for consumption. Grants mp immediately after use.`,
         rarity: UC,
         pfp: `assets/pot20.jpeg`,
@@ -203,11 +202,11 @@ const buffPots = [
         sellPrice: 25,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potMp3`,
         name: `Mediocre Mana Potion`,
-        displayName: `Mana Potion\n `,
+        displayName: `Mana Pot`,
         description: `Condensed mana ready for consumption. Grants mp immediately after use.`,
         rarity: R,
         pfp: `assets/pot18.jpeg`,
@@ -220,11 +219,11 @@ const buffPots = [
         sellPrice: 100,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potMp4`,
         name: `Greater Mana Potion`,
-        displayName: `Mana Potion\n `,
+        displayName: `Mana Pot`,
         description: `Condensed mana ready for consumption. Grants mp immediately after use.`,
         rarity: E,
         pfp: `assets/pot21.jpeg`,
@@ -237,11 +236,11 @@ const buffPots = [
         sellPrice: 600,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `potMp4`,
         name: `Superior Mana Potion`,
-        displayName: `Mana Potion\n `,
+        displayName: `Mana Pot`,
         description: `Condensed mana ready for consumption. Grants mp immediately after use.`,
         rarity: L,
         pfp: `assets/pot22.jpeg`,
@@ -254,14 +253,14 @@ const buffPots = [
         sellPrice: 2000,
         quantity: 1,
         stackSize: 999999999,
+        isReward: true,
     },
 ];
 
 const offensiveItems = [
     {
-        id: `lightning1`,
         name: `Lesser Lightning Spell`,
-        displayName: `Lightning Spell`,
+        displayName: `Lightning`,
         description: `A vial of lightning elemental mana that has a tendency to explode.`,
         rarity: R,
         pfp: `assets/pot12.jpeg`,
@@ -274,11 +273,11 @@ const offensiveItems = [
         sellPrice: 200,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `lightning2`,
         name: `Greater Lightning Spell`,
-        displayName: `Lightning Spell`,
+        displayName: `Lightning`,
         description: `A bottle of potent lightning elemental mana primed to blast enemies into bits.`,
         rarity: E,
         pfp: `assets/pot14.jpeg`,
@@ -291,11 +290,11 @@ const offensiveItems = [
         sellPrice: 1000,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `lightning3`,
         name: `Ascended Lightning Spell`,
-        displayName: `Lightning Spell`,
+        displayName: `Lightning`,
         description: `A bottle of pure lightning elemental mana that unleashes a storm of destructive energy when broken.`,
         rarity: G,
         pfp: `assets/pot13.jpeg`,
@@ -308,11 +307,11 @@ const offensiveItems = [
         sellPrice: 750000,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `poison`,
         name: `Poison Vial`,
-        displayName: `Poison Vial\n `,
+        displayName: `Poison Vial`,
         description: `A vial of posionous gas that isn't very nice to inhale.`,
         rarity: SR,
         pfp: `assets/pot15.jpeg`,
@@ -325,13 +324,13 @@ const offensiveItems = [
         sellPrice: 400,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
     },
     {
-        id: `terroristBomb`,
         name: `Terrorist Bomb`,
-        displayName: `Terrorist Bomb\n `,
+        displayName: `Bomb`,
         description: `A bomb commonly used by terrorists.`,
-        rarity: EX,
+        rarity: M,
         pfp: `assets/terroristBomb.png`,
         useable: true,
         effects: [{effect: 'terroristBomb', chance: 100}],
@@ -342,14 +341,31 @@ const offensiveItems = [
         sellPrice: 0,
         quantity: 0,
         stackSize: 999999999,
+        isReward: true,
+    },
+    {
+        name: `Terrorist Nuke`,
+        displayName: `Nuke`,
+        description: `A mini nuke commonly used by terrorists.`,
+        rarity: EX,
+        pfp: `assets/terroristBomb.png`,
+        useable: true,
+        effects: [{effect: 'terroristNuke', chance: 100}],
+        hitEffect: `explosion`,
+        purchaceable: true,
+        purchacePrice: 75000,
+        sellable: false,
+        sellPrice: 0,
+        quantity: 0,
+        stackSize: 999999999,
+        isReward: true,
     },
 ];
 
 const stones = [
     {
-        id: `stone1`,
         name: `Crude Magic Stone`,
-        displayName: `Magic Stone\n `,
+        displayName: `Magic Stone`,
         description: `A rock that very faintly emits mana. It doesn't look very useful...`,
         rarity: N,
         pfp: `assets/blueRocks.png`,
@@ -363,9 +379,8 @@ const stones = [
         stackSize: 999999999,
     },
     {
-        id: `stone2`,
         name: `Low Grade Magic Stone`,
-        displayName: `Magic Stone\n `,
+        displayName: `Magic Stone`,
         description: `A rock that faintly emits mana. Perhaps it could have some uses.`,
         rarity: UC,
         pfp: `assets/blueRocks.png`,
@@ -379,9 +394,8 @@ const stones = [
         stackSize: 999999999,
     },
     {
-        id: `stone3`,
         name: `Medium Grade Magic Stone`,
-        displayName: `Magic Stone\n `,
+        displayName: `Magic Stone`,
         description: `A beautiful rock with mana swirling within it. This magic stone could be used to forge equipment or brew potions.`,
         rarity: R,
         pfp: `assets/blueRocks.png`,
@@ -395,9 +409,8 @@ const stones = [
         stackSize: 999999999,
     },
     {
-        id: `stone4`,
         name: `High Grade Magic Stone`,
-        displayName: `Magic Stone\n `,
+        displayName: `Magic Stone`,
         description: `A beautiful rock surrounded by an aura of mana. It has many useful magical properties.`,
         rarity: E,
         pfp: `assets/blueRocks.png`,
@@ -411,9 +424,8 @@ const stones = [
         stackSize: 999999999,
     },
     {
-        id: `stone5`,
         name: `Perfected Magic Stone`,
-        displayName: `Magic Stone\n `,
+        displayName: `Magic Stone`,
         description: `A flawless magical stone containing immense mana.`,
         rarity: L,
         pfp: `assets/blueRocks.png`,
@@ -486,6 +498,13 @@ const gachaGameDrops = {
     },
 };
 
-const gachaGameItems = [].concat(healthPots, buffPots, offensiveItems, stones);
+const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones);
+const gachaGameRewardItems = [];
+for (let i = 0; i <= 8; i++) {
+    gachaGameRewardItems.push([]);
+}
+for (let i = 0; i < gachaGameAllItems.length; i++) {
+    if (gachaGameAllItems[i].isReward) gachaGameRewardItems[gachaGameAllItems[i].rarity].push(JSON.parse(JSON.stringify(gachaGameAllItems[i])));
+}
 
-export {gachaGameItems, gachaGameDrops};
+export {gachaGameRewardItems, gachaGameAllItems, gachaGameDrops};

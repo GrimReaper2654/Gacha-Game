@@ -339,7 +339,7 @@ body {
     max-width: 150px;
     max-height: 190px;
     margin: 10px;
-    text-align: top;
+    padding: 0px;
     border: none;
     border-radius: 8px;
     white-space: pre-wrap;
@@ -637,6 +637,23 @@ body {
     max-height: 210px;
     min-width: 1020px;
     max-width: 1020px;
+    border-radius: 15px;
+    overflow: hidden;
+    vertical-align: top;
+    text-align: center;
+}
+
+.rewardCardContainer {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0px;
+    padding: 0px;
+    height: 420px;
+    width: 850px;
+    min-height: 420px;
+    max-height: 420px;
+    min-width: 850px;
+    max-width: 850px;
     border-radius: 15px;
     overflow: hidden;
     vertical-align: top;
@@ -1185,4 +1202,8 @@ body {
 .hasQuestionMark {
     /* fuck you */
     background-image: url("assets/unknownCard.png") !important;
+}
+
+.itemName {
+    height: 45px;
 }

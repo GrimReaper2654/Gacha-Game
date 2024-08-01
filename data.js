@@ -88,6 +88,7 @@ var gachaGameData = {
     skills: {},
     effects: {},
     dungeons: [],
+    pullItems: [],
     items: [],
     drops: {},
     leveling: `Math.floor(([r]+1)/2*(1.5**([l]-1)+4)*10)*100`, // turst me it works
@@ -129,8 +130,8 @@ var gachaGameData = {
         starterPull: {
             name: `Starter Card Pack`,
             cost: 100,
-            attempts: 1,
-            itemCharacterBias: 10,
+            attempts: 3,
+            itemCharacterBias: 75,
             rates: [
                 100, // N
                 0,   // UC
@@ -152,8 +153,8 @@ var gachaGameData = {
         normalPull: {
             name: `Normal Card Pack`,
             cost: 1000,
-            attempts: 1,
-            itemCharacterBias: 25,
+            attempts: 10,
+            itemCharacterBias: 90,
             rates: [
                 95,  // N
                 5,   // UC
@@ -175,8 +176,8 @@ var gachaGameData = {
         bronzePull: {
             name: `Bronze Card Pack`,
             cost: 7500,
-            attempts: 1,
-            itemCharacterBias: 25,
+            attempts: 10,
+            itemCharacterBias: 90,
             rates: [
                 75,  // N
                 20,  // UC
@@ -198,8 +199,8 @@ var gachaGameData = {
         silverPull: {
             name: `Silver Card Pack`,
             cost: 25000,
-            attempts: 1,
-            itemCharacterBias: 25,
+            attempts: 10,
+            itemCharacterBias: 90,
             rates: [
                 50,  // N
                 25,  // UC
@@ -268,7 +269,7 @@ var gachaGameData = {
             name: `S.P.E.D Card Pack`,
             cost: 2500000,
             attempts: 1,
-            itemCharacterBias: 0,
+            itemCharacterBias: 10,
             rates: [
                 0,   // N
                 0,   // UC
@@ -680,7 +681,7 @@ var gachaGameData = {
 import {gachaGameCharacters, gachaGameEnemies, gachaGameSummons} from "./characters.js";
 import {gachaGameSkills, gachaGameEffects} from "./skills.js";
 import {gachaGameDungeons} from "./dungeons.js";
-import {gachaGameItems, gachaGameDrops} from "./items.js";
+import {gachaGameRewardItems, gachaGameAllItems, gachaGameDrops} from "./items.js";
 
 gachaGameData.characters = gachaGameCharacters;
 gachaGameData.enemies = gachaGameEnemies;
@@ -688,7 +689,8 @@ gachaGameData.summons = gachaGameSummons;
 gachaGameData.skills = gachaGameSkills;
 gachaGameData.effects = gachaGameEffects;
 gachaGameData.dungeons = gachaGameDungeons;
-gachaGameData.items = gachaGameItems;
+gachaGameData.pullItems = gachaGameRewardItems;
+gachaGameData.items = gachaGameAllItems;
 gachaGameData.drops = gachaGameDrops;
 
 export {gachaGameData};
