@@ -495,6 +495,8 @@ const gachaGameDrops = {
         securityMech: [{type: exp, quantity: 15000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
         macelinePrototype: [{type: exp, quantity: 30000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         mace: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 20000, chance: 100}],
+
+        choyu: [{type: exp, quantity: 5000000, chance: 100}, {type: gold, quantity: 1000000, chance: 100}],
     },
 };
 

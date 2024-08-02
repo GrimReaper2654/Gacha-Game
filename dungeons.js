@@ -942,7 +942,7 @@ const debugDungeon = {
             type: `boss`,
             enemies: [
                 {
-                    enemy: `goblin`,
+                    enemy: `choyu`,
                     lvl: 0,
                     quantity: 1,
                     location: `frontline`,

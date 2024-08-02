@@ -208,13 +208,13 @@ function roman(number) {
 }; window.roman = roman;
 
 function bigNumber(number) {
-    const bacs = [`K`, `M`, `B`, `T`, `Q`];
+    const bacs = [`K`, `M`, `B`, `T`, `q`, `Q`, 's', 'S', 'o', 'n', 'd', 'U', 'D']; // caps out at duodectillion (10^39)
     let bac = ``;
     let i = 0;
     while (number >= 1000) {
         number /= 1000;
         bac = bacs[i]? bacs[i] : '∞';
-        i++
+        i++;
     }
     let a = number >= 10? number >= 100? 1 : 10 : 100;
     return bac == '∞'? bac : `${Math.floor(number*a)/a}${bac}`;
@@ -486,7 +486,7 @@ function createCharacterCard(character, id=undefined, onClick=undefined) {
     if (isItem(character)) return itemCard(character, id, true); // in case the character is an item (for pulls)
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
-    let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${Math.floor(character.hp)}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${Math.floor(character.mp)}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
+    let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${bigNumber(Math.floor(character.hp))}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${bigNumber(Math.floor(character.mp))}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
     return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<span id="up"><p id="noPadding" class="${character.name.length > 11? `smallC` : `c`}haracterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
 }; window.createCharacterCard = createCharacterCard;
 
@@ -1796,7 +1796,7 @@ function updateBar(id, percent, value=-1000000000) {
     percent = Math.min(percent, 100);
     if (document.getElementById(id)) {
         document.getElementById(id).style.minWidth = `${Math.max(0, percent)*60}px`;
-        if (value > -1000000000) document.getElementById(id+`Display`).innerHTML = Math.floor(value); // scuffed but necessary (idk what this does anymore)
+        if (value > -1000000000) document.getElementById(id+`Display`).innerHTML = bigNumber(Math.floor(value)); // scuffed but necessary (idk what this does anymore)
     }
     else console.error(`can not find card id: ${id}`);
 }; window.updateBar = updateBar;
@@ -1947,12 +1947,12 @@ function exitFocus() {
 
 function getExpBar(character, set=false) {
     let levelUpExp = eval(data.leveling.replace('[l]', character.level).replace('[r]', character.rarity));
-    let expBar = `<div id="expBarInner" style="width:${character.exp / levelUpExp * 100}%"></div><div id="expDescription">Level ${character.level}: ${character.exp}/${levelUpExp}</div>`;
+    let expBar = `<div id="expBarInner" style="width:${character.exp / levelUpExp * 100}%"></div><div id="expDescription">Level ${character.level}: ${character.exp > 1000000000? bigNumber(character.exp) : character.exp}/${levelUpExp > 1000000000? bigNumber(levelUpExp) : levelUpExp}</div>`;
     if (!set) return `<div id="expBarOuter">${expBar}</div>`;
     if (document.getElementById('expBarOuter')) replacehtml('expBarOuter', expBar);
 }; window.getExpBar = getExpBar;
 
-async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=10000) {
+async function increaseExp(characterId, expIncrease=-1, minRate=10, maxRate=Infinity) {
     let character = game.gamestate.player.characters[characterId];
     if (expIncrease == -1) {
         console.log('adding stored exp');
@@ -1978,8 +1978,8 @@ function handleLevelUp(characterId) {
     while (character.exp > levelUpExp) {
         character.exp -= levelUpExp;
         character.level++;
-        character.hp += data.levelUpStatChange[character.rarity].hp;
-        character.mp += data.levelUpStatChange[character.rarity].mp;
+        character.hp += data.levelUpStatChange[character.rarity].hp * (character.spec == hp? 1.5 : 1) * (character.spec == mp? 0.5 : 1);
+        character.mp += data.levelUpStatChange[character.rarity].mp * (character.spec == mp? 1.5 : 1) * (character.spec == hp? 0.5 : 1);
         character.str *= data.levelUpStatChange[character.rarity].str;
         character.int *= data.levelUpStatChange[character.rarity].int;
         character.str = Math.ceil(character.str*1000)/1000;

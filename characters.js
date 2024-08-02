@@ -20,6 +20,11 @@ const M = 6;
 const G = 7;
 const EX = 8;
 
+const str = 'str';
+const int = 'int';
+const hp = 'hp';
+const mp = 'mp';
+
 const male = 'male';
 const female = 'female';
 
@@ -41,6 +46,7 @@ const rankN = { // N
         agi: 75,
         skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
         armour: {physical: [2, 5], magic: [2, 5]}, 
+        spec: mp,
     },
     Yuki: { // dps
         name: `Yuki`, // name of character
@@ -76,6 +82,7 @@ const rankN = { // N
         agi: 80,
         skills: ['stunningBlows', 'slash', 'reinforceArmour', 'swordCharge'],
         armour: {physical: [12, 25], magic: [2, 5]}, 
+        spec: hp,
     },
     Emi: { // glass cannon magic dps
         name: `Emi`,
@@ -94,6 +101,7 @@ const rankN = { // N
         agi: 75,
         skills: ['fireball', 'fireLance', 'fireArrows', 'firestorm'],
         armour: {physical: [0, 0], magic: [0, 0]},
+        spec: mp,
     },
     Henrietta: { // summoner
         name: `Henrietta`,
@@ -130,6 +138,7 @@ const rankN = { // N
         agi: 95,
         skills: ['slash', 'raiseGuard', 'swordCharge', 'overheadStrike'],
         armour: {physical: [10, 10], magic: [2, 0]}, 
+        spec: hp,
     },
     Maiko: { // dps
         name: `Maiko`,
@@ -204,6 +213,7 @@ const rankUC = { // UC
         agi: 50,
         skills: ['kick', 'raiseGuard', 'wildSwing', 'reinforceArmour'],
         armour: {physical: [20, 25], magic: [5, 5]}, 
+        spec: hp,
     },
     Ellen: { // dps
         name: `Ellen`,
@@ -240,6 +250,7 @@ const rankUC = { // UC
         agi: 75,
         skills: ['magicArrow', 'multiMagicArrow', 'windBlade', 'fireBlast'],
         armour: {physical: [2, 5], magic: [5, 25]},
+        spec: mp,
     },
     Sora: { // healer
         name: `Sora`,
@@ -258,6 +269,7 @@ const rankUC = { // UC
         agi: 75,
         skills: ['punch', 'magicArrow', 'mediumHeal', 'mediumAreaHeal'],
         armour: {physical: [2, 5], magic: [2, 5]}, 
+        spec: mp,
     },
     Mio: { // crowd control dps
         name: `Mio`, 
@@ -511,6 +523,7 @@ const rankE = { // E
         mpRegen: 50,
         skills: [`pitchfork`, `healingHerbs`, `summonRooster`, `summonFlock`, `summonPheonix`],
         armour: {physical: [10, 10], magic: [5, 10]},
+        spec: mp,
     },
     Zoe: { // dps
         name: `Zoe`,
@@ -565,6 +578,43 @@ const rankE = { // E
         agi: 80,
         skills: ['improvedThrust', 'mediumRaiseGuard', 'greaterReinforceShield', 'improvedCharge'], 
         armour: {physical: [90, 80], magic: [75, 75]}, 
+        spec: hp,
+    },
+    Agent042: { // dps
+        name: `Agent-042`,
+        title: ``,
+        description: `A special operative of the [redacted]ism chruch, Agent-042 is skilled in the arts of infiltration and assasination.`,
+        personality: 'calm',
+        stats: {atk: 'extreme', def: 'none'},
+        rarity: E,
+        gender: female,
+        pfp: `assets/AnimeGirl30.jpeg`,
+        hp: 100,
+        mp: 500,
+        str: 1.5,
+        int: 140,
+        mpRegen: 25,
+        skills: [`dagger`, `assaultRifle`, `fragGrenade`, `evasiveManoeuvers`, `sniperRifle`],
+        armour: {physical: [0, 0], magic: [0, 0]},
+        spec: mp,
+    },
+    Agent069: { // dps
+        name: `Agent-069`,
+        title: ``,
+        description: `A special operative of the [redacted]ism chruch, Agent-069 is skilled in the arts of infiltration and assasination.`,
+        personality: 'calm',
+        stats: {atk: 'extreme', def: 'none'},
+        rarity: E,
+        gender: female,
+        pfp: `assets/AnimeGirl31.jpeg`,
+        hp: 100,
+        mp: 500,
+        str: 1.5,
+        int: 140,
+        mpRegen: 25,
+        skills: [`dagger`, `assaultRifle`, `fragGrenade`, `evasiveManoeuvers`, `sniperRifle`],
+        armour: {physical: [0, 0], magic: [0, 0]},
+        spec: mp,
     },
 };
 const rankL = { // L
@@ -602,6 +652,24 @@ const rankL = { // L
         mpRegen: 120,
         skills: ['greaterHeal', 'greaterAreaHeal', 'superiorHeal', 'healAura', 'righteousFury', 'righteousSmite'],
         armour: {physical: [15, 10], magic: [15, 25]},
+        spec: mp,
+    },
+    HKW: { // dps / support
+        name: `HKW`,
+        title: `Hunter Killer`,
+        description: `HKW is a skilled asassin who has hunted down countless important individuals.`,
+        personality: 'confident',
+        stats: {atk: 'high', def: 'low'},
+        rarity: L,
+        gender: female,
+        pfp: `assets/AnimeGirl28.jpeg`,
+        hp: 300,
+        mp: 500,
+        str: 2,
+        int: 200,
+        mpRegen: 200,
+        skills: ['dagger', 'poisonPowder', 'ultraHeavySlash', 'improvedFirstAid', 'magicSealingSword', 'superiorBodyEnhancement'],
+        armour: {physical: [25, 25], magic: [25, 25]},
     },
 };
 const rankM = { // M
@@ -624,7 +692,7 @@ const rankM = { // M
         armour: {physical: [80, 75], magic: [60, 75]}, 
         additionalAp: 1,
     },
-    Saori: { // dps
+    Saori: { // tank dps
         name: `Saori`,
         title: `Dragonslayer`,
         description: `Saori is a skilled warrior who has slain many evil dragons and protected the continent multiple times.`,
@@ -640,7 +708,26 @@ const rankM = { // M
         mpRegen: 150,
         agi: 150,
         skills: ['rapidStrikes', 'mediumRaiseGuard', 'auraSlash', 'ultraHeavySlash', 'lesserSwordDance', 'battleFocus'],
-        armour: {physical: [150, 80], magic: [75, 75]}, 
+        armour: {physical: [100, 80], magic: [75, 80]}, 
+        additionalAp: 1,
+    },
+    JLee: { // tank
+        name: `JLee`,
+        title: `Anime Protagonist`,
+        description: `JLee is the very definition of a protagonist. Her powerful plot armour shields her from attacks, while the power of friendship strengthens her devastating blows.`,
+        personality: 'confident',
+        stats: {atk: 'high', def: 'high'},
+        rarity: M,
+        gender: female,
+        pfp: `assets/AnimeGirl80.jpeg`,
+        hp: 800, 
+        mp: 400,
+        str: 1.5,
+        int: 130,
+        mpRegen: 50,
+        agi: 125,
+        skills: ['rapidStrikes', 'pervertedStare', 'mediumRaiseGuard', 'energyBlast', 'unbreakableWill', 'instantRecovery'],
+        armour: {physical: [150, 80], magic: [150, 80]}, 
         additionalAp: 1,
     },
 };
@@ -663,6 +750,7 @@ const rankG = { // G
         skills: ['ascendedSlash', 'ascendedThrust', 'auraSlash', 'magicSealingSword', 'swordDance', 'realitySlash', 'superCharge'],
         armour: {physical: [100, 0], magic: [50, 0]},
         additionalAp: 1,
+        spec: mp,
     },
     Yui: { // tank / support
         name: `Yui`,
@@ -682,6 +770,7 @@ const rankG = { // G
         skills: ['ascendedSlash', 'sevenfoldSlash', 'warCry', 'battlefieldCommand', 'improvedSavageTornado', 'righteousSmite', 'unbreakableWill'],
         armour: {physical: [200, 90], magic: [175, 85]},
         additionalAp: 1,
+        spec: hp,
     },
     Prawns: { // healer
         name: `Prawns`,
@@ -718,7 +807,7 @@ const rankEX = { // EX
         int: -1,
         mpRegen: 5,
         agi: 50,
-        skills: ['debugFist', 'punch', 'bodySlam', 'pervertedStare', 'brag'],
+        skills: ['punch', 'bodySlam', 'pervertedStare', 'brag'],
         armour: {physical: [0, 0], magic: [0, 0]},
         additionalAp: 1,
     },
@@ -1275,6 +1364,22 @@ const gachaGameEnemies = {
         armour: {physical: [200, 90], magic: [200, 90]},
         ai: `rng`,
         additionalAp: 1,
+    },
+    choyu: { // boss
+        enemyType: `choyu`,
+        name: `Choyu`, 
+        rarity: EX,
+        pfp: `assets/choyu.png`,
+        hp: [10000000],
+        mp: [10000000],
+        str: [5],
+        int: [400],
+        mpRegen: [1000000],
+        agi: 200,
+        skills: ['gigaInferno', 'godray', 'lightningStorm', 'recovery'],
+        armour: {physical: [0, 0], magic: [0, 0]},
+        ai: `rng`,
+        additionalAp: 4,
     },
 };
 const gachaGameSummons = {
