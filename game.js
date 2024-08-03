@@ -2287,6 +2287,7 @@ async function startGame() {
             debug();
         }
     };
+
     await sleep(100);
 
     home();

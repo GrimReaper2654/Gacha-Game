@@ -129,9 +129,9 @@ var gachaGameData = {
         },
         starterPull: {
             name: `Starter Card Pack`,
-            cost: 100,
+            cost: 250,
             attempts: 3,
-            itemCharacterBias: 75,
+            itemCharacterBias: 50,
             rates: [
                 100, // N
                 0,   // UC
@@ -154,7 +154,7 @@ var gachaGameData = {
             name: `Normal Card Pack`,
             cost: 1000,
             attempts: 10,
-            itemCharacterBias: 90,
+            itemCharacterBias: 80,
             rates: [
                 95,  // N
                 5,   // UC
@@ -177,7 +177,7 @@ var gachaGameData = {
             name: `Bronze Card Pack`,
             cost: 7500,
             attempts: 10,
-            itemCharacterBias: 90,
+            itemCharacterBias: 80,
             rates: [
                 75,  // N
                 20,  // UC
@@ -200,7 +200,7 @@ var gachaGameData = {
             name: `Silver Card Pack`,
             cost: 25000,
             attempts: 10,
-            itemCharacterBias: 90,
+            itemCharacterBias: 80,
             rates: [
                 50,  // N
                 25,  // UC

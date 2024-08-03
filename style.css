@@ -1207,3 +1207,13 @@ body {
 .itemName {
     height: 45px;
 }
+
+h2 {
+    padding: 0;
+    margin: 0;
+}
+
+h3 {
+    padding: 0;
+    margin: 0;
+}
