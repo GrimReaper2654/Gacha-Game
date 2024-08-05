@@ -307,6 +307,12 @@ const goblinDen = {
             type: `boss`,
             enemies: [
                 {
+                    enemy: `goblinGuard`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
                     enemy: `goblin`,
                     lvl: 3,
                     quantity: 4,
@@ -323,12 +329,6 @@ const goblinDen = {
                     lvl: 0,
                     quantity: 1,
                     location: `backline`,
-                },
-                {
-                    enemy: `goblinGuard`,
-                    lvl: 1,
-                    quantity: 1,
-                    location: `frontline`,
                 },
             ],
         },

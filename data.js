@@ -179,11 +179,11 @@ var gachaGameData = {
             attempts: 10,
             itemCharacterBias: 80,
             rates: [
-                75,  // N
+                70,  // N
                 20,  // UC
-                4,   // R
-                1,   // SR
-                0,   // E
+                6,   // R
+                3,   // SR
+                1,   // E
                 0,   // L
                 0,   // M
                 0,   // G
@@ -200,14 +200,14 @@ var gachaGameData = {
             name: `Silver Card Pack`,
             cost: 25000,
             attempts: 10,
-            itemCharacterBias: 80,
+            itemCharacterBias: 75,
             rates: [
-                50,  // N
+                40,  // N
                 25,  // UC
                 20,  // R
-                4,   // SR
-                1,   // E
-                0,   // L
+                9,   // SR
+                4,   // E
+                2,   // L
                 0,   // M
                 0,   // G
                 0    // EX
@@ -221,18 +221,18 @@ var gachaGameData = {
         },
         goldPull: {
             name: `Gold Card Pack`,
-            cost: 100000,
+            cost: 50000,
             attempts: 1,
             itemCharacterBias: 25,
             rates: [
                 0,   // N
                 50,  // UC
                 25,  // R
-                13,   // SR
-                8,   // E
-                3,   // L
-                1,   // M
-                0,   // G
+                11,  // SR
+                7,   // E
+                4,   // L
+                2,   // M
+                1,   // G
                 0    // EX
             ],
             colour: gold,
@@ -244,18 +244,18 @@ var gachaGameData = {
         },
         megaGoldPull: {
             name: `Mega Gold Card Pack`,
-            cost: 1000000,
+            cost: 450000,
             attempts: 10,
             itemCharacterBias: 25,
             rates: [
                 0,   // N
                 50,  // UC
-                25,  // R
-                10,  // SR
-                8,   // E
-                4,   // L
-                2,   // M
-                1,   // G
+                20,  // R
+                11,  // SR
+                9,   // E
+                5,   // L
+                3,   // M
+                2,   // G
                 0    // EX
             ],
             colour: gold,
@@ -267,18 +267,18 @@ var gachaGameData = {
         },
         spedPull: {
             name: `S.P.E.D Card Pack`,
-            cost: 2500000,
+            cost: 1000000,
             attempts: 1,
             itemCharacterBias: 10,
             rates: [
                 0,   // N
                 0,   // UC
                 0,   // R
-                5,   // SR
-                20,  // E
-                50,  // L
-                15,  // M
-                10,  // G
+                1,   // SR
+                9,  // E
+                20,  // L
+                50,  // M
+                20,  // G
                 0    // EX
             ],
             colour: black,

@@ -835,7 +835,7 @@ async function changeStat(target, effect={stat: '', change: 0}, time=750) {
     let steps = 20;
     for (let i = 0; i < steps; i++) {
         target[effect.stat] = Math.max(0, Math.min(target[effect.stat] + effect.change/steps, target[effect.stat+'Max']));
-        if (target[effect.stat] < 1) target[effect.stat] = 0;
+        if (target[effect.stat] < 0.25) target[effect.stat] = 0;
         updateBar(target.id+effect.stat, target[effect.stat]/target[effect.stat+'Max'], Math.floor(target[effect.stat]));
         await new Promise(resolve => setTimeout(resolve, time/steps));
         if (target[effect.stat] == 0) break;
