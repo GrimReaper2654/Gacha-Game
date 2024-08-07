@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>STD</title>
+    <title>Gacha-Game V0.1.1</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="icon.png">
+    <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="assets/icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game" class="main">
-        <span id="bac">
-            <img src="assets/DungeonOuter1.jpeg" id="bacImg">
-            <div id="team"></div>
-            <div id="focus">
-                <div id="focusTopRow">
-                    <span id="focusTitle"></span>
-                    <span id="ExitFocus">
-                        <button onclick="exitFocus()" class="closeButton"><img src="blackX.png" class="smallIcon"></button>
-                    </span>
-                </div>
-            </div>
-        </span>
-        <span id="sidebar">
-            <div id="nav">
-                <button onclick="pull()" class="focusedButton"><h3>Pull</h3></button>
-                <button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button>
-                <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button>
-                <button onclick="shop()" class="unFocusedButton"><h3>Shop</h3></button>
-            </div>
-            <div id="money"></div>
-            <div id="grid">
-                <div id="buttonGridPull"></div>
-            </div>
-        </span>
+    <div id="gameContainer" class="main">
+        <div id="big">
+            <noscript>
+                <h2>Where js go???</h2>
+                <h3>it not here...</h3>
+                <h3>pls js or no game:(</h3>
+                <p>
+                    <strong>Objective:</strong><br>
+                    • Enable Javascript <br>
+                    • Reload the site <br>
+                    <strong>Controls:</strong><br>
+                    • click around <br>
+                    <strong>Bugs:</strong><br>
+                    • Game requires javascript to run<br>
+                </p>
+            </noscript>
+            <script>
+                document.getElementById('big').innerHTML += `<button onclick="startGame(); debug();"><h3>Start Game</h3></button><br>
+            <button onclick="clearData()"><h3>Clear Data</h3></button><br>
+            <button onclick="forceMobile()"><h3>Force Mobile Version</h3></button><br>
+            <button onclick="forceDesktop()"><h3>Force Desktop Version</h3></button><br>
+            <button onclick="altMobile()"><h3>Mobile version not working properly? Try this</h3></button><br>
+            <p>
+                <strong>Objective:</strong><br>
+                • Pull good characters <br>
+                • Battle enemies and win <br>
+                • Waste your life savings <br>
+                • Conquer all the dungeons <br>
+                • Defeat the final boss <br>
+                • Test the game and find bugs <br>
+                <strong>Controls:</strong><br>
+                • click around <br>
+                • keybinds? never heard of them! <br>
+            </p>`;
+            </script>
+            
+        </div>
     </div>
     <div id="data">
         
     </div>
 </body>
-<script src="game.js"></script>
+<script type="module" src="game.js"></script>
+
 
