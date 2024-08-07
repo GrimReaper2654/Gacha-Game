@@ -16,6 +16,7 @@ Update  9: Me when drawing a rounded triangle on desmos is easier than amking on
 Update 10: You know what's worse than css? Making css for mobile. Also Grim4Reaper has become 3 characters in game...<br>
 Update 11: I have procrastinated for far too long. Making the pulls and shop tabs is going to be painful.<br>
 Update 12: Pulls was a pain to make, the css was annoying as always. (Thanks 'J' for their ~~help~~ moral support)<br>
+Update 13: Wow, the css I wrote at the beginning of this project is ass.<br>
 <br>
 <br>
 <br>
