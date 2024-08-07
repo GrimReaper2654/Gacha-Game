@@ -89,6 +89,7 @@ const game = {
     particles: {},
     display: {x: window.innerWidth, y: window.innerHeight},
     tempStorage: {},
+    debug: false,
 }; window.game = game;
 
 // The support functions that might not be necessary
@@ -2252,6 +2253,10 @@ function clearData() {
 }; window.clearData = clearData;
 
 function save() {
+    if (game.debug) {
+        console.warn(`Saving is disabled in debug mode!`);
+        return;
+    }
     console.log(`Game Saved`);
     localStorage.setItem('GatchaGameGamestate', JSON.stringify(game.gamestate));
 }; window.save = save;
@@ -2272,8 +2277,9 @@ function debug() {
     }
 }; window.debug = debug;
 
-async function startGame() {
-    var savedPlayer = localStorage.getItem('GatchaGameGamestate');
+async function startGame(debug=false) {
+    game.debug = debug;
+    var savedPlayer = debug? null : localStorage.getItem('GatchaGameGamestate');
     if (savedPlayer) {
         console.log('loading previous save');
         game.gamestate = JSON.parse(savedPlayer);
@@ -2294,11 +2300,6 @@ async function startGame() {
 
         game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[8]['Eco'], ...data.characterData})));
         game.gamestate.player.characters.push(JSON.parse(JSON.stringify({...data.characters[8]['Eric'], ...data.characterData})));
-
-        // give debug items
-        if (false) {
-            debug();
-        }
     };
 
     await sleep(100);
