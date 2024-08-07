@@ -183,7 +183,7 @@ const instantEffects = { // potions, spells and more
                 desc: `instant`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `+ 25 mana`,
             },
         ],
@@ -206,7 +206,7 @@ const instantEffects = { // potions, spells and more
                 desc: `instant`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `+ 50 mana`,
             },
         ],
@@ -229,7 +229,7 @@ const instantEffects = { // potions, spells and more
                 desc: `instant`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `+ 100 mana`,
             },
         ],
@@ -252,7 +252,7 @@ const instantEffects = { // potions, spells and more
                 desc: `instant`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `+ 250 mana`,
             },
         ],
@@ -275,7 +275,7 @@ const instantEffects = { // potions, spells and more
                 desc: `instant`,
             },
             {
-                icon: `greenCross.png`,
+                icon: `blueStar.png`,
                 desc: `+ 750 mana`,
             },
         ],
@@ -373,7 +373,7 @@ const instantEffects = { // potions, spells and more
         ],
         // inflict damage per round
         type: physical, 
-        dmg: 10000, 
+        dmg: 5000, 
         accuracy: 100, 
         // change stats per round
         change: {hp: 0, mp: 0}, 
@@ -485,7 +485,7 @@ const debuffEffects = { // effects (debuffs)
             },
             {
                 icon: `redDrop.png`,
-                desc: `5 physical damage / round`,
+                desc: `5 magic damage / round`,
             },
         ],
         // inflict damage per round
@@ -508,7 +508,7 @@ const debuffEffects = { // effects (debuffs)
             },
             {
                 icon: `redDrop.png`,
-                desc: `15 physical damage / round`,
+                desc: `15 magic damage / round`,
             },
         ],
         // inflict damage per round
@@ -574,7 +574,7 @@ const debuffEffects = { // effects (debuffs)
             },
             {
                 icon: `redDrop.png`,
-                desc: `5 fire damage / round`,
+                desc: `5 true damage / round`,
             },
         ],
         // inflict damage per round
@@ -597,7 +597,7 @@ const debuffEffects = { // effects (debuffs)
             },
             {
                 icon: `redDrop.png`,
-                desc: `15 fire damage / round`,
+                desc: `15 true damage / round`,
             },
         ],
         // inflict damage per round
@@ -971,6 +971,29 @@ const debuffEffects = { // effects (debuffs)
         defChange: {physical: [-200, 0], magic: [-200, 0]},
         statChange: {str: 0, int: 0, reg: 0},
         duration: 1,
+    },
+    spec: {
+        desc: `overexposure to mathematics specialist`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 100 rounds`,
+            },
+            {
+                icon: `redDrop.png`,
+                desc: `25 magic damage / round`,
+            },
+        ],
+        // inflict damage per round
+        type: magic, 
+        dmg: 25, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 0, reg: 0},
+        duration: 100,
     },
 };
 const buffEffects = { // effects (buffs)
@@ -1654,7 +1677,7 @@ const buffEffects = { // effects (buffs)
         stats: [
             {
                 icon: `clock.png`,
-                desc: `lasts 1 rounds`,
+                desc: `lasts 2 rounds`,
             },
             {
                 icon: `shield.png`,
@@ -1682,7 +1705,7 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [10, 15], magic: [10, 15]},
         statChange: {str: 0, int: 0, reg: 0},
-        duration: 1,
+        duration: 2,
     },
     mediumResistDamage: {
         desc: `a medium resisting effect`, 
@@ -1921,7 +1944,7 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [25, 50], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
-        duration: 2,
+        duration: 1,
     },
     greaterRaiseGuard: {
         desc: `a significant reinforcing effect`, 
@@ -1948,7 +1971,7 @@ const buffEffects = { // effects (buffs)
         // buffs / debuffs
         defChange: {physical: [0, 90], magic: [0, 90]},
         statChange: {str: 0, int: 0, reg: 0},
-        duration: 2,
+        duration: 1,
     },
     lesserManaRegen: {
         desc: `a minor mana restoring effect`, 
@@ -2166,6 +2189,29 @@ const buffEffects = { // effects (buffs)
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 1, int: 0, reg: 0},
         duration: 1,
+    },
+    smart: {
+        desc: `very big brain`, 
+        stats: [
+            {
+                icon: `clock.png`,
+                desc: `lasts 100 rounds`,
+            },
+            {
+                icon: `blueStar.png`,
+                desc: `+ 500 inteligence`,
+            },
+        ],
+        // inflict damage per round
+        type: physical, 
+        dmg: 0, 
+        accuracy: 100, 
+        // change stats per round
+        change: {hp: 0, mp: 0}, 
+        // buffs / debuffs
+        defChange: {physical: [0, 0], magic: [0, 0]},
+        statChange: {str: 0, int: 500, reg: 0},
+        duration: 100,
     },
 };
 const basicPhysicalAttacks = { // body and blunt attacks
@@ -4638,7 +4684,7 @@ const buffSkills = { // makes target stronk
     },
     rangedUnbreakableWill: {
         name: `Unbreakable Will`,
-        desc: `[attacker] greatly boosts the defense of the targeted ally.`,
+        desc: `[attacker] boosts the defense of the targeted ally.`,
         animation: { 
             range: ranged,
             projectile: 'none',

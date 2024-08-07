@@ -547,15 +547,19 @@ body {
     font-size: 35px;
 }
 
-#veryBig {
+.veryBig {
     font-size: 35px;
 }
 
-#bigger {
+.bigger {
     font-size: 25px;
 }
 
-#smaller {
+.medium {
+    font-size: 20px;
+}
+
+.smaller {
     font-size: 15px;
 }
 
@@ -596,15 +600,15 @@ body {
     text-align: center;
 }
 
-#noPadding {
+.noPadding {
     padding: 0px;
     margin: 0px;
 }
 
 #cornerIcon {
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: -15px;
+    right: -15px;
     width: 2px;
     height: 30px;
     min-width: 30px;
@@ -689,14 +693,14 @@ body {
 #left {
     position: absolute;
     left: 10px;
-    bottom: 3px;
+    bottom: 5px;
     z-index: 2;
 }
 
 #right {
     position: absolute;
     right: 10px;
-    bottom: 3px;
+    bottom: 5px;
     z-index: 2;
 }
 

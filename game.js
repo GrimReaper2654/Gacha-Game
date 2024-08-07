@@ -466,14 +466,14 @@ function sortInventory(list, property='name') {
 }; window.sortInventory = sortInventory;
 
 function blankCard(rarity, id=undefined, onClick=undefined) {
-    return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></span></button>`;
+    return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p class="noPadding characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span></button>`;
 }; window.blankCard = blankCard;
 
 function itemCard(item, itemID=undefined, hideQuantity=false,  isShop=false) {
     let numItems =  isShop? getItemByName(item.name)? getItemByName(item.name).quantity : 0 : item.quantity;
     let title = `<strong>${item.displayName ? item.displayName : item.name}</strong>`;
     let buttonData = `${ isShop==true? `onclick="focusItem(${itemID}, true)" ` : typeof itemID == 'number'? game.gamestate.inBattle ? `onclick="useItem(${itemID})" ` : `onclick="focusItem(${itemID})" ` : ``}class="smallCharacterButton rank${item.rarity}Button" id="${typeof itemID == 'number'? `item${itemID}` : itemID}"`;
-    return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"></span>${numItems > (isShop? 0 : 1) && hideQuantity == false? `<div id="cornerIcon"><span id="down">${numItems > 99 ? `99+`: numItems}</span></div>` : ``}</button>`;
+    return `<button ${buttonData}><p class="noPadding characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span>${numItems > (isShop? 0 : 1) && hideQuantity == false? `<div id="cornerIcon"><span id="down">${numItems > 99 ? `99+`: numItems}</span></div>` : ``}</button>`;
 }; window.itemCard = itemCard;
 
 function isItem(item) {
@@ -489,7 +489,7 @@ function createCharacterCard(character, id=undefined, onClick=undefined) {
     let title = `<strong>${character.name}</strong>`;
     let buttonData = `${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton rank${character.rarity}Button" id="${id}"`;
     let desc = `<span id="left"><div id='hpBar'><div id="${id}hp" class="hpBarInner"></div></div><img src="assets/redCross.png" class="smallIcon"><span id="${id}hpDisplay">${bigNumber(Math.floor(character.hp))}</span></span><span id="right"><div id='mpBar'><div id="${id}mp" class="mpBarInner"></div></div><span id="${id}mpDisplay">${bigNumber(Math.floor(character.mp))}</span><img src="assets/blueStar.png" class="smallIcon"></span>`;
-    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<span id="up"><p id="noPadding" class="${character.name.length > 11? `smallC` : `c`}haracterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"></span>${desc}</button>`;
+    return `<button ${buttonData}>${character.ap > 0? `<div id="cornerIcon"><span id="down">${character.ap > 99? `∞` : (character.ap > 1? character.ap : `!`)}</span></div>` : ``}<p class="noPadding ${character.name.length > 11? `smallC` : `c`}haracterTitle">${title}</p><img src="${character.pfp}" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span>${desc}</button>`;
 }; window.createCharacterCard = createCharacterCard;
 
 function cardLine(cards, pos, onClick) {
@@ -1058,7 +1058,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         replacehtml(`nav`, `<button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button><button onclick="skills()" class="focusedButton"><h3>Skills</h3></button>`);
         replacehtml(`money`, `<span><strong>${card.name}</strong></span>`);
         console.log('skills');
-        let buttonGridHtml = `<div id="stats"><p id="noPadding" class="statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
+        let buttonGridHtml = `<div id="stats"><p class="noPadding statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
         for (let i = 0; i < card.skills.length; i++) {
             console.log(card.skills[i]);
             let dmg = data.skills[card.skills[i]].dmg;
@@ -1077,7 +1077,7 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
             let dmgDesc = `${data.skills[card.skills[i]].type != summon? `${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg}`}` : `Summons: ${dmg}`}${data.skills[card.skills[i]].attacks > 1? ` × ${data.skills[card.skills[i]].attacks}` : ``}`;
             let desc = `${data.skills[card.skills[i]].desc.replaceAll(`[attacker]`, card.name).replaceAll(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmgDesc}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
             let buttonData = `${enabled? `onclick="useSkill('${card.skills[i]}')" ` : ``}id="${data.skills[card.skills[i]].name}" class="pullButton greyButton smallerFont"`;
-            buttonGridHtml += `<span><button ${buttonData}><p id="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
+            buttonGridHtml += `<span><button ${buttonData}><p class="noPadding"><strong>${title}</strong><br>${desc}</p></button></span>`;
         }
         console.log(buttonGridHtml);
         replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -1875,13 +1875,13 @@ function inventoryBuyItem(itemId, isShop=false) {
 function focusItem(itemId, isShop=false) {
     let item = isShop? data.items[itemId] : game.gamestate.player.inventory[itemId];
     console.log(item);
-    let stats = `<br><span id="veryBig"><strong>Stats:</strong></span><br>`;
+    let stats = `<br><span class="veryBig"><strong>Stats:</strong></span><br>`;
     if (item.effects) {
         for (let j = 0; j < item.effects.length; j++) {
             let effect = data.effects[item.effects[j].effect];
             stats += `Applies effect:<br>`;
             for (let k = 0; k < effect.stats.length; k++) {
-                stats += `<img src="assets/${effect.stats[k].icon}" class="smallIcon"> ${effect.stats[k].desc}<br>`;
+                stats += `<img src="assets/${effect.stats[k].icon}" class="mediumIconDown"> ${effect.stats[k].desc}<br>`;
             }
         }
     }
@@ -1905,10 +1905,10 @@ function focusCharacter(characterId, addExp=true) {
     let character = game.gamestate.player.characters[characterId];
     if (addExp) increaseExp(characterId);
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
-    let skills = `<br><span id="veryBig"><strong>Skills:</strong></span><br>`;
+    let skills = `<br><span class="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
-        let skill = `<span id="bigger">${data.skills[character.skills[i]].name}</span><br>`;
-        skill += `<span id="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
+        let skill = `<span class="bigger">${data.skills[character.skills[i]].name}</span><br>`;
+        skill += `<span class="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
         let dmg = data.skills[character.skills[i]].dmg;
         switch (data.skills[character.skills[i]].multiplier) {
             case str:
@@ -2227,7 +2227,7 @@ function characters() {
         let title = `<strong>${game.gamestate.player.characters[i].alive? `` : `<s>`}${game.gamestate.player.characters[i].name}${game.gamestate.player.characters[i].alive? `` : `</s>`}</strong>`;
         let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
         let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
-        buttonGridHtml += `<span><button ${buttonData}><p id="noPadding" class="characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon${game.gamestate.player.characters[i].alive? `` : ` grey disabled`}"><p id="noPadding" class="statsText">${desc}</p></button></span>`;
+        buttonGridHtml += `<span><button ${buttonData}><p class="noPadding characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon${game.gamestate.player.characters[i].alive? `` : ` grey disabled`}"><p class="noPadding statsText">${desc}</p></button></span>`;
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -2239,7 +2239,7 @@ function shop() {
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
     let buttonGridHtml = ``;
     for (let i = 0; i < data.items.length; i++) {
-        if (data.items[i].purchaceable) buttonGridHtml += itemCard(data.items[i], i, false, true);
+        if (data.items[i].purchaceable) buttonGridHtml += itemCard(data.items[i], i, false, true).replace(`<span id="placeholder"><p class="noPadding medium"> `, `<span id="placeholder"><p class="noPadding medium">$${data.items[i].purchacePrice}`);
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
