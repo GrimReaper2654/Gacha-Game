@@ -75,6 +75,7 @@ function deepFreeze(obj) {
 // load data
 import {gachaGameData} from "./data.js";
 const data = JSON.parse(JSON.stringify(gachaGameData));
+data.items = sortInventory(data.items);
 deepFreeze(data);
 window.data = data;
 
@@ -468,10 +469,11 @@ function blankCard(rarity, id=undefined, onClick=undefined) {
     return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p id="noPadding" class="characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="left"><img src="assets/empty.png" class="smallIcon"></span></button>`;
 }; window.blankCard = blankCard;
 
-function itemCard(item, itemID=undefined, hideQuantity=false) {
+function itemCard(item, itemID=undefined, hideQuantity=false,  isShop=false) {
+    let numItems =  isShop? getItemByName(item.name)? getItemByName(item.name).quantity : 0 : item.quantity;
     let title = `<strong>${item.displayName ? item.displayName : item.name}</strong>`;
-    let buttonData = `${typeof itemID == 'number'? game.gamestate.inBattle ? `onclick="useItem(${itemID})" ` : `onclick="focusItem(${itemID})" ` : ``}class="smallCharacterButton rank${item.rarity}Button" id="${typeof itemID == 'number'? `item${itemID}` : itemID}"`;
-    return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"></span>${item.quantity > 1 && hideQuantity == false? `<div id="cornerIcon"><span id="down">${item.quantity > 99 ? `99+`: item.quantity}</span></div>` : ``}</button>`;
+    let buttonData = `${ isShop==true? `onclick="focusItem(${itemID}, true)" ` : typeof itemID == 'number'? game.gamestate.inBattle ? `onclick="useItem(${itemID})" ` : `onclick="focusItem(${itemID})" ` : ``}class="smallCharacterButton rank${item.rarity}Button" id="${typeof itemID == 'number'? `item${itemID}` : itemID}"`;
+    return `<button ${buttonData}><span id="up"><p id="noPadding" class="characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"></span>${numItems > (isShop? 0 : 1) && hideQuantity == false? `<div id="cornerIcon"><span id="down">${numItems > 99 ? `99+`: numItems}</span></div>` : ``}</button>`;
 }; window.itemCard = itemCard;
 
 function isItem(item) {
@@ -859,9 +861,17 @@ function getCardByName(name) {
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         if (name == game.gamestate.player.team[i].name) return game.gamestate.player.team[i];
     }
-    console.error(`GET CARD BY NAME: Card with name '${name}' not found!`);
+    console.warn(`GET CARD BY NAME: Card with name '${name}' not found in team!`);
     return undefined;
-}; window.getCardById = getCardById;
+}; window.getCardByName = getCardByName;
+
+function getItemByName(name) {
+    for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+        if (name == game.gamestate.player.inventory[i].name) return game.gamestate.player.inventory[i];
+    }
+    console.warn(`GET ITEM BY NAME: Item with name '${name}' not found in inventory!`);
+    return undefined;
+} window.getItemByName = getItemByName;
 
 function calcResistance(dmgType, dmg, target) {
     switch (dmgType) {
@@ -1832,8 +1842,8 @@ function removeFromTeam(characterId) {
     save();
 }; window.removeFromTeam = removeFromTeam;
 
-function inventorySellItem(itemId) {
-    let item = game.gamestate.player.inventory[itemId];
+function inventorySellItem(itemId, isShop=false) {
+    let item = isShop? getItemByName(data.items[itemId].name) : game.gamestate.player.inventory[itemId];
     item.quantity -= 1;
     game.gamestate.player.money += item.sellPrice;
     if (item.quantity <= 0) {
@@ -1842,25 +1852,29 @@ function inventorySellItem(itemId) {
             if (game.gamestate.player.inventory[i].quantity > 0) newItem.push(game.gamestate.player.inventory[i]);
         }
         game.gamestate.player.inventory = newItem;
-        exitFocus();
+        if (!isShop) exitFocus();
+        else focusItem(itemId, isShop);
     } else {
-        focusItem(itemId);
+        focusItem(itemId, isShop);
     }
-    inventory();
+    if (isShop) shop();
+    else inventory();
     save();
 }; window.inventorySellItem = inventorySellItem;
 
-function inventoryBuyItem(itemId) {
-    let item = game.gamestate.player.inventory[itemId];
-    item.quantity += 1;
+function inventoryBuyItem(itemId, isShop=false) {
+    let item = isShop? data.items[itemId] : game.gamestate.player.inventory[itemId];
+    addItem(item);
     game.gamestate.player.money -= item.purchacePrice;
-    focusItem(itemId);
-    inventory();
+    focusItem(itemId, isShop);
+    if (isShop) shop();
+    else inventory();
     save();
 }; window.inventoryBuyItem = inventoryBuyItem;
 
-function focusItem(itemId) {
-    let item = game.gamestate.player.inventory[itemId];
+function focusItem(itemId, isShop=false) {
+    let item = isShop? data.items[itemId] : game.gamestate.player.inventory[itemId];
+    console.log(item);
     let stats = `<br><span id="veryBig"><strong>Stats:</strong></span><br>`;
     if (item.effects) {
         for (let j = 0; j < item.effects.length; j++) {
@@ -1871,11 +1885,13 @@ function focusItem(itemId) {
             }
         }
     }
-    stats += `<img src="assets/box.png" class="mediumIconDown"> ${item.quantity} in stock<br>`;
+    let numItems = isShop? (getItemByName(item.name)? getItemByName(item.name).quantity : 0) : item.quantity;
+    stats += `<img src="assets/box.png" class="mediumIconDown"> ${numItems} in stock<br>`;
     let shop = `<div id="inventoryShop">`;
-    if (item.purchaceable) shop += (game.gamestate.player.money >= item.purchacePrice ?  `<button onclick="inventoryBuyItem(${itemId})" id="buyButton">` : `<button id="cantBuyButton">`) + `Buy 1 ($${bigNumber(item.purchacePrice)})</button>`;
-    if (item.purchaceable && item.sellable)  shop += `<span id="wasteOfSpace"></span>`;
-    if (item.sellable) shop += `<button onclick="inventorySellItem(${itemId})" id="sellButton">Sell 1 ($${bigNumber(item.sellPrice)})</button>`;
+    if (item.purchaceable) shop += `<button ${(game.gamestate.player.money >= item.purchacePrice ? `onclick="inventoryBuyItem(${itemId}, ${isShop})"` : `class="disabled2"`)} id="buyButton"> Buy 1 ($${bigNumber(item.purchacePrice)})</button>`;
+    if (item.purchaceable && item.sellable) shop += `<span id="wasteOfSpace"></span>`;
+    console.log(numItems);
+    if (item.sellable) shop += `<button ${numItems > 0? `onclick="inventorySellItem(${itemId}, ${isShop})"` : `class="disabled2"`} id="sellButton">Sell 1 ($${bigNumber(item.sellPrice)})</button>`;
     shop += `</div>`;
     document.getElementById('focus').style.display = `block`;
     replacehtml(`focusTitle`, `<span id="rank${item.rarity}Text"><strong>${rank(item.rarity)} ${item.name} </strong></span>`);
@@ -2031,7 +2047,8 @@ function addCharacter(character) {
     game.gamestate.player.characters.push(character);
 }; window.addCharacter = addCharacter;
 
-function addItem(item) {
+function addItem(itemData) {
+    let item = JSON.parse(JSON.stringify(itemData));
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
         if (item.name == game.gamestate.player.inventory[i].name) {
             game.gamestate.player.inventory[i].quantity++;
@@ -2091,6 +2108,7 @@ async function gachaPull(id) {
     game.gamestate.pulls = nPulls;
 
     // fancy effects
+    exitFocus();
     let bgGlow = {
         id: generateId(),
         life: -1,
@@ -2219,17 +2237,12 @@ function characters() {
 function shop() {
     replacehtml(`nav`, `<button onclick="pull()" class="unFocusedButton"><h3>Pull</h3></button><button onclick="inventory()" class="unFocusedButton"><h3>Inventory</h3></button> <button onclick="characters()" class="unFocusedButton"><h3>Characters</h3></button><button onclick="shop()" class="focusedButton"><h3>Shop</h3></button>`);
     replacehtml(`money`, `<span><strong>Money: $${bigNumber(game.gamestate.player.money)}</strong></span>`);
-    /*
     let buttonGridHtml = ``;
-    for (let i = 0; i < game.gamestate.pulls.length; i++) {
-        let title = `<strong>${game.gamestate.pulls[i].name}</strong>`;
-        let desc = `$${game.gamestate.pulls[i].cost}`;
-        let buttonData = `onclick="gachaPull(${game.gamestate.pulls[i].id})" class="pullButton" id="${game.gamestate.pulls[i].colour}Button"`;
-        buttonGridHtml += `<button ${buttonData}><p>${title}\n${desc}</p></button>`;
+    for (let i = 0; i < data.items.length; i++) {
+        if (data.items[i].purchaceable) buttonGridHtml += itemCard(data.items[i], i, false, true);
     }
     console.log(buttonGridHtml);
-    replacehtml(`buttonGridPull`, buttonGridHtml);*/
-    replacehtml(`grid`, ``);
+    replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
     resize();
 }; window.shop = shop;
 
