@@ -1332,6 +1332,7 @@ function useSkill(skillId=undefined) {
     console.log(`skill selected`);
     console.log(skill);
     if (skill.cost.mp > getCardById(game.gamestate.battleState.tempStorage.activeCardId).mp) return; // must have sufficient mana
+    if (skill.type == summon && (game.gamestate.battleState.pf.length + game.gamestate.battleState.pf.length) >= 12) return; // can't summon of rows are full
     document.getElementById(`buttonGridInventory`).innerHTML = document.getElementById(`buttonGridInventory`).innerHTML.replace(` selected`, ``);
     document.getElementById(skill.name).className += ` selected`;
     if (skill.instantUse) {
@@ -1590,7 +1591,7 @@ async function retreat() {
 
 function addBattleControls(disabled=false) { // addBattleControls();
     replacehtml(`main`, `<button ${disabled? `` : `onclick="enemyTurn()"`} id="endTurnButton" class="endTurn${disabled? ` disabled` : ``}">End Turn</button><button onclick="retreat()" id="retreatButton" class="retreat ${game.gamestate.battleState.retreat? `redButton` : `greenButton`}">${game.gamestate.battleState.retreat? `Retreated!` : `Retreat`}</button>`);
-} ; window.addBattleControls = addBattleControls;
+}; window.addBattleControls = addBattleControls;
 
 async function runDungeon() {
     let dungeon = data.dungeons[game.gamestate.dungeon];

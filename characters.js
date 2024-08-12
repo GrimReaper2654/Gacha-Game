@@ -1442,7 +1442,7 @@ const gachaGameEnemies = {
         enemyType: `redacted`,
         name: `[REDACTED]`, 
         rarity: EX,
-        pfp: `assets/AnimeGirl751.jpeg`,
+        pfp: `assets/AnimeGirl51.jpeg`,
         hp: [975],
         mp: [1625],
         str: [2],
