@@ -536,6 +536,7 @@ const gachaGameDrops = {
     clear: {
         goblinDen: [{type: exp, quantity: 7500, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
         shadowCavern: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
+        militaryBase: [{type: exp, quantity: 20000, chance: 100}, {type: gold, quantity: 2000, chance: 100}],
         dragonPeaks: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         macelineFactory: [{type: exp, quantity: 25000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
         chickenLake: [{type: exp, quantity: 250000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
@@ -543,6 +544,7 @@ const gachaGameDrops = {
 
         goblinDenFirst: [{type: exp, quantity: 50000, chance: 100}],
         shadowCavernFirst: [{type: exp, quantity: 25000, chance: 100}],
+        militaryBaseFirst: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 2000, chance: 100}],
         dragonPeaksFirst: [{type: exp, quantity: 100000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         macelineFactoryFirst: [{type: exp, quantity: 75000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         chickenLakeFirst: [{type: exp, quantity: 1000000, chance: 100}, {type: gold, quantity: 50000, chance: 100}],
@@ -582,6 +584,12 @@ const gachaGameDrops = {
         securityMech: [{type: exp, quantity: 15000, chance: 100}, {type: gold, quantity: 5000, chance: 100}],
         macelinePrototype: [{type: exp, quantity: 30000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         mace: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 20000, chance: 100}],
+
+        terrorist: [{type: exp, quantity: 750, chance: 100}, {type: gold, quantity: 100, chance: 100}],
+        bomber: [{type: exp, quantity: 1000, chance: 100}, {type: gold, quantity: 100, chance: 100}],
+        terroristRobot: [{type: exp, quantity: 2000, chance: 100}, {type: gold, quantity: 500, chance: 100}],
+        reaperDrone: [{type: exp, quantity: 7500, chance: 100}, {type: gold, quantity: 2500, chance: 100}],
+        redacted: [{type: exp, quantity: 25000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
 
         choyu: [{type: exp, quantity: 5000000, chance: 100}, {type: gold, quantity: 1000000, chance: 100}],
     },

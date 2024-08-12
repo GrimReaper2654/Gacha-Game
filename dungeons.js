@@ -868,6 +868,139 @@ const macelineFactory = {
     ],
 };
 
+const militaryBase = {
+    id: `militaryBase`,
+    name: `Terrorist Base`,
+    outerBac: `assets/militaryBase.jpeg`,
+    innerBac: `assets/desert.jpeg`,
+    waves: [
+        { // 1
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 2
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 3
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `bomber`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 4
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `bomber`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 5
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 2,
+                    quantity: 3,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 6
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terroristRobot`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 7
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `terroristRobot`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `terrorist`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `bomber`,
+                    lvl: 0,
+                    quantity: 2,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 8
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `reaperDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `redacted`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `reaperDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+    ],
+};
+
 const chickenLake = {
     id: `debugDungeon`,
     name: `Lake of Chimkin`,
@@ -952,5 +1085,5 @@ const debugDungeon = {
     ],
 };
 
-const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, dragonPeaks, chickenLake, debugDungeon];
+const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, militaryBase, dragonPeaks, chickenLake, debugDungeon];
 export {gachaGameDungeons};
