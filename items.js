@@ -574,6 +574,7 @@ const gachaGameDrops = {
         chickenStrong: [{type: exp, quantity: 100000, chance: 100}, {type: gold, quantity: 10000, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone5'}],
         chickenStronger: [{type: exp, quantity: 250000, chance: 100}, {type: gold, quantity: 20000, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone5'}],
         chickenVeryStrong: [{type: exp, quantity: 750000, chance: 100}, {type: gold, quantity: 40000, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone5'}],
+        chickenStrongest: [{type: exp, quantity: 5000000, chance: 100}, {type: gold, quantity: 100000, chance: 100}, {type: item, quantity: 1, chance: 100, item: 'stone5'}],
 
         scrapBotMelee: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],
         scrapBotRanged: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 10, chance: 100}],

@@ -837,6 +837,80 @@ const macelineFactory = {
             ],
         },
         { // 12
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 13
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityMech`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityDrone`,
+                    lvl: 0,
+                    quantity: 4,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 14
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 2,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `assembler`,
+                    lvl: 0,
+                    quantity: 3,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 15
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `securityMech`,
+                    lvl: 1,
+                    quantity: 2,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `macelineWorker`,
+                    lvl: 2,
+                    quantity: 3,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 16
             type: `boss`,
             enemies: [
                 {
@@ -976,7 +1050,24 @@ const militaryBase = {
             ],
         },
         { // 8
-            type: `boss`,
+            type: `big`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 2,
+                    quantity: 6,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `terroristRobot`,
+                    lvl: 0,
+                    quantity: 6,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 9
+            type: `normal`,
             enemies: [
                 {
                     enemy: `reaperDrone`,
@@ -984,8 +1075,42 @@ const militaryBase = {
                     quantity: 1,
                     location: `frontline`,
                 },
+            ],
+        },
+        { // 10
+            type: `normal`,
+            enemies: [
                 {
-                    enemy: `redacted`,
+                    enemy: `terrorist`,
+                    lvl: 2,
+                    quantity: 6,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `reaperDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 11
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `securityMech`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `terroristRobot`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `securityMech`,
                     lvl: 0,
                     quantity: 1,
                     location: `frontline`,
@@ -993,8 +1118,37 @@ const militaryBase = {
                 {
                     enemy: `reaperDrone`,
                     lvl: 0,
-                    quantity: 1,
+                    quantity: 2,
+                    location: `backline`,
+                },
+            ],
+        },
+        { // 12
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `terrorist`,
+                    lvl: 3,
+                    quantity: 6,
                     location: `frontline`,
+                },
+                {
+                    enemy: `reaperDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `redacted`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `reaperDrone`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
                 },
             ],
         },
@@ -1055,7 +1209,7 @@ const chickenLake = {
             type: `boss`,
             enemies: [
                 {
-                    enemy: `veryStronkChicken`,
+                    enemy: `stronkestChicken`,
                     lvl: 0,
                     quantity: 1,
                     location: `frontline`,

@@ -215,7 +215,7 @@ const instantEffects = { // potions, spells and more
         dmg: 0, 
         accuracy: 100, 
         // change stats per round
-        change: {hp: 0, mp: 50}, 
+        change: {hp: 0, mp: 75}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
@@ -238,7 +238,7 @@ const instantEffects = { // potions, spells and more
         dmg: 0, 
         accuracy: 100, 
         // change stats per round
-        change: {hp: 0, mp: 100}, 
+        change: {hp: 0, mp: 200}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
@@ -261,7 +261,7 @@ const instantEffects = { // potions, spells and more
         dmg: 0, 
         accuracy: 100, 
         // change stats per round
-        change: {hp: 0, mp: 250}, 
+        change: {hp: 0, mp: 300}, 
         // buffs / debuffs
         defChange: {physical: [0, 0], magic: [0, 0]},
         statChange: {str: 0, int: 0, reg: 0},
