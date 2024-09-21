@@ -57,6 +57,9 @@ const gold = 'gold'; // both a colour and a currency
 const exp = 'exp';
 const item = 'item';
 
+const hand = 'hand';
+const body = 'body';
+
 var gachaGameData = {
     startingGamestate: {
         player: {
