@@ -1901,10 +1901,27 @@ function focusItem(itemId, isShop=false) {
             }
             if (JSON.stringify(item.effects.def.physical) != JSON.stringify([0,0])) {
                 stats += `${item.effects.def.physical[0]? `<img src="assets/shield.png" class="mediumIconDown"> +${item.effects.def.physical[0]} physical negation<br>`: ``}${item.effects.def.physical[1]? `<img src="assets/shield.png" class="mediumIconDown"> +${item.effects.def.physical[1]}% physical resistance<br>`: ``}`;
-
             }
             if (JSON.stringify(item.effects.def.magic) != JSON.stringify([0,0])) {
                 stats += `${item.effects.def.magic[0]? `<img src="assets/blueShield.png" class="mediumIconDown"> +${item.effects.def.magic[0]} magical negation<br>`: ``}${item.effects.def.magic[1]? `<img src="assets/blueShield.png" class="mediumIconDown"> +${item.effects.def.magic[1]}% magical resistance<br>`: ``}`;
+            }
+            if (item.effects.stat.str != 0) {
+                stats += `<img src="assets/redSword.png" class="mediumIconDown"> ${item.effects.stat.str > 0? `+` : ``}${item.effects.stat.str*100}% strength<br>`;
+            }
+            if (item.effects.stat.int != 0) {
+                stats += `<img src="assets/blueStar.png" class="mediumIconDown"> ${item.effects.stat.int > 0? `+` : ``}${item.effects.stat.int}% intelligence<br>`;
+            }
+            if (JSON.stringify(item.effects.stat.hp) != JSON.stringify([0,0])) {
+                stats += `${item.effects.stat.hp[0]? `<img src="assets/redCross.png" class="mediumIconDown"> +${item.effects.stat.hp[0]} max hp<br>`: ``}${item.effects.stat.hp[1]? `<img src="assets/redCross.png" class="mediumIconDown"> +${item.effects.stat.hp[1]}% max hp<br>`: ``}`;
+            }
+            if (JSON.stringify(item.effects.stat.mp) != JSON.stringify([0,0])) {
+                stats += `${item.effects.stat.mp[0]? `<img src="assets/blueStar.png" class="mediumIconDown"> +${item.effects.stat.mp[0]} max mp<br>`: ``}${item.effects.stat.mp[1]? `<img src="assets/blueStar.png" class="mediumIconDown"> +${item.effects.stat.mp[1]}% max mp<br>`: ``}`;
+            }
+            if (item.effects.stat.hpReg != 0) {
+                stats += `<img src="assets/${item.effects.stat.hpReg > 0? `greenCross` : `redDrop`}.png" class="mediumIconDown"> ${item.effects.stat.hpReg > 0? `+` : ``}${item.effects.stat.hpReg} hp regen per round<br>`;
+            }
+            if (item.effects.stat.mpReg != 0) {
+                stats += `<img src="assets/blueStar.png" class="mediumIconDown"> ${item.effects.stat.mpReg > 0? `+` : ``}${item.effects.stat.mpReg} mp regen per round<br>`;
             }
         }
     }
