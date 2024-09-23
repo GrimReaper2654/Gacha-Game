@@ -1086,7 +1086,7 @@ const gachaGameDrops = {
     },
 };
 
-const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, weapons, armours, misc);
+const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, misc); // weapons, armours,
 const gachaGameRewardItems = [];
 for (let i = 0; i <= 8; i++) {
     gachaGameRewardItems.push([]);
