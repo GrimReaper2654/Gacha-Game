@@ -45,7 +45,7 @@ const rankN = { // N
         mpRegen: 30, 
         agi: 75,
         skills: ['slap', 'lesserHeal', 'mediumHeal', 'lesserAreaHeal'],
-        armour: {physical: [2, 5], magic: [2, 5]}, 
+        armour: {physical: [0, 0], magic: [0, 0]}, 
         spec: mp,
     },
     Yuki: { // dps
@@ -63,7 +63,7 @@ const rankN = { // N
         int: 100, // intelligence (magic attack damage = attack base damage * int/100)
         mpRegen: 5, // mana regeneration per round
         skills: ['slash', 'lesserStrengthEnhancement', 'swordCharge', 'overheadStrike'], // attacks and abilities (every character should have at least 4)
-        armour: {physical: [5, 0], magic: [0, 0]}, // resistances to damage, first number is flat damage reduction, second is a percentage reduction
+        armour: {physical: [0, 0], magic: [0, 0]}, // resistances to damage, first number is flat damage reduction, second is a percentage reduction
     },
     Akane: { // tank
         name: `Akane`,
@@ -76,12 +76,12 @@ const rankN = { // N
         pfp: `assets/AnimeGirl40.jpeg`,
         hp: 170,
         mp: 30,
-        str: 0.9,
+        str: 1,
         int: 95,
         mpRegen: 5,
         agi: 80,
         skills: ['stunningBlows', 'slash', 'reinforceArmour', 'swordCharge'],
-        armour: {physical: [12, 25], magic: [2, 5]}, 
+        armour: {physical: [7, 10], magic: [2, 0]}, 
         spec: hp,
     },
     Emi: { // glass cannon magic dps
@@ -137,7 +137,7 @@ const rankN = { // N
         mpRegen: 7,
         agi: 95,
         skills: ['slash', 'raiseGuard', 'swordCharge', 'overheadStrike'],
-        armour: {physical: [10, 10], magic: [2, 0]}, 
+        armour: {physical: [5, 5], magic: [2, 0]}, 
         spec: hp,
     },
     Maiko: { // dps
@@ -156,7 +156,7 @@ const rankN = { // N
         mpRegen: 10, 
         agi: 120,
         skills: ['heavySlash', 'lesserStrengthEnhancement', 'inferiorSwordDance', 'firstAid'], 
-        armour: {physical: [3, 0], magic: [0, 0]}, 
+        armour: {physical: [2, 0], magic: [0, 0]}, 
     },
     Chika: { // no class
         name: `Chika`,
@@ -174,7 +174,7 @@ const rankN = { // N
         mpRegen: 10, 
         agi: 75,
         skills: ['slash', 'rockThrow', 'raiseGuard'], 
-        armour: {physical: [3, 0], magic: [2, 0]}, 
+        armour: {physical: [0, 0], magic: [0, 0]}, 
     },
     Reina: { // dps
         name: `Reina`,
@@ -1639,5 +1639,14 @@ const gachaGameSummons = {
 };
 
 const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankM, rankG, rankEX];
+
+for (let rank of gachaGameCharacters) { // Give everybody an empty inventory
+    for (let character in rank) {
+        rank[character].inventory = {
+            hand: {},
+            body: {}
+        }
+    }
+}
 
 export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons}; 

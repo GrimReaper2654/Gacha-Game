@@ -61,6 +61,9 @@ const gold = 'gold'; // both a colour and a currency
 const exp = 'exp';
 const item = 'item';
 
+const hand = 'hand';
+const body = 'body';
+
 function deepFreeze(obj) {
     let propNames = Object.getOwnPropertyNames(obj);
     for (let name of propNames) {
@@ -870,7 +873,6 @@ function getItemByName(name) {
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
         if (name == game.gamestate.player.inventory[i].name) return game.gamestate.player.inventory[i];
     }
-    console.warn(`GET ITEM BY NAME: Item with name '${name}' not found in inventory!`);
     return undefined;
 } window.getItemByName = getItemByName;
 
@@ -1877,18 +1879,35 @@ function inventoryBuyItem(itemId, isShop=false) {
 function focusItem(itemId, isShop=false) {
     let item = isShop? data.items[itemId] : game.gamestate.player.inventory[itemId];
     console.log(item);
-    let stats = `<br><span class="veryBig"><strong>Stats:</strong></span><br>`;
+    let numItems = isShop? (getItemByName(item.name)? getItemByName(item.name).quantity : 0) : item.quantity;
+    let stats = `<img src="assets/box.png" class="mediumIconDown"> ${numItems} in inventory<br>`;
+    stats += `<br><span class="veryBig"><strong>Stats:</strong></span><br>`;
     if (item.effects) {
-        for (let j = 0; j < item.effects.length; j++) {
-            let effect = data.effects[item.effects[j].effect];
-            stats += `Applies effect:<br>`;
-            for (let k = 0; k < effect.stats.length; k++) {
-                stats += `<img src="assets/${effect.stats[k].icon}" class="mediumIconDown"> ${effect.stats[k].desc}<br>`;
+        if (item.useable) {
+            for (let j = 0; j < item.effects.length; j++) {
+                let effect = data.effects[item.effects[j].effect];
+                stats += `Applies effect:<br>`;
+                for (let k = 0; k < effect.stats.length; k++) {
+                    stats += `<img src="assets/${effect.stats[k].icon}" class="mediumIconDown"> ${effect.stats[k].desc}<br>`;
+                }
+            }
+        } else if (item.equipable) {
+            stats += `When ${item.effects.slot == hand? `in main hand` : `on body`}:<br>`;
+            if (JSON.stringify(item.effects.atk.physical) != JSON.stringify([0,0,-1])) {
+                stats += `<img src="assets/redSword.png" class="mediumIconDown">${item.effects.atk.physical[0]? ` +${item.effects.atk.physical[0]} `: ``}${item.effects.atk.physical[0] && item.effects.atk.physical[1]? `or`: ``}${item.effects.atk.physical[1]? ` +${item.effects.atk.physical[1]}%`: ``} dmg ${item.effects.atk.physical[2] == -1? ``: `(max ${item.effects.atk.physical[2]})`}<br>`;
+            }
+            if (JSON.stringify(item.effects.atk.magic) != JSON.stringify([0,0,-1])) {
+                stats += `<img src="assets/blueStar.png" class="mediumIconDown">${item.effects.atk.magic[0]? ` +${item.effects.atk.magic[0]} `: ``}${item.effects.atk.magic[0] && item.effects.atk.magic[1]? `or`: ``}${item.effects.atk.magic[1]? ` +${item.effects.atk.magic[1]}%`: ``} dmg ${item.effects.atk.magic[2] == -1? ``: `(max ${item.effects.atk.magic[2]})`}<br>`;
+            }
+            if (JSON.stringify(item.effects.def.physical) != JSON.stringify([0,0])) {
+                stats += `${item.effects.def.physical[0]? `<img src="assets/shield.png" class="mediumIconDown"> +${item.effects.def.physical[0]} physical negation<br>`: ``}${item.effects.def.physical[1]? `<img src="assets/shield.png" class="mediumIconDown"> +${item.effects.def.physical[1]}% physical resistance<br>`: ``}`;
+
+            }
+            if (JSON.stringify(item.effects.def.magic) != JSON.stringify([0,0])) {
+                stats += `${item.effects.def.magic[0]? `<img src="assets/blueShield.png" class="mediumIconDown"> +${item.effects.def.magic[0]} magical negation<br>`: ``}${item.effects.def.magic[1]? `<img src="assets/blueShield.png" class="mediumIconDown"> +${item.effects.def.magic[1]}% magical resistance<br>`: ``}`;
             }
         }
     }
-    let numItems = isShop? (getItemByName(item.name)? getItemByName(item.name).quantity : 0) : item.quantity;
-    stats += `<img src="assets/box.png" class="mediumIconDown"> ${numItems} in stock<br>`;
     let shop = `<div id="inventoryShop">`;
     if (item.purchaceable) shop += `<button ${(game.gamestate.player.money >= item.purchacePrice ? `onclick="inventoryBuyItem(${itemId}, ${isShop})"` : `class="disabled2"`)} id="buyButton"> Buy 1 ($${bigNumber(item.purchacePrice)})</button>`;
     if (item.purchaceable && item.sellable) shop += `<span id="wasteOfSpace"></span>`;

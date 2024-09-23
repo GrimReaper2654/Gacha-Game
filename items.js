@@ -801,6 +801,37 @@ const weapons = [
         stackSize: 999999999,
         isReward: false,
     },
+
+    {
+        name: `Basic Staff`,
+        displayName: `Basic Staff`,
+        description: `A crude staff made from a tree branch. Can channel magic or be used as a club.`,
+        rarity: N,
+        pfp: `assets/staff.png`,
+        useable: false,
+        equipable: true,
+        effects: {
+            slot: hand,
+            atk: {physical: [1, 0, 30], magic: [5, 0, 100]},
+            def: {physical: [0, 0], magic: [0, 0]},
+            stat: {
+                str: 0,
+                int: 0,
+                hp: [0, 0],
+                mp: [0, 0],
+                hpReg: 0,
+                mpReg: 0,
+            },
+            attackEffects: []
+        },
+        purchaceable: true,
+        purchacePrice: 50,
+        sellable: true,
+        sellPrice: 10,
+        quantity: 1,
+        stackSize: 999999999,
+        isReward: false,
+    },
 ];
 
 const armours = [
@@ -1055,7 +1086,7 @@ const gachaGameDrops = {
     },
 };
 
-const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, misc);
+const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, weapons, armours, misc);
 const gachaGameRewardItems = [];
 for (let i = 0; i <= 8; i++) {
     gachaGameRewardItems.push([]);
