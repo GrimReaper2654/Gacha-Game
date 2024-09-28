@@ -477,7 +477,7 @@ function itemCard(item, itemID=undefined, hideQuantity=false,  isShop=false) {
     let numItems =  isShop? getItemByName(item.name)? getItemByName(item.name).quantity : 0 : item.quantity;
     let title = `<strong>${item.displayName ? item.displayName : item.name}</strong>`;
     let buttonData = `${ isShop==true? `onclick="focusItem(${itemID}, true)" ` : typeof itemID == 'number'? game.gamestate.inBattle ? `onclick="useItem(${itemID})" ` : `onclick="focusItem(${itemID})" ` : ``}class="smallCharacterButton rank${item.rarity}Button" id="${typeof itemID == 'number'? `item${itemID}` : itemID}"`;
-    return `<button ${buttonData}><p class="noPadding characterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span>${numItems > (isShop? 0 : 1) && hideQuantity == false? `<div id="cornerIcon"><span id="down">${numItems > 99 ? `99+`: numItems}</span></div>` : ``}</button>`;
+    return `<button ${buttonData}><p class="noPadding ${(item.displayName ? item.displayName : item.name).length > 11? `smallC` : `c`}haracterTitle">${title}</p><img src="${item.pfp}" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span>${numItems > (isShop? 0 : 1) && hideQuantity == false? `<div id="cornerIcon"><span id="down">${numItems > 99 ? `99+`: numItems}</span></div>` : ``}</button>`;
 }; window.itemCard = itemCard;
 
 function isItem(item) {
@@ -1923,6 +1923,14 @@ function focusItem(itemId, isShop=false) {
             if (item.effects.stat.mpReg != 0) {
                 stats += `<img src="assets/blueStar.png" class="mediumIconDown"> ${item.effects.stat.mpReg > 0? `+` : ``}${item.effects.stat.mpReg} mp regen per round<br>`;
             }
+            if (item.effects.attackEffects.length > 0) {
+                stats += `<br>Applies effect to target:<br>`;
+                for (let effect of item.effects.attackEffects) {
+                    for (let k = 0; k < data.effects[effect].stats.length; k++) {
+                        stats += `<img src="assets/${data.effects[effect].stats[k].icon}" class="mediumIconDown"> ${data.effects[effect].stats[k].desc}<br>`;
+                    }
+                }
+            }
         }
     }
     let shop = `<div id="inventoryShop">`;
@@ -2419,5 +2427,3 @@ function beg() {
 }; window.beg = beg;
 
 console.error('ERROR: The operation completed successfully.');
-
-
