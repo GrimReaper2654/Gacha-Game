@@ -536,7 +536,7 @@ const weapons = [
         displayName: `Iron Sword`,
         description: `A crude sword made from low grade iron. It's a little rusty so beware of tetanus.`,
         rarity: N,
-        pfp: `assets/ironSword.jpeg`,
+        pfp: `assets/sword2.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -566,7 +566,7 @@ const weapons = [
         displayName: `Steel Sword`,
         description: `A basic sword made from steel. Sharp and sturdy enough to use in combat.`,
         rarity: N,
-        pfp: `assets/steelSword.jpeg`,
+        pfp: `assets/sword3.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -596,7 +596,7 @@ const weapons = [
         displayName: `Steel Sword`,
         description: `A steel sword forged by a skilled blacksmith. It's sharper than most other swords on the market.`,
         rarity: UC,
-        pfp: `assets/steelSword.jpeg`,
+        pfp: `assets/sword4.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -656,7 +656,7 @@ const weapons = [
         displayName: `Steel Sword`,
         description: `A sharp and heavy chunk of metal on a stick. Designed for large powerful swings.`,
         rarity: UC,
-        pfp: `assets/steelSword.jpeg`,
+        pfp: `assets/sword1.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -716,12 +716,12 @@ const weapons = [
         displayName: `Diamond Sword`,
         description: `Enchanted with Sharpness 32k`,
         rarity: G,
-        pfp: `assets/diamondSword.jpeg`,
+        pfp: `assets/sword9.png`,
         useable: false,
         equipable: true,
         effects: {
             slot: hand,
-            atk: {physical: [1500, 0, -1], magic: [0, 0, -1]},
+            atk: {physical: [45, 10, -1], magic: [0, 0, -1]},
             def: {physical: [5, 0], magic: [0, 0]},
             stat: {
                 str: 0,
@@ -744,9 +744,9 @@ const weapons = [
     {
         name: `Excaliber`,
         displayName: `Excaliber`,
-        description: `A legendary sword wielded by the hero. `,
+        description: `A legendary sword wielded by the hero.`,
         rarity: M,
-        pfp: `assets/sword.jpeg`,
+        pfp: `assets/sword6.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -754,10 +754,10 @@ const weapons = [
             atk: {physical: [20, 45, 1000], magic: [0, 10, -1]},
             def: {physical: [10, 0], magic: [0, 0]},
             stat: {
-                str: 50, // 50% more str
-                int: 50, // 50% more int
-                hp: [0, 2], // double health
-                mp: [0, 2], // double mana
+                str: 10,
+                int: 0,
+                hp: [0, 0], 
+                mp: [0, 0], 
                 hpReg: 0,
                 mpReg: 0,
             },
@@ -776,7 +776,7 @@ const weapons = [
         displayName: `Demon Sword`,
         description: `A demonic sword wielded by a bad guy. It grants the wielder great power at a cost.`,
         rarity: M,
-        pfp: `assets/sword.jpeg`,
+        pfp: `assets/sword7.png`,
         useable: false,
         equipable: true,
         effects: {
@@ -784,7 +784,7 @@ const weapons = [
             atk: {physical: [25, 60, 1250], magic: [5, 25, -1]},
             def: {physical: [15, 0], magic: [0, 0]},
             stat: {
-                str: 1.5,
+                str: 25,
                 int: 0,
                 hp: [0, 0],
                 mp: [0, 0],
