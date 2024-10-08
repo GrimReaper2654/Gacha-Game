@@ -469,6 +469,10 @@ function sortInventory(list, property='name') {
     return nList;
 }; window.sortInventory = sortInventory;
 
+function getCompactStats(item) {
+    return `Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} ${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} ${item.effects.def.magic[1]}%<br>`;
+}; window.getCompactStats = getCompactStats;
+
 function blankCard(rarity, id=undefined, onClick=undefined) {
     return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p class="noPadding characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span></button>`;
 }; window.blankCard = blankCard;
@@ -1876,16 +1880,19 @@ function inventoryBuyItem(itemId, isShop=false) {
     save();
 }; window.inventoryBuyItem = inventoryBuyItem;
 
-function replaceWeaponMenu(characterId, slot) {
+function replaceWeapon(characterId, slot) {
     let character = game.gamestate.player.characters[characterId];
+}; window.replaceWeapon = replaceWeapon();
+
+function replaceWeaponMenu(characterId, slot) {
     inventory(false, function(item) {return item.equipable}); 
-    replacehtml(`money`, `<span><strong>Equip Item</strong></span>`);
+    replacehtml(`money`, `<span><strong>Equip Item</strong></span>`); // Use the inventory as a template
     Array.from(document.getElementById('buttonGridInventory').children).forEach(child => {
-        const item = game.gamestate.player.inventory[child.id.slice(4)];
         const popup = document.createElement('span');
         popup.className = "popup";
-        popup.innerHTML = `Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} ${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} ${item.effects.def.magic[1]}%<br>`;
+        popup.innerHTML = getCompactStats(game.gamestate.player.inventory[child.id.slice(4)]);
         child.appendChild(popup);
+        child.onClick = function() {replaceWeapon(characterId, slot)};
     });
 }; window.replaceWeaponMenu = replaceWeaponMenu;
 
@@ -1963,17 +1970,7 @@ function focusItem(itemId, isShop=false) {
 function focusCharacter(characterId, addExp=true) { 
     let character = game.gamestate.player.characters[characterId];
     if (addExp) increaseExp(characterId);
-    let items = `<button id="focusItemHand" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'hand')"><img src="assets/${character.inventory.hand.pfp? character.inventory.hand.pfp : 'redSword.png'}" class="characterIcon">${character.inventory.hand.effects? `<span class="popup">Stats:<br>
-    <img src="assets/redSword.png" class="smallIcon"> ATK: ${character.inventory.hand.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.atk.physical[0])} ${character.inventory.hand.effects.atk.physical[1] >= 0? '+': '-'}${character.inventory.hand.effects.atk.physical[1]}%${character.inventory.hand.effects.atk.physical[2] > 0? ` <${bigNumber(character.inventory.hand.effects.atk.physical[2])}` : ``}<br>
-    <img src="assets/blueStar.png" class="smallIcon"> ATK: ${character.inventory.hand.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.atk.magic[0])} ${character.inventory.hand.effects.atk.magic[1] >= 0? '+': '-'}${character.inventory.hand.effects.atk.magic[1]}%${character.inventory.hand.effects.atk.magic[2] > 0? ` <${bigNumber(character.inventory.hand.effects.atk.magic[2])}` : ``}<br>
-    <img src="assets/shield.png" class="smallIcon"> DEF: ${character.inventory.hand.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.def.physical[0])} ${character.inventory.hand.effects.def.physical[1]}%<br>
-    <img src="assets/blueShield.png" class="smallIcon"> DEF: ${character.inventory.hand.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.def.magic[0])} ${character.inventory.hand.effects.def.magic[1]}%<br>
-    </span>` : ``}</button><button id="focusItemBody" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'body')"><img src="assets/${character.inventory.body.pfp? character.inventory.body.pfp : 'shield.png'}" class="characterIcon">${character.inventory.body.effects? `<span class="popup">Stats:<br>
-    <img src="assets/redSword.png" class="smallIcon"> ATK: ${character.inventory.body.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.atk.physical[0])} ${character.inventory.body.effects.atk.physical[1] >= 0? '+': '-'}${character.inventory.body.effects.atk.physical[1]}%${character.inventory.body.effects.atk.physical[2] > 0? ` <${bigNumber(character.inventory.body.effects.atk.physical[2])}` : ``}<br>
-    <img src="assets/blueStar.png" class="smallIcon"> ATK: ${character.inventory.body.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.atk.magic[0])} ${character.inventory.body.effects.atk.magic[1] >= 0? '+': '-'}${character.inventory.body.effects.atk.magic[1]}%${character.inventory.body.effects.atk.magic[2] > 0? ` <${bigNumber(character.inventory.body.effects.atk.magic[2])}` : ``}<br>
-    <img src="assets/shield.png" class="smallIcon"> DEF: ${character.inventory.body.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.def.physical[0])} ${character.inventory.body.effects.def.physical[1]}%<br>
-    <img src="assets/blueShield.png" class="smallIcon"> DEF: ${character.inventory.body.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.def.magic[0])} ${character.inventory.body.effects.def.magic[1]}%<br>
-    </span>` : ``}</button><br>`;
+    let items = `<button id="focusItemHand" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'hand')"><img src="assets/${character.inventory.hand.pfp? character.inventory.hand.pfp : 'redSword.png'}" class="characterIcon">${character.inventory.hand.effects? `<span class="popup">${getCompactStats(character.inventory.hand)}</span>` : ``}</button><button id="focusItemBody" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'body')"><img src="assets/${character.inventory.body.pfp? character.inventory.body.pfp : 'shield.png'}" class="characterIcon">${character.inventory.body.effects? `<span class="popup">${getCompactStats(character.inventory.body)}</span>` : ``}</button><br>`;
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span class="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
