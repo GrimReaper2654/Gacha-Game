@@ -473,7 +473,11 @@ function calcDamage(character, skill) {
     let updatedStats = adjustedStats(character);
     let weaponType = skill.weaponType? skill.weaponType : skill.type;
     let dmg = skill.dmg;
-    console.log(dmg);
+    let isNegative = false;
+    if (dmg < 0) {
+        dmg *= -1;
+        isNegative = true;
+    }
     if (weaponType == physical || weaponType == magic) {
         dmg += weaponType == physical? updatedStats.physDmgIncrease[0] : updatedStats.magiDmgIncrease[0];
         console.log(dmg);
@@ -481,7 +485,6 @@ function calcDamage(character, skill) {
         console.log(dmg);
         dmg = Math.min(dmg, weaponType == physical? updatedStats.physDmgIncrease[2] : updatedStats.magiDmgIncrease[2]);
     }
-    console.log(dmg);
     switch (skill.multiplier) {
         case str:
             dmg *= updatedStats.str;
@@ -490,7 +493,7 @@ function calcDamage(character, skill) {
             dmg *= updatedStats.int/100;
             break;
     }
-    console.log(dmg);
+    if (isNegative) dmg *= -1;
     return Math.floor(dmg);
 }; window.calcDamage = calcDamage;
 
