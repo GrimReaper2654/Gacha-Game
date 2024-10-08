@@ -1643,8 +1643,8 @@ const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankM, 
 for (let rank of gachaGameCharacters) { // Give everybody an empty inventory
     for (let character in rank) {
         rank[character].inventory = {
-            hand: {},
-            body: {}
+            hand: null,
+            body: null
         }
     }
 }

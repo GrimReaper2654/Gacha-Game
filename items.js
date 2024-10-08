@@ -682,6 +682,36 @@ const weapons = [
         isReward: false,
     },
     {
+        name: `Poisoned Dagger`,
+        displayName: `Poison Dagger`,
+        description: `A dagger coated in deadly poison. The wielder's attacks apply a poison effect to the target.`,
+        rarity: UC,
+        pfp: `assets/ironSword.jpeg`,
+        useable: false,
+        equipable: true,
+        effects: {
+            slot: hand,
+            atk: {physical: [5, 0, 50], magic: [0, 0, -1]},
+            def: {physical: [1, 0], magic: [0, 0]},
+            stat: {
+                str: 0,
+                int: 0,
+                hp: [0, 0],
+                mp: [0, 0],
+                hpReg: 0,
+                mpReg: 0,
+            },
+            attackEffects: ['lesserPoison']
+        },
+        purchaceable: true,
+        purchacePrice: 250,
+        sellable: true,
+        sellPrice: 50,
+        quantity: 1,
+        stackSize: 999999999,
+        isReward: false,
+    },
+    {
         name: `Diamond Sword`,
         displayName: `Diamond Sword`,
         description: `Enchanted with Sharpness 32k`,
@@ -785,7 +815,7 @@ const weapons = [
             def: {physical: [5, 0], magic: [0, 0]},
             stat: {
                 str: 0,
-                int: -1,
+                int: -100,
                 hp: [0, 0],
                 mp: [0, 0],
                 hpReg: 0,
@@ -970,8 +1000,8 @@ const armours = [
             stat: {
                 str: 100,  // increase strength by 100 times
                 int: 10000,   // increase intelligence by 100 times
-                hp: [0, 0],
-                mp: [0, 0],
+                hp: [0, 1000], // 10 times max hp
+                mp: [0, 1000], // 10 times max mp
                 hpReg: 100, // regenerate 100 hp every round
                 mpReg: 100, // regenerate 100 extra mp every round
             },
@@ -1086,7 +1116,7 @@ const gachaGameDrops = {
     },
 };
 
-const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, misc); // weapons, armours,
+const gachaGameAllItems = [].concat(healthPots, buffPots, offensiveItems, stones, weapons, armours, misc); 
 const gachaGameRewardItems = [];
 for (let i = 0; i <= 8; i++) {
     gachaGameRewardItems.push([]);

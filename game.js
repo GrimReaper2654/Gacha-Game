@@ -470,7 +470,7 @@ function sortInventory(list, property='name') {
 }; window.sortInventory = sortInventory;
 
 function getCompactStats(item) {
-    return `Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} ${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} ${item.effects.def.magic[1]}%<br>`;
+    return `<strong>${item.displayName}</strong><br>Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} +${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} +${item.effects.def.magic[1]}%<br>`;
 }; window.getCompactStats = getCompactStats;
 
 function blankCard(rarity, id=undefined, onClick=undefined) {
@@ -1882,7 +1882,20 @@ function inventoryBuyItem(itemId, isShop=false) {
 
 function replaceWeapon(characterId, weaponId) {
     let character = game.gamestate.player.characters[characterId];
-    addItem
+    let item = game.gamestate.player.inventory[weaponId];
+    if (character.inventory[item.effects.slot]) addItem(character.inventory[item.effects.slot]);
+    character.inventory[item.effects.slot] = JSON.parse(JSON.stringify(item))
+    character.inventory[item.effects.slot].quantity = 1;
+    item.quantity--;
+    if (item.quantity <= 0) {
+        let newItems = [];
+        for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
+            if (game.gamestate.player.inventory[i].quantity > 0) newItems.push(game.gamestate.player.inventory[i]);
+        }
+        game.gamestate.player.inventory = newItems;
+    }
+    replaceWeaponMenu(characterId);
+    focusCharacter(characterId);
 }; window.replaceWeapon = replaceWeapon;
 
 function replaceWeaponMenu(characterId) {
@@ -1893,7 +1906,7 @@ function replaceWeaponMenu(characterId) {
         popup.className = "popup";
         popup.innerHTML = getCompactStats(game.gamestate.player.inventory[child.id.slice(4)]);
         child.appendChild(popup);
-        child.onClick = function() {replaceWeapon(characterId, child.id.slice(4))};
+        child.onclick = function() {replaceWeapon(characterId, child.id.slice(4))};
     });
 }; window.replaceWeaponMenu = replaceWeaponMenu;
 

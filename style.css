@@ -1252,6 +1252,8 @@ h3 {
     background-color: rgba(0, 0, 0, 0.5);
     margin: 20px;
     margin-left: 0;
+    box-shadow: none;
+    border: none;
 }
 
 .popup {
