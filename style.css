@@ -1241,3 +1241,40 @@ h3 {
     padding: 0;
     margin: 0;
 }
+
+.itemContainer {
+    position: relative;
+    display: inline-block;
+    height: 140px;
+    width: 140px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 20px;
+    margin-left: 0;
+}
+
+.popup {
+    display: none; 
+    position: absolute;
+    background-color: rgba(30, 30, 30, 0.9);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1;
+    top: 100%; 
+    left: 0;
+    height: 80px;
+    width: 160px;
+    color: white;
+    text-align: left;
+    justify-content: left;
+    font-size: smaller;
+}
+
+.itemContainer:hover .popup {
+    display: block; 
+}
+
+.smallCharacterButton:hover .popup {
+    display: block; 
+}

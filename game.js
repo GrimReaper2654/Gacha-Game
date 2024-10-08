@@ -1876,6 +1876,19 @@ function inventoryBuyItem(itemId, isShop=false) {
     save();
 }; window.inventoryBuyItem = inventoryBuyItem;
 
+function replaceWeaponMenu(characterId, slot) {
+    let character = game.gamestate.player.characters[characterId];
+    inventory(false, function(item) {return item.equipable}); 
+    replacehtml(`money`, `<span><strong>Equip Item</strong></span>`);
+    Array.from(document.getElementById('buttonGridInventory').children).forEach(child => {
+        const item = game.gamestate.player.inventory[child.id.slice(4)];
+        const popup = document.createElement('span');
+        popup.className = "popup";
+        popup.innerHTML = `Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} ${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} ${item.effects.def.magic[1]}%<br>`;
+        child.appendChild(popup);
+    });
+}; window.replaceWeaponMenu = replaceWeaponMenu;
+
 function focusItem(itemId, isShop=false) {
     let item = isShop? data.items[itemId] : game.gamestate.player.inventory[itemId];
     console.log(item);
@@ -1950,6 +1963,17 @@ function focusItem(itemId, isShop=false) {
 function focusCharacter(characterId, addExp=true) { 
     let character = game.gamestate.player.characters[characterId];
     if (addExp) increaseExp(characterId);
+    let items = `<button id="focusItemHand" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'hand')"><img src="assets/${character.inventory.hand.pfp? character.inventory.hand.pfp : 'redSword.png'}" class="characterIcon">${character.inventory.hand.effects? `<span class="popup">Stats:<br>
+    <img src="assets/redSword.png" class="smallIcon"> ATK: ${character.inventory.hand.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.atk.physical[0])} ${character.inventory.hand.effects.atk.physical[1] >= 0? '+': '-'}${character.inventory.hand.effects.atk.physical[1]}%${character.inventory.hand.effects.atk.physical[2] > 0? ` <${bigNumber(character.inventory.hand.effects.atk.physical[2])}` : ``}<br>
+    <img src="assets/blueStar.png" class="smallIcon"> ATK: ${character.inventory.hand.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.atk.magic[0])} ${character.inventory.hand.effects.atk.magic[1] >= 0? '+': '-'}${character.inventory.hand.effects.atk.magic[1]}%${character.inventory.hand.effects.atk.magic[2] > 0? ` <${bigNumber(character.inventory.hand.effects.atk.magic[2])}` : ``}<br>
+    <img src="assets/shield.png" class="smallIcon"> DEF: ${character.inventory.hand.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.def.physical[0])} ${character.inventory.hand.effects.def.physical[1]}%<br>
+    <img src="assets/blueShield.png" class="smallIcon"> DEF: ${character.inventory.hand.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.hand.effects.def.magic[0])} ${character.inventory.hand.effects.def.magic[1]}%<br>
+    </span>` : ``}</button><button id="focusItemBody" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'body')"><img src="assets/${character.inventory.body.pfp? character.inventory.body.pfp : 'shield.png'}" class="characterIcon">${character.inventory.body.effects? `<span class="popup">Stats:<br>
+    <img src="assets/redSword.png" class="smallIcon"> ATK: ${character.inventory.body.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.atk.physical[0])} ${character.inventory.body.effects.atk.physical[1] >= 0? '+': '-'}${character.inventory.body.effects.atk.physical[1]}%${character.inventory.body.effects.atk.physical[2] > 0? ` <${bigNumber(character.inventory.body.effects.atk.physical[2])}` : ``}<br>
+    <img src="assets/blueStar.png" class="smallIcon"> ATK: ${character.inventory.body.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.atk.magic[0])} ${character.inventory.body.effects.atk.magic[1] >= 0? '+': '-'}${character.inventory.body.effects.atk.magic[1]}%${character.inventory.body.effects.atk.magic[2] > 0? ` <${bigNumber(character.inventory.body.effects.atk.magic[2])}` : ``}<br>
+    <img src="assets/shield.png" class="smallIcon"> DEF: ${character.inventory.body.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.def.physical[0])} ${character.inventory.body.effects.def.physical[1]}%<br>
+    <img src="assets/blueShield.png" class="smallIcon"> DEF: ${character.inventory.body.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(character.inventory.body.effects.def.magic[0])} ${character.inventory.body.effects.def.magic[1]}%<br>
+    </span>` : ``}</button><br>`;
     let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span class="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
@@ -1999,7 +2023,7 @@ function focusCharacter(characterId, addExp=true) {
     replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong>${rank(character.rarity)} ${character.alive? `` : `<s>`}${character.title} ${character.name}${character.alive? `` : `</s>`} </strong></span>`);
     replacehtml(`focusImageContainer`, `<img src="${character.pfp}" class="focusIcon${character.alive? `` : ` grey  disabled`}">`);
     replacehtml(`focusDescription`, `${character.description}${character.alive? `` : ` ${character.name} has died!`}`);
-    replacehtml(`focusStats`, getExpBar(character) + stats);
+    replacehtml(`focusStats`, items + getExpBar(character) + stats);
     replacehtml(`focusSkills`, shop + skills);
 }; window.focusCharacter = focusCharacter;
 
@@ -2226,10 +2250,11 @@ function pull() {
     resize();
 }; window.pull = pull;
 
-function inventory(forceBattleMode=false) {
+function inventory(forceBattleMode=false, filter=function(item) {return true}) {
     console.log('inventory');
     game.gamestate.player.inventory = sortInventory(game.gamestate.player.inventory);
     if (game.gamestate.inBattle || forceBattleMode) {
+        filter = function(item) {return item.useable};
         if (game.gamestate.battleState.turn != 'player') return;
         game.gamestate.battleState.tempStorage.activeCardId = undefined;
         game.gamestate.battleState.tempStorage.skillId = undefined;
@@ -2256,7 +2281,9 @@ function inventory(forceBattleMode=false) {
     }
     let buttonGridHtml = ``;
     for (let i = 0; i < game.gamestate.player.inventory.length; i++) {
-        buttonGridHtml += itemCard(game.gamestate.player.inventory[i], i);
+        if (filter(game.gamestate.player.inventory[i])) {
+            buttonGridHtml += itemCard(game.gamestate.player.inventory[i], i);
+        }
     }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
@@ -2388,15 +2415,10 @@ async function home() {
                 </span>
             </div>
             <div id="focusBody">
-                <div id="focusImageContainer">
-                </div>
+                <div id="focusImageContainer"></div>
                 <span id="focusDescription"></span>
-                <div id="focusStats">
-                    <p></p>
-                </div>
-                <div id="focusSkills">
-                    <p></p>
-                </div>
+                <div id="focusStats"></div>
+                <div id="focusSkills"></div>
             </div>
         </div>
         <div id="effects"></div>
