@@ -209,6 +209,8 @@ body {
     height: calc(100vh - 100px);
     max-width: calc(100% - 30px);
     overflow-y: auto;
+    color: white;
+    font-family: 'Courier New', monospace;
 }
 
 .pullButton {
@@ -1270,6 +1272,7 @@ h3 {
     text-align: left;
     justify-content: left;
     font-size: smaller;
+    white-space: nowrap;
 }
 
 .itemContainer:hover .popup {
@@ -1278,4 +1281,8 @@ h3 {
 
 .smallCharacterButton:hover .popup {
     display: block; 
+}
+
+.watermark {
+    opacity: 0.5;
 }

@@ -469,9 +469,51 @@ function sortInventory(list, property='name') {
     return nList;
 }; window.sortInventory = sortInventory;
 
+function calcDamage(character, skill) {
+    let updatedStats = adjustedStats(character);
+    let weaponType = skill.weaponType? skill.weaponType : skill.type;
+    let dmg = skill.dmg;
+    console.log(dmg);
+    if (weaponType == physical || weaponType == magic) {
+        dmg += weaponType == physical? updatedStats.physDmgIncrease[0] : updatedStats.magiDmgIncrease[0];
+        console.log(dmg);
+        dmg *= weaponType == physical? updatedStats.physDmgIncrease[1] : updatedStats.magiDmgIncrease[1];
+        console.log(dmg);
+        dmg = Math.min(dmg, weaponType == physical? updatedStats.physDmgIncrease[2] : updatedStats.magiDmgIncrease[2]);
+    }
+    console.log(dmg);
+    switch (skill.multiplier) {
+        case str:
+            dmg *= updatedStats.str;
+            break;
+        case int:
+            dmg *= updatedStats.int/100;
+            break;
+    }
+    console.log(dmg);
+    return Math.floor(dmg);
+}; window.calcDamage = calcDamage;
+
 function getCompactStats(item) {
-    return `<strong>${item.displayName}</strong><br>Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} +${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} +${item.effects.def.magic[1]}%<br>`;
+    if (item) return `<strong>${item.displayName}</strong><br>Stats:<br><img src="assets/redSword.png" class="smallIcon"> ATK: ${item.effects.atk.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.physical[0])} ${item.effects.atk.physical[1] >= 0? '+': '-'}${item.effects.atk.physical[1]}%${item.effects.atk.physical[2] > 0? ` <${bigNumber(item.effects.atk.physical[2])}` : ``}<br><img src="assets/blueStar.png" class="smallIcon"> ATK: ${item.effects.atk.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.atk.magic[0])} ${item.effects.atk.magic[1] >= 0? '+': '-'}${item.effects.atk.magic[1]}%${item.effects.atk.magic[2] > 0? ` <${bigNumber(item.effects.atk.magic[2])}` : ``}<br><img src="assets/shield.png" class="smallIcon"> DEF: ${item.effects.def.physical[0] >= 0? '+': '-'}${bigNumber(item.effects.def.physical[0])} +${item.effects.def.physical[1]}%<br><img src="assets/blueShield.png" class="smallIcon"> DEF: ${item.effects.def.magic[0] >= 0? '+': '-'}${bigNumber(item.effects.def.magic[0])} +${item.effects.def.magic[1]}%<br>`;
 }; window.getCompactStats = getCompactStats;
+
+function adjustedStats(character) {
+    return {
+        hp: Math.floor((character.hp + (character.inventory.hand? character.inventory.hand.effects.stat.hp[0] : 0) + (character.inventory.body? character.inventory.body.effects.stat.hp[0] : 0)) * (1 + (character.inventory.hand? character.inventory.hand.effects.stat.hp[1]/100 : 0) + (character.inventory.body? character.inventory.body.effects.stat.hp[1]/100 : 0))),
+        mp: Math.floor((character.mp + (character.inventory.hand? character.inventory.hand.effects.stat.mp[0] : 0) + (character.inventory.body? character.inventory.body.effects.stat.mp[0] : 0)) * (1 + (character.inventory.hand? character.inventory.hand.effects.stat.mp[1]/100 : 0) + (character.inventory.body? character.inventory.body.effects.stat.mp[1]/100 : 0))),
+        str: Math.floor((character.str * (character.inventory.hand? 1+character.inventory.hand.effects.stat.str : 1) * (character.inventory.body? 1+character.inventory.body.effects.stat.str : 1))*10000)/10000,
+        int: Math.floor((character.int * (character.inventory.hand? 1+character.inventory.hand.effects.stat.int/100 : 1) * (character.inventory.body? 1+character.inventory.body.effects.stat.int/100 : 1))),
+        armour: {
+            physical: [Math.max(0, character.armour.physical[0] + (character.inventory.hand? character.inventory.hand.effects.def.physical[0] : 0) + (character.inventory.body? character.inventory.body.effects.def.physical[0] : 0)), Math.round((character.armour.physical[1] + (100-character.armour.physical[1])*(character.inventory.hand? character.inventory.hand.effects.def.physical[1]/100 : 0) + (100-character.armour.physical[1] + (100-character.armour.physical[1])*(character.inventory.hand? character.inventory.hand.effects.def.physical[1]/100 : 0))*(character.inventory.body? character.inventory.body.effects.def.physical[1]/100 : 0))*100)/100],
+            magic: [Math.max(0, character.armour.magic[0] + (character.inventory.hand? character.inventory.hand.effects.def.magic[0] : 0) + (character.inventory.body? character.inventory.body.effects.def.magic[0] : 0)), Math.round((character.armour.magic[1] + (100-character.armour.magic[1])*(character.inventory.hand? character.inventory.hand.effects.def.magic[1]/100 : 0) + (100-character.armour.magic[1] + (100-character.armour.magic[1])*(character.inventory.hand? character.inventory.hand.effects.def.magic[1]/100 : 0))*(character.inventory.body? character.inventory.body.effects.def.magic[1]/100 : 0))*100)/100],
+        },
+        hpRegen: (character.inventory.hand? character.inventory.hand.effects.stat.hpReg : 0) + (character.inventory.body? character.inventory.body.effects.stat.hpReg : 0),
+        mpRegen: character.mpRegen + (character.inventory.hand? character.inventory.hand.effects.stat.mpReg : 0) + (character.inventory.body? character.inventory.body.effects.stat.mpReg : 0),
+        physDmgIncrease: [(character.inventory.hand? character.inventory.hand.effects.atk.physical[0] : 0) + (character.inventory.body? character.inventory.body.effects.atk.physical[0] : 0), 1 + (character.inventory.hand? character.inventory.hand.effects.atk.physical[1]/100 : 0) + (character.inventory.body? character.inventory.body.effects.atk.physical[1]/100 : 0), Math.min((character.inventory.hand && character.inventory.hand.effects.atk.physical[2] != -1? character.inventory.hand.effects.atk.physical[2] : Infinity), (character.inventory.body && character.inventory.body.effects.atk.physical[2] != -1? character.inventory.body.effects.atk.physical[2] : Infinity))],
+        magiDmgIncrease: [(character.inventory.hand? character.inventory.hand.effects.atk.magic[0] : 0) + (character.inventory.body? character.inventory.body.effects.atk.magic[0] : 0), 1 + (character.inventory.hand? character.inventory.hand.effects.atk.magic[1]/100 : 0) + (character.inventory.body? character.inventory.body.effects.atk.magic[1]/100 : 0), Math.min((character.inventory.hand && character.inventory.hand.effects.atk.magic[2] != -1? character.inventory.hand.effects.atk.magic[2] : Infinity), (character.inventory.body && character.inventory.body.effects.atk.magic[2] != -1? character.inventory.body.effects.atk.magic[2] : Infinity))],
+    };
+}; window.adjustedStats = adjustedStats;
 
 function blankCard(rarity, id=undefined, onClick=undefined) {
     return `<button ${id? `id="${id}"` : ``}${onClick ? `onclick="${onClick}" ` : ``}class="smallCharacterButton${rarity != -1? ` rank${rarity}Button` : ``}"><p class="noPadding characterTitle"> </p><img src="assets/empty.png" class="characterIcon"><span id="placeholder"><p class="noPadding medium"> </p></span></button>`;
@@ -1902,11 +1944,13 @@ function replaceWeaponMenu(characterId) {
     inventory(false, function(item) {return item.equipable}); 
     replacehtml(`money`, `<span><strong>Equip Item</strong></span>`); // Use the inventory as a template
     Array.from(document.getElementById('buttonGridInventory').children).forEach(child => {
-        const popup = document.createElement('span');
-        popup.className = "popup";
-        popup.innerHTML = getCompactStats(game.gamestate.player.inventory[child.id.slice(4)]);
-        child.appendChild(popup);
-        child.onclick = function() {replaceWeapon(characterId, child.id.slice(4))};
+        if (child instanceof HTMLButtonElement) {
+            const popup = document.createElement('span');
+            popup.className = "popup";
+            popup.innerHTML = getCompactStats(game.gamestate.player.inventory[child.id.slice(4)]);
+            child.appendChild(popup);
+            child.onclick = function() {replaceWeapon(characterId, child.id.slice(4))};
+        }
     });
 }; window.replaceWeaponMenu = replaceWeaponMenu;
 
@@ -1984,22 +2028,13 @@ function focusItem(itemId, isShop=false) {
 function focusCharacter(characterId, addExp=true) { 
     let character = game.gamestate.player.characters[characterId];
     if (addExp) increaseExp(characterId);
-    let items = `<button id="focusItemHand" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'hand')"><img src="assets/${character.inventory.hand.pfp? character.inventory.hand.pfp : 'redSword.png'}" class="characterIcon">${character.inventory.hand.effects? `<span class="popup">${getCompactStats(character.inventory.hand)}</span>` : ``}</button><button id="focusItemBody" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'body')"><img src="assets/${character.inventory.body.pfp? character.inventory.body.pfp : 'shield.png'}" class="characterIcon">${character.inventory.body.effects? `<span class="popup">${getCompactStats(character.inventory.body)}</span>` : ``}</button><br>`;
-    let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${character.hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${character.mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${character.armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${character.armour.magic[1]}% magical resistance<br>`;
+    let items = `<button id="focusItemHand" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'hand')"><img src="assets/${character.inventory.hand? character.inventory.hand.pfp : 'greySword.png'}" class="characterIcon${character.inventory.hand? `` : ` disabled2 watermark`}">${character.inventory.hand? `<span class="popup">${getCompactStats(character.inventory.hand)}</span>` : ``}</button><button id="focusItemBody" class="itemContainer" onClick="replaceWeaponMenu(${characterId}, 'body')"><img src="assets/${character.inventory.body? character.inventory.body.pfp : 'greyChestplate.png'}" class="characterIcon${character.inventory.hand? `` : ` disabled2 watermark`}">${character.inventory.body? `<span class="popup">${getCompactStats(character.inventory.body)}</span>` : ``}</button><br>`;
+    let stats = `<strong>Stats:</strong><br><img src="assets/redCross.png" class="mediumIconDown"> ${adjustedStats(character).hp} health points<br><img src="assets/blueStar.png" class="mediumIconDown"> ${adjustedStats(character).mp} mana points<br><img src="assets/shield.png" class="mediumIconDown"> ${adjustedStats(character).armour.physical[0]} physical negation<br><img src="assets/shield.png" class="mediumIconDown"> ${adjustedStats(character).armour.physical[1]}% physical resistance<br><img src="assets/blueShield.png" class="mediumIconDown"> ${adjustedStats(character).armour.magic[0]} magical negation<br><img src="assets/blueShield.png" class="mediumIconDown"> ${adjustedStats(character).armour.magic[1]}% magical resistance<br>`;
     let skills = `<br><span class="veryBig"><strong>Skills:</strong></span><br>`;
     for (let i = 0; i < character.skills.length; i++) {
         let skill = `<span class="bigger">${data.skills[character.skills[i]].name}</span><br>`;
         skill += `<span class="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
-        let dmg = data.skills[character.skills[i]].dmg;
-        switch (data.skills[character.skills[i]].multiplier) {
-            case str:
-                dmg *= character.str;
-                break;
-            case int:
-                dmg *= character.int/100;
-                break;
-        }
-        dmg = Math.floor(dmg);
+        let dmg = calcDamage(character, data.skills[character.skills[i]]);
         if (data.skills[character.skills[i]].dmg > 0) skill += `<img src="assets/lightning.png" class="smallIcon"> ${dmg} damage<br>`;
         else if (data.skills[character.skills[i]].dmg < 0) skill += `<img src="assets/greenCross.png" class="smallIcon"> ${-dmg} heal<br>`;
         if (data.skills[character.skills[i]].extraStats) {
@@ -2296,6 +2331,9 @@ function inventory(forceBattleMode=false, filter=function(item) {return true}) {
             buttonGridHtml += itemCard(game.gamestate.player.inventory[i], i);
         }
     }
+    if (buttonGridHtml == ``) {
+        buttonGridHtml = `<p>Inventory is empty</p>`;
+    }
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
     resize();
@@ -2309,7 +2347,7 @@ function characters() {
     for (let i = 0; i < game.gamestate.player.characters.length; i++) {
         if (game.gamestate.player.characters[i].hidden) game.gamestate.player.characters[i].hidden = undefined; // unhide any hidden characters
         let title = `<strong>${game.gamestate.player.characters[i].alive? `` : `<s>`}${game.gamestate.player.characters[i].name}${game.gamestate.player.characters[i].alive? `` : `</s>`}</strong>`;
-        let desc = `<img src="assets/redCross.png" class="smallIcon"> ${game.gamestate.player.characters[i].hp}\n<img src="assets/blueStar.png" class="smallIcon"> ${game.gamestate.player.characters[i].mp}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
+        let desc = `<img src="assets/redCross.png" class="smallIcon"> ${bigNumber(adjustedStats(game.gamestate.player.characters[i]).hp)}\n<img src="assets/blueStar.png" class="smallIcon"> ${bigNumber(adjustedStats(game.gamestate.player.characters[i]).mp)}\n<img src="assets/lightning.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.atk}\n<img src="assets/shield.png" class="smallIcon"> ${game.gamestate.player.characters[i].stats.def}`;
         let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
         buttonGridHtml += `<span><button ${buttonData}><p class="noPadding characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon${game.gamestate.player.characters[i].alive? `` : ` grey disabled`}"><p class="noPadding statsText">${desc}</p></button></span>`;
     }

@@ -744,7 +744,7 @@ const weapons = [
     {
         name: `Excaliber`,
         displayName: `Excaliber`,
-        description: `A legendary sword wielded by the hero. Posessing this sword grants the wielder plot armour.`,
+        description: `A legendary sword wielded by the hero. `,
         rarity: M,
         pfp: `assets/sword.jpeg`,
         useable: false,
@@ -754,8 +754,8 @@ const weapons = [
             atk: {physical: [20, 45, 1000], magic: [0, 10, -1]},
             def: {physical: [10, 0], magic: [0, 0]},
             stat: {
-                str: 1,
-                int: 100,
+                str: 50, // 50% more str
+                int: 50, // 50% more int
                 hp: [0, 2], // double health
                 mp: [0, 2], // double mana
                 hpReg: 0,
@@ -815,7 +815,7 @@ const weapons = [
             def: {physical: [5, 0], magic: [0, 0]},
             stat: {
                 str: 0,
-                int: -100,
+                int: -50, // 50% less int (half int)
                 hp: [0, 0],
                 mp: [0, 0],
                 hpReg: 0,
