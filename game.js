@@ -1880,11 +1880,12 @@ function inventoryBuyItem(itemId, isShop=false) {
     save();
 }; window.inventoryBuyItem = inventoryBuyItem;
 
-function replaceWeapon(characterId, slot) {
+function replaceWeapon(characterId, weaponId) {
     let character = game.gamestate.player.characters[characterId];
-}; window.replaceWeapon = replaceWeapon();
+    addItem
+}; window.replaceWeapon = replaceWeapon;
 
-function replaceWeaponMenu(characterId, slot) {
+function replaceWeaponMenu(characterId) {
     inventory(false, function(item) {return item.equipable}); 
     replacehtml(`money`, `<span><strong>Equip Item</strong></span>`); // Use the inventory as a template
     Array.from(document.getElementById('buttonGridInventory').children).forEach(child => {
@@ -1892,7 +1893,7 @@ function replaceWeaponMenu(characterId, slot) {
         popup.className = "popup";
         popup.innerHTML = getCompactStats(game.gamestate.player.inventory[child.id.slice(4)]);
         child.appendChild(popup);
-        child.onClick = function() {replaceWeapon(characterId, slot)};
+        child.onClick = function() {replaceWeapon(characterId, child.id.slice(4))};
     });
 }; window.replaceWeaponMenu = replaceWeaponMenu;
 

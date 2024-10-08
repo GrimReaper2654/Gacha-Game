@@ -1263,8 +1263,7 @@ h3 {
     z-index: 1;
     top: 100%; 
     left: 0;
-    height: 80px;
-    width: 160px;
+    min-width: 120px;
     color: white;
     text-align: left;
     justify-content: left;
