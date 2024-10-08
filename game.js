@@ -470,7 +470,8 @@ function sortInventory(list, property='name') {
 }; window.sortInventory = sortInventory;
 
 function calcDamage(character, skill) {
-    let updatedStats = adjustedStats(character);
+    console.log(character);
+    if (skill.dmg == 0) return 0;
     let weaponType = skill.weaponType? skill.weaponType : skill.type;
     let dmg = skill.dmg;
     let isNegative = false;
@@ -478,21 +479,24 @@ function calcDamage(character, skill) {
         dmg *= -1;
         isNegative = true;
     }
+    console.log(dmg);
     if (weaponType == physical || weaponType == magic) {
-        dmg += weaponType == physical? updatedStats.physDmgIncrease[0] : updatedStats.magiDmgIncrease[0];
+        dmg += weaponType == physical? character.physDmgIncrease[0] : character.magiDmgIncrease[0];
         console.log(dmg);
-        dmg *= weaponType == physical? updatedStats.physDmgIncrease[1] : updatedStats.magiDmgIncrease[1];
+        dmg *= weaponType == physical? character.physDmgIncrease[1] : character.magiDmgIncrease[1];
         console.log(dmg);
-        dmg = Math.min(dmg, weaponType == physical? updatedStats.physDmgIncrease[2] : updatedStats.magiDmgIncrease[2]);
+        dmg = Math.min(dmg, weaponType == physical? character.physDmgIncrease[2] : character.magiDmgIncrease[2]);
     }
+    console.log(dmg);
     switch (skill.multiplier) {
         case str:
-            dmg *= updatedStats.str;
+            dmg *= character.str;
             break;
         case int:
-            dmg *= updatedStats.int/100;
+            dmg *= character.int/100;
             break;
     }
+    console.log(dmg);
     if (isNegative) dmg *= -1;
     return Math.floor(dmg);
 }; window.calcDamage = calcDamage;
@@ -1042,7 +1046,8 @@ async function simulateSingleAttack(user, skill, target) {
     skill = JSON.parse(JSON.stringify(skill)); // deepcopy is only used in 1 scenario but I'm lazy so its here
     let number = true;
     let miss = false;
-    let dmg = skill.type == heal? skill.dmg : Math.floor(skill.dmg > 0? Math.max(0, calcResistance(skill.type, skill.dmg * (skill.multiplier? user[skill.multiplier] * (skill.multiplier == int? 0.01 : 1) : 1), target)) : skill.dmg);
+    console.log(calcDamage(user, skill));
+    let dmg = skill.type == heal || skill.dmg == 0? calcDamage(user, skill) : Math.floor(Math.max(0, calcResistance(skill.type, calcDamage(user, skill), target)));
     if (skill.dmg == 0 || skill.type == effect) number = false; // skills that do not intend to do damage should not have damage numbers
     else if (skill.accuracy != Infinity && randint(0,100) > skill.accuracy) {
         dmg = 0;
@@ -1113,18 +1118,8 @@ function skills(card=undefined, enabled=true) { // sidebar skills in combat
         let buttonGridHtml = `<div id="stats"><p class="noPadding statsText">  <img src="assets/lightning.png" class="smallIcon"> Actions Left:    ${card.ap > 99? `∞` : card.ap}<br>  <img src="assets/sword.png" class="smallIcon"> Strength:        ×${card.str}<br>  Intelligence:      ${card.int}<br>  <img src="assets/shield.png" class="smallIcon"> Physical Armour: ${card.armour.physical[0]}, ${card.armour.physical[1]}%<br>  <img src="assets/blueShield.png" class="smallIcon"> Magic Armour:    ${card.armour.magic[0]}, ${card.armour.magic[1]}%</p></div>`;
         for (let i = 0; i < card.skills.length; i++) {
             console.log(card.skills[i]);
-            let dmg = data.skills[card.skills[i]].dmg;
-            if (data.skills[card.skills[i]].type != summon && data.skills[card.skills[i]].type != heal) {
-                switch (data.skills[card.skills[i]].multiplier) {
-                    case str:
-                        dmg *= card.str;
-                        break;
-                    case int:
-                        dmg *= card.int/100;
-                        break;
-                }
-                dmg = Math.floor(dmg);
-            }
+            let dmg = calcDamage(card, data.skills[card.skills[i]]);
+            console.log(dmg);
             let title = `<strong>${data.skills[card.skills[i]].name}</strong>`;
             let dmgDesc = `${data.skills[card.skills[i]].type != summon? `${dmg == 0? `` : `${dmg > 0? `Damage:` : `Heal:`} <img src="assets/${dmg > 0? `lightning` : `greenCross`}.png" class="smallIcon"> ${dmg > 0? dmg : -dmg}`}` : `Summons: ${dmg}`}${data.skills[card.skills[i]].attacks > 1? ` × ${data.skills[card.skills[i]].attacks}` : ``}`;
             let desc = `${data.skills[card.skills[i]].desc.replaceAll(`[attacker]`, card.name).replaceAll(`[pronoun]`, card.gender == female? `her` : `his`)}<br>${dmgDesc}<br><img src="assets/explosion.png" class="smallIcon"> ${data.skills[card.skills[i]].targeting}<br>${(data.skills[card.skills[i]].cost.hp || data.skills[card.skills[i]].cost.mp)? `Costs:` : ``} ${data.skills[card.skills[i]].cost.hp ? `<img src="assets/redCross.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.hp}` : ``} ${data.skills[card.skills[i]].cost.mp ? `<img src="assets/blueStar.png" class="smallIcon"> ${data.skills[card.skills[i]].cost.mp}` : ``}`;
@@ -1513,16 +1508,24 @@ async function handleEnemyAttack(enemy) {
 function resetCharacterStats() {
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         let card = game.gamestate.player.team[i];
-        card.effects = [];
-        card.specialConditions = {};
-        card.ap = 0;
-        card.hp = card.hpMax;
-        card.mp = card.mpMax;
-        card.str = card.strInit;
-        card.int = card.intInit;
-        card.mpRegen = card.rgnInit;
-        card.armour = card.armourInit;
+        console.log(card);
+        console.log(game.gamestate.player.characters[0]);
+        let baseStats = JSON.parse(card.baseStats);
+        card.hp = baseStats.hp;
+        card.mp = baseStats.mp;
+        card.str = baseStats.str;
+        card.int = baseStats.int;
+        card.mpRegen = baseStats.mpRegen;
+        card.armour = baseStats.armour;
         card.skills = card.skills.slice(0, -1); // remove the reposition skill (it will be added back in the next battle)
+        delete card.hpRegen;
+        delete card.physDmgIncrease;
+        delete card.magiDmgIncrease;
+        delete card.hpMax;
+        delete card.mpMax;
+        delete card.ap;
+        delete card.effects;
+        delete card.specialConditions;
         for (let i = 0; i < game.gamestate.player.characters.length; i++) {
             if (game.gamestate.player.characters[i].name == card.name) {
                 game.gamestate.player.characters[i] = card;
@@ -1702,13 +1705,24 @@ async function startDungeon() {
     battleState.pf = [];
     for (let i = 0; i < game.gamestate.player.team.length; i++) {
         let card = game.gamestate.player.team[i];
+        let characterData = JSON.stringify(card);
+        let updatedStats = adjustedStats(card);
+        card.hp = updatedStats.hp;
+        card.mp = updatedStats.mp;
+        card.str = updatedStats.str;
+        card.int = updatedStats.int;
+        card.mpRegen = updatedStats.mpRegen;
+        card.hpRegen = updatedStats.hpRegen;
+        card.armour = updatedStats.armour;
+        card.physDmgIncrease = updatedStats.physDmgIncrease;
+        card.magiDmgIncrease = updatedStats.magiDmgIncrease;
+        card.baseStats = characterData;
         card.hpMax = card.hp;
         card.mpMax = card.mp;
-        card.strInit = card.str;
-        card.intInit = card.int;
-        card.rgnInit = card.mpRegen;
-        card.armourInit = JSON.parse(JSON.stringify(card.armour));
+        card.hpRegen = updatedStats.hpRegen;
         card.ap = 0;
+        card.effects = [];
+        card.specialConditions = {};
         card.skills.push('reposition');
         battleState.pb.push(card);
     }
@@ -1941,6 +1955,8 @@ function replaceWeapon(characterId, weaponId) {
     }
     replaceWeaponMenu(characterId);
     focusCharacter(characterId);
+    updateTeam();
+    save();
 }; window.replaceWeapon = replaceWeapon;
 
 function replaceWeaponMenu(characterId) {
@@ -2037,7 +2053,7 @@ function focusCharacter(characterId, addExp=true) {
     for (let i = 0; i < character.skills.length; i++) {
         let skill = `<span class="bigger">${data.skills[character.skills[i]].name}</span><br>`;
         skill += `<span class="smaller">${data.skills[character.skills[i]].desc.replace('[attacker]', character.name).replace('[pronoun]', character.gender == female ? 'her' : 'his')}</span><br>`;
-        let dmg = calcDamage(character, data.skills[character.skills[i]]);
+        let dmg = calcDamage({...character, ...adjustedStats(character)}, data.skills[character.skills[i]]);
         if (data.skills[character.skills[i]].dmg > 0) skill += `<img src="assets/lightning.png" class="smallIcon"> ${dmg} damage<br>`;
         else if (data.skills[character.skills[i]].dmg < 0) skill += `<img src="assets/greenCross.png" class="smallIcon"> ${-dmg} heal<br>`;
         if (data.skills[character.skills[i]].extraStats) {
@@ -2141,7 +2157,7 @@ function updateTeam() {
     game.gamestate.player.team = nTeam;
     for (let i = 0; i < 4; i++) {
         if (game.gamestate.player.team[i] != undefined) {
-            buttonGridHtml += createCharacterCard(game.gamestate.player.team[i]);
+            buttonGridHtml += createCharacterCard({...game.gamestate.player.team[i], ...adjustedStats(game.gamestate.player.team[i])});
             canBattle = true;
         } else {
             buttonGridHtml += blankCard(-1);
