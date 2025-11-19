@@ -905,6 +905,38 @@ const rankEX = { // EX
     },
 };
 const gachaGameEnemies = {
+    punchingBag: {
+        type: 'object',
+        enemyType: `punchingBag`,
+        name: `Punching Bag`, 
+        rarity: N,
+        pfp: `trolling/dp.webp`,
+        hp: [100],
+        mp: [0],
+        str: [1],
+        int: [0],
+        mpRegen: [0],
+        agi: 0,
+        skills: ['idle'],
+        armour: {physical: [0, 0], magic: [0, 0]},
+        ai: `rng`,
+    },
+    trainingDummy: { // 2 tiers
+        type: 'object',
+        enemyType: `trainingDummy`,
+        name: `Dummy`, 
+        rarity: N,
+        pfp: `trolling/dp.webp`,
+        hp: [50, 75],
+        mp: [0, 0],
+        str: [0.5, 1],
+        int: [0, 0],
+        mpRegen: [0, 0],
+        agi: 0,
+        skills: ['hit', 'rapidHit'],
+        armour: {physical: [5, 10], magic: [0, 0]},
+        ai: `rng`,
+    },
     goblin: { // 4 tiers
         type: 'goblin',
         enemyType: `goblinGrunt`,
@@ -1637,6 +1669,43 @@ const gachaGameSummons = {
         ai: `rng`,
     },
 };
+const gachaGameShowcase = [
+    { 
+        name: `Veltrix`,
+        rarity: N,
+        gender: male,
+        pfp: `trolling/vel.png`,
+        hp: 69,
+        mp: 420,
+    },
+    { 
+        name: `Spedry`,
+        rarity: G,
+        gender: male,
+        pfp: `trolling/spedry.png`,
+        hp: 69,
+        mp: 420,
+    },
+    { 
+        name: `Shadow`,
+        rarity: SR,
+        gender: male,
+        pfp: `trolling/shadow.png`,
+        hp: 69,
+        mp: 420,
+    },
+    { 
+        name: `Park Denis`,
+        rarity: R,
+        gender: male,
+        pfp: `trolling/dp.webp`,
+        hp: 69,
+        mp: 420,
+    },
+    
+];
+
+
 
 const gachaGameCharacters = [rankN, rankUC, rankR, rankSR, rankE, rankL, rankM, rankG, rankEX];
 
@@ -1649,4 +1718,4 @@ for (let rank of gachaGameCharacters) { // Give everybody an empty inventory
     }
 }
 
-export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons}; 
+export {gachaGameCharacters, gachaGameEnemies, gachaGameSummons, gachaGameShowcase}; 

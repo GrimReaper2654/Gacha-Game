@@ -6995,6 +6995,29 @@ const uniqueSkills = { // very unbalanced skills
     },
 };
 const miscSkills = { // unsorted stuff
+    idle: {
+        name: `Do Nothing`, 
+        desc: `[attacker] does nothing.`, 
+        animation: { 
+            range: 'none',
+            projectile: 'none',
+            hitEffect: 'none',
+            moveSpeed: 0,
+            projectileSpeed: 0,
+            projectileFade: false,
+            smooth: false,
+            projectileDelay: 0,
+        },
+        type: physical, 
+        targeting: selfOnly,
+        dmg: 0, 
+        multiplier: none, 
+        effects: [], 
+        cost: {hp: 0, mp: 0}, 
+        accuracy: 1000,
+        attacks: 0, 
+        instantUse: true, 
+    },
     reposition: {
         name: `Reposition`, 
         desc: `[attacker] switches rows.`, 

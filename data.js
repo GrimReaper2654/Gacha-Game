@@ -84,6 +84,7 @@ var gachaGameData = {
             tempStorage: {},
             retreat: false,
         },
+        tutorialProgress: 0,
     },
     characters: [],
     enemies: {},
@@ -681,7 +682,7 @@ var gachaGameData = {
     },
 };
 
-import {gachaGameCharacters, gachaGameEnemies, gachaGameSummons} from "./characters.js";
+import {gachaGameCharacters, gachaGameEnemies, gachaGameSummons, gachaGameShowcase} from "./characters.js";
 import {gachaGameSkills, gachaGameEffects} from "./skills.js";
 import {gachaGameDungeons} from "./dungeons.js";
 import {gachaGameRewardItems, gachaGameAllItems, gachaGameDrops} from "./items.js";
@@ -695,5 +696,6 @@ gachaGameData.dungeons = gachaGameDungeons;
 gachaGameData.pullItems = gachaGameRewardItems;
 gachaGameData.items = gachaGameAllItems;
 gachaGameData.drops = gachaGameDrops;
+gachaGameData.showcaseCharacters = gachaGameShowcase;
 
 export {gachaGameData};

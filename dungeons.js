@@ -1,3 +1,69 @@
+const tutorial = {
+    id: `tutorial`,
+    name: `Training Grounds`,
+    outerBac: `assets/goblinDen.jpeg`,
+    innerBac: `assets/mossyStone.jpeg`,
+    waves: [
+        { // 1
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `punchingBag`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // 2
+            type: `normal`,
+            enemies: [
+                {
+                    enemy: `punchingBag`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `trainingDummy`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `frontline`,
+                },
+            ],
+        },
+        { // boss
+            type: `boss`,
+            enemies: [
+                {
+                    enemy: `punchingBag`,
+                    lvl: 0,
+                    quantity: 4,
+                    location: `frontline`,
+                },
+                {
+                    enemy: `trainingDummy`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `trainingDummy`,
+                    lvl: 1,
+                    quantity: 1,
+                    location: `backline`,
+                },
+                {
+                    enemy: `trainingDummy`,
+                    lvl: 0,
+                    quantity: 1,
+                    location: `backline`,
+                },
+            ],
+        },
+    ],
+};
+
 const goblinDen = {
     id: `goblinDen`,
     name: `Goblin Den`,
@@ -1239,5 +1305,5 @@ const debugDungeon = {
     ],
 };
 
-const gachaGameDungeons = [goblinDen, shadowCavern, macelineFactory, militaryBase, dragonPeaks, chickenLake, debugDungeon];
+const gachaGameDungeons = [tutorial, goblinDen, shadowCavern, macelineFactory, militaryBase, dragonPeaks, chickenLake, debugDungeon];
 export {gachaGameDungeons};

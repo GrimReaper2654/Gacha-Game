@@ -1,10 +1,3 @@
-
-
-#main {
-    width: 0px;
-    height: 0px;
-}
-
 canvas {
     pointer-events: none;
     width: 100%;
@@ -16,7 +9,6 @@ canvas {
     height: 100%;
     padding: 0;
     margin: 0;
-    zoom: 100%
 }
 
 .effects {
@@ -1285,4 +1277,99 @@ h3 {
 
 .watermark {
     opacity: 0.5;
+}
+
+#bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* behind everything */
+    filter: brightness(0.5);
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('assets/Orbitron.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.startGame {
+    position: absolute;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    width: 600px;
+    z-index: 1;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 45px;
+}
+
+#parallax-container {
+    position: fixed;     
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;        
+    overflow: hidden;
+    
+}
+
+.parallax-layer {
+    position: relative;
+    left: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.parallax-img {
+    position: absolute;
+    object-fit: cover;
+    flex-shrink: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+.logo-container {
+    position: relative;
+    isolation: isolate;
+}
+
+.logo {
+    position: relative;
+}
+
+.petal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 25vh;
+  transform: translate(-50%, -100%) rotate(0deg);
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transition: transform 3s ease, opacity 1s ease;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+
+.logo.bloom .petal {
+  opacity: 1;
+  transform: translate(-50%, -105%) scale(1);
+}
+
+.logo.bloom .petal.left {
+  transform: translate(-55%, -100%) rotate(-15deg) scale(1);
+}
+
+.logo.bloom .petal.right {
+  transform: translate(-45%, -100%) rotate(15deg) scale(1);
 }

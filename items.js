@@ -1114,6 +1114,7 @@ const gachaGameDrops = {
         boss: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
     },
     clear: {
+        tutorial: [{type: exp, quantity: 1000, chance: 100}, {type: gold, quantity: 100, chance: 100}],
         goblinDen: [{type: exp, quantity: 7500, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
         shadowCavern: [{type: exp, quantity: 10000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
         militaryBase: [{type: exp, quantity: 20000, chance: 100}, {type: gold, quantity: 2000, chance: 100}],
@@ -1122,6 +1123,7 @@ const gachaGameDrops = {
         chickenLake: [{type: exp, quantity: 250000, chance: 100}, {type: gold, quantity: 10000, chance: 100}],
         debugDungeon: [{type: exp, quantity: 1000000, chance: 100}],
 
+        tutorialFirst: [{type: exp, quantity: 20000, chance: 100}, {type: gold, quantity: 1000, chance: 100}],
         goblinDenFirst: [{type: exp, quantity: 50000, chance: 100}],
         shadowCavernFirst: [{type: exp, quantity: 25000, chance: 100}],
         militaryBaseFirst: [{type: exp, quantity: 50000, chance: 100}, {type: gold, quantity: 2000, chance: 100}],
@@ -1131,6 +1133,9 @@ const gachaGameDrops = {
         debugDungeonFirst: [{type: exp, quantity: 1000000, chance: 100}],
     }, 
     enemy: {
+        punchingBag: [{type: exp, quantity: 50, chance: 100}],
+        trainingDummy: [{type: exp, quantity: 100, chance: 100}],
+
         goblinGrunt: [{type: exp, quantity: 100, chance: 100}, {type: gold, quantity: 25, chance: 100}, {type: item, quantity: 1, chance: 25, item: 'stone1'}],
         goblinArcher: [{type: exp, quantity: 150, chance: 100}, {type: gold, quantity: 30, chance: 100}, {type: item, quantity: 1, chance: 50, item: 'stone1'}],
         goblinWarrior: [{type: exp, quantity: 300, chance: 100}, {type: gold, quantity: 50, chance: 100}, {type: item, quantity: 1, chance: 75, item: 'stone1'}],

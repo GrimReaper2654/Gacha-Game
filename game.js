@@ -64,6 +64,7 @@ const item = 'item';
 const hand = 'hand';
 const body = 'body';
 
+
 function deepFreeze(obj) {
     let propNames = Object.getOwnPropertyNames(obj);
     for (let name of propNames) {
@@ -480,7 +481,7 @@ function calcDamage(character, skill) {
         isNegative = true;
     }
     console.log(dmg);
-    if (weaponType == physical || weaponType == magic) {
+    if ((weaponType == physical && character.physDmgIncrease) || (weaponType == magic && character.magiDmgIncrease)) {
         dmg += weaponType == physical? character.physDmgIncrease[0] : character.magiDmgIncrease[0];
         console.log(dmg);
         dmg *= weaponType == physical? character.physDmgIncrease[1] : character.magiDmgIncrease[1];
@@ -2515,5 +2516,152 @@ function beg() {
     console.log('A kind stranger gifts you $10000000!');
     game.gamestate.player.money += 10000000
 }; window.beg = beg;
+
+async function createParallaxLayer(parent, images, scrollSpeed, height = "20%", offsetY = "0%") {
+  if (!parent) throw new Error("Parent element not found");
+
+  // === preload all images first ===
+  const loadedImages = await Promise.all(
+    images.map(
+      src =>
+        new Promise(resolve => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => resolve({ src, width: img.width , height: img.height });
+          img.onerror = () => resolve({ src, width: 512 }); // fallback width
+        })
+    )
+  );
+
+  const layer = document.createElement("div");
+  layer.classList.add("parallax-layer");
+  parent.appendChild(layer);
+
+  const vh = v => (window.innerHeight * parseFloat(v)) / 100;
+  const h = height.endsWith("%") ? vh(height) : parseFloat(height);
+  const o = offsetY.endsWith("%") ? vh(offsetY) : parseFloat(offsetY);
+  layer.style.height = `${h}px`;
+  layer.style.top = `${o}px`;
+
+  // === build tiling sequence ===
+  const imgs = [];
+  let totalWidth = 0;
+  while (totalWidth < window.innerWidth * 2) {
+    const imgData = loadedImages[Math.floor(Math.random() * loadedImages.length)];
+    const el = document.createElement("img");
+    el.src = imgData.src;
+    el.classList.add("parallax-img");
+    el.style.height = `${h}px`;
+    el.style.position = "absolute";
+    el.style.left = `${totalWidth}px`;
+    layer.appendChild(el);
+    imgs.push({ el, width: h / imgData.height * imgData.width });
+    totalWidth += h / imgData.height * imgData.width;
+  }
+
+  // === animation ===
+  let offset = 0;
+
+  function animate() {
+    if (!document.body.contains(layer)) return; // stop if layer removed
+    offset -= scrollSpeed / 60;
+
+    for (const img of imgs) {
+      const x = Math.floor(100*(parseFloat(img.el.style.left) - scrollSpeed / 60))/100;
+      img.el.style.left = `${x}px`;
+    }
+
+    // recycle if first image moves fully offscreen
+    const first = imgs[0];
+    if (parseFloat(first.el.style.left) + first.width < 0) {
+      imgs.shift();
+      totalWidth -= first.width;
+    }
+    while (totalWidth < window.innerWidth * 2) {
+        const imgData = loadedImages[Math.floor(Math.random() * loadedImages.length)];
+        const el = document.createElement("img");
+        el.src = imgData.src;
+        el.classList.add("parallax-img");
+        el.style.height = `${h}px`;
+        el.style.position = "absolute";
+        el.style.left = `${totalWidth}px`;
+        layer.appendChild(el);
+        imgs.push({ el, width: h / imgData.height * imgData.width });
+        totalWidth += h / imgData.height * imgData.width;;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+async function titleScreenCards() {
+    let content = ``;
+    for (let i = 0; i < 4; i++) {
+        content += `<div id="c${i}">${createCharacterCard(data.showcaseCharacters[i])}</div>`;
+    }
+    document.getElementById("cards").innerHTML = content;
+    const offsets = ["8%", "20%"];
+    const motion = [];
+    for (let i = 0; i < 4; i++) {
+        const h = randint(0, 20);
+        document.getElementById(`c${i}`).style.position = `absolute`;
+        let side = i > 1? "left" : "right";
+        document.getElementById(`c${i}`).style[side] = offsets[i%2];
+        document.getElementById(`c${i}`).style.bottom = `${h}%`;
+        document.getElementById(`c${i}`).style.transform = `translate(${side == "left"? '-' : ''}50%, -50%) scale(1)`;
+        motion.push({
+            base: h, 
+            amplitude: Math.random() * 10 + 5,
+            period: Math.random() * 13000 + 5000,
+            phase: Math.random() * 2 * Math.PI
+        });
+    }
+    while (document.getElementById("cards")) {
+        for (let i = 0; i < 4; i++) {;
+            const e = motion[i];
+            const offset = e.amplitude * Math.sin((2 * Math.PI * performance.now() / e.period) + e.phase);
+            document.getElementById(`c${i}`).style.bottom = `${e.base + offset}%`;
+        }
+        await sleep(30);
+    }
+}
+
+const c = document.getElementById("parallax-container");
+await createParallaxLayer(
+    c,
+    ["trolling/2.png"],
+    2,  
+    "75%", 
+    "-10%" 
+);
+await createParallaxLayer(
+    c,
+    ["trolling/b.png"],
+    5,  
+    "75%", 
+    "-50%" 
+);
+await createParallaxLayer(
+    c,
+    ["trolling/1.png"],
+    10,
+    "100%", 
+    "-145%" 
+);
+await createParallaxLayer(
+    c,
+    ["trolling/3.png"],
+    -1,  
+    "50%", 
+    "-250%"   
+);
+
+
+
+titleScreenCards();
+
+document.querySelector('.logo').classList.toggle('bloom');
 
 console.error('ERROR: The operation completed successfully.');

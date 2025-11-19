@@ -9,54 +9,33 @@
 </head>
 <body>
     <div id="gameContainer" class="main">
-        <div id="big">
-            <noscript>
-                <h2>Where js go???</h2>
-                <h3>it not here...</h3>
-                <h3>pls js or no game:(</h3>
-                <p>
-                    <strong>Objective:</strong><br>
-                    • Enable Javascript <br>
-                    • Reload the site <br>
-                    <strong>Controls:</strong><br>
-                    • click around <br>
-                    <strong>Bugs:</strong><br>
-                    • Game requires javascript to run<br>
-                </p>
-            </noscript>
-            <script>
-                document.getElementById('big').innerHTML += `<button onclick="startGame()"><h3>Start Game</h3></button><br>
-            <button onclick="clearData()"><h3>Clear Data</h3></button><br>
-            <button onclick="forceMobile()"><h3>Force Mobile Version</h3></button><br>
-            <button onclick="forceDesktop()"><h3>Force Desktop Version</h3></button><br>
-            <button onclick="altMobile()"><h3>Mobile version not working properly? Try this</h3></button><br>
+        <div id="parallax-container"></div>
+        <div id="cards"></div>
+        <div class="startGame">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="trolling/card.png" class="petal left">
+                    <img src="trolling/card.png" class="petal right">
+                    <img src="trolling/card.png" class="petal center">
+                </div>
+            </div>
+            <h1>Card War</h1>
+            <button onclick="startGame()" id="buyButton"><h3>Start Game</h3></button><br>
+        </div>
+        <noscript>
+            <h2>Where js go???</h2>
+            <h3>it not here...</h3>
+            <h3>pls js or no game:(</h3>
             <p>
                 <strong>Objective:</strong><br>
-                • Pull good characters <br>
-                • Battle enemies and win <br>
-                • Waste your life savings <br>
-                • Conquer all the dungeons <br>
-                • Defeat the final boss <br>
+                • Enable Javascript <br>
+                • Reload the site <br>
                 <strong>Controls:</strong><br>
                 • click around <br>
-                • keybinds? never heard of them! <br>
                 <strong>Bugs:</strong><br>
-                • microtransactions are currently not supported :( I want money.<br>
-                • Dungeon completed / failed / retreated text is still a placeholder.<br>
-                • Items still do not drop from enemies. (not implemented)<br>
-                • Enemy AI is stupid. Really shows for support type enemies.<br>
-                • Pulls is missing many animations and has some placeholders (will fix later).<br>
-                • Mobile is no longer supported very well...<br>
-                <strong>Latest Update:</strong><br>
-                • Missing assets have been fixed<br>
-                • If they don't show up or something breaks, clear data then try again.<br>
-            </p>`;
-            </script>
-            
-        </div>
-    </div>
-    <div id="data">
-        
+                • Game requires javascript to run<br>
+            </p>
+        </noscript>
     </div>
 </body>
 <script type="module" src="game.js"></script>
