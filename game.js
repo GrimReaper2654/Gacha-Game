@@ -2638,7 +2638,7 @@ await createParallaxLayer(
 );
 await createParallaxLayer(
     c,
-    ["trolling/b.png"],
+    ["trolling/bg.png"],
     5,  
     "75%", 
     "-50%" 
