@@ -2093,6 +2093,60 @@ function focusCharacter(characterId, addExp=true) {
     replacehtml(`focusSkills`, shop + skills);
 }; window.focusCharacter = focusCharacter;
 
+function createCharacter() { 
+    let character = {
+        name: '',
+        title: '',
+        description: '',
+        personality: '',
+        stats: {atk: '', def: ''},
+        rarity: N,
+        gender: '',
+        pfp: ``,
+        hp: 100,
+        mp: 100,
+        str: 100,
+        int: 100,
+        mpRegen: 100,
+        agi: 100,
+        skills: ["none", "none", "none", "none"],
+        armour: {physical: [0, 0], magic: [0, 0]},
+        additionalAp: 0,
+    };
+    let rankDropdown = `<select id="skill1">
+        <option value="">Rank</option>
+        <option value="">[N]</option>
+        <option value="">[UC]</option>
+        <option value="">[R]</option>
+        <option value="">[SR]</option>
+    </select>`;
+    let skillsDropdown = [
+        `<label for="skill1">First ability</label>
+        <select id="skill1">
+            <option value="">[icon] Melee 1</option>
+            <option value="">[icon] Melee 2</option>
+            <option value="">[icon] Melee 3</option>
+        </select>`,
+        `<label for="skill2">Second ability</label>
+        <select id="skill2">
+            <option value="">[icon] Melee 1</option>
+            <option value="">[icon] Melee 2</option>
+            <option value="">[icon] Melee 3</option>
+        </select>`
+    ];
+    let bars = [
+        {name: "hp", icon: "icon.png", filledPercent: 50},
+        {name: "mp", icon: "icon.png", filledPercent: 50},
+    ];
+    document.getElementById('focus').style.display = `block`;
+    replacehtml(`focusTitle`, `<span id="rank${character.rarity}Text"><strong> ${rankDropdown} <input type="text" id="characterTitle" placeholder="Title"> <input type="text" id="characterName" placeholder="Name"> </strong></span>`);
+    replacehtml(`focusImageContainer`, `<input type="file" id="imageInput" accept="image/*">`); // make this have a placeholder image initially and show the image the user uploaded. The file input should appear when the user hovers mouse over the image
+    replacehtml(`focusDescription`, `<input type="text" id="characterLore" placeholder="Enter description here">`);
+    replacehtml(`focusStats`, `[icon] [-10 button] [-1 button] [bar ${bars[0].name}] [+1 button] [+10 button] <br> [icon] [-10 button] [-1 button] [bar ${bars[1].name}] [+1 button] [+10 button]`);
+    replacehtml(`focusSkills`, `${skillsDropdown[0]}<br>${skillsDropdown[1]}`); 
+    // add a create character button here, use a dummy varaible for cost
+}; window.createCharacter = createCharacter;
+
 function exitFocus() {
     document.getElementById('focus').style.display = `none`;
 }; window.exitFocus = exitFocus;
@@ -2371,6 +2425,7 @@ function characters() {
         let buttonData = `onclick="focusCharacter(${i})" class="characterButton" id="rank${game.gamestate.player.characters[i].rarity}Button"`;
         buttonGridHtml += `<span><button ${buttonData}><p class="noPadding characterTitle">${title}</p><img src="${game.gamestate.player.characters[i].pfp}" class="characterIcon${game.gamestate.player.characters[i].alive? `` : ` grey disabled`}"><p class="noPadding statsText">${desc}</p></button></span>`;
     }
+    buttonGridHtml += `<span><button onclick="createCharacter()" class="characterButton" id="rank0Button"><img src="trolling/plusIcon.png" class="characterIcon"><p class="noPadding characterTitle">create</p></button></span>`;
     console.log(buttonGridHtml);
     replacehtml(`grid`, `<div id="buttonGridInventory">${buttonGridHtml}</div>`);
     resize();
